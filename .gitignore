@@ -3,6 +3,9 @@ specs/
 *.whl
 *.wheels
 
+# Exclude aliases file
+alias.sh
+
 # Python-specific ignores
 __pycache__/
 *.py[cod]

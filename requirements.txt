@@ -7,10 +7,12 @@ Cython>=0.29.24
 google-generativeai
 elevenlabs
 pydub
-requests
 python-dotenv
 PyPDF2
 youtube-transcript-api
+
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.12.2
 
 # Data science and machine learning libraries
 pandas

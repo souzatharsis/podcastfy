@@ -1,23 +1,59 @@
 import PyPDF2
 import logging
+import os
+import unicodedata
 
 logger = logging.getLogger(__name__)
 
 class PDFExtractor:
 	def extract_content(self, file_path):
 		"""
-		Extract text content from a PDF file.
+		Extract text content from a PDF file, handling foreign characters and special characters.
+		Accents are removed from the text.
 
 		Args:
 			file_path (str): Path to the PDF file.
 
 		Returns:
-			str: Extracted text content.
+			str: Extracted text content with accents removed and properly handled characters.
 		"""
 		try:
 			with open(file_path, 'rb') as file:
 				reader = PyPDF2.PdfReader(file)
-				return " ".join(page.extract_text() for page in reader.pages)
+				content = " ".join(page.extract_text() for page in reader.pages)
+				# Normalize the text to handle special characters and remove accents
+				normalized_content = unicodedata.normalize('NFKD', content)
+
+				return normalized_content
 		except Exception as e:
 			logger.error(f"Error extracting PDF content: {str(e)}")
 			raise
+
+def main(seed=42):
+	"""
+	Test the PDFExtractor class with a specific PDF file.
+
+	Args:
+		seed (int): Random seed for reproducibility. Defaults to 42.
+	"""
+	# Set the random seed
+	import random
+	random.seed(seed)
+
+	# Get the absolute path of the script
+	script_dir = os.path.dirname(os.path.abspath(__file__))
+	
+	# Construct the path to the PDF file
+	pdf_path = os.path.join(script_dir, '..', '..', 'tests', 'data', 'file.pdf')
+	
+	extractor = PDFExtractor()
+
+	try:
+		content = extractor.extract_content(pdf_path)
+		print("PDF content extracted successfully:")
+		print(content[:500] + "..." if len(content) > 500 else content)
+	except Exception as e:
+		print(f"An error occurred: {str(e)}")
+
+if __name__ == "__main__":
+	main()

@@ -2,6 +2,7 @@ import requests
 import logging
 import json
 import re
+import html
 from podcastify.utils.config import load_config
 
 logger = logging.getLogger(__name__)
@@ -41,8 +42,7 @@ class WebsiteExtractor:
 			content = response.text
 			logger.debug(f"Raw response: {content[:100]}...")
 			
-			# Check if the response is HTML instead of JSON
-			# The response is actually in markdown format
+			# The response is in markdown format
 			markdown_content = content
 			return self.clean_markdown(markdown_content)
 		except requests.RequestException as e:
@@ -63,9 +63,12 @@ class WebsiteExtractor:
 		Returns:
 			str: Cleaned text content.
 		"""
+		# Decode HTML entities
+		cleaned_content = html.unescape(markdown_content)
+
 		# Remove image markdown
 		image_pattern = r'!\[.*?\]\(.*?\)'
-		cleaned_content = re.sub(image_pattern, '', markdown_content)
+		cleaned_content = re.sub(image_pattern, '', cleaned_content)
 
 		# Remove inline links and URIs
 		link_pattern = r'\[([^\]]+)\]\([^\)]+\)'
@@ -100,9 +103,11 @@ class WebsiteExtractor:
 		title_pattern = r'^Title:.*\n'
 		url_source_pattern = r'^URL Source:.*\n'
 		markdown_content_pattern = r'^Markdown Content:\n'
+		warning_pattern = r'^Warning:.*\n'
 		cleaned_content = re.sub(title_pattern, '', cleaned_content, flags=re.MULTILINE)
 		cleaned_content = re.sub(url_source_pattern, '', cleaned_content, flags=re.MULTILINE)
 		cleaned_content = re.sub(markdown_content_pattern, '', cleaned_content, flags=re.MULTILINE)
+		cleaned_content = re.sub(warning_pattern, '', cleaned_content, flags=re.MULTILINE)
 
 		return cleaned_content.strip()
 
@@ -131,7 +136,7 @@ def main():
 		content = extractor.extract_content(test_url)
 
 		# Print the first 500 characters of the extracted content
-		logger.info(f"Extracted content (first 500 characters):\n{content[:100]}...")
+		logger.info(f"Extracted content (first 500 characters):\n{content[:500]}...")
 
 		# Print the total length of the extracted content
 		logger.info(f"Total length of extracted content: {len(content)} characters")
