@@ -1,7 +1,7 @@
 specs/
 
-.whl
-.wheels
+*.whl
+*.wheels
 
 # Python-specific ignores
 __pycache__/
