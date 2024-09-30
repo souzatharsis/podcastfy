@@ -1,0 +1,24 @@
+# Pre-installation requirements
+setuptools>=65.5.1
+wheel>=0.38.4
+Cython>=0.29.24
+
+# Main dependencies
+google-generativeai
+elevenlabs
+pydub
+requests
+python-dotenv
+PyPDF2
+youtube-transcript-api
+
+# Data science and machine learning libraries
+pandas
+scikit-learn
+matplotlib
+seaborn
+numpy
+
+# Additional dependencies
+protobuf==3.20.3
+grpcio
