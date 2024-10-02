@@ -6,6 +6,9 @@ specs/
 # Exclude aliases file
 alias.sh
 
+*.ipynb
+*.ipynb_checkpoints
+
 # Python-specific ignores
 __pycache__/
 *.py[cod]

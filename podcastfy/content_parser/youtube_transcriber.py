@@ -23,19 +23,31 @@ class YouTubeTranscriber:
 			logger.error(f"Error extracting YouTube transcript: {str(e)}")
 			raise
 
-def main():
+def main(seed=42):
 	"""
-	Test the YouTubeTranscriber class with a specific URL.
+	Test the YouTubeTranscriber class with a specific URL and save the transcript.
+
+	Args:
+		seed (int): Random seed for reproducibility. Defaults to 42.
 	"""
-	url = "https://www.youtube.com/watch?v=m3kJo5kEzTQ"
+	url = "https://www.youtube.com/watch?v=nFbJCoTK0_g"
 	transcriber = YouTubeTranscriber()
 
 	try:
 		transcript = transcriber.extract_transcript(url)
-		print("Transcript extracted successfully:")
+		print("Transcript extracted successfully.")
+		
+		# Save transcript to file
+		output_file = 'tests/data/transcripts/youtube_transcript2.txt'
+		with open(output_file, 'w') as file:
+			file.write(transcript)
+		
+		print(f"Transcript saved to {output_file}")
+		print("First 500 characters of the transcript:")
 		print(transcript[:500] + "..." if len(transcript) > 500 else transcript)
 	except Exception as e:
-		print(f"An error occurred: {str(e)}")
+		logger.error(f"An error occurred: {str(e)}")
+		raise
 
 if __name__ == "__main__":
 	main()

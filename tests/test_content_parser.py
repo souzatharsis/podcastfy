@@ -1,9 +1,9 @@
 import unittest
-from podcastify.utils.config import load_config
-from podcastify.content_parser.content_extractor import ContentExtractor
-from podcastify.content_parser.youtube_transcriber import YouTubeTranscriber
-from podcastify.content_parser.website_extractor import WebsiteExtractor
-from podcastify.content_parser.pdf_extractor import PDFExtractor
+from podcastfy.utils.config import load_config
+from podcastfy.content_parser.content_extractor import ContentExtractor
+from podcastfy.content_parser.youtube_transcriber import YouTubeTranscriber
+from podcastfy.content_parser.website_extractor import WebsiteExtractor
+from podcastfy.content_parser.pdf_extractor import PDFExtractor
 
 
 class TestContentParser(unittest.TestCase):

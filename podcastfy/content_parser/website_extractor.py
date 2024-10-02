@@ -3,7 +3,7 @@ import logging
 import json
 import re
 import html
-from podcastify.utils.config import load_config
+from podcastfy.utils.config import load_config
 
 logger = logging.getLogger(__name__)
 

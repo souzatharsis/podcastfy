@@ -5,7 +5,7 @@ import os
 from email.header import decode_header
 from collections import defaultdict
 from fuzzywuzzy import fuzz
-from podcastify.utils.config import Config
+from podcastfy.utils.config import Config
 
 logger = logging.getLogger(__name__)
 

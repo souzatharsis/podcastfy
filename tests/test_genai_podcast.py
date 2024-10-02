@@ -1,5 +1,5 @@
 import unittest
-from podcastify.genai_podcast.content_generator import ContentGenerator
+from podcastfy.genai_podcast.content_generator import ContentGenerator
 
 class TestGenAIPodcast(unittest.TestCase):
 	def test_content_generator(self):

@@ -1,6 +1,6 @@
 import unittest
-from podcastify.user_bookmarks.bookmark_manager import BookmarkManager
-from podcastify.user_bookmarks.link_parser import LinkParser
+from podcastfy.user_bookmarks.bookmark_manager import BookmarkManager
+from podcastfy.user_bookmarks.link_parser import LinkParser
 
 class TestUserBookmarks(unittest.TestCase):
 	def test_bookmark_manager(self):
