@@ -9,6 +9,7 @@ class Config:
 	JINA_API_KEY = os.getenv("JINA_API_KEY")
 	GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 	ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+	OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 	@classmethod
 	def get(cls, key, default=None):
@@ -33,7 +34,13 @@ def load_config():
 	"""
 	return Config()
 
-def main():
+def main(seed=42):
+	"""
+	Test the Config class and print configuration status.
+
+	Args:
+		seed (int): Random seed for reproducibility. Defaults to 42.
+	"""
 	# Create an instance of the Config class
 	config = load_config()
 	
@@ -44,10 +51,11 @@ def main():
 	print(f"JINA_API_KEY: {'Set' if config.get('JINA_API_KEY') else 'Not set'}")
 	print(f"GEMINI_API_KEY: {'Set' if config.get('GEMINI_API_KEY') else 'Not set'}")
 	print(f"ELEVENLABS_API_KEY: {'Set' if config.get('ELEVENLABS_API_KEY') else 'Not set'}")
+	print(f"OPENAI_API_KEY: {'Set' if config.get('OPENAI_API_KEY') else 'Not set'}")
 
 	# Print a warning for any missing configuration
 	missing_config = []
-	for key in ['EMAIL_ADDRESS', 'EMAIL_PASSWORD', 'JINA_API_KEY', 'GEMINI_API_KEY', 'ELEVENLABS_API_KEY']:
+	for key in ['EMAIL_ADDRESS', 'EMAIL_PASSWORD', 'JINA_API_KEY', 'GEMINI_API_KEY', 'ELEVENLABS_API_KEY', 'OPENAI_API_KEY']:
 		if not config.get(key):
 			missing_config.append(key)
 

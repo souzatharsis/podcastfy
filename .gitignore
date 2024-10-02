@@ -9,6 +9,11 @@ alias.sh
 *.ipynb
 *.ipynb_checkpoints
 
+*.mp3
+
+/tests/data/audio/
+/tests/data/transcripts/
+
 # Python-specific ignores
 __pycache__/
 *.py[cod]

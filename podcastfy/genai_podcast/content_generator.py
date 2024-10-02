@@ -20,12 +20,13 @@ class ContentGenerator:
 		
 		self.model = genai.GenerativeModel('gemini-1.5-pro-latest', system_instruction=system_prompt)
 
-	def generate_qa_content(self, input_texts):
+	def generate_qa_content(self, input_texts, output_filepath=None):
 		"""
 		Generate Q&A content based on input texts.
 
 		Args:
 			input_texts (str): Input texts to generate content from.
+			output_filepath (str, optional): Filepath to save the response content. Defaults to None.
 
 		Returns:
 			str: Formatted Q&A content.
@@ -35,7 +36,13 @@ class ContentGenerator:
 		"""
 		try:
 			response = self.model.generate_content(f"INPUT TEXT: {input_texts}")
-			return response
+			
+			if output_filepath:
+				with open(output_filepath, 'w') as file:
+					file.write(response.text)
+				logger.info(f"Response content saved to {output_filepath}")
+			
+			return response.text
 		except Exception as e:
 			logger.error(f"Error generating content: {str(e)}")
 			raise
