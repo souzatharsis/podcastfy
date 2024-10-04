@@ -4,12 +4,16 @@ wheel>=0.38.4
 Cython>=0.29.24
 
 # Main dependencies
-google-generativeai
-elevenlabs
-pydub
+typer
 python-dotenv
+requests
+beautifulsoup4
+openai
+elevenlabs
+google-generativeai
 PyPDF2
-youtube-transcript-api
+youtube_transcript_api
+pydub
 
 fuzzywuzzy==0.18.0
 python-Levenshtein==0.12.2

@@ -1,27 +1,39 @@
+"""
+Website Extractor Module
+
+This module is responsible for extracting clean text content from websites using
+the Jina AI API. It handles the API communication, content extraction, and
+cleaning of the extracted markdown content.
+"""
+
 import requests
 import logging
 import json
 import re
 import html
+from urllib.parse import urlparse, urljoin
 from podcastfy.utils.config import load_config
+from typing import Dict, Any
 
 logger = logging.getLogger(__name__)
 
 class WebsiteExtractor:
-	def __init__(self, jina_api_key):
+	def __init__(self, jina_api_key: str):
 		"""
 		Initialize the WebsiteExtractor.
 
 		Args:
 			jina_api_key (str): API key for Jina AI.
 		"""
-		self.jina_api_url = 'https://r.jina.ai'
-		self.headers = {
+		self.config = load_config()
+		self.website_extractor_config = self.config.get('website_extractor')
+		self.jina_api_url: str = self.website_extractor_config['jina_api_url']
+		self.headers: Dict[str, str] = {
 			'Authorization': f'Bearer {jina_api_key}',
 			'Content-Type': 'application/json'
 		}
 
-	def extract_content(self, url):
+	def extract_content(self, url: str) -> str:
 		"""
 		Extract clean text content from a website.
 
@@ -35,7 +47,10 @@ class WebsiteExtractor:
 			Exception: If there's an error in extracting the content.
 		"""
 		try:
-			payload = json.dumps({"url": url})
+			# Normalize the URL
+			normalized_url = self.normalize_url(url)
+			
+			payload = json.dumps({"url": normalized_url})
 			response = requests.post(self.jina_api_url, headers=self.headers, data=payload)
 			response.raise_for_status()  # Raise an exception for bad status codes
 			
@@ -52,7 +67,34 @@ class WebsiteExtractor:
 			logger.error(f"Unexpected error: {str(e)}")
 			raise Exception(f"An unexpected error occurred while extracting content from {url}: {str(e)}")
 
-	def clean_markdown(self, markdown_content):
+	def normalize_url(self, url: str) -> str:
+		"""
+		Normalize the given URL by adding scheme if missing and ensuring it's a valid URL.
+
+		Args:
+			url (str): The URL to normalize.
+
+		Returns:
+			str: The normalized URL.
+
+		Raises:
+			ValueError: If the URL is invalid after normalization attempts.
+		"""
+		# If the URL doesn't start with a scheme, add 'https://'
+		if not url.startswith(('http://', 'https://')):
+			url = 'https://' + url
+
+		# Parse the URL
+		parsed = urlparse(url)
+
+		# Ensure the URL has a valid scheme and netloc
+		if not all([parsed.scheme, parsed.netloc]):
+			raise ValueError(f"Invalid URL: {url}")
+
+		# Return the normalized URL
+		return parsed.geturl()
+
+	def clean_markdown(self, markdown_content: str) -> str:
 		"""
 		Remove images, special markdown tags, URIs, and leftover brackets from the content.
 		Also remove specific headers and their content.
@@ -109,9 +151,16 @@ class WebsiteExtractor:
 		cleaned_content = re.sub(markdown_content_pattern, '', cleaned_content, flags=re.MULTILINE)
 		cleaned_content = re.sub(warning_pattern, '', cleaned_content, flags=re.MULTILINE)
 
+		# Apply markdown cleaning patterns from config
+		for pattern in self.website_extractor_config['markdown_cleaning']['remove_patterns']:
+			cleaned_content = re.sub(pattern, '', cleaned_content)
+
 		return cleaned_content.strip()
 
-def main():
+def main(seed: int = 42) -> None:
+	"""
+	Main function to test the WebsiteExtractor class.
+	"""
 	# Set up logging
 	logging.basicConfig(level=logging.DEBUG)  # Changed to DEBUG for more detailed logs
 
@@ -129,7 +178,7 @@ def main():
 	extractor = WebsiteExtractor(jina_api_key)
 
 	# Test URL
-	test_url = "http://www.souzatharsis.com"
+	test_url = "www.souzatharsis.com"
 
 	try:
 		# Extract content from the test URL

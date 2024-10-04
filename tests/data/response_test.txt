@@ -1,2 +1,0 @@
-<Person1> "Good morning, brilliant minds! Welcome to Podcastify.me - Your personal GenAI podcast. - Today, let's delve into the fascinating world of multi-strategy hedge funds, often called 'pod shops.'" <break time="0.5s" /></Person1> 
-<Person2> "I'm particularly interested in understanding their operations and why they attract so much talent.  It's almost like they possess this mystical aura of success."  <break time="0.3s" /></Person2>

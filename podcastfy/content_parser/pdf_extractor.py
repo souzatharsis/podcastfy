@@ -1,12 +1,21 @@
-import PyPDF2
+"""
+PDF Extractor Module
+
+This module provides functionality to extract text content from PDF files.
+It handles the reading of PDF files, text extraction, and normalization of
+the extracted content, including handling of special characters and accents.
+"""
+
+import pypdf
 import logging
 import os
 import unicodedata
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 class PDFExtractor:
-	def extract_content(self, file_path):
+	def extract_content(self, file_path: str) -> str:
 		"""
 		Extract text content from a PDF file, handling foreign characters and special characters.
 		Accents are removed from the text.
@@ -19,7 +28,7 @@ class PDFExtractor:
 		"""
 		try:
 			with open(file_path, 'rb') as file:
-				reader = PyPDF2.PdfReader(file)
+				reader = pypdf.PdfReader(file)
 				content = " ".join(page.extract_text() for page in reader.pages)
 				# Normalize the text to handle special characters and remove accents
 				normalized_content = unicodedata.normalize('NFKD', content)
@@ -29,7 +38,7 @@ class PDFExtractor:
 			logger.error(f"Error extracting PDF content: {str(e)}")
 			raise
 
-def main(seed=42):
+def main(seed: int = 42) -> None:
 	"""
 	Test the PDFExtractor class with a specific PDF file.
 

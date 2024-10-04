@@ -1,8 +1,0 @@
-Forecasting Financial Market Structure from
-Network Features using Machine Learning
-Douglas Castilho1,5,*,+, Th ́arsis T. P. Souza2,+, Soong Moon Kang3, Jo ̃ao Gama4, and
-Andr  ́e C. P. L. F. de Carvalho1
-1Institute of Mathematics and Computer Sciences (ICMC), University of S  ̃ao Paulo (USP), S  ̃ao Carlos, Brazil
-2Department of Computer Science, University College London, Gower Street, London, WC1E 6BT, UK
-3School of Management, University College London, Gower Street, London, WC1E 6BT, UK
-4In

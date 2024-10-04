@@ -1,24 +1,55 @@
+"""
+Configuration Module
+
+This module handles the loading and management of configuration settings for the Podcastfy application.
+It uses environment variables to securely store and access API keys and other sensitive information,
+and a YAML file for non-sensitive configuration settings.
+"""
+
 import os
 from dotenv import load_dotenv
+from typing import Any, Dict, Optional
+import yaml
 
 class Config:
 	def __init__(self):
+		"""
+		Initialize the Config class by loading environment variables and YAML configuration.
+		"""
 		load_dotenv()
 		
-		self.JINA_API_KEY = os.getenv("JINA_API_KEY")
-		self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-		self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-		self.ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+		# Load API keys from .env
+		self.JINA_API_KEY: str = os.getenv("JINA_API_KEY", "")
+		self.GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+		self.OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+		self.ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
 		
-		# Default output directories
-		self.TRANSCRIPT_OUTPUT_DIR = os.getenv("TRANSCRIPT_OUTPUT_DIR", "./")
-		self.AUDIO_OUTPUT_DIR = os.getenv("AUDIO_OUTPUT_DIR", "./")
+		# Load other settings from config.yaml
+		with open('config.yaml', 'r') as file:
+			self.config: Dict[str, Any] = yaml.safe_load(file)
+		
+		# Set attributes based on YAML config
+		self.TRANSCRIPT_OUTPUT_DIR: str = self.config['output_directories']['transcripts']
+		self.AUDIO_OUTPUT_DIR: str = self.config['output_directories']['audio']
 		
 		# Ensure output directories exist
 		os.makedirs(self.TRANSCRIPT_OUTPUT_DIR, exist_ok=True)
 		os.makedirs(self.AUDIO_OUTPUT_DIR, exist_ok=True)
 
-def load_config():
+	def get(self, key: str, default: Optional[Any] = None) -> Any:
+		"""
+		Get a configuration value by key.
+
+		Args:
+			key (str): The configuration key to retrieve.
+			default (Optional[Any]): The default value if the key is not found.
+
+		Returns:
+			Any: The value associated with the key, or the default value if not found.
+		"""
+		return self.config.get(key, default)
+
+def load_config() -> Config:
 	"""
 	Load and return a Config instance.
 
@@ -27,7 +58,7 @@ def load_config():
 	"""
 	return Config()
 
-def main(seed=42):
+def main(seed: int = 42) -> None:
 	"""
 	Test the Config class and print configuration status.
 

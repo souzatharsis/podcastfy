@@ -1,10 +1,23 @@
+"""
+YouTube Transcriber Module
+
+This module is responsible for extracting and cleaning transcripts from YouTube videos.
+It uses the YouTube Transcript API to fetch transcripts and provides functionality
+to clean and format the extracted text.
+"""
+
 from youtube_transcript_api import YouTubeTranscriptApi
 import logging
+from podcastfy.utils.config import load_config
 
 logger = logging.getLogger(__name__)
 
 class YouTubeTranscriber:
-	def extract_transcript(self, url):
+	def __init__(self):
+		self.config = load_config()
+		self.youtube_transcriber_config = self.config.get('youtube_transcriber')
+
+	def extract_transcript(self, url: str) -> str:
 		"""
 		Extract transcript from a YouTube video and remove '[music]' tags (case-insensitive).
 
@@ -17,13 +30,16 @@ class YouTubeTranscriber:
 		try:
 			video_id = url.split("v=")[-1]
 			transcript = YouTubeTranscriptApi.get_transcript(video_id)
-			cleaned_transcript = " ".join([entry['text'] for entry in transcript if entry['text'].lower() != '[music]'])
+			cleaned_transcript = " ".join([
+				entry['text'] for entry in transcript 
+				if entry['text'].lower() not in self.youtube_transcriber_config['remove_phrases']
+			])
 			return cleaned_transcript
 		except Exception as e:
 			logger.error(f"Error extracting YouTube transcript: {str(e)}")
 			raise
 
-def main(seed=42):
+def main(seed: int = 42) -> None:
 	"""
 	Test the YouTubeTranscriber class with a specific URL and save the transcript.
 

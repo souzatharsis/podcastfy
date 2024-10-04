@@ -72,21 +72,36 @@ For more information on available options, use:
 
 ## Configuration
 
-The project uses a `.env` file for managing API keys and other sensitive information. Follow these steps to set up your configuration:
+The project uses a combination of a `.env` file for managing API keys and sensitive information, and a `config.yaml` file for non-sensitive configuration settings. Follow these steps to set up your configuration:
 
 1. Create a `.env` file in the root directory of the project.
-2. Add your API keys and other configuration variables to the `.env` file. For example:
+2. Add your API keys and other sensitive information to the `.env` file. For example:
 
    ```
-   OPENAI_API_KEY=your_openai_api_key_here
-   ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
    JINA_API_KEY=your_jina_api_key_here
    GEMINI_API_KEY=your_gemini_api_key_here
+   ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
    ```
 
-The application will automatically load these environment variables when it runs.
+3. The `config.yaml` file in the root directory contains non-sensitive configuration settings. You can modify this file to adjust various parameters such as output directories, text-to-speech settings, and content generation options.
 
-Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private.
+The application will automatically load the environment variables from `.env` and the configuration settings from `config.yaml` when it runs.
+
+Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
+
+## Example Use Cases
+
+1. Content Summarization: Busy professionals can stay informed on industry trends by listening to concise audio summaries of multiple articles, saving time and gaining knowledge efficiently.
+2. Language Localization: Non-native English speakers can access English content in their preferred language, breaking down language barriers and expanding access to global information.
+3. Website Content Marketing: Companies can increase engagement by repurposing written website content into audio format, providing visitors with the option to read or listen.
+4. Personal Branding: Job seekers can create unique audio-based personal presentations from their CV or LinkedIn profile, making a memorable impression on potential employers.
+5. Research Paper Summaries: Graduate students and researchers can quickly review multiple academic papers by listening to concise audio summaries, speeding up the research process.
+6. Long-form Podcast Summarization: Podcast enthusiasts with limited time can stay updated on their favorite shows by listening to condensed versions of lengthy episodes.
+7. News Briefings: Commuters can stay informed about daily news during travel time with personalized audio news briefings compiled from their preferred sources.
+8. Educational Content Creation: Educators can enhance learning accessibility by providing audio versions of course materials, catering to students with different learning styles.
+9. Book Summaries: Avid readers can preview books efficiently through audio summaries, helping them make informed decisions about which books to read in full.
+10. Conference and Event Recaps: Professionals can stay updated on important industry events they couldn't attend by listening to audio recaps of conference highlights and key takeaways.
 
 ## Contributing
 
@@ -99,3 +114,7 @@ This project is licensed under the [Creative Commons Attribution-NonCommercial-S
 ## Disclaimer
 
 This tool is designed for personal or educational use. Please ensure you have the necessary rights or permissions before using content from external sources for podcast creation. All audio content is AI-generated and it is not intended to clone real-life humans!
+
+## Dependencies
+
+The project dependencies are listed in the `requirements.txt` file. You can install them using pip:

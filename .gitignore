@@ -1,4 +1,5 @@
 specs/
+docs/
 
 *.whl
 *.wheels
