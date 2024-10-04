@@ -2,9 +2,9 @@
 
 Podcastfy: Your GenAI-Powered Companion for Transforming Text into Captivating Audio Conversations
 
-Podcastfy is a Python package and CLI tool that enables programatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
+Podcastfy is an LLM-based Python package and CLI tool that enables programatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
 
-Ideal for content Developers that build products for creators, educators, and researchers seeking to transform written information into easily digestible audio content, Podcastfy offers a unique solution for bridging the gap between text and audio consumption, programatically.
+Ideal for Developers that build data-driven products for creators, educators, and researchers seeking to transform written information into easily digestible audio content. Podcastfy offers a unique solution for bridging the gap between text and audio consumption, programatically.
 
 ## Features
 
@@ -14,27 +14,7 @@ Ideal for content Developers that build products for creators, educators, and re
 - Convert pre-existing transcript files into dynamic podcast episodes
 - Support for multiple advanced text-to-speech models (OpenAI and ElevenLabs) for natural-sounding audio
 - Support for multiple languages, enabling global content creation
-- Seamlessly integrate with content management systems for streamlined workflows
-
-## Project Structure
-
-```
-podcastfy/
-├── audio/
-│ └── text_to_speech.py
-├── content_parser/
-│ └── content_extractor.py
-├── genai_podcast/
-│ └── content_generator.py
-├── utils/
-│ ├── config.py
-│ └── logger.py
-└── main.py
-tests/
-└── data/
-├── urls.txt
-└── file.txt
-```
+- Seamlessly integrate CLI with content management systems for streamlined workflows
 
 
 ## Installation
