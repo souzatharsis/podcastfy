@@ -13,6 +13,7 @@ alias.sh
 
 /tests/data/audio/
 /tests/data/transcripts/
+/tests/data/pdf
 
 # Python-specific ignores
 __pycache__/

@@ -99,7 +99,7 @@ class TextToSpeech:
 				# Save question and answer audio chunks
 				for audio in [question_audio, answer_audio]:
 					counter += 1
-					file_name = f"tests/data/audio/{counter}.mp3"
+					file_name = f"tests/data/audio/tmp/{counter}.mp3"
 					with open(file_name, "wb") as out:
 						for chunk in audio:
 							if chunk:
@@ -107,7 +107,7 @@ class TextToSpeech:
 					audio_files.append(file_name)
 
 			# Merge all audio files and save the result
-			self.__merge_audio_files("tests/data/audio", output_file)
+			self.__merge_audio_files("tests/data/audio/tmp", output_file)
 
 			# Clean up individual audio files
 			for file in audio_files:
@@ -128,7 +128,7 @@ class TextToSpeech:
 			for question, answer in qa_pairs:
 				for speaker, content in [("echo", question), ("shimmer", answer)]:
 					counter += 1
-					file_name = f"tests/data/audio/{counter}.mp3"
+					file_name = f"tests/data/audio/tmp/{counter}.mp3"
 					response = openai.audio.speech.create(
 						model="tts-1-hd",
 						voice=speaker,
@@ -140,7 +140,7 @@ class TextToSpeech:
 					audio_files.append(file_name)
 
 			# Merge all audio files and save the result
-			self.__merge_audio_files("tests/data/audio", output_file)
+			self.__merge_audio_files("tests/data/audio/tmp", output_file)
 
 			# Clean up individual audio files
 			for file in audio_files:
@@ -163,7 +163,7 @@ class TextToSpeech:
 			list: A list of tuples containing (Person1, Person2) dialogues.
 		"""
 		# Add <Person2></Person2> to the end of input_text
-		input_text += "<Person2>Bye Bye!</Person2>"
+		input_text += "<Person2>See ya!</Person2>"
 
 		# Regular expression pattern to match Person1 and Person2 dialogues
 		pattern = r'<Person1>(.*?)</Person1>\s*<Person2>(.*?)</Person2>'
@@ -194,7 +194,7 @@ class TextToSpeech:
 		"""
 		# List of SSML tags supported by both OpenAI and ElevenLabs
 		supported_tags = [
-			'speak', 'break', 'emphasis', 'lang', 'p', 'phoneme', 'prosody', 
+			'speak', 'break', 'lang', 'p', 'phoneme', 
 			's', 'say-as', 'sub', 'voice'
 		]
 

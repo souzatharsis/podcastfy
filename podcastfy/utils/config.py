@@ -1,29 +1,22 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
 class Config:
-	EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
-	EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-	JINA_API_KEY = os.getenv("JINA_API_KEY")
-	GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-	ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
-	OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-	@classmethod
-	def get(cls, key, default=None):
-		"""
-		Get a configuration value by key.
-
-		Args:
-			key (str): The configuration key to retrieve.
-			default: The default value to return if the key is not found.
-
-		Returns:
-			The value associated with the key, or the default value if not found.
-		"""
-		return getattr(cls, key, default)
+	def __init__(self):
+		load_dotenv()
+		
+		self.JINA_API_KEY = os.getenv("JINA_API_KEY")
+		self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+		self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+		self.ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+		
+		# Default output directories
+		self.TRANSCRIPT_OUTPUT_DIR = os.getenv("TRANSCRIPT_OUTPUT_DIR", "./")
+		self.AUDIO_OUTPUT_DIR = os.getenv("AUDIO_OUTPUT_DIR", "./")
+		
+		# Ensure output directories exist
+		os.makedirs(self.TRANSCRIPT_OUTPUT_DIR, exist_ok=True)
+		os.makedirs(self.AUDIO_OUTPUT_DIR, exist_ok=True)
 
 def load_config():
 	"""
