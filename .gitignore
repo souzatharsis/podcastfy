@@ -10,8 +10,6 @@ alias.sh
 *.ipynb
 *.ipynb_checkpoints
 
-*.mp3
-
 /tests/data/audio/
 /tests/data/transcripts/
 /tests/data/pdf
