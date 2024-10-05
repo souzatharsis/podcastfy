@@ -4,7 +4,11 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-Podcastfy: Your GenAI-Powered Companion for Transforming Multi-Source Text into Captivating Audio Conversations
+Podcastfy: Transforming Multi-Source Text into Captivating Audio Conversations with GenAI
+
+
+https://github.com/user-attachments/assets/7cfdf0f3-661a-4dcb-a3c5-8d8fe26dbcd3
+
 
 [![YouTube](http://i.ytimg.com/vi/t67jS5RX30U/hqdefault.jpg)](https://www.youtube.com/watch?v=t67jS5RX30U)
 
