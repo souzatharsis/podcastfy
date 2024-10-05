@@ -52,7 +52,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/podcastfy.git
+   git clone https://github.com/souzatharsis/podcastfy.git
    cd podcastfy
    ```
 
