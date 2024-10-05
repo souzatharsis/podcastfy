@@ -24,4 +24,4 @@ The application will automatically load the environment variables from `.env` an
 
 Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
 
-See [Configuration](usage/config_custom.md) if you would like to further customize settings.
+See [Configuration](config_custom.md) if you would like to further customize settings.
