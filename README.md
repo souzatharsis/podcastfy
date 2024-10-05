@@ -7,7 +7,7 @@
 Podcastfy: Transforming Multi-Source Text into Captivating Audio Conversations with GenAI
 
 
-https://github.com/user-attachments/assets/7cfdf0f3-661a-4dcb-a3c5-8d8fe26dbcd3
+https://github.com/user-attachments/assets/05f0df95-bc7c-4322-95fc-1f2e210fd513
 
 
 Podcastfy is a simple LLM-based Python package and CLI tool that enables programatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
