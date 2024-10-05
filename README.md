@@ -4,7 +4,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-Podcastfy: Transforming Multi-Sourced Text into Captivating Audio Conversations with GenAI
+Podcastfy: Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio Conversations with GenAI
 
 
 https://github.com/user-attachments/assets/05f0df95-bc7c-4322-95fc-1f2e210fd513
