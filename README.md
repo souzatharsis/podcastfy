@@ -83,7 +83,7 @@ The project uses a combination of a `.env` file for managing API keys and sensit
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request. But even more excitingly feel free to fork the repo and create your own app! Please let me know if I could be of help.
 
 ## License
 
