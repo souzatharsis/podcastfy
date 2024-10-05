@@ -7,7 +7,6 @@ docs/
 # Exclude aliases file
 alias.sh
 
-*.ipynb
 *.ipynb_checkpoints
 
 /tests/data/audio/

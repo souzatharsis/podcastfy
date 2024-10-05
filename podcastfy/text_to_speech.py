@@ -18,13 +18,13 @@ from typing import List, Tuple, Optional, Union
 logger = logging.getLogger(__name__)
 
 class TextToSpeech:
-	def __init__(self, model: str = 'elevenlabs', api_key: Optional[str] = None):
+	def __init__(self, model: str = 'openai', api_key: Optional[str] = None):
 		"""
 		Initialize the TextToSpeech class.
 
 		Args:
 			model (str): The model to use for text-to-speech conversion. 
-						 Options are 'elevenlabs' or 'openai'. Defaults to 'elevenlabs'.
+						 Options are 'elevenlabs' or 'openai'. Defaults to 'openai'.
 			api_key (Optional[str]): API key for the selected text-to-speech service.
 						   If not provided, it will be loaded from the config.
 		"""
