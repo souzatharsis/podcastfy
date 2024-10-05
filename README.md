@@ -16,6 +16,13 @@ Ideal for Developers that build data-driven products for creators, educators, an
 
 You can sign-up at podcastfy.me to get updates as we make improvements to the tool.
 
+## Quickstart
+```python
+from podcastfy.client import generate_podcast
+
+audio_file = generate_podcast(urls=["<url1>", "<url2>", "<url3>"])
+```
+
 ## Audio Examples
 
 This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy):
