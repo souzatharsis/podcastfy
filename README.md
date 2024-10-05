@@ -6,9 +6,13 @@
 
 Podcastfy: Your GenAI-Powered Companion for Transforming Multi-Source Text into Captivating Audio Conversations
 
-Podcastfy is an LLM-based Python package and CLI tool that enables programatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
+
+
+Podcastfy is a simple LLM-based Python package and CLI tool that enables programatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
 
 Ideal for Developers that build data-driven products for creators, educators, and researchers seeking to transform written information into easily digestible audio content. Podcastfy offers a unique solution for bridging the gap between text and audio consumption, programatically.
+
+You can sign-up at podcastfy.me to get updates as we make improvements to the tool.
 
 ## Features
 
@@ -35,7 +39,7 @@ Ideal for Developers that build data-driven products for creators, educators, an
 
 ## Usage
 
-- [Python Package](usage/podcastfy.ipynb)
+- [Python Package](podcastfy.ipynb)
 
 - [CLI](usage/cli.md)
 
@@ -44,25 +48,7 @@ Ideal for Developers that build data-driven products for creators, educators, an
 
 ## Configuration
 
-The project uses a combination of a `.env` file for managing API keys and sensitive information, and a `config.yaml` file for non-sensitive configuration settings. Follow these steps to set up your configuration:
-
-1. Create a `.env` file in the root directory of the project.
-2. Add your API keys and other sensitive information to the `.env` file. For example:
-
-   ```
-   JINA_API_KEY=your_jina_api_key_here
-   GEMINI_API_KEY=your_gemini_api_key_here
-   ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-3. The `config.yaml` file in the root directory contains non-sensitive configuration settings. You can modify this file to adjust various parameters such as output directories, text-to-speech settings, and content generation options.
-
-The application will automatically load the environment variables from `.env` and the configuration settings from `config.yaml` when it runs.
-
-Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
-
-See [Configuration](usage/config.md) if you would like to further customize settings.
+The project uses a combination of a `.env` file for managing API keys and sensitive information, and a `config.yaml` file for non-sensitive configuration settings. Follow these steps described in [Config](usage/config.md) to set up your configuration.
 
 ## Example Use Cases
 

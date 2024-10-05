@@ -1,0 +1,27 @@
+<Person1> WELCOME TO PODCASTFY - YOUR PERSONAL GenAI PODCAST. What's up everyone?  It's  uh  pretty wild out there in tech right now, right? </Person1>
+
+<Person2> Wild is an understatement! It seems like every day there's some groundbreaking AI development dropping. What's caught your eye today? </Person2>
+
+<Person1> Right? Like remember those good old days when Siri could barely set a timer?  <laughs> Now we're talking about AI that can synthesize information from a ton of sources and turn it into a full-blown podcast, complete with witty banter and "umm"s and "ahh"s. </Person1>
+
+<Person2> Wait, seriously? That's nuts! Is that even possible? </Person2>
+
+<Person1> Totally! It's this thing called NotebookLM, and it's like Google's answer to the whole generative AI craze. Deirdre Bosa from CNBC did this report on it, and it's got everyone buzzing. Basically, you feed it a bunch of documents, articles, whatever you want, and it spits out a podcast episode discussing it.  </Person1>
+
+<Person2>  Hold up, like an actual podcast with different voices and everything? This isn't just another text-to-speech robot voice, right?  </Person2>
+
+<Person1>  Nope, not even close! They actually had this example playing on CNBC where they used NotebookLM to analyze a JPMorgan survey about iPhone sales. And honestly? The AI hosts sounded incredibly natural, like two tech bros chatting over a beer.  </Person1>
+
+<Person2> That's kinda scary, honestly. What are the implications for, you know, actual human podcasters like us? </Person2>
+
+<Person1> I know, right? It's a valid concern! Like Bosa mentioned, it's a total game-changer and has the potential to shake things up big time in the podcasting world. But hey, maybe it's a good thing, pushing us to be even more creative and engaging. </Person1> 
+
+<Person2>  True! But the legal stuff around it must be a nightmare. Using people's voices, copyright issues – it sounds like a minefield.  </Person2>
+
+<Person1> Totally agree. Bosa actually touched on that, saying it's a huge debate right now in the AI world.  Like how much can you replicate someone's voice or likeness without their consent?  These are all things that are still being figured out. It's like the Wild West out here! </Person1>
+
+<Person2>  Wow. It's mind-blowing how quickly this tech is evolving. What other crazy AI stuff is on the horizon, I wonder?  </Person2>
+
+<Person1>  Who knows?  But one thing's for sure, it's gonna be an interesting ride.  Alright,  that's it for today's episode of Podcastfy.  We'll catch you all next time! </Person1>
+
+<Person2> Peace out! </Person2> 

@@ -1,83 +1,27 @@
-# Podcastfy Configuration Guide
+# Podcastfy Configuration
 
-Podcastfy uses a `config.yaml` file to manage various settings and parameters. This guide explains each configuration option available in the file.
+The project uses a combination of a `.env` file for managing API keys and sensitive information, and a `config.yaml` file for non-sensitive configuration settings. Follow these steps to set up your configuration:
 
-## Output Directories
+1. Create a `.env` file in the root directory of the project.
+2. Add your API keys and other sensitive information to the `.env` file. For example:
 
-- `transcripts`: "./data/transcripts"
-  - Directory where generated transcripts are saved.
-- `audio`: "./data/audio"
-  - Directory where generated audio files are saved.
+   ```
+   JINA_API_KEY=your_jina_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+API Key Requirements:
+- JINA_API_KEY: Required only for parsing website content as input. (free tier available)
+- GEMINI_API_KEY: Mandatory for all operations. (free tier available)
+- OPENAI_API_KEY or ELEVENLABS_API_KEY: At least one is required for audio generation. (paid service)
 
-## Text-to-Speech (TTS) Settings
+Ensure you have the necessary API keys based on your intended usage of Podcastfy.
 
-### ElevenLabs TTS
+3. The `config.yaml` file in the root directory contains non-sensitive configuration settings. You can modify this file to adjust various parameters such as output directories, text-to-speech settings, and content generation options.
 
-- `default_voices`:
-  - `question`: "Chris"
-    - Default voice for questions in the podcast.
-  - `answer`: "BrittneyHart"
-    - Default voice for answers in the podcast.
-- `model`: "eleven_multilingual_v2"
-  - The ElevenLabs TTS model to use.
+The application will automatically load the environment variables from `.env` and the configuration settings from `config.yaml` when it runs.
 
-### OpenAI TTS
+Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
 
-- `default_voices`:
-  - `question`: "echo"
-    - Default voice for questions using OpenAI TTS.
-  - `answer`: "shimmer"
-    - Default voice for answers using OpenAI TTS.
-- `model`: "tts-1-hd"
-  - The OpenAI TTS model to use.
-
-### General TTS Settings
-
-- `audio_format`: "mp3"
-  - Format of the generated audio files.
-- `temp_audio_dir`: "data/audio/tmp/"
-  - Temporary directory for audio processing.
-- `ending_message`: "Tchau!"
-  - Message to be appended at the end of the podcast.
-
-## Content Generator
-
-- `gemini_model`: "gemini-1.5-pro-latest"
-  - The Gemini AI model used for content generation.
-- `system_prompt_file`: "data/prompts/prompt.txt"
-  - File containing the system prompt for content generation.
-
-## Content Extractor
-
-- `youtube_url_patterns`:
-  - Patterns to identify YouTube URLs.
-  - Current patterns: "youtube.com", "youtu.be"
-
-## Website Extractor
-
-- `jina_api_url`: "https://r.jina.ai"
-  - URL for the Jina API used in content extraction.
-- `markdown_cleaning`:
-  - `remove_patterns`:
-    - Patterns to remove from extracted markdown content.
-    - Current patterns remove image links, hyperlinks, and URLs.
-
-## YouTube Transcriber
-
-- `remove_phrases`:
-  - Phrases to remove from YouTube transcriptions.
-  - Current phrase: "[music]"
-
-## Logging
-
-- `level`: "INFO"
-  - Default logging level.
-- `format`: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-  - Format string for log messages.
-
-## Main Settings
-
-- `default_tts_model`: "openai"
-  - Default Text-to-Speech model to use when not specified.
-
-To customize Podcastfy, modify these settings in the `config.yaml` file according to your preferences and requirements.
+See [Configuration](usage/config_custom.md) if you would like to further customize settings.

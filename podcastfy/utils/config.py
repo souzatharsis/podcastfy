@@ -12,9 +12,12 @@ from typing import Any, Dict, Optional
 import yaml
 
 class Config:
-	def __init__(self):
+	def __init__(self, config_file: str = 'config.yaml'):
 		"""
 		Initialize the Config class by loading environment variables and YAML configuration.
+
+		Args:
+			config_file (str): Path to the YAML configuration file. Defaults to 'config.yaml'.
 		"""
 		load_dotenv()
 		
@@ -25,16 +28,39 @@ class Config:
 		self.ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
 		
 		# Load other settings from config.yaml
-		with open('config.yaml', 'r') as file:
+		with open(config_file, 'r') as file:
 			self.config: Dict[str, Any] = yaml.safe_load(file)
 		
 		# Set attributes based on YAML config
-		self.TRANSCRIPT_OUTPUT_DIR: str = self.config['output_directories']['transcripts']
-		self.AUDIO_OUTPUT_DIR: str = self.config['output_directories']['audio']
-		
+		self._set_attributes()
+
+	def _set_attributes(self):
+		"""Set attributes based on the current configuration."""
+		for key, value in self.config.items():
+			setattr(self, key.upper(), value)
+
 		# Ensure output directories exist
-		os.makedirs(self.TRANSCRIPT_OUTPUT_DIR, exist_ok=True)
-		os.makedirs(self.AUDIO_OUTPUT_DIR, exist_ok=True)
+		if 'output_directories' in self.config:
+			for dir_type, dir_path in self.config['output_directories'].items():
+				os.makedirs(dir_path, exist_ok=True)
+
+	def configure(self, **kwargs):
+		"""
+		Configure the settings by updating the config dictionary and relevant attributes.
+
+		Args:
+			**kwargs: Keyword arguments representing configuration keys and values to update.
+		"""
+		for key, value in kwargs.items():
+			if key in self.config:
+				self.config[key] = value
+			elif key in ['JINA_API_KEY', 'GEMINI_API_KEY', 'OPENAI_API_KEY', 'ELEVENLABS_API_KEY']:
+				setattr(self, key, value)
+			else:
+				raise ValueError(f"Unknown configuration key: {key}")
+
+		# Update attributes based on the new configuration
+		self._set_attributes()
 
 	def get(self, key: str, default: Optional[Any] = None) -> Any:
 		"""
