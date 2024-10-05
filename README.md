@@ -16,6 +16,14 @@ Ideal for Developers that build data-driven products for creators, educators, an
 
 You can sign-up at podcastfy.me to get updates as we make improvements to the tool.
 
+## Audio Examples
+
+- (English) Research paper: ([audio](https://audio.com/thatupiso/audio/agro-paper) | [pdf](./data/pdf/s41598-024-58826-w.pdf))
+- (English) Personal website: ([audio](https://audio.com/thatupiso/audio/tharsis) | [website](www.souzatharsis.com))
+- (English) Personal website + youtube video: ([audio](https://audio.com/thatupiso/audio/tharsis-ai) | [website](www.souzatharsis.com) | [youtube](https://www.youtube.com/watch?v=sJE1dE2dulg))
+- (French) Website: ([audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [website](https://agroclim.inrae.fr/))
+- (Brazilian Portuguese) News article: ([audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm))
+
 ## Features
 
 - Generate engaging, AI-powered conversational content from multiple sources (URLs and PDFs)
@@ -25,6 +33,11 @@ You can sign-up at podcastfy.me to get updates as we make improvements to the to
 - Support for multiple languages, enabling global content creation
 - Seamlessly integrate CLI for streamlined workflows
 
+## Usage
+
+- [Python Package](podcastfy.ipynb)
+
+- [CLI](usage/cli.md)
 
 ## Installation
 
@@ -38,14 +51,6 @@ You can sign-up at podcastfy.me to get updates as we make improvements to the to
    ```
    pip install -r requirements.txt
    ```
-
-## Usage
-
-- [Python Package](podcastfy.ipynb)
-
-- [CLI](usage/cli.md)
-
-
     
 
 ## Configuration
