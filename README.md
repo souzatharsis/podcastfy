@@ -61,16 +61,25 @@ The project uses a combination of a `.env` file for managing API keys and sensit
 
 ## Example Use Cases
 
-1. Content Summarization: Busy professionals can stay informed on industry trends by listening to concise audio summaries of multiple articles, saving time and gaining knowledge efficiently.
-2. Language Localization: Non-native English speakers can access English content in their preferred language, breaking down language barriers and expanding access to global information.
-3. Website Content Marketing: Companies can increase engagement by repurposing written website content into audio format, providing visitors with the option to read or listen.
-4. Personal Branding: Job seekers can create unique audio-based personal presentations from their CV or LinkedIn profile, making a memorable impression on potential employers.
-5. Research Paper Summaries: Graduate students and researchers can quickly review multiple academic papers by listening to concise audio summaries, speeding up the research process.
-6. Long-form Podcast Summarization: Podcast enthusiasts with limited time can stay updated on their favorite shows by listening to condensed versions of lengthy episodes.
-7. News Briefings: Commuters can stay informed about daily news during travel time with personalized audio news briefings compiled from their preferred sources.
-8. Educational Content Creation: Educators can enhance learning accessibility by providing audio versions of course materials, catering to students with different learning styles.
-9. Book Summaries: Avid readers can preview books efficiently through audio summaries, helping them make informed decisions about which books to read in full.
-10. Conference and Event Recaps: Professionals can stay updated on important industry events they couldn't attend by listening to audio recaps of conference highlights and key takeaways.
+1. **Content Summarization**: Busy professionals can stay informed on industry trends by listening to concise audio summaries of multiple articles, saving time and gaining knowledge efficiently.
+
+2. **Language Localization**: Non-native English speakers can access English content in their preferred language, breaking down language barriers and expanding access to global information.
+
+3. **Website Content Marketing**: Companies can increase engagement by repurposing written website content into audio format, providing visitors with the option to read or listen.
+
+4. **Personal Branding**: Job seekers can create unique audio-based personal presentations from their CV or LinkedIn profile, making a memorable impression on potential employers.
+
+5. **Research Paper Summaries**: Graduate students and researchers can quickly review multiple academic papers by listening to concise audio summaries, speeding up the research process.
+
+6. **Long-form Podcast Summarization**: Podcast enthusiasts with limited time can stay updated on their favorite shows by listening to condensed versions of lengthy episodes.
+
+7. **News Briefings**: Commuters can stay informed about daily news during travel time with personalized audio news briefings compiled from their preferred sources.
+
+8. **Educational Content Creation**: Educators can enhance learning accessibility by providing audio versions of course materials, catering to students with different learning styles.
+
+9. **Book Summaries**: Avid readers can preview books efficiently through audio summaries, helping them make informed decisions about which books to read in full.
+
+10. **Conference and Event Recaps**: Professionals can stay updated on important industry events they couldn't attend by listening to audio recaps of conference highlights and key takeaways.
 
 ## Contributing
 
