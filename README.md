@@ -52,14 +52,20 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
    cd podcastfy
    ```
 
-2. Install the required dependencies:
+2. Create and activate a Python virtual environement
+   ```
+   python3 -m venv myenv
+   source myenv/bin/activate
+   ```
+
+3. Install the required dependencies:
    ```
    pip install -r requirements.txt
    ```
 
-3. Set up your [API keys](usage/config.md)
+4. Set up your [API keys](usage/config.md)
 
-4. Ensure you have ffmpeg installed on your system, required for audio processing
+5. Ensure you have ffmpeg installed on your system, required for audio processing
    ```
    sudo apt update
    sudo apt install ffmpeg
