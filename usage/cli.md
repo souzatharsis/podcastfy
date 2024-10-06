@@ -1,6 +1,7 @@
 ## CLI
 
-Podcastfy can be used as a command-line interface (CLI) tool. Here are some usage examples:
+Podcastfy can be used as a command-line interface (CLI) tool. See below some usage examples.
+Please make sure you follow configuration instructions first - [See Setup](README.md#setup).
 
 1. Generate a podcast from URLs using OpenAI TTS (default):
    ```
