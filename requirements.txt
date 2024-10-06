@@ -11,7 +11,8 @@ beautifulsoup4
 openai
 elevenlabs
 google-generativeai
-PyPDF2
+pypdf
+pyyam
 youtube_transcript_api
 pydub
 

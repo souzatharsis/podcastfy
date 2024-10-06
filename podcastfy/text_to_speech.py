@@ -45,6 +45,10 @@ class TextToSpeech:
 		self.temp_audio_dir = self.tts_config['temp_audio_dir']
 		self.ending_message = self.tts_config['ending_message']
 
+		# Create temp_audio_dir if it doesn't exist
+		if not os.path.exists(self.temp_audio_dir):
+			os.makedirs(self.temp_audio_dir)
+
 	def __merge_audio_files(self, input_dir: str, output_file: str) -> None:
 		"""
 		Merge all audio files in the input directory sequentially and save the result.
