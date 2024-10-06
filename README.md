@@ -98,7 +98,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. But even more excitingly feel free to fork the repo and create your own app! Please let me know if I could be of help.
+Contributions are welcome! Please feel free to submit a Pull Request - see [Open Issues](https://github.com/souzatharsis/podcastfy/issues). But even more excitingly feel free to fork the repo and create your own app! Please let me know if I could be of help.
 
 ## License
 
