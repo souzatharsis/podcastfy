@@ -1,5 +1,7 @@
 # Podcastfy Configuration
 
+## API keys
+
 The project uses a combination of a `.env` file for managing API keys and sensitive information, and a `config.yaml` file for non-sensitive configuration settings. Follow these steps to set up your configuration:
 
 1. Create a `.env` file in the root directory of the project.
@@ -16,12 +18,12 @@ API Key Requirements:
 - GEMINI_API_KEY: Mandatory for all operations. (get your [free API key](aistudio.google.com/app/apikey))
 - OPENAI_API_KEY or ELEVENLABS_API_KEY: At least one is required for audio generation. (paid service)
 
-Ensure you have the necessary API keys based on your intended usage of Podcastfy.
+Ensure you have the necessary API keys based on your intended usage of Podcastfy. Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
 
-3. The `config.yaml` file in the root directory contains non-sensitive configuration settings. You can modify this file to adjust various parameters such as output directories, text-to-speech settings, and content generation options.
+## Optional configuration
+
+The `config.yaml` file in the root directory contains non-sensitive configuration settings. You can modify this file to adjust various parameters such as output directories, text-to-speech settings, and content generation options.
 
 The application will automatically load the environment variables from `.env` and the configuration settings from `config.yaml` when it runs.
-
-Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
 
 See [Configuration](config_custom.md) if you would like to further customize settings.
