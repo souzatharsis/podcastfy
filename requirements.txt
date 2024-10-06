@@ -12,7 +12,7 @@ openai
 elevenlabs
 google-generativeai
 pypdf
-pyyam
+PyYAML
 youtube_transcript_api
 pydub
 
