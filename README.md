@@ -17,10 +17,15 @@ Ideal for Developers that build data-driven products for creators, educators, an
 You can sign-up at podcastfy.me to get updates as we make improvements to the tool.
 
 ## Quickstart
+### Python
 ```python
 from podcastfy.client import generate_podcast
 
-audio_file = generate_podcast(urls=["<url1>", "<url2>", "<url3>"])
+audio_file = generate_podcast(urls=["<url1>", "<url2>"])
+```
+### CLI
+```
+python -m podcastfy.client --url <url1> --url <url2>
 ```
 
 ## Audio Examples
@@ -48,7 +53,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 - [CLI](usage/cli.md)
 
-## Installation
+## Setup
 
 1. Clone the repository:
    ```
@@ -60,11 +65,14 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
    ```
    pip install -r requirements.txt
    ```
-    
 
-## Configuration
+3. Set up your [API keys](usage/config.md)
 
-The project uses a combination of a `.env` file for managing API keys and sensitive information, and a `config.yaml` file for non-sensitive configuration settings. Follow these steps described in [Config](usage/config.md) to set up your configuration.
+4. Ensure you have ffmpeg installed on your system, required for audio processing
+   ```
+   sudo apt update
+   sudo apt install ffmpeg
+   ```    
 
 ## Example Use Cases
 
