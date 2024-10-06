@@ -38,15 +38,6 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - (Brazilian Portuguese) News article: ([audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm))
   
 
-## Features
-
-- Generate engaging, AI-powered conversational content from multiple sources (URLs and PDFs)
-- Create high-quality transcripts from diverse textual information sources
-- Convert pre-existing transcript files into dynamic podcast episodes
-- Support for multiple advanced text-to-speech models (OpenAI and ElevenLabs) for natural-sounding audio
-- Support for multiple languages, enabling global content creation
-- Seamlessly integrate CLI for streamlined workflows
-
 ## Usage
 
 - [Python Package](podcastfy.ipynb)
@@ -73,6 +64,15 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
    sudo apt update
    sudo apt install ffmpeg
    ```    
+
+## Features
+
+- Generate engaging, AI-powered conversational content from multiple sources (URLs and PDFs)
+- Create high-quality transcripts from diverse textual information sources
+- Convert pre-existing transcript files into dynamic podcast episodes
+- Support for multiple advanced text-to-speech models (OpenAI and ElevenLabs) for natural-sounding audio
+- Support for multiple languages, enabling global content creation
+- Seamlessly integrate CLI for streamlined workflows
 
 ## Example Use Cases
 

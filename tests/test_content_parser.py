@@ -25,7 +25,7 @@ class TestContentParser(unittest.TestCase):
         extracted_transcript = transcriber.extract_transcript(test_url)
 
         # Load expected transcript from youtube.txt file
-        with open("./tests/data/youtube.txt", "r") as f:
+        with open("./tests/data/mock/youtube.txt", "r") as f:
             expected_transcript = f.read()
 
         # Assert that the first 100 characters of the extracted transcript match the expected transcript
@@ -51,7 +51,7 @@ class TestContentParser(unittest.TestCase):
         extracted_content = extractor.extract_content(test_url)
 
         # Load expected content from website.md file
-        with open("./tests/data/website.md", "r") as f:
+        with open("./tests/data/mock/website.md", "r") as f:
             expected_content = f.read()
 
         # Assert that the extracted content matches the expected content
@@ -65,13 +65,13 @@ class TestContentParser(unittest.TestCase):
         extractor = PDFExtractor()
 
         # Path to the test PDF file
-        pdf_path = "./tests/data/file.pdf"
+        pdf_path = "./tests/data/pdf/file.pdf"
 
         # Extract content from PDF
         extracted_content = extractor.extract_content(pdf_path)
 
         # Load expected content from file.txt
-        with open("./tests/data/file.txt", "r") as f:
+        with open("./tests/data/mock.txt", "r") as f:
             expected_content = f.read()
 
         # Assert that the first 500 characters of the extracted content match the expected content
