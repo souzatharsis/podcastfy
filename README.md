@@ -10,7 +10,7 @@ Podcastfy: Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio 
 https://github.com/user-attachments/assets/05f0df95-bc7c-4322-95fc-1f2e210fd513
 
 
-Podcastfy is a simple LLM-based Python package and CLI tool that enables programatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
+Podcastfy is a simple LLM-based Python package and CLI tool that enables programmatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
 
 Ideal for Developers that build data-driven products for creators, educators, and researchers seeking to transform written information into easily digestible audio content. Podcastfy offers a unique solution for bridging the gap between text and audio consumption, programatically.
 
