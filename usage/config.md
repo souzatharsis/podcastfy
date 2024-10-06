@@ -12,8 +12,8 @@ The project uses a combination of a `.env` file for managing API keys and sensit
    OPENAI_API_KEY=your_openai_api_key_here
    ```
 API Key Requirements:
-- JINA_API_KEY: Required only for parsing website content as input. (free tier available)
-- GEMINI_API_KEY: Mandatory for all operations. (free tier available)
+- JINA_API_KEY: Required only for parsing website content as input. (get your [free API key](https://jina.ai/reader/#apiform))
+- GEMINI_API_KEY: Mandatory for all operations. (get your [free API key](aistudio.google.com/app/apikey))
 - OPENAI_API_KEY or ELEVENLABS_API_KEY: At least one is required for audio generation. (paid service)
 
 Ensure you have the necessary API keys based on your intended usage of Podcastfy.
