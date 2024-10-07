@@ -10,13 +10,18 @@ Podcastfy: Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio 
 https://github.com/user-attachments/assets/05f0df95-bc7c-4322-95fc-1f2e210fd513
 
 
-Podcastfy is a simple LLM-based Python package and CLI tool that enables programmatic creation of engaging audio podcasts from web content and text sources. Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational audio from a multitude of text sources.
+Podcastfy is a simple LLM-based Python package and CLI tool for developers to programmatically create audio podcasts from web content and text sources. Key features:
 
-Ideal for Developers that build data-driven products for creators, educators, and researchers seeking to transform written information into easily digestible audio content. Podcastfy offers a unique solution for bridging the gap between text and audio consumption, programatically.
-
-You can sign-up at podcastfy.me to get updates as we make improvements to the tool.
+For updates, sign up at [podcastfy.me](https://podcastfy.me).
 
 ## Quickstart
+
+### Installation
+
+From PyPI
+
+`$ pip install podcastfy`
+
 ### Python
 ```python
 from podcastfy.client import generate_podcast
@@ -46,26 +51,15 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Setup
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/souzatharsis/podcastfy.git
-   cd podcastfy
-   ```
+1. Install
 
-2. Create and activate a Python virtual environement
-   ```
-   python3 -m venv myenv
-   source myenv/bin/activate
-   ```
+From PyPI
 
-3. Install the required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+`$ pip install podcastfy`
 
-4. Set up your [API keys](usage/config.md)
+2. Set up your [API keys](usage/config.md)
 
-5. Ensure you have ffmpeg installed on your system, required for audio processing
+3. Ensure you have ffmpeg installed on your system, required for audio processing
    ```
    sudo apt update
    sudo apt install ffmpeg
