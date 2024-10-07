@@ -11,7 +11,47 @@ from podcastfy.utils.config import load_config
 import logging
 from typing import Optional
 
+import os
+import sys
+from pathlib import Path
+
 logger = logging.getLogger(__name__)
+
+
+def get_config_path(config_file: str = 'prompt.txt'):
+	"""
+	Get the path to the prompt.txt file.
+	
+	Returns:
+		str: The path to the prompt.txt file.
+	"""
+	try:
+		# Check if the script is running in a PyInstaller bundle
+		if getattr(sys, 'frozen', False):
+			base_path = sys._MEIPASS
+		else:
+			base_path = os.path.dirname(os.path.abspath(__file__))
+		
+		# Look for prompt.txt in the same directory as the script
+		config_path = os.path.join(base_path, 'prompt.txt')
+		if os.path.exists(config_path):
+			return config_path
+		
+		# If not found, look in the parent directory (package root)
+		config_path = os.path.join(os.path.dirname(base_path), 'prompt.txt')
+		if os.path.exists(config_path):
+			return config_path
+		
+		# If still not found, look in the current working directory
+		config_path = os.path.join(os.getcwd(), 'prompt.txt')
+		if os.path.exists(config_path):
+			return config_path
+		
+		raise FileNotFoundError("prompt.txt not found")
+	
+	except Exception as e:
+		print(f"Error locating prompt.txt: {str(e)}")
+		return None
 
 class ContentGenerator:
 	def __init__(self, api_key: str):
@@ -28,6 +68,7 @@ class ContentGenerator:
 		self.content_generator_config = self.config.get('content_generator', {})
 		
 		system_prompt_file = self.content_generator_config.get('system_prompt_file')
+		system_prompt_file = get_config_path(system_prompt_file)
 		with open(system_prompt_file, 'r') as file:
 			system_prompt = file.read()
 		

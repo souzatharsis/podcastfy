@@ -1,3 +1,5 @@
+.pypirc
+
 specs/
 docs/
 
@@ -8,10 +10,6 @@ docs/
 alias.sh
 
 *.ipynb_checkpoints
-
-/tests/data/audio/
-/tests/data/transcripts/
-/tests/data/pdf
 
 # Python-specific ignores
 __pycache__/
@@ -110,3 +108,16 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Poetry
+poetry.lock
+.poetry/
+
+# Poetry
+.venv/
+dist/
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/

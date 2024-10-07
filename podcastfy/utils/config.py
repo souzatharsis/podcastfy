@@ -11,6 +11,45 @@ from dotenv import load_dotenv
 from typing import Any, Dict, Optional
 import yaml
 
+import os
+import sys
+from pathlib import Path
+
+def get_config_path(config_file: str = 'config.yaml'):
+	"""
+	Get the path to the config.yaml file.
+	
+	Returns:
+		str: The path to the config.yaml file.
+	"""
+	try:
+		# Check if the script is running in a PyInstaller bundle
+		if getattr(sys, 'frozen', False):
+			base_path = sys._MEIPASS
+		else:
+			base_path = os.path.dirname(os.path.abspath(__file__))
+		
+		# Look for config.yaml in the same directory as the script
+		config_path = os.path.join(base_path, 'config.yaml')
+		if os.path.exists(config_path):
+			return config_path
+		
+		# If not found, look in the parent directory (package root)
+		config_path = os.path.join(os.path.dirname(base_path), 'config.yaml')
+		if os.path.exists(config_path):
+			return config_path
+		
+		# If still not found, look in the current working directory
+		config_path = os.path.join(os.getcwd(), 'config.yaml')
+		if os.path.exists(config_path):
+			return config_path
+		
+		raise FileNotFoundError("config.yaml not found")
+	
+	except Exception as e:
+		print(f"Error locating config.yaml: {str(e)}")
+		return None
+
 class Config:
 	def __init__(self, config_file: str = 'config.yaml'):
 		"""
@@ -27,9 +66,14 @@ class Config:
 		self.OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 		self.ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
 		
-		# Load other settings from config.yaml
-		with open(config_file, 'r') as file:
-			self.config: Dict[str, Any] = yaml.safe_load(file)
+
+		config_path = get_config_path(config_file)
+		if config_path:
+			with open(config_path, 'r') as file:
+		#	 Read and process your config file
+				self.config: Dict[str, Any] = yaml.safe_load(file)
+		else:
+			print("Could not locate config.yaml")
 		
 		# Set attributes based on YAML config
 		self._set_attributes()

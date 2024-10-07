@@ -71,7 +71,7 @@ class TestContentParser(unittest.TestCase):
         extracted_content = extractor.extract_content(pdf_path)
 
         # Load expected content from file.txt
-        with open("./tests/data/mock.txt", "r") as f:
+        with open("./tests/data/mock/file.txt", "r") as f:
             expected_content = f.read()
 
         # Assert that the first 500 characters of the extracted content match the expected content

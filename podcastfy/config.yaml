@@ -19,7 +19,7 @@ text_to_speech:
 
 content_generator:
   gemini_model: "gemini-1.5-pro-latest"
-  system_prompt_file: "data/prompts/prompt.txt"
+  system_prompt_file: "prompt.txt"
 
 content_extractor:
   youtube_url_patterns:

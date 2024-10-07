@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "podcastfy"
+version = "0.1.12"
+description = "Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio Conversations with GenAI"
+authors = ["Tharsis T. P. Souza"]
+license = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"
+readme = "README.md"
+include = [
+    "podcastfy/config.yaml",
+    "podcastfy/prompt.txt"
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+setuptools = "^75.1.0"
+wheel = "^0.44.0"
+cython = "^3.0.11"
+typer = "^0.12.5"
+python-dotenv = "^1.0.1"
+requests = "^2.32.3"
+beautifulsoup4 = "^4.12.3"
+openai = "^1.51.0"
+elevenlabs = "^1.9.0"
+pypdf = "^5.0.1"
+pyyaml = "^6.0.2"
+youtube-transcript-api = "^0.6.2"
+pydub = "^0.25.1"
+fuzzywuzzy = "^0.18.0"
+python-levenshtein = "^0.26.0"
+pandas = "^2.2.3"
+google-generativeai = "^0.8.2"
+numpy = "^2.1.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+black = "^24.8.0"
+sphinx = "7.4.7"
+sphinx-rtd-theme = "2.0.0"
+nbsphinx = "0.9.5"
+ipykernel = "^6.29.5"
+ffmpeg = "^1.4"
+mypy = "^1.11.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
