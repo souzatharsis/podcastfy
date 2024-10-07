@@ -65,6 +65,9 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 sudo apt update
 sudo apt install ffmpeg
 ```    
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request - see [Open Issues](https://github.com/souzatharsis/podcastfy/issues) for ideas. But even more excitingly feel free to fork the repo and create your own app! Please let me know if I could be of help.
 
 ## Features
 
@@ -97,9 +100,6 @@ sudo apt install ffmpeg
 
 10. **Conference and Event Recaps**: Professionals can stay updated on important industry events they couldn't attend by listening to audio recaps of conference highlights and key takeaways.
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request - see [Open Issues](https://github.com/souzatharsis/podcastfy/issues). But even more excitingly feel free to fork the repo and create your own app! Please let me know if I could be of help.
 
 ## License
 
