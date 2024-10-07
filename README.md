@@ -53,19 +53,17 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Setup
 
-1. Install
+1. Install from PyPI
 
-From PyPI
-
-`$ pip install podcastfy`
+  `$ pip install podcastfy`
 
 2. Set up your [API keys](usage/config.md)
 
 3. Ensure you have ffmpeg installed on your system, required for audio processing
-   ```
-   sudo apt update
-   sudo apt install ffmpeg
-   ```    
+```
+sudo apt update
+sudo apt install ffmpeg
+```    
 
 ## Features
 
