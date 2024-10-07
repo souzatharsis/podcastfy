@@ -44,7 +44,7 @@ Podcastfy uses a `config.yaml` file to manage various settings and parameters. T
 
 - `gemini_model`: "gemini-1.5-pro-latest"
   - The Gemini AI model used for content generation.
-- `system_prompt_file`: "data/prompts/prompt.txt"
+- `system_prompt_file`: "prompt.txt"
   - File containing the system prompt for content generation.
 
 ## Content Extractor
