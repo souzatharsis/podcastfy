@@ -14,7 +14,7 @@ Podcastfy is a simple LLM-based Python package and CLI tool for developers to pr
 
 Unlike tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses solely on the programatic generation of engaging, conversational transcripts and audio from a multitude of text sources.
 
-For updates, sign up at [podcastfy.me](https://podcastfy.me).
+For updates, sign up at [podcastfy.ai](https://podcastfy.ai).
 
 ## Quickstart
 
