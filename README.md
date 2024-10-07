@@ -17,6 +17,8 @@ For updates, sign up at [podcastfy.ai](https://podcastfy.ai).
 
 ## Quickstart
 
+Before installing, ensure you have Python 3.12 or higher installed on your system.
+
 ### Installation
 
 From PyPI
@@ -51,6 +53,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - [CLI](usage/cli.md)
 
 ## Setup
+Before installing, ensure you have Python 3.12 or higher installed on your system.
 
 1. Install from PyPI
 
