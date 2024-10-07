@@ -39,6 +39,7 @@ python -m podcastfy.client --url <url1> --url <url2>
 ## Audio Examples
 
 This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy):
+- (English) Book Networks, Crowds, and Markets: [audio](https://audio.com/thatupiso/audio/networks)
 - (English) Research paper: ([audio](https://audio.com/thatupiso/audio/agro-paper) | [pdf](./data/pdf/s41598-024-58826-w.pdf))
 - (English) Personal website: ([audio](https://audio.com/thatupiso/audio/tharsis) | [website](https://www.souzatharsis.com))
 - (English) Personal website + youtube video: ([audio](https://audio.com/thatupiso/audio/tharsis-ai) | [website](https://www.souzatharsis.com) | [youtube](https://www.youtube.com/watch?v=sJE1dE2dulg))
