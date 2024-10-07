@@ -7,9 +7,7 @@
 
 Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio Conversations with GenAI
 
-
-https://github.com/user-attachments/assets/05f0df95-bc7c-4322-95fc-1f2e210fd513
-
+https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
 Podcastfy is an open-source Python package that transforms web content, PDFs, and text into engaging, multi-lingual audio conversations using GenAI. 
 
