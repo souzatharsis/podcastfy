@@ -16,27 +16,6 @@ Unlike UI-based tools focused primarily on note-taking or research synthesis (e.
 
 For updates, sign up at [podcastfy.ai](https://podcastfy.ai).
 
-## Quickstart
-
-Before installing, ensure you have Python 3.12 or higher installed on your system.
-
-### Installation
-
-From PyPI
-
-`$ pip install podcastfy`
-
-### Python
-```python
-from podcastfy.client import generate_podcast
-
-audio_file = generate_podcast(urls=["<url1>", "<url2>"])
-```
-### CLI
-```
-python -m podcastfy.client --url <url1> --url <url2>
-```
-
 ## Audio Examples
 
 This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy):
@@ -47,14 +26,9 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - (French) Website: ([audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [website](https://agroclim.inrae.fr/))
 - (Brazilian Portuguese) News article: ([audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm))
   
+## Quickstart
 
-## Usage
-
-- [Python Package](podcastfy.ipynb)
-
-- [CLI](usage/cli.md)
-
-## Setup
+### Setup
 Before installing, ensure you have Python 3.12 or higher installed on your system.
 
 1. Install from PyPI
@@ -67,7 +41,26 @@ Before installing, ensure you have Python 3.12 or higher installed on your syste
 ```
 sudo apt update
 sudo apt install ffmpeg
-```    
+```
+
+### Python
+```python
+from podcastfy.client import generate_podcast
+
+audio_file = generate_podcast(urls=["<url1>", "<url2>"])
+```
+### CLI
+```
+python -m podcastfy.client --url <url1> --url <url2>
+```
+  
+## Usage
+
+- [Python Package](podcastfy.ipynb)
+
+- [CLI](usage/cli.md)
+
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request - see [Open Issues](https://github.com/souzatharsis/podcastfy/issues) for ideas. But even more excitingly feel free to fork the repo and create your own app! Please let me know if I could be of help.
