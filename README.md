@@ -14,8 +14,6 @@ Podcastfy is an open-source Python package that transforms web content, PDFs, an
 
 Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of text sources.
 
-For updates, sign up at [podcastfy.ai](https://podcastfy.ai).
-
 ## Audio Examples
 
 This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy):
