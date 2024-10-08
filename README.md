@@ -12,7 +12,7 @@ https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
 Podcastfy is an open-source Python package that transforms web content, PDFs, and text into engaging, multi-lingual audio conversations using GenAI. 
 
-Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy specializes and focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of text sources.
+Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of text sources therefore enabling customization and scale.
 
 ## Audio Examples
 
