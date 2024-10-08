@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.1.12"
+version = "0.1.13"
 description = "Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"
@@ -11,7 +11,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 setuptools = "^75.1.0"
 wheel = "^0.44.0"
 cython = "^3.0.11"
