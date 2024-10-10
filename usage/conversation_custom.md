@@ -7,12 +7,12 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 
 1. [Parameters](#parameters)
 2. [Customization Examples](#customization-examples)
-   2.1. [Academic Debate](#academic-debate)
-   2.2. [Storytelling Adventure](#storytelling-adventure)
+   1. [Academic Debate](#academic-debate)
+   2. [Storytelling Adventure](#storytelling-adventure)
 3. [Customization Scenarios](#customization-scenarios)
-	3.1. [Using the Python Package](#using-the-python-package)
-	3.2. [Using the CLI](#using-the-cli)
-	3.3. [Dev Config](#dev-config)
+   1. [Using the Python Package](#using-the-python-package)
+   2. [Using the CLI](#using-the-cli)
+   3. [Dev Config](#dev-config)
 4. [Notes of Caution](#notes-of-caution)
 
 
