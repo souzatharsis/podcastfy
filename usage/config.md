@@ -20,6 +20,10 @@ API Key Requirements:
 
 Ensure you have the necessary API keys based on your intended usage of Podcastfy. Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
 
+## Conversation Configuration
+
+See [conversation_custom.md](conversation_custom.md) for more details.
+
 ## Optional configuration
 
 The `config.yaml` file in the root directory contains non-sensitive configuration settings. You can modify this file to adjust various parameters such as output directories, text-to-speech settings, and content generation options.

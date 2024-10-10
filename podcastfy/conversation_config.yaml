@@ -1,0 +1,20 @@
+word_count: 2000
+conversation_style: 
+  - "engaging"
+  - "fast-paced"
+  - "enthusiastic"
+roles_person1: "main summarizer"
+roles_person2: "questioner/clarifier"
+dialogue_structure: 
+  - "Introduction"
+  - "Main Content Summary"
+  - "Conclusion"
+podcast_name: "PODCASTFY"
+podcast_tagline: "YOUR PERSONAL GenAI PODCAST"
+output_language: "English"
+engagement_techniques: 
+  - "rhetorical questions"
+  - "anecdotes"
+  - "analogies"
+  - "humor"
+creativity: 0

@@ -1,0 +1,18 @@
+word_count: 2000
+conversation_style: 
+  - "formal"
+  - "educational"
+roles_person1: "professor"
+roles_person2: "student"
+dialogue_structure: 
+  - "Introduction"
+  - "Main Points"
+  - "Conclusion"
+podcast_name: "Teachfy"
+podcast_tagline: "Learning Through Conversation"
+output_language: "English"
+engagement_techniques: 
+  - "examples"
+  - "questions"
+  - "case studies"
+creativity: 0

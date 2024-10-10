@@ -2,80 +2,54 @@
 Content Generator Module
 
 This module is responsible for generating Q&A content based on input texts using
-Google's Generative AI (Gemini). It handles the interaction with the AI model and
+LangChain and Google's Generative AI (Gemini). It handles the interaction with the AI model and
 provides methods to generate and save the generated content.
 """
 
-import google.generativeai as genai
+import os
+from typing import Optional, Dict, Any
+
+#from langchain_google_vertexai import ChatVertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain import hub
+from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
-from typing import Optional
-
-import os
-import sys
-from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-
-def get_config_path(config_file: str = 'prompt.txt'):
-	"""
-	Get the path to the prompt.txt file.
-	
-	Returns:
-		str: The path to the prompt.txt file.
-	"""
-	try:
-		# Check if the script is running in a PyInstaller bundle
-		if getattr(sys, 'frozen', False):
-			base_path = sys._MEIPASS
-		else:
-			base_path = os.path.dirname(os.path.abspath(__file__))
-		
-		# Look for prompt.txt in the same directory as the script
-		config_path = os.path.join(base_path, 'prompt.txt')
-		if os.path.exists(config_path):
-			return config_path
-		
-		# If not found, look in the parent directory (package root)
-		config_path = os.path.join(os.path.dirname(base_path), 'prompt.txt')
-		if os.path.exists(config_path):
-			return config_path
-		
-		# If still not found, look in the current working directory
-		config_path = os.path.join(os.getcwd(), 'prompt.txt')
-		if os.path.exists(config_path):
-			return config_path
-		
-		raise FileNotFoundError("prompt.txt not found")
-	
-	except Exception as e:
-		print(f"Error locating prompt.txt: {str(e)}")
-		return None
-
 class ContentGenerator:
-	def __init__(self, api_key: str):
+	def __init__(self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None):
 		"""
 		Initialize the ContentGenerator.
 
 		Args:
 			api_key (str): API key for Google's Generative AI.
+			conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
 		"""
-		self.api_key = api_key
-		genai.configure(api_key=self.api_key)
-		
+		os.environ["GOOGLE_API_KEY"] = api_key
 		self.config = load_config()
 		self.content_generator_config = self.config.get('content_generator', {})
 		
-		system_prompt_file = self.content_generator_config.get('system_prompt_file')
-		system_prompt_file = get_config_path(system_prompt_file)
-		with open(system_prompt_file, 'r') as file:
-			system_prompt = file.read()
-		
-		self.model = genai.GenerativeModel(
-			self.content_generator_config.get('gemini_model', 'gemini-1.5-pro-latest'),
-			system_instruction=system_prompt
+		# Load default conversation config and update with custom config if provided
+
+		self.config_conversation = load_conversation_config(conversation_config)
+
+		self.llm = ChatGoogleGenerativeAI(
+			model=self.content_generator_config.get('gemini_model', 'gemini-1.5-pro-latest'),
+			temperature=self.config_conversation.get('creativity', 0),
+			max_output_tokens=self.content_generator_config.get('max_output_tokens', 8192)
 		)
+		
+		#pick podcastfy prompt from langchain hub
+		self.prompt_template = hub.pull(self.config.get('content_generator', {}).get('prompt_template', 'souzatharsis/podcastfy_'))
+		self.prompt_template
+
+		self.parser = StrOutputParser()
+		
+		self.chain = (self.prompt_template | self.llm | self.parser)
 
 	def generate_qa_content(self, input_texts: str, output_filepath: Optional[str] = None) -> str:
 		"""
@@ -92,14 +66,31 @@ class ContentGenerator:
 			Exception: If there's an error in generating content.
 		"""
 		try:
-			response = self.model.generate_content(f"INPUT TEXT: {input_texts}")
+			
+			
+			prompt_params = {
+				"input_text": input_texts,
+				"word_count": self.config_conversation.get('word_count'),
+				"conversation_style": ", ".join(self.config_conversation.get('conversation_style', [])),
+				"roles_person1": self.config_conversation.get('roles_person1'),
+				"roles_person2": self.config_conversation.get('roles_person2'),
+				"dialogue_structure": ", ".join(self.config_conversation.get('dialogue_structure', [])),
+				"podcast_name": self.config_conversation.get('podcast_name'),
+				"podcast_tagline": self.config_conversation.get('podcast_tagline'),
+				"output_language": self.config_conversation.get('output_language'),
+				"engagement_techniques": ", ".join(self.config_conversation.get('engagement_techniques', []))
+			}
+
+			self.response = self.chain.invoke(prompt_params)
+			
+			logger.info(f"Content generated successfully")
 			
 			if output_filepath:
 				with open(output_filepath, 'w') as file:
-					file.write(response.text)
+					file.write(self.response)
 				logger.info(f"Response content saved to {output_filepath}")
 			
-			return response.text
+			return self.response
 		except Exception as e:
 			logger.error(f"Error generating content: {str(e)}")
 			raise
@@ -127,8 +118,6 @@ def main(seed: int = 42) -> None:
 		content_generator = ContentGenerator(api_key)
 
 		# Read input text from file
-		import os
-
 		input_text = ""
 		transcript_dir = config.get('output_directories', {}).get('transcripts', 'data/transcripts')
 		for filename in os.listdir(transcript_dir):

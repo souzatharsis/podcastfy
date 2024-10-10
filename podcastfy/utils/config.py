@@ -7,13 +7,9 @@ and a YAML file for non-sensitive configuration settings.
 """
 
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from typing import Any, Dict, Optional
 import yaml
-
-import os
-import sys
-from pathlib import Path
 
 def get_config_path(config_file: str = 'config.yaml'):
 	"""
@@ -23,31 +19,22 @@ def get_config_path(config_file: str = 'config.yaml'):
 		str: The path to the config.yaml file.
 	"""
 	try:
-		# Check if the script is running in a PyInstaller bundle
-		if getattr(sys, 'frozen', False):
-			base_path = sys._MEIPASS
-		else:
-			base_path = os.path.dirname(os.path.abspath(__file__))
+		base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 		
-		# Look for config.yaml in the same directory as the script
-		config_path = os.path.join(base_path, 'config.yaml')
+		# Look for config.yaml in the package root
+		config_path = os.path.join(base_path, config_file)
 		if os.path.exists(config_path):
 			return config_path
 		
-		# If not found, look in the parent directory (package root)
-		config_path = os.path.join(os.path.dirname(base_path), 'config.yaml')
+		# If not found, look in the current working directory
+		config_path = os.path.join(os.getcwd(), config_file)
 		if os.path.exists(config_path):
 			return config_path
 		
-		# If still not found, look in the current working directory
-		config_path = os.path.join(os.getcwd(), 'config.yaml')
-		if os.path.exists(config_path):
-			return config_path
-		
-		raise FileNotFoundError("config.yaml not found")
+		raise FileNotFoundError(f"{config_file} not found")
 	
 	except Exception as e:
-		print(f"Error locating config.yaml: {str(e)}")
+		print(f"Error locating {config_file}: {str(e)}")
 		return None
 
 class Config:
@@ -58,22 +45,26 @@ class Config:
 		Args:
 			config_file (str): Path to the YAML configuration file. Defaults to 'config.yaml'.
 		"""
-		load_dotenv()
+		# Try to find .env file
+		dotenv_path = find_dotenv(usecwd=True)
+		if dotenv_path:
+			load_dotenv(dotenv_path)
+		else:
+			print("Warning: .env file not found. Using environment variables if available.")
 		
-		# Load API keys from .env
+		# Load API keys from environment variables
 		self.JINA_API_KEY: str = os.getenv("JINA_API_KEY", "")
 		self.GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 		self.OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 		self.ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
 		
-
 		config_path = get_config_path(config_file)
 		if config_path:
 			with open(config_path, 'r') as file:
-		#	 Read and process your config file
 				self.config: Dict[str, Any] = yaml.safe_load(file)
 		else:
 			print("Could not locate config.yaml")
+			self.config = {}
 		
 		# Set attributes based on YAML config
 		self._set_attributes()
@@ -128,29 +119,24 @@ def load_config() -> Config:
 	"""
 	return Config()
 
-def main(seed: int = 42) -> None:
+def main() -> None:
 	"""
 	Test the Config class and print configuration status.
-
-	Args:
-		seed (int): Random seed for reproducibility. Defaults to 42.
 	"""
 	# Create an instance of the Config class
 	config = load_config()
 	
 	# Test each configuration value
 	print("Testing Config class:")
-	print(f"EMAIL_ADDRESS: {'Set' if config.get('EMAIL_ADDRESS') else 'Not set'}")
-	print(f"EMAIL_PASSWORD: {'Set' if config.get('EMAIL_PASSWORD') else 'Not set'}")
-	print(f"JINA_API_KEY: {'Set' if config.get('JINA_API_KEY') else 'Not set'}")
-	print(f"GEMINI_API_KEY: {'Set' if config.get('GEMINI_API_KEY') else 'Not set'}")
-	print(f"ELEVENLABS_API_KEY: {'Set' if config.get('ELEVENLABS_API_KEY') else 'Not set'}")
-	print(f"OPENAI_API_KEY: {'Set' if config.get('OPENAI_API_KEY') else 'Not set'}")
+	print(f"JINA_API_KEY: {'Set' if config.JINA_API_KEY else 'Not set'}")
+	print(f"GEMINI_API_KEY: {'Set' if config.GEMINI_API_KEY else 'Not set'}")
+	print(f"OPENAI_API_KEY: {'Set' if config.OPENAI_API_KEY else 'Not set'}")
+	print(f"ELEVENLABS_API_KEY: {'Set' if config.ELEVENLABS_API_KEY else 'Not set'}")
 
 	# Print a warning for any missing configuration
 	missing_config = []
-	for key in ['EMAIL_ADDRESS', 'EMAIL_PASSWORD', 'JINA_API_KEY', 'GEMINI_API_KEY', 'ELEVENLABS_API_KEY', 'OPENAI_API_KEY']:
-		if not config.get(key):
+	for key in ['JINA_API_KEY', 'GEMINI_API_KEY', 'OPENAI_API_KEY', 'ELEVENLABS_API_KEY']:
+		if not getattr(config, key):
 			missing_config.append(key)
 
 	if missing_config:

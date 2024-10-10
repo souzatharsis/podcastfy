@@ -59,11 +59,16 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [CLI](usage/cli.md)
 
-Try [HuggingFace 🤗 space app](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) for a simple use case (URLs -> Audio).
+Try [HuggingFace 🤗 space app](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) for a simple use case (URLs -> Audio). WARNING: This UI App was not as thoroughly tested as the Python package.
+
+## Customization
+
+Podcastfy offers a range of customization options to tailor your AI-generated podcasts. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.
+See [Conversation Customization](usage/conversation_custom.md) for more details.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request - see [Open Issues](https://github.com/souzatharsis/podcastfy/issues) for ideas. But even more excitingly feel free to fork the repo and create your own app! Please let me know if I could be of help.
+Contributions are welcome! Please feel free to submit an [Issue](https://github.com/souzatharsis/podcastfy/issues) or a Pull Request. But even more excitingly feel free to fork the repo and create your own app! I am curious about your use cases! Please let me know if I could be of help.
 
 ## Features
 

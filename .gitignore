@@ -9,6 +9,7 @@ docs/
 # Exclude aliases file
 alias.sh
 
+local_*.ipynb
 *.ipynb_checkpoints
 
 # Python-specific ignores

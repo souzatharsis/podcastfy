@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.1.13"
+version = "0.2.0"
 description = "Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"
 readme = "README.md"
 include = [
     "podcastfy/config.yaml",
-    "podcastfy/prompt.txt"
+    "podcastfy/conversation_config.yaml"
 ]
 
 [tool.poetry.dependencies]
@@ -29,7 +29,10 @@ fuzzywuzzy = "^0.18.0"
 python-levenshtein = "^0.26.0"
 pandas = "^2.2.3"
 google-generativeai = "^0.8.2"
-numpy = "^2.1.2"
+numpy = ">=1,<2"
+langchain = "^0.3.3"
+langchain-google-vertexai = "^2.0.4"
+langchain-google-genai = "^2.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

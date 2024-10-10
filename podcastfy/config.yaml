@@ -15,11 +15,12 @@ text_to_speech:
     model: "tts-1-hd"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
-  ending_message: "Tchau!"
+  ending_message: "Bye Bye!"
 
 content_generator:
   gemini_model: "gemini-1.5-pro-latest"
-  system_prompt_file: "prompt.txt"
+  max_output_tokens: 8192
+  prompt_template: "souzatharsis/podcastfy_"
 
 content_extractor:
   youtube_url_patterns:
@@ -44,4 +45,5 @@ logging:
 
 main:
   default_tts_model: "openai"
+
 
