@@ -1,4 +1,4 @@
-# Podcastfy.ai
+# Podcastfy.ai 🎙️🤖
 [![CodeFactor](https://www.codefactor.io/repository/github/souzatharsis/podcastfy/badge)](https://www.codefactor.io/repository/github/souzatharsis/podcastfy)
 [![PyPi Status](https://img.shields.io/pypi/v/podcastfy)](https://pypi.org/project/podcastfy/)
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
@@ -14,7 +14,7 @@ Podcastfy is an open-source Python package that transforms web content, PDFs, an
 
 Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of text sources enabling customization and scale.
 
-## Audio Examples
+## Audio Examples 🔊
 
 This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy):
 - [English] Youtube Video from YCombinator on LLMs: ([audio](https://audio.com/thatupiso/audio/ycombinator-llms) | [youtube](https://www.youtube.com/watch?v=eBVi_sLaYsc))
@@ -24,8 +24,24 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - [English] Personal website + youtube video: ([audio](https://audio.com/thatupiso/audio/tharsis-ai) | [website](https://www.souzatharsis.com) | [youtube](https://www.youtube.com/watch?v=sJE1dE2dulg))
 - [French] Website: ([audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [website](https://agroclim.inrae.fr/))
 - [Portuguese-BR] News article: ([audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm))
-  
-## Quickstart
+
+## Features ✨
+
+- Generate engaging, AI-powered conversational content from multiple sources (websites, youtube, and PDFs)
+- Customize transcript and audio generation tailored to your needs  (e.g. style, structure, length)
+- Generate podcasts from pre-existing/edited transcripts
+- Support for multiple advanced text-to-speech models (OpenAI and ElevenLabs) for natural-sounding audio
+- Seamlessly integrate CLI and Python package for streamlined automated workflows
+- Support for multiple languages, enabling global content creation (very experimental, currently!)
+
+## Updates 🚀
+
+### v0.2.0 release
+- Users can now customize podcast style, structure, and content
+- Integration with LangChain for better LLM management
+- and [more...](https://github.com/souzatharsis/podcastfy/discussions/38)
+
+## Quickstart 💻
 
 ### Setup
 Before installing, ensure you have Python 3.12 or higher installed on your system.
@@ -53,7 +69,7 @@ audio_file = generate_podcast(urls=["<url1>", "<url2>"])
 python -m podcastfy.client --url <url1> --url <url2>
 ```
   
-## Usage
+## Usage 💻
 
 - [Python Package](podcastfy.ipynb)
 
@@ -61,25 +77,16 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 Try [HuggingFace 🤗 space app](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) for a simple use case (URLs -> Audio). WARNING: This UI App was not as thoroughly tested as the Python package.
 
-## Customization
+## Customization 🔧
 
 Podcastfy offers a range of customization options to tailor your AI-generated podcasts. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.
 See [Conversation Customization](usage/conversation_custom.md) for more details.
 
-## Contributing
+## Contributing 🤝
 
 Contributions are welcome! Please feel free to submit an [Issue](https://github.com/souzatharsis/podcastfy/issues) or a Pull Request. But even more excitingly feel free to fork the repo and create your own app! I am curious about your use cases! Please let me know if I could be of help.
 
-## Features
-
-- Generate engaging, AI-powered conversational content from multiple sources (URLs and PDFs)
-- Create high-quality transcripts from diverse textual information sources
-- Convert pre-existing transcript files into dynamic podcast episodes
-- Support for multiple advanced text-to-speech models (OpenAI and ElevenLabs) for natural-sounding audio
-- Support for multiple languages, enabling global content creation
-- Seamlessly integrate CLI for streamlined workflows
-
-## Example Use Cases
+## Example Use Cases 🎧🎶
 
 1. **Content Summarization**: Busy professionals can stay informed on industry trends by listening to concise audio summaries of multiple articles, saving time and gaining knowledge efficiently.
 
