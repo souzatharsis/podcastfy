@@ -31,7 +31,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 | engagement_techniques | ["rhetorical questions", "anecdotes", "analogies", "humor"] | list[str] | Techniques to engage the audience |
 | creativity | 0 | int | Level of creativity/temperature (0-1) |
 
-Podcastfy uses the following default conversation configuration stored in `podcastfy/conversation_config.yaml`. You can view the default configuration [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
+Podcastfy uses the the default conversation configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
 
 ## Customization Examples
 
