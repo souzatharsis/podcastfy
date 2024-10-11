@@ -26,12 +26,12 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Features ✨
 
-- Generate engaging, AI-powered conversational content from multiple sources (websites, youtube, and PDFs)
-- Customize transcript and audio generation tailored to your needs  (e.g. style, structure, length)
-- Generate podcasts from pre-existing/edited transcripts
-- Support for multiple advanced text-to-speech models (OpenAI and ElevenLabs) for natural-sounding audio
-- Seamlessly integrate CLI and Python package for streamlined automated workflows
-- Support for multiple languages, enabling global content creation (very experimental, currently!)
+- Generate AI-powered conversational content from multiple sources (websites, YouTube, and PDFs)
+- Customizable transcript and audio generation (e.g. style, language, structure, length)
+- Create podcasts from pre-existing or edited transcripts
+- Support for advanced text-to-speech models (OpenAI and ElevenLabs)
+- Seamless CLI and Python package integration for automated workflows
+- Multi-language support for global content creation (experimental!)
 
 ## Updates 🚀
 
@@ -42,20 +42,15 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Quickstart 💻
 
-### Setup
-Before installing, ensure you have Python 3.11 or higher installed on your system.
+### Prerequisites
+- Python 3.11 or higher
+- `$ pip install ffmpeg` (for audio processing)
 
+### Installation
 1. Install from PyPI
-
   `$ pip install podcastfy`
 
 2. Set up your [API keys](usage/config.md)
-
-3. Ensure you have ffmpeg installed on your system, required for audio processing
-```
-sudo apt update
-sudo apt install ffmpeg
-```
 
 ### Python
 ```python
@@ -74,7 +69,7 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [CLI](usage/cli.md)
 
-Try [HuggingFace 🤗 space app](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) for a simple use case (URLs -> Audio). WARNING: This UI App was not as thoroughly tested as the Python package.
+Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested than the Python package.)
 
 ## Customization 🔧
 
@@ -82,7 +77,7 @@ Podcastfy offers a range of [Conversation Customization](usage/conversation_cust
 
 ## Contributing 🤝
 
-Contributions are welcome! Please feel free to submit an [Issue](https://github.com/souzatharsis/podcastfy/issues) or a Pull Request. But even more excitingly feel free to fork the repo and create your own app! I am curious about your use cases! Please let me know if I could be of help.
+We welcome contributions! Please submit [Issues](https://github.com/souzatharsis/podcastfy/issues) or Pull Requests. Feel free to fork the repo and create your own applications. We're excited to learn about your use cases!
 
 ## Example Use Cases 🎧🎶
 
