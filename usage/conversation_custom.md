@@ -135,13 +135,13 @@ creativity: 7
 
 ### 3. Dev Config
 
-For contributors to the Podcastfy package, the default configuration is stored in a `conversation_config.yaml` file in the project root. This file serves as the baseline configuration for all generated podcasts.
+For contributors to the Podcastfy package, the default configuration is stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml). This file serves as the baseline configuration for all generated podcasts.
 
 To modify the default configuration:
 
 1. Locate the `conversation_config.yaml` file in the project root.
 2. Edit the file using your preferred text editor.
-3. Commit and push your changes, following the project's contribution guidelines.
+3. Commit and push your changes, justifying proposed changes.
 
 Remember that changes to this file will affect the default behavior of Podcastfy for all users. Consider the impact of your changes and discuss significant modifications with the project maintainers before implementing them.
 
