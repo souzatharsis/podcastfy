@@ -78,8 +78,7 @@ Try [HuggingFace 🤗 space app](https://huggingface.co/spaces/thatupiso/Podcast
 
 ## Customization 🔧
 
-Podcastfy offers a range of customization options to tailor your AI-generated podcasts. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.
-See [Conversation Customization](usage/conversation_custom.md) for more details.
+Podcastfy offers a range of [Conversation Customization](usage/conversation_custom.md) options to tailor your AI-generated podcasts. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.
 
 ## Contributing 🤝
 
