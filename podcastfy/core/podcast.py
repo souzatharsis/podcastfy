@@ -165,7 +165,7 @@ class Podcast:
         self.assembled_audio = None if state.value < PodcastState.ASSEMBLED.value else self.assembled_audio
 
     @contextmanager
-    def rework(self, target_state: PodcastState):
+    def rework(self, target_state: PodcastState, auto_finalize: bool = True):
         original_state = self.state
         self._reworking = True
 
@@ -180,6 +180,8 @@ class Podcast:
             if self.state.value < original_state.value:
                 print(
                     f"Warning: Podcast is now in an earlier state ({self.state.name}) than before reworking ({original_state.name}). You may want to call finalize() to rebuild.")
+                if auto_finalize:
+                    self.finalize()
 
     @podcast_stage(PodcastState.CONTENT_PARSED)
     def parse_content(self) -> None:
@@ -289,7 +291,7 @@ if __name__ == "__main__":
     podcast.assemble_audio_segments()
     print(f"After assembling audio: {podcast.state}")
 
-    # Rework example: modify the transcript and rebuild
+    # Rework example: modify the transcript and rebuild (auto_finalize is True by default)
     with podcast.rework(PodcastState.TRANSCRIPT_BUILT):
         print(f"Inside rework context, state: {podcast.state}")
         podcast.transcript.segments.append(TranscriptSegment("This is a new segment", "Host"))
@@ -297,19 +299,18 @@ if __name__ == "__main__":
 
         # Rebuild audio segments and assemble
         podcast.build_audio_segments()
-        podcast.assemble_audio_segments()
 
     print(f"After rework: {podcast.state}")
 
-    # Add a new audio segment
+    # Add a new audio segment (auto_finalize is True by default)
     with NamedTemporaryFile(suffix=".mp3", delete=False) as temp_file:
         PydubAudioSegment.silent(duration=500).export(temp_file.name, format="mp3")
 
-    with podcast.rework(PodcastState.AUDIO_SEGMENTS_BUILT):
+    with podcast.rework(PodcastState.AUDIO_SEGMENTS_BUILT, auto_finalize=True):
         new_segment = AudioSegment(Path(temp_file.name), 500, TranscriptSegment("New audio segment", "Host"))
         podcast.audio_segments.insert(0, new_segment)
         print("Added new audio segment")
-        podcast.assemble_audio_segments()
+        # no need to call finalize() or any other methods
 
     print(f"Final state: {podcast.state}")
 
