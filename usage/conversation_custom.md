@@ -1,6 +1,6 @@
 # Podcastfy Conversation Configuration
 
-Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.  See [Notes of Caution](#notes-of-caution) before starting to customize to avoid unexpected results.
+Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs. See [System Config](https://github.com/souzatharsis/podcastfy/blob/main/usage/config_custom.md) for additional seetings. See [Notes of Caution](#notes-of-caution) to avoid unexpected results.
 
 
 ## Table of Contents
