@@ -44,7 +44,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 ## Quickstart 💻
 
 ### Setup
-Before installing, ensure you have Python 3.12 or higher installed on your system.
+Before installing, ensure you have Python 3.11 or higher installed on your system.
 
 1. Install from PyPI
 
