@@ -1,64 +1,17 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import List, Optional, Dict, Any, Union, Callable
 from pathlib import Path
+from typing import List, Optional, Dict, Any, Callable
 from pydub import AudioSegment as PydubAudioSegment
-from urllib.parse import urlparse
 from functools import wraps
 from contextlib import contextmanager
 
 
 class PodcastState(Enum):
     INITIALIZED = 0
-    CONTENT_PARSED = 1
-    TRANSCRIPT_BUILT = 2
-    AUDIO_SEGMENTS_BUILT = 3
-    ASSEMBLED = 4
-
-
-class ParserBackend(ABC):
-    @abstractmethod
-    def parse(self, url: str) -> str:
-        pass
-
-
-class WebsiteParser(ParserBackend):
-    def parse(self, url: str) -> str:
-        # Implementation for parsing website content
-        return f"Parsed content from {url}"
-
-
-class PDFParser(ParserBackend):
-    def parse(self, url: str) -> str:
-        # Implementation for parsing PDF content
-        return f"Parsed content from PDF {url}"
-
-
-class YouTubeParser(ParserBackend):
-    def parse(self, url: str) -> str:
-        # Implementation for parsing YouTube video transcripts
-        return f"Parsed transcript from YouTube video {url}"
-
-
-class ParserCollection:
-    def __init__(self):
-        self.parsers = {
-            'http': WebsiteParser(),
-            'https': WebsiteParser(),
-            'pdf': PDFParser(),
-            'youtube': YouTubeParser()
-        }
-
-    def parse(self, url: str) -> str:
-        parsed_url = urlparse(url)
-        if parsed_url.scheme in ['http', 'https']:
-            if 'youtube.com' in parsed_url.netloc or 'youtu.be' in parsed_url.netloc:
-                return self.parsers['youtube'].parse(url)
-            return self.parsers[parsed_url.scheme].parse(url)
-        elif url.lower().endswith('.pdf'):
-            return self.parsers['pdf'].parse(url)
-        else:
-            raise ValueError(f"Unsupported URL format: {url}")
+    TRANSCRIPT_BUILT = 1
+    AUDIO_SEGMENTS_BUILT = 2
+    ASSEMBLED = 3
 
 
 class LLMBackend(ABC):
@@ -141,25 +94,22 @@ def podcast_stage(target_state: PodcastState):
 
 
 class Podcast:
-    def __init__(self, urls: List[str], llm_backend: LLMBackend, tts_backend: TTSBackend,
-                 parsing_backend: ParserCollection):
-        self.urls = urls
+    def __init__(self, content: str, llm_backend: LLMBackend, tts_backend: TTSBackend):
+        self.content = content
         self.llm_backend = llm_backend
         self.tts_backend = tts_backend
-        self.parsing_backend = parsing_backend
         self.reset_to_state(PodcastState.INITIALIZED)
         self._reworking = False
 
         self._stage_methods: Dict[PodcastState, Callable[[], None]] = {
-            PodcastState.INITIALIZED: self.parse_content,
-            PodcastState.CONTENT_PARSED: self.build_transcript,
+            PodcastState.INITIALIZED: self.build_transcript,
             PodcastState.TRANSCRIPT_BUILT: self.build_audio_segments,
             PodcastState.AUDIO_SEGMENTS_BUILT: self.assemble_audio_segments,
+            PodcastState.ASSEMBLED: lambda: None,
         }
 
     def reset_to_state(self, state: PodcastState):
         self.state = state
-        self.parsed_content = [] if state.value < PodcastState.CONTENT_PARSED.value else self.parsed_content
         self.transcript = None if state.value < PodcastState.TRANSCRIPT_BUILT.value else self.transcript
         self.audio_segments = [] if state.value < PodcastState.AUDIO_SEGMENTS_BUILT.value else self.audio_segments
         self.assembled_audio = None if state.value < PodcastState.ASSEMBLED.value else self.assembled_audio
@@ -183,21 +133,16 @@ class Podcast:
                 if auto_finalize:
                     self.finalize()
 
-    @podcast_stage(PodcastState.CONTENT_PARSED)
-    def parse_content(self) -> None:
-        self.parsed_content = [self.parsing_backend.parse(url) for url in self.urls]
-
     @podcast_stage(PodcastState.TRANSCRIPT_BUILT)
     def build_transcript(self) -> None:
-        combined_content = "\n".join(self.parsed_content)
-        generated_text = self.llm_backend.generate_text(combined_content)
+        generated_text = self.llm_backend.generate_text(self.content)
 
         segments = [
             TranscriptSegment(line.split(": ")[1], line.split(": ")[0])
             for line in generated_text.split("\n") if ": " in line
         ]
 
-        self.transcript = Transcript(segments, {"source": ", ".join(self.urls)})
+        self.transcript = Transcript(segments, {"source": "Generated content"})
 
     @podcast_stage(PodcastState.AUDIO_SEGMENTS_BUILT)
     def build_audio_segments(self) -> None:
@@ -259,35 +204,29 @@ if __name__ == "__main__":
             return Path(temp_file.name)
 
 
-    class DummyParserBackend(ParserCollection):
-        def parse(self, url: str) -> str:
-            return f"Dummy parsed content from {url}"
 
     # Initialize the podcast
     podcast = Podcast(
-        urls=["https://example.com", "https://youtube.com/watch?v=12345"],
+        content="""
+        This is a sample content for our podcast.
+        It includes information from multiple sources that have already been parsed.
+        """,
         llm_backend=DummyLLMBackend(),
         tts_backend=DummyTTSBackend(),
-        parsing_backend=DummyParserBackend()
     )
     print(f"Initial state: {podcast.state}")
 
-    # Step 1: Parse content
-    podcast.parse_content()
-    print(f"After parsing content: {podcast.state}")
-    print(f"Parsed content: {podcast.parsed_content}")
-
-    # Step 2: Build transcript
+    # Step 1: Build transcript
     podcast.build_transcript()
     print(f"After building transcript: {podcast.state}")
     print(f"Transcript: {podcast.transcript}")
 
-    # Step 3: Build audio segments
+    # Step 2: Build audio segments
     podcast.build_audio_segments()
     print(f"After building audio segments: {podcast.state}")
     print(f"Number of audio segments: {len(podcast.audio_segments)}")
 
-    # Step 4: Assemble audio segments
+    # Step 3: Assemble audio segments
     podcast.assemble_audio_segments()
     print(f"After assembling audio: {podcast.state}")
 
@@ -305,14 +244,10 @@ if __name__ == "__main__":
     # Add a new audio segment (auto_finalize is True by default)
     with NamedTemporaryFile(suffix=".mp3", delete=False) as temp_file:
         PydubAudioSegment.silent(duration=500).export(temp_file.name, format="mp3")
-
-    with podcast.rework(PodcastState.AUDIO_SEGMENTS_BUILT, auto_finalize=True):
+    
+    with podcast.rework(PodcastState.AUDIO_SEGMENTS_BUILT):
         new_segment = AudioSegment(Path(temp_file.name), 500, TranscriptSegment("New audio segment", "Host"))
         podcast.audio_segments.insert(0, new_segment)
-        print("Added new audio segment")
-        # no need to call finalize() or any other methods
-
-    print(f"Final state: {podcast.state}")
 
     # Save the final podcast
     podcast.save("./final.mp3")
