@@ -1,3 +1,5 @@
+<a name="readme-top"></a>
+
 # Podcastfy.ai 🎙️🤖
 [![PyPi Status](https://img.shields.io/pypi/v/podcastfy)](https://pypi.org/project/podcastfy/)
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
@@ -106,6 +108,18 @@ We welcome contributions! Please submit [Issues](https://github.com/souzatharsis
 
 This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
+## Contributors
+
+<a href="https://github.com/souzatharsis/podcastfy/graphs/contributors">
+  <img alt="contributors" src="https://contrib.rocks/image?repo=souzatharsis/podcastfy"/>
+</a>
+
 ## Disclaimer
 
 This tool is designed for personal or educational use. Please ensure you have the necessary rights or permissions before using content from external sources for podcast creation. All audio content is AI-generated and it is not intended to clone real-life humans!
+
+<p align="right" style="font-size: 14px; color: #555; margin-top: 20px;">
+    <a href="#readme-top" style="text-decoration: none; color: #007bff; font-weight: bold;">
+        ↑ Back to Top ↑
+    </a>
+</p>
