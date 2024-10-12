@@ -2,7 +2,7 @@ import logging
 from abc import ABC, abstractmethod
 from enum import Enum
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Callable, Tuple, Union, Coroutine
+from typing import List, Optional, Dict, Any, Callable, Tuple, Union, Coroutine, Sequence
 from pydub import AudioSegment as PydubAudioSegment
 from functools import wraps
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -179,6 +179,31 @@ class Podcast:
             PodcastState.TRANSCRIPT_BUILT: self.build_audio_segments,
             PodcastState.AUDIO_SEGMENTS_BUILT: self.stitch_audio_segments,
         }
+    
+    @classmethod
+    def from_transcript(cls, transcript: Union[Sequence[Tuple[str, str]], Transcript], 
+                        tts_backend: TTSBackend, 
+                        default_tts_n_jobs: int = 1) -> 'Podcast':
+        """
+        Create a Podcast instance from a pre-existing transcript.
+
+        Args:
+            transcript (Union[Sequence[Tuple[str, str]], Transcript]): Pre-existing transcript.
+            tts_backend (TTSBackend): The text-to-speech backend for converting text to audio.
+            default_tts_n_jobs (int, optional): The default number of concurrent jobs for TTS processing.
+                Defaults to 1.
+
+        Returns:
+            Podcast: A new Podcast instance with the transcript built and ready for audio generation.
+        """
+        podcast = cls("", tts_backend, default_tts_n_jobs=default_tts_n_jobs)
+        if isinstance(transcript, Transcript):
+            podcast.transcript = transcript
+        else:
+            segments = [TranscriptSegment(text, speaker) for speaker, text in transcript]
+            podcast.transcript = Transcript(segments, {"source": "Provided transcript"})
+        podcast.state = PodcastState.TRANSCRIPT_BUILT
+        return podcast
 
     def reset_to_state(self, state: PodcastState):
         """Reset the podcast to a specific state."""
@@ -364,3 +389,22 @@ if __name__ == "__main__":
     podcast.save("./final.mp3")
     podcast.save_transcript("./final.txt", format="plaintext")
     print("Saved podcast and transcript")
+
+    # Example with pre-existing transcript using from_transcript class method
+    pre_existing_transcript = [
+        ("Host", "Welcome to our podcast created from a pre-existing transcript!"),
+        ("Guest", "Thank you for having me. I'm excited to be here.")
+    ]
+    
+    podcast_from_transcript = Podcast.from_transcript(
+        transcript=pre_existing_transcript,
+        tts_backend=DummyTTSBackend()
+    )
+    
+    print(f"Podcast created from transcript initial state: {podcast_from_transcript.state}")
+    print(f"Transcript: {podcast_from_transcript.transcript}")
+    
+    # Finalize the podcast (this will skip transcript generation and move directly to audio generation)
+    podcast_from_transcript.finalize()
+    podcast_from_transcript.save("./from_transcript.mp3")
+    print("Saved podcast created from transcript")
