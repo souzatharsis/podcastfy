@@ -6,7 +6,7 @@ text_to_speech:
   elevenlabs:
     default_voices:
       question: "Chris"
-      answer: "BrittneyHart"
+      answer: "Jessica"
     model: "eleven_multilingual_v2"
   openai:
     default_voices:
@@ -20,7 +20,7 @@ text_to_speech:
 content_generator:
   gemini_model: "gemini-1.5-pro-latest"
   max_output_tokens: 8192
-  prompt_template: "souzatharsis/podcastfy_"
+  prompt_template: "souzatharsis/podcastfy_multimodal"
 
 content_extractor:
   youtube_url_patterns:

@@ -7,7 +7,7 @@ provides methods to generate and save the generated content.
 """
 
 import os
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 #from langchain_google_vertexai import ChatVertexAI
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -17,6 +17,7 @@ from langchain import hub
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
+from langchain.prompts import HumanMessagePromptTemplate
 
 logger = logging.getLogger(__name__)
 
@@ -44,14 +45,70 @@ class ContentGenerator:
 		)
 		
 		#pick podcastfy prompt from langchain hub
-		self.prompt_template = hub.pull(self.config.get('content_generator', {}).get('prompt_template', 'souzatharsis/podcastfy_'))
-		self.prompt_template
-
-		self.parser = StrOutputParser()
 		
-		self.chain = (self.prompt_template | self.llm | self.parser)
 
-	def generate_qa_content(self, input_texts: str, output_filepath: Optional[str] = None) -> str:
+
+
+	def __compose_prompt(self, num_images: int):
+		"""
+		Compose the prompt for the LLM based on the content list.
+		"""
+		prompt_template = hub.pull(self.config.get('content_generator', {}).get('prompt_template', 'souzatharsis/podcastfy_multimodal'))
+		
+		image_path_keys = []
+		messages=[]
+		text_content = {
+			"type": "text",
+			"text": "text_input"
+		}
+		messages.append(text_content)
+		for i in range(num_images):
+			key = f'image_path_{i}'
+			image_content = {
+				'image_url': {'path': f'{{{key}}}', 'detail': 'high'},
+				"type": "image_url"
+			}
+			image_path_keys.append(key)
+			messages.append(image_content)
+
+		user_prompt_template = ChatPromptTemplate.from_messages(
+			messages=[
+				HumanMessagePromptTemplate.from_template(
+					messages
+				)
+			]
+		)
+
+				# Compose messages from podcastfy_prompt_template and user_prompt_template
+		combined_messages = prompt_template.messages + user_prompt_template.messages
+
+		# Create a new ChatPromptTemplate object with the combined messages
+		composed_prompt_template = ChatPromptTemplate.from_messages(combined_messages)
+
+		return composed_prompt_template, image_path_keys
+	
+	def __compose_prompt_params(self, image_file_paths: List[str], image_path_keys: List[str], input_texts: str):
+		prompt_params = {
+			"input_text": input_texts,
+			"word_count": self.config_conversation.get('word_count'),
+			"conversation_style": ", ".join(self.config_conversation.get('conversation_style', [])),
+			"roles_person1": self.config_conversation.get('roles_person1'),
+			"roles_person2": self.config_conversation.get('roles_person2'),
+			"dialogue_structure": ", ".join(self.config_conversation.get('dialogue_structure', [])),
+			"podcast_name": self.config_conversation.get('podcast_name'),
+			"podcast_tagline": self.config_conversation.get('podcast_tagline'),
+			"output_language": self.config_conversation.get('output_language'),
+			"engagement_techniques": ", ".join(self.config_conversation.get('engagement_techniques', []))
+			}
+
+			#for each image_path_key, add the corresponding image_file_path to the prompt_params
+		for key, path in zip(image_path_keys, image_file_paths):
+			prompt_params[key] = path
+
+		return prompt_params
+
+
+	def generate_qa_content(self, input_texts: str = "", image_file_paths: List[str] = [], output_filepath: Optional[str] = None) -> str:
 		"""
 		Generate Q&A content based on input texts.
 
@@ -66,20 +123,11 @@ class ContentGenerator:
 			Exception: If there's an error in generating content.
 		"""
 		try:
+			self.prompt_template, image_path_keys = self.__compose_prompt(len(image_file_paths))
+			self.parser = StrOutputParser()
+			self.chain = (self.prompt_template | self.llm | self.parser)
 			
-			
-			prompt_params = {
-				"input_text": input_texts,
-				"word_count": self.config_conversation.get('word_count'),
-				"conversation_style": ", ".join(self.config_conversation.get('conversation_style', [])),
-				"roles_person1": self.config_conversation.get('roles_person1'),
-				"roles_person2": self.config_conversation.get('roles_person2'),
-				"dialogue_structure": ", ".join(self.config_conversation.get('dialogue_structure', [])),
-				"podcast_name": self.config_conversation.get('podcast_name'),
-				"podcast_tagline": self.config_conversation.get('podcast_tagline'),
-				"output_language": self.config_conversation.get('output_language'),
-				"engagement_techniques": ", ".join(self.config_conversation.get('engagement_techniques', []))
-			}
+			prompt_params = self.__compose_prompt_params(image_file_paths, image_path_keys, input_texts)
 
 			self.response = self.chain.invoke(prompt_params)
 			

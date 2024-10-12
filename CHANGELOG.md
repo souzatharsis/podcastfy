@@ -1,5 +1,15 @@
 # Changelog
 
+
+## [0.2.1] - 2024-10-12
+
+
+### Added
+- ([#8](https://github.com/user/podcastfy/issues/8)) Podcastfy is now multi-modal! Users can now generate audio from images by simply providing the paths to the image files.
+
+### Fixed 
+- ([#40](https://github.com/user/podcastfy/issues/37)) Updated default ElevenLabs voice from `BrittneyHart` to `Jessica`. The latter was a non-default voice I used from my account, which caused error for users who don't have it.
+
 ## [0.2.0] - 2024-10-10
 
 ### Added

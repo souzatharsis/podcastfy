@@ -99,5 +99,27 @@ def test_generate_podcast_no_urls_or_transcript():
 	with pytest.raises(ValueError):
 		generate_podcast()
 
+def test_generate_podcast_from_images(sample_config):
+	"""Test generating a podcast from two input images."""
+	image_paths = [
+		"tests/data/images/Senecio.jpeg",
+		"tests/data/images/connection.jpg"
+	]
+
+	audio_file = generate_podcast(
+		image_paths=image_paths,
+		config=sample_config
+	)
+
+	assert audio_file is not None
+	assert os.path.exists(audio_file)
+	assert audio_file.endswith('.mp3')
+	assert os.path.dirname(audio_file) == sample_config.get('output_directories', {}).get('audio')
+
+	# Check if a transcript was generated
+	transcript_dir = sample_config.get('output_directories', {}).get('transcripts')
+	transcript_files = [f for f in os.listdir(transcript_dir) if f.startswith('transcript_') and f.endswith('.txt')]
+	assert len(transcript_files) > 0
+
 if __name__ == "__main__":
 	pytest.main()

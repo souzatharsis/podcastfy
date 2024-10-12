@@ -252,7 +252,7 @@ def main(seed: int = 42) -> None:
 		config = load_config()
 
 		# Read input text from file
-		with open('tests/data/response.txt', 'r') as file:
+		with open('tests/data/transcript_336aa9f955cd4019bc1287379a5a2820.txt', 'r') as file:
 			input_text = file.read()
 
 		# Test ElevenLabs

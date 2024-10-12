@@ -30,10 +30,8 @@ class TestGenAIPodcast(unittest.TestCase):
         """
         config = Config()
         self.api_key = config.GEMINI_API_KEY
+        self.config = config
 
-
-
-    
     def test_generate_qa_content(self):
         """
         Test the generate_qa_content method of ContentGenerator.
@@ -71,6 +69,35 @@ class TestGenAIPodcast(unittest.TestCase):
         
         # Check word count (allow some flexibility)
         word_count = len(result.split())
+
+    def test_generate_qa_content_from_images(self):
+        """Test generating Q&A content from two input images."""
+        image_paths = [
+            "tests/data/images/Senecio.jpeg",
+            "tests/data/images/connection.jpg"
+        ]
+
+        content_generator = ContentGenerator(self.api_key)
+        
+        with tempfile.NamedTemporaryFile(mode='w+', suffix='.txt', delete=False) as temp_file:
+            result = content_generator.generate_qa_content(
+                input_texts="",  # Empty string for input_texts
+                image_file_paths=image_paths,
+                output_filepath=temp_file.name
+            )
+
+        self.assertIsNotNone(result)
+        self.assertNotEqual(result, "")
+        self.assertIsInstance(result, str)
+        
+        # Check if the output file was created and contains the same content
+        with open(temp_file.name, 'r') as f:
+            file_content = f.read()
+        
+        self.assertEqual(result, file_content)
+        
+        # Clean up the temporary file
+        os.unlink(temp_file.name)
 
 if __name__ == "__main__":
     unittest.main()

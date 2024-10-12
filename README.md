@@ -5,28 +5,46 @@
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
 
-Transforming Multi-Sourced Text into Captivating Multi-Lingual Audio Conversations with GenAI
+Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
 
 https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
-Podcastfy is an open-source Python package that transforms web content, PDFs, and text into engaging, multi-lingual audio conversations using GenAI. 
+Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content include websites, PDFs, youtube videos as well as images.
 
-Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of text sources enabling customization and scale.
+Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources enabling customization and scale.
 
 ## Audio Examples 🔊
+This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy).
 
-This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy):
-- [English] Youtube Video from YCombinator on LLMs: ([audio](https://audio.com/thatupiso/audio/ycombinator-llms) | [youtube](https://www.youtube.com/watch?v=eBVi_sLaYsc))
-- [English] Book pdf Networks, Crowds, and Markets: [audio](https://audio.com/thatupiso/audio/networks)
-- [English] Research paper on Climate Change in France: ([audio](https://audio.com/thatupiso/audio/agro-paper) | [pdf](./data/pdf/s41598-024-58826-w.pdf))
-- [English] Personal website: ([audio](https://audio.com/thatupiso/audio/tharsis) | [website](https://www.souzatharsis.com))
-- [English] Personal website + youtube video: ([audio](https://audio.com/thatupiso/audio/tharsis-ai) | [website](https://www.souzatharsis.com) | [youtube](https://www.youtube.com/watch?v=sJE1dE2dulg))
-- [French] Website: ([audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [website](https://agroclim.inrae.fr/))
-- [Portuguese-BR] News article: ([audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm))
+### Images
+
+| Image Set | Description | Audio |
+|:--|:--|:--|
+| <img src="data/images/Senecio.jpeg" alt="Alt text" width="20%" height="auto"> <img src="data/images/connection.jpg" alt="Alt text" width="21.5%" height="auto"> | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu  | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-abstract-art) |
+| <img src="data/images/japan_1.jpg" alt="Alt text" width="20%" height="auto"> <img src="data/images/japan2.jpg" alt="Alt text" width="21.5%" height="auto"> | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-japan) |
+| <img src="data/images/taylor.png" alt="Alt text" width="28%" height="auto"> <img src="data/images/monalisa.jpeg" alt="Alt text" width="10.5%" height="auto"> | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/taylor-monalisa) |
+
+### Text
+| Content Type | Description | Audio | Source |
+|--------------|-------------|-------|--------|
+| Youtube Video | YCombinator on LLMs | [Audio](https://audio.com/thatupiso/audio/ycombinator-llms) | [YouTube](https://www.youtube.com/watch?v=eBVi_sLaYsc) |
+| PDF | Book: Networks, Crowds, and Markets | [Audio](https://audio.com/thatupiso/audio/networks) | book pdf |
+| Research Paper | Climate Change in France | [Audio](https://audio.com/thatupiso/audio/agro-paper) | [PDF](./data/pdf/s41598-024-58826-w.pdf) |
+| Website | My Personal Website | [Audio](https://audio.com/thatupiso/audio/tharsis) | [Website](https://www.souzatharsis.com) |
+| Website + YouTube | My Personal Website + YouTube Video on AI | [Audio](https://audio.com/thatupiso/audio/tharsis-ai) | [Website](https://www.souzatharsis.com), [YouTube](https://www.youtube.com/watch?v=sJE1dE2dulg) |
+
+### Multi-Lingual Text
+| Language | Content Type | Description | Audio | Source |
+|----------|--------------|-------------|-------|--------|
+| French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
+| Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
+
+
+
 
 ## Features ✨
 
-- Generate AI-powered conversational content from multiple sources (websites, YouTube, and PDFs)
+- Generate AI-powered conversational content from multi-sources and formats (images, websites, YouTube, and PDFs)
 - Customizable transcript and audio generation (e.g. style, language, structure, length)
 - Create podcasts from pre-existing or edited transcripts
 - Support for advanced text-to-speech models (OpenAI and ElevenLabs)
@@ -34,6 +52,9 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - Multi-language support for global content creation (experimental!)
 
 ## Updates 🚀
+
+### v0.2.1 release
+- Podcastfy is now multi-modal! Users can now generate audio from images.
 
 ### v0.2.0 release
 - Users can now customize podcast style, structure, and content

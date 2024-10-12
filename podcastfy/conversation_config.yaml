@@ -10,7 +10,7 @@ dialogue_structure:
   - "Main Content Summary"
   - "Conclusion"
 podcast_name: "PODCASTFY"
-podcast_tagline: "YOUR PERSONAL GenAI PODCAST"
+podcast_tagline: "Your Personal Generative AI Podcast"
 output_language: "English"
 engagement_techniques: 
   - "rhetorical questions"
