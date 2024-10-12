@@ -66,9 +66,12 @@ def process_links(links, transcript_file=None, tts_model="openai", generate_audi
             )
 
         if generate_audio:
-            text_to_speech = TextToSpeech(
-                model=tts_model, api_key=getattr(config, f"{tts_model.upper()}_API_KEY")
-            )
+            api_key = None
+            # edge-tts does not require an API key
+            if tts_model != "edge-tts":
+                api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
+                
+            text_to_speech = TextToSpeech(model=tts_model, api_key=api_key)
             # Convert text to speech using the specified model
             random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
             audio_file = os.path.join(config.get('output_directories')['audio'], random_filename)

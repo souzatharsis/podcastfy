@@ -6,13 +6,17 @@ text_to_speech:
   elevenlabs:
     default_voices:
       question: "Chris"
-      answer: "BrittneyHart"
+      answer: "River"
     model: "eleven_multilingual_v2"
   openai:
     default_voices:
       question: "echo"
       answer: "shimmer"
     model: "tts-1-hd"
+  edge_tts:
+    default_voices:
+      question: "en-US-JennyNeural"
+      answer: "en-US-EricNeural"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
   ending_message: "Bye Bye!"
@@ -45,5 +49,3 @@ logging:
 
 main:
   default_tts_model: "openai"
-
-
