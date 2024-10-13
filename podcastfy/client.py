@@ -23,7 +23,8 @@ logger = setup_logger(__name__)
 app = typer.Typer()
 
 
-def process_content(urls=None, transcript_file=None, tts_model="openai", generate_audio=True, config=None, 
+def process_content(urls=None, transcript_file=None, raw_text=None,
+					tts_model="openai", generate_audio=True, config=None, 
                     conversation_config: Optional[Dict[str, Any]] = None, image_paths: Optional[List[str]] = None):
 	"""
 	Process URLs, a transcript file, or image paths to generate a podcast or transcript.
@@ -31,6 +32,7 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 	Args:
 			urls (Optional[List[str]]): A list of URLs to process.
 			transcript_file (Optional[str]): Path to a transcript file.
+			raw_text (Optional[str]): Text to process.
 			tts_model (str): The TTS model to use ('openai' or 'elevenlabs'). Defaults to 'openai'.
 			generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
 			config (Config): Configuration object to use. If None, default config will be loaded.
@@ -59,6 +61,8 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 				contents = [content_extractor.extract_content(link) for link in urls]
 				# Combine all extracted content
 				combined_content = "\n\n".join(contents)
+			elif raw_text:
+				combined_content = raw_text
 			else:
 				combined_content = ""  # Empty string if no URLs provided
 
@@ -66,7 +70,9 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 			random_filename = f"transcript_{uuid.uuid4().hex}.txt"
 			transcript_filepath = os.path.join(config.get('output_directories')['transcripts'], random_filename)
 			qa_content = content_generator.generate_qa_content(
-				combined_content, image_file_paths=image_paths or [], output_filepath=transcript_filepath
+				combined_content,
+				#image_file_paths=image_paths or [],  # FIXME
+				output_filepath=transcript_filepath
 			)
 
 		if generate_audio:
@@ -96,6 +102,9 @@ def main(
 	),
 	transcript: typer.FileText = typer.Option(
 		None, "--transcript", "-t", help="Path to a transcript file"
+	),
+	raw_file: typer.FileText = typer.Option(
+		None, "--raw-file", "-r", help="File containing raw text"
 	),
 	tts_model: str = typer.Option(
 		None, "--tts-model", "-tts", help="TTS model to use (openai or elevenlabs)"
@@ -133,16 +142,22 @@ def main(
 			)
 		else:
 			urls_list = urls or []
+			raw_text = None
 			if file:
 				urls_list.extend([line.strip() for line in file if line.strip()])
+			elif raw_file:
+				raw_text = raw_file.read()
 
-			if not urls_list and not image_paths:
+			if not urls_list and not image_paths and not raw_file:
 				raise typer.BadParameter(
-					"No input provided. Use --url to specify URLs, --file to specify a file containing URLs, --transcript for a transcript file, or --image for image files."
+					"No input provided. Use --url to specify URLs, --file to specify a file containing URLs, "
+					"--transcript for a transcript file, --raw-file for a file containing raw text, "
+					"or --image for image files."
 				)
 
 			final_output = process_content(
-				urls=urls_list, 
+				urls=urls_list,
+				raw_text=raw_text,
 				tts_model=tts_model, 
 				generate_audio=not transcript_only,
 				config=config,
@@ -169,6 +184,7 @@ if __name__ == "__main__":
 def generate_podcast(
 	urls: Optional[List[str]] = None,
 	url_file: Optional[str] = None,
+	raw_text: Optional[str] = None,
 	transcript_file: Optional[str] = None,
 	tts_model: Optional[str] = None,
 	transcript_only: bool = False,
@@ -182,6 +198,7 @@ def generate_podcast(
 	Args:
 		urls (Optional[List[str]]): List of URLs to process.
 		url_file (Optional[str]): Path to a file containing URLs, one per line.
+		raw_text (Optional[str]): Text to process.
 		transcript_file (Optional[str]): Path to a transcript file.
 		tts_model (Optional[str]): TTS model to use ('openai' or 'elevenlabs').
 		transcript_only (bool): Generate only a transcript without audio. Defaults to False.
@@ -253,13 +270,15 @@ def generate_podcast(
 				with open(url_file, 'r') as file:
 					urls_list.extend([line.strip() for line in file if line.strip()])
 
-			if not urls_list and not image_paths:
+			if not urls_list and not image_paths and not raw_text:
 				raise ValueError(
-					"No input provided. Please provide either 'urls', 'url_file', 'transcript_file', or 'image_paths'."
+					"No input provided. Please provide either 'urls', 'url_file', 'transcript_file', "
+					"'raw_text'	or 'image_paths'."
 				)
 
 			return process_content(
 				urls=urls_list, 
+				raw_text=raw_text,
 				tts_model=tts_model, 
 				generate_audio=not transcript_only,
 				config=default_config,
