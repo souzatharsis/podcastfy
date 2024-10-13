@@ -51,7 +51,7 @@ def test_generate_podcast_from_urls(sample_config):
 
 def test_generate_transcript_only(sample_config):
 	"""Test generating only a transcript without audio."""
-	urls = ["https://en.wikipedia.org/wiki/Natural_language_processing"]
+	urls = ["https://www.souzatharsis.com/"]
 	
 	result = generate_podcast(
 		urls=urls,

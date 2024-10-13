@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.2.1"
+version = "0.2.2"
 description = "Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"

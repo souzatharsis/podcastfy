@@ -42,10 +42,6 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 | French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
 | Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
-## Documentation
-
-Documentation for Podcastfy is located at https://podcastfy.readthedocs.io/.
-
 ## Features ✨
 
 - Generate conversational content from multiple-sources and formats (images, websites, YouTube, and PDFs)
@@ -57,13 +53,13 @@ Documentation for Podcastfy is located at https://podcastfy.readthedocs.io/.
 
 ## Updates 🚀
 
-### v0.2.1 release
-- Podcastfy is now multi-modal! Users can now generate audio from images.
+### v0.2.2 release
+- Podcastfy is now multi-modal! Users can generate audio from images as well as text inputs!
+- Added API reference docs and published it to https://podcastfy.readthedocs.io/en/latest/
 
 ### v0.2.0 release
 - Users can now customize podcast style, structure, and content
 - Integration with LangChain for better LLM management
-- and [more...](https://github.com/souzatharsis/podcastfy/discussions/38)
 
 ## Quickstart 💻
 
@@ -90,7 +86,9 @@ python -m podcastfy.client --url <url1> --url <url2>
   
 ## Usage 💻
 
-- [Python Package](podcastfy.ipynb)
+- [Python Package Quickstart](podcastfy.ipynb)
+
+- [API Reference Manual](https://podcastfy.readthedocs.io/en/latest/podcastfy.html)
 
 - [CLI](usage/cli.md)
 

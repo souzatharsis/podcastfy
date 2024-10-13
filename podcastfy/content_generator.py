@@ -54,12 +54,12 @@ class ContentGenerator:
 		Compose the prompt for the LLM based on the content list.
 		"""
 		prompt_template = hub.pull(self.config.get('content_generator', {}).get('prompt_template', 'souzatharsis/podcastfy_multimodal'))
-		
+
 		image_path_keys = []
 		messages=[]
 		text_content = {
 			"type": "text",
-			"text": "text_input"
+			"text": "{input_text}"
 		}
 		messages.append(text_content)
 		for i in range(num_images):
@@ -126,7 +126,7 @@ class ContentGenerator:
 			self.prompt_template, image_path_keys = self.__compose_prompt(len(image_file_paths))
 			self.parser = StrOutputParser()
 			self.chain = (self.prompt_template | self.llm | self.parser)
-			
+
 			prompt_params = self.__compose_prompt_params(image_file_paths, image_path_keys, input_texts)
 
 			self.response = self.chain.invoke(prompt_params)

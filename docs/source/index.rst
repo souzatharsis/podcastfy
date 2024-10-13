@@ -35,7 +35,7 @@ Installation
    
    ``$ pip install podcastfy``
 
-2. Set up your `API keys <usage/config.html>`_
+2. Set up your `API keys <https://github.com/souzatharsis/podcastfy/blob/main/usage/config.md>`_
 
 Python
 ^^^^^^
@@ -56,14 +56,14 @@ Usage
 
 - `Python Package <podcastfy.ipynb>`_
 
-- `CLI <usage/cli.html>`_
+- `CLI <https://github.com/souzatharsis/podcastfy/blob/main/usage/cli.md>`_
 
 Experience Podcastfy with our `HuggingFace <https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo>`_ 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested than the Python package.)
 
 Customization
 -------------
 
-Podcastfy offers a range of `Conversation Customization <usage/conversation_custom.html>`_ options to tailor your AI-generated podcasts. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.
+Podcastfy offers a range of `Conversation Customization <https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md>`_ options to tailor your AI-generated podcasts. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.
 
 
 Collaborate

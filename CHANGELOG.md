@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2] - 2024-10-13
+
+### Added
+- Added API reference docs and published it to https://podcastfy.readthedocs.io/en/latest/
+
+### Fixed 
+- ([#52](https://github.com/user/podcastfy/issues/37)) Fixed simple bug introduced in 0.2.1 that broke the ability to generate podcasts from text inputs!
+- Fixed one example in the documentation that was not working.
 
 ## [0.2.1] - 2024-10-12
 
