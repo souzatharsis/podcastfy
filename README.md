@@ -4,6 +4,7 @@
 [![PyPi Status](https://img.shields.io/pypi/v/podcastfy)](https://pypi.org/project/podcastfy/)
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
 [![Issues](https://img.shields.io/github/issues-raw/souzatharsis/podcastfy)](https://github.com/souzatharsis/podcastfy/issues)
+[![Documentation Status](https://readthedocs.org/projects/podcastfy/badge/?version=latest)](https://podcastfy.readthedocs.io/en/latest/?badge=latest)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
 
@@ -41,8 +42,9 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 | French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
 | Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
+## Documentation
 
-
+Documentation for Podcastfy is located at https://podcastfy.readthedocs.io/.
 
 ## Features ✨
 
