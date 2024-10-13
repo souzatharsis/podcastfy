@@ -7,13 +7,16 @@ provides methods to generate and save the generated content.
 """
 
 import os
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 #from langchain_google_vertexai import ChatVertexAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
+
+from podcastfy.character import Character
+from podcastfy.core.podcast import LLMBackend
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
@@ -51,7 +54,7 @@ class ContentGenerator:
 		
 		self.chain = (self.prompt_template | self.llm | self.parser)
 
-	def generate_qa_content(self, input_texts: str, output_filepath: Optional[str] = None) -> str:
+	def generate_qa_content(self, input_texts: str, output_filepath: Optional[str] = None, characters: List[Character] = None) -> str:
 		"""
 		Generate Q&A content based on input texts.
 
@@ -65,6 +68,7 @@ class ContentGenerator:
 		Raises:
 			Exception: If there's an error in generating content.
 		"""
+		assert len(characters) == 2, "The number of characters should be 2 for this implementation"
 		try:
 			
 			
@@ -72,8 +76,8 @@ class ContentGenerator:
 				"input_text": input_texts,
 				"word_count": self.config_conversation.get('word_count'),
 				"conversation_style": ", ".join(self.config_conversation.get('conversation_style', [])),
-				"roles_person1": self.config_conversation.get('roles_person1'),
-				"roles_person2": self.config_conversation.get('roles_person2'),
+				"roles_person1": characters[0].role,
+				"roles_person2": characters[1].role,
 				"dialogue_structure": ", ".join(self.config_conversation.get('dialogue_structure', [])),
 				"podcast_name": self.config_conversation.get('podcast_name'),
 				"podcast_tagline": self.config_conversation.get('podcast_tagline'),
@@ -95,6 +99,22 @@ class ContentGenerator:
 			logger.error(f"Error generating content: {str(e)}")
 			raise
 
+
+class DefaultPodcastifyTranscriptEngine(LLMBackend):
+	def __init__(self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None):
+		"""
+		Initialize the DefaultPodcastifyTranscriptEngine.
+
+		Args:
+			api_key (str): API key for Google's Generative AI.
+			conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
+		"""
+		self.content_generator = ContentGenerator(api_key, conversation_config)
+
+	def generate_text(self, input_text: str, characters: List[Character]) -> str:
+		return self.content_generator.generate_qa_content(input_text, output_filepath=None, characters=characters)
+
+
 def main(seed: int = 42) -> None:
 	"""
 	Generate Q&A content based on input text from input_text.txt using the Gemini API.
@@ -115,7 +135,7 @@ def main(seed: int = 42) -> None:
 			raise ValueError("GEMINI_API_KEY not found in configuration")
 
 		# Initialize ContentGenerator
-		content_generator = ContentGenerator(api_key)
+		content_generator = DefaultPodcastifyTranscriptEngine(api_key)
 
 		# Read input text from file
 		input_text = ""
@@ -126,7 +146,12 @@ def main(seed: int = 42) -> None:
 					input_text += file.read() + "\n\n"
 
 		# Generate Q&A content
-		response = content_generator.generate_qa_content(input_text)
+		config_conv = load_conversation_config()
+		characters = [
+			Character(name="Speaker 1", role=config_conv.get('roles_person1')),
+			Character(name="Speaker 2", role=config_conv.get('roles_person2')),
+		]
+		response = content_generator.generate_text(input_text, characters)
 
 		# Print the generated Q&A content
 		print("Generated Q&A Content:")
