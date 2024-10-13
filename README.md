@@ -69,7 +69,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - Python 3.11 or higher
 - `$ pip install ffmpeg` (for audio processing)
 
-### Installation
+### Setup
 1. Install from PyPI
   `$ pip install podcastfy`
 

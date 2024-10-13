@@ -34,13 +34,15 @@ langchain = "^0.3.3"
 langchain-google-vertexai = "^2.0.4"
 langchain-google-genai = "^2.0.1"
 httpx = "^0.27.2"
+pandoc = "^2.4"
+sphinx-rtd-theme = "^3.0.1"
+sphinx-autodoc-typehints = "^2.5.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
 black = "^24.8.0"
-sphinx = "7.4.7"
-sphinx-rtd-theme = "2.0.0"
+sphinx = ">=8.0.2"
 nbsphinx = "0.9.5"
 ipykernel = "^6.29.5"
 ffmpeg = "^1.4"
@@ -49,4 +51,9 @@ mypy = "^1.11.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+build_docs = "build_docs:main"
+
+
 

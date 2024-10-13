@@ -1,7 +1,6 @@
 .pypirc
 
 specs/
-docs/
 
 *.whl
 *.wheels
