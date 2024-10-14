@@ -262,7 +262,7 @@ class TextToSpeech:
 		]
 		return processed_matches
 
-	#TODO: Add support for additional tags dynamically given TTS model. Right now it's the intersection of OpenAI/MS Edgeand ElevenLabs supported tags.
+	# to be done: Add support for additional tags dynamically given TTS model. Right now it's the intersection of OpenAI/MS Edgeand ElevenLabs supported tags.
 	def clean_tss_markup(self, input_text: str, additional_tags: List[str] = ["Person1", "Person2"]) -> str:
 		"""
 		Remove unsupported TSS markup tags from the input text while preserving supported SSML tags.
