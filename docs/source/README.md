@@ -4,8 +4,10 @@
 [![PyPi Status](https://img.shields.io/pypi/v/podcastfy)](https://pypi.org/project/podcastfy/)
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
 [![Issues](https://img.shields.io/github/issues-raw/souzatharsis/podcastfy)](https://github.com/souzatharsis/podcastfy/issues)
+[![Documentation Status](https://readthedocs.org/projects/podcastfy/badge/?version=latest)](https://podcastfy.readthedocs.io/en/latest/?badge=latest)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/souzatharsis/podcastfy/blob/main/podcastfy.ipynb)
 
 Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
 
@@ -41,12 +43,9 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 | French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
 | Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
-
-
-
 ## Features ✨
 
-- Generate AI-powered conversational content from multi-sources and formats (images, websites, YouTube, and PDFs)
+- Generate conversational content from multiple-sources and formats (images, websites, YouTube, and PDFs)
 - Customizable transcript and audio generation (e.g. style, language, structure, length)
 - Create podcasts from pre-existing or edited transcripts
 - Support for advanced text-to-speech models (OpenAI and ElevenLabs)
@@ -55,13 +54,13 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Updates 🚀
 
-### v0.2.1 release
-- Podcastfy is now multi-modal! Users can now generate audio from images.
+### v0.2.2 release
+- Podcastfy is now multi-modal! Users can generate audio from images as well as text inputs!
+- Added API reference docs and published it to https://podcastfy.readthedocs.io/en/latest/
 
 ### v0.2.0 release
 - Users can now customize podcast style, structure, and content
 - Integration with LangChain for better LLM management
-- and [more...](https://github.com/souzatharsis/podcastfy/discussions/38)
 
 ## Quickstart 💻
 
@@ -88,11 +87,13 @@ python -m podcastfy.client --url <url1> --url <url2>
   
 ## Usage 💻
 
-- [Python Package](podcastfy.ipynb)
+- [Python Package Quickstart](podcastfy.ipynb)
+
+- [API Reference Manual](https://podcastfy.readthedocs.io/en/latest/podcastfy.html)
 
 - [CLI](usage/cli.md)
 
-Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested than the Python package.)
+Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested and capable than the Python package.)
 
 ## Customization 🔧
 
