@@ -178,6 +178,66 @@ class TextToSpeech:
 		except Exception as e:
 			logger.error(f"Error converting text to speech with OpenAI: {str(e)}")
 			raise
+	
+	def get_or_create_eventloop():
+		try:
+			return asyncio.get_event_loop()
+		except RuntimeError as ex:
+			if "There is no current event loop in thread" in str(ex):
+				loop = asyncio.new_event_loop()
+				asyncio.set_event_loop(loop)
+				return asyncio.get_event_loop()
+
+	import nest_asyncio  # type: ignore
+	get_or_create_eventloop()
+	nest_asyncio.apply()
+
+	def __convert_to_speech_edge(self, text: str, output_file: str) -> None:
+		"""
+		Convert text to speech using Edge TTS.
+
+		Args:
+			text (str): The input text to convert to speech.
+			output_file (str): The path to save the output audio file.
+		"""
+		try:
+			qa_pairs = self.split_qa(text)
+			audio_files = []
+			counter = 0
+
+			async def edge_tts_conversion(text_chunk: str, output_path: str, voice: str):
+				tts = edge_tts.Communicate(text_chunk, voice)
+				await tts.save(output_path)
+				return
+				
+			async def process_qa_pairs(qa_pairs):
+				nonlocal counter
+				tasks = []
+				for question, answer in qa_pairs:
+					for speaker, content in [
+						(self.tts_config['edge']['default_voices']['question'], question),
+						(self.tts_config['edge']['default_voices']['answer'], answer)
+					]:
+						counter += 1
+						file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
+						tasks.append(asyncio.ensure_future(edge_tts_conversion(content, file_name, speaker)))
+						audio_files.append(file_name)
+
+				await asyncio.gather(*tasks)
+
+			asyncio.run(process_qa_pairs(qa_pairs))
+
+			# Merge all audio files
+			self.__merge_audio_files(self.temp_audio_dir, output_file)
+
+			# Clean up individual audio files
+			for file in audio_files:
+				os.remove(file)
+			logger.info(f"Audio saved to {output_file}")		
+
+		except Exception as e:
+			logger.error(f"Error converting text to speech with Edge: {str(e)}")
+			raise
 
 
 	def __convert_to_speech_edge(self, text: str, output_file: str) -> None:
@@ -243,6 +303,7 @@ class TextToSpeech:
 		]
 		return processed_matches
 
+	#TODO: Add support for additional tags dynamically given TTS model. Right now it's the intersection of OpenAI/MS Edgeand ElevenLabs supported tags.
 	def clean_tss_markup(self, input_text: str, additional_tags: List[str] = ["Person1", "Person2"]) -> str:
 		"""
 		Remove unsupported TSS markup tags from the input text while preserving supported SSML tags.
@@ -256,7 +317,7 @@ class TextToSpeech:
 		"""
 		# List of SSML tags supported by both OpenAI and ElevenLabs
 		supported_tags = [
-			'speak', 'break', 'lang', 'p', 'phoneme',
+			'speak', 'lang', 'p', 'phoneme',
 			's', 'say-as', 'sub'
 		]
 
