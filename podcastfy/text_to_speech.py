@@ -2,7 +2,7 @@
 Text-to-Speech Module
 
 This module provides functionality to convert text into speech using various TTS models.
-It supports both ElevenLabs and OpenAI TTS services and handles the conversion process,
+It supports both ElevenLabs, OpenAI and Edge TTS services and handles the conversion process,
 including cleaning of input text and merging of audio files.
 """
 
@@ -26,7 +26,7 @@ class TextToSpeech:
 
 		Args:
 			model (str): The model to use for text-to-speech conversion. 
-						 Options are 'elevenlabs' or 'openai'. Defaults to 'openai'.
+						 Options are 'elevenlabs', 'openai' or 'edge'. Defaults to 'openai'.
 			api_key (Optional[str]): API key for the selected text-to-speech service.
 						   If not provided, it will be loaded from the config.
 		"""
@@ -43,7 +43,7 @@ class TextToSpeech:
 		elif self.model == 'edge':
 			pass
 		else:
-			raise ValueError("Invalid model. Choose 'elevenlabs' or 'openai' or 'edge'.")
+			raise ValueError("Invalid model. Choose 'elevenlabs', 'openai' or 'edge'.")
 
 		self.audio_format = self.tts_config['audio_format']
 		self.temp_audio_dir = self.tts_config['temp_audio_dir']
@@ -307,6 +307,12 @@ def main(seed: int = 42) -> None:
 		openai_output_file = 'tests/data/response_openai.mp3'
 		tts_openai.convert_to_speech(input_text, openai_output_file)
 		logger.info(f"OpenAI TTS completed. Output saved to {openai_output_file}")
+
+		# Test OpenAI
+		tts_edge = TextToSpeech(model='edge')
+		edge_output_file = 'tests/data/response_edge.mp3'
+		tts_edge.convert_to_speech(input_text, edge_output_file)
+		logger.info(f"Edge TTS completed. Output saved to {edge_output_file}")
 
 	except Exception as e:
 		logger.error(f"An error occurred during text-to-speech conversion: {str(e)}")

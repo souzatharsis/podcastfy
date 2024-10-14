@@ -35,6 +35,14 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 - `model`: "tts-1-hd"
   - The OpenAI TTS model to use.
 
+### Edge TTS
+
+- `default_voices`:
+  - `question`: "en-US-JennyNeural"
+    - Default voice for questions using Edge TTS.
+  - `answer`: "en-US-EricNeural"
+    - Default voice for answers using Edge TTS.
+
 ### General TTS Settings
 
 - `audio_format`: "mp3"

@@ -47,7 +47,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - Generate conversational content from multiple-sources and formats (images, websites, YouTube, and PDFs)
 - Customizable transcript and audio generation (e.g. style, language, structure, length)
 - Create podcasts from pre-existing or edited transcripts
-- Support for advanced text-to-speech models (OpenAI and ElevenLabs)
+- Support for advanced text-to-speech models (OpenAI, ElevenLabs and Edge)
 - Seamless CLI and Python package integration for automated workflows
 - Multi-language support for global content creation (experimental!)
 
