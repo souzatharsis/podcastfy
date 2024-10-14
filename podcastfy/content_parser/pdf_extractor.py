@@ -6,7 +6,7 @@ It handles the reading of PDF files, text extraction, and normalization of
 the extracted content, including handling of special characters and accents.
 """
 
-import pymupdf
+import pypdf
 import logging
 import os
 import unicodedata
@@ -27,14 +27,13 @@ class PDFExtractor:
 			str: Extracted text content with accents removed and properly handled characters.
 		"""
 		try:
-			doc = pymupdf.open(file_path)
-			content = " ".join(page.get_text() for page in doc)
-			doc.close()
-			
-			# Normalize the text to handle special characters and remove accents
-			normalized_content = unicodedata.normalize('NFKD', content)
+			with open(file_path, 'rb') as file:
+				reader = pypdf.PdfReader(file)
+				content = " ".join(page.extract_text() for page in reader.pages)
+				# Normalize the text to handle special characters and remove accents
+				normalized_content = unicodedata.normalize('NFKD', content)
 
-			return normalized_content
+				return normalized_content
 		except Exception as e:
 			logger.error(f"Error extracting PDF content: {str(e)}")
 			raise
