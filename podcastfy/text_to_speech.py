@@ -43,7 +43,7 @@ class TextToSpeech:
 		elif self.model == 'edge-tts':
 			pass
 		else:
-			raise ValueError("Invalid model. Choose 'elevenlabs' or 'openai'.")
+			raise ValueError("Invalid model. Choose 'elevenlabs' or 'openai' or 'edge-tts'.")
 
 		self.audio_format = self.tts_config['audio_format']
 		self.temp_audio_dir = self.tts_config['temp_audio_dir']
