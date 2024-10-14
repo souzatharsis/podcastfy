@@ -7,16 +7,14 @@ provides methods to generate and save the generated content.
 """
 
 import os
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Tuple
 
-#from langchain_google_vertexai import ChatVertexAI
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
 
-from podcastfy.character import Character
-from podcastfy.core.podcast import LLMBackend
+from podcastfy.core.character import Character
+from podcastfy.aiengines.llm.base import LLMBackend
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
@@ -111,8 +109,20 @@ class DefaultPodcastifyTranscriptEngine(LLMBackend):
 		"""
 		self.content_generator = ContentGenerator(api_key, conversation_config)
 
-	def generate_text(self, input_text: str, characters: List[Character]) -> str:
-		return self.content_generator.generate_qa_content(input_text, output_filepath=None, characters=characters)
+	def generate_transcript(self, prompt: str, characters: List[Character]) -> List[Tuple[Character, str]]:
+		content = self.content_generator.generate_qa_content(prompt, output_filepath=None, characters=characters)
+		
+		# Parse the generated content into the required format
+		transcript = []
+		for line in content.split('\n'):
+			if ':' in line:
+				speaker_name, text = line.split(':', 1)
+				speaker = next((char for char in characters if char.name == speaker_name.strip()), None)
+				if speaker:
+					transcript.append((speaker, text.strip()))
+		
+		return transcript
+
 
 
 def main(seed: int = 42) -> None:
@@ -151,7 +161,7 @@ def main(seed: int = 42) -> None:
 			Character(name="Speaker 1", role=config_conv.get('roles_person1')),
 			Character(name="Speaker 2", role=config_conv.get('roles_person2')),
 		]
-		response = content_generator.generate_text(input_text, characters)
+		response = content_generator.generate_transcript(input_text, characters)
 
 		# Print the generated Q&A content
 		print("Generated Q&A Content:")
