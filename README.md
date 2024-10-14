@@ -18,6 +18,8 @@ Podcastfy is an open-source Python package that transforms multi-modal content (
 
 Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources enabling customization and scale.
 
+[![Star History Chart](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)
+
 ## Audio Examples 🔊
 This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy).
 
