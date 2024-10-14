@@ -71,8 +71,8 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 
 		if generate_audio:
 			api_key = None
-			# edge-tts does not require an API key
-			if tts_model != "edge-tts":
+			# edge does not require an API key
+			if tts_model != "edge":
 				api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
 				
 			text_to_speech = TextToSpeech(model=tts_model, api_key=api_key)

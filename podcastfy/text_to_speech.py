@@ -40,10 +40,10 @@ class TextToSpeech:
 		elif self.model == 'openai':
 			self.api_key = api_key or self.config.OPENAI_API_KEY
 			openai.api_key = self.api_key
-		elif self.model == 'edge-tts':
+		elif self.model == 'edge':
 			pass
 		else:
-			raise ValueError("Invalid model. Choose 'elevenlabs' or 'openai' or 'edge-tts'.")
+			raise ValueError("Invalid model. Choose 'elevenlabs' or 'openai' or 'edge'.")
 
 		self.audio_format = self.tts_config['audio_format']
 		self.temp_audio_dir = self.tts_config['temp_audio_dir']
@@ -100,8 +100,8 @@ class TextToSpeech:
 			self.__convert_to_speech_elevenlabs(cleaned_text, output_file)
 		elif self.model == 'openai':
 			self.__convert_to_speech_openai(cleaned_text, output_file)
-		elif self.model == 'edge-tts':
-			self.__convert_to_speech_edge_tts(cleaned_text, output_file)
+		elif self.model == 'edge':
+			self.__convert_to_speech_edge(cleaned_text, output_file)
 
 	def __convert_to_speech_elevenlabs(self, text: str, output_file: str) -> None:
 		try:
@@ -180,7 +180,7 @@ class TextToSpeech:
 			raise
 
 
-	def __convert_to_speech_edge_tts(self, text: str, output_file: str) -> None:
+	def __convert_to_speech_edge(self, text: str, output_file: str) -> None:
 		try:
 			qa_pairs = self.split_qa(text)
 			audio_files = []
@@ -192,8 +192,8 @@ class TextToSpeech:
 
 			for question, answer in qa_pairs:
 				for speaker, content in [
-					(self.tts_config['edge_tts']['default_voices']['question'], question),
-					(self.tts_config['edge_tts']['default_voices']['answer'], answer)
+					(self.tts_config['edge']['default_voices']['question'], question),
+					(self.tts_config['edge']['default_voices']['answer'], answer)
 				]:
 					counter += 1
 					file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
@@ -210,7 +210,7 @@ class TextToSpeech:
 			logger.info(f"Audio saved to {output_file}")
 
 		except Exception as e:
-			logger.error(f"Error converting text to speech with Edge-TTS: {str(e)}")
+			logger.error(f"Error converting text to speech with Edge: {str(e)}")
 			raise
 
 

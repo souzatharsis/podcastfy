@@ -13,7 +13,7 @@ text_to_speech:
       question: "echo"
       answer: "shimmer"
     model: "tts-1-hd"
-  edge_tts:
+  edge:
     default_voices:
       question: "en-US-JennyNeural"
       answer: "en-US-EricNeural"
