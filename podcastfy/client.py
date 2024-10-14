@@ -31,7 +31,7 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 	Args:
 			urls (Optional[List[str]]): A list of URLs to process.
 			transcript_file (Optional[str]): Path to a transcript file.
-			tts_model (str): The TTS model to use ('openai' or 'elevenlabs'). Defaults to 'openai'.
+			tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'openai'.
 			generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
 			config (Config): Configuration object to use. If None, default config will be loaded.
 			conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
@@ -70,9 +70,12 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 			)
 
 		if generate_audio:
-			text_to_speech = TextToSpeech(
-				model=tts_model, api_key=getattr(config, f"{tts_model.upper()}_API_KEY")
-			)
+			api_key = None
+			# edge does not require an API key
+			if tts_model != "edge":
+				api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
+				
+			text_to_speech = TextToSpeech(model=tts_model, api_key=api_key)
 			# Convert text to speech using the specified model
 			random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
 			audio_file = os.path.join(config.get('output_directories')['audio'], random_filename)
@@ -98,7 +101,7 @@ def main(
 		None, "--transcript", "-t", help="Path to a transcript file"
 	),
 	tts_model: str = typer.Option(
-		None, "--tts-model", "-tts", help="TTS model to use (openai or elevenlabs)"
+		None, "--tts-model", "-tts", help="TTS model to use (openai, elevenlabs or edge)"
 	),
 	transcript_only: bool = typer.Option(
 		False, "--transcript-only", help="Generate only a transcript without audio"
@@ -183,7 +186,7 @@ def generate_podcast(
 		urls (Optional[List[str]]): List of URLs to process.
 		url_file (Optional[str]): Path to a file containing URLs, one per line.
 		transcript_file (Optional[str]): Path to a transcript file.
-		tts_model (Optional[str]): TTS model to use ('openai' or 'elevenlabs').
+		tts_model (Optional[str]): TTS model to use ('openai', 'elevenlabs' or 'edge').
 		transcript_only (bool): Generate only a transcript without audio. Defaults to False.
 		config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
 		conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.

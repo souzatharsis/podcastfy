@@ -38,6 +38,7 @@ pandoc = "^2.4"
 sphinx-rtd-theme = "^3.0.1"
 sphinx-autodoc-typehints = "^2.5.0"
 nbsphinx = "^0.9.5"
+edge-tts = "^6.1.12"
 
 
 [tool.poetry.group.dev.dependencies]
