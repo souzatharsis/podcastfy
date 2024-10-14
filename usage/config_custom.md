@@ -20,7 +20,7 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 - `default_voices`:
   - `question`: "Chris"
     - Default voice for questions in the podcast.
-  - `answer`: "BrittneyHart"
+  - `answer`: "Jessica"
     - Default voice for answers in the podcast.
 - `model`: "eleven_multilingual_v2"
   - The ElevenLabs TTS model to use.
@@ -34,6 +34,14 @@ See [conversation_custom.md](conversation_custom.md) for more details.
     - Default voice for answers using OpenAI TTS.
 - `model`: "tts-1-hd"
   - The OpenAI TTS model to use.
+
+### Edge TTS
+
+- `default_voices`:
+  - `question`: "en-US-JennyNeural"
+    - Default voice for questions using Edge TTS.
+  - `answer`: "en-US-EricNeural"
+    - Default voice for answers using Edge TTS.
 
 ### General TTS Settings
 
