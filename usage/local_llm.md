@@ -1,6 +1,12 @@
 # Local LLM Support
 
-We enable serving local LLMs with llamafile. In the API, Local LLM support is available through the `is_local` parameter. If `is_local=True', then a local (llamafile) LLM model is used to generate the podcast transcript. Llamafiles of LLM models can be found on [HuggingFace today offering 156+ models](https://huggingface.co/models?library=llamafile).
+Running local LLMs can offer several advantages such as:
+- Enhanced privacy and data security
+- Cost control and no API rate limits
+- Greater customization and fine-tuning options
+- Reduced vendor lock-in
+
+We enable serving local LLMs with [llamafile](https://github.com/Mozilla-Ocho/llamafile). In the API, local LLM support is available through the `is_local` parameter. If `is_local=True`, then a local (llamafile) LLM model is used to generate the podcast transcript. Llamafiles of LLM models can be found on [HuggingFace, which today offers 156+ models](https://huggingface.co/models?library=llamafile).
 
 All you need to do is:
 
