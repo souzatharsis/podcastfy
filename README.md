@@ -101,10 +101,10 @@ Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatup
 
 ## Customization 🔧
 
-Podcastfy offers a range of [Conversation Customization](usage/conversation_custom.md) options to tailor your AI-generated podcasts:
+Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
 - Customize podcast [Conversation](usage/conversation_custom.md) (e.g. format, style)
-- Choose to run [Local LLMs](usage/local_llm.md)
-- Set [System Settings](usage/config_custom.md), such as text-to-speech and file directory settings
+- Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
+- Set [System Settings](usage/config_custom.md) (e.g. text-to-speech and output directory settings)
 
 ## Contributing 🤝
 
