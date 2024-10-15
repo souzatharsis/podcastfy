@@ -18,6 +18,17 @@ API Key Requirements:
 
 Ensure you have the necessary API keys based on your intended usage of Podcastfy. Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
 
+## Example Configurations
+
+Here's a table showing example configurations:
+
+| Configuration | Base LLM | TTS Model | API Keys Required |
+|---------------|----------|-----------|-------------------|
+| Default | Gemini | OpenAI | GEMINI_API_KEY and OPENAI_API_KEY |
+| No API Keys Required | Local LLM | Edge | None |
+| Optimal | Gemini | ElevenLabs | GEMINI_API_KEY and ELEVENLABS_API_KEY |
+
+
 ## Conversation Configuration
 
 See [conversation_custom.md](conversation_custom.md) for more details.
