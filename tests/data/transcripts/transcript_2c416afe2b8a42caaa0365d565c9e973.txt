@@ -1,0 +1,37 @@
+<Person1> <emphasis>Welcome to PODCASTFY  - Your Personal Generative AI Podcast.</emphasis> Today, we're diving into the world of data science and finance with a true innovator.  Get ready to be inspired by the journey of Tharsis Souza! </Person1>
+
+<Person2> <emphasis>Tharsis Souza?</emphasis> The name rings a bell.  He's big in the data world, right? Tell me more! </Person2>
+
+<Person1> Absolutely!  Tharsis Souza is a prominent figure, particularly in the realm of data-driven products. He's currently leading the charge as the Senior Vice President of Product Management and Modeling Engineering at Two Sigma Investments. </Person1>
+
+<Person2> Two Sigma Investments!  They're known for their cutting-edge use of technology and data in finance.  It sounds like Tharsis Souza fits right in! </Person2>
+
+<Person1> He certainly does! And his expertise isn't confined to Two Sigma. He's also sharing his knowledge as a lecturer at Columbia University, shaping the minds of future data scientists in their Master of Science in Applied Analytics program. </Person1>
+
+<Person2> Wow, talk about an impressive background!  But how did he get to where he is now?  What led him down this path of data and finance? </Person2>
+
+<Person1> Well, Tharsis has a rich history of innovation. Before Two Sigma, he spent over a decade developing new technology products across a range of companies, from budding startups to Fortune 500 giants.  And his reach is global – he's made his mark in the U.S., Brazil, and the U.K. </Person1>
+
+<Person2> That's quite the international journey!  It sounds like he's always been driven to push boundaries and explore new frontiers in technology. </Person2>
+
+<Person1> Precisely! And his influence extends beyond the corporate world.  He's a respected voice in academia, authoring scholarly publications and frequently speaking at both academic and business conferences. </Person1>
+
+<Person2> So, he's not just applying data science, he's actively shaping the field itself.  That's incredible! </Person2>
+
+<Person1> Exactly! And it's clear that Tharsis is passionate about fostering the next generation of data professionals.  He's known for his dedication to mentoring under-represented students and working professionals, guiding them as they navigate the world of data science. </Person1>
+
+<Person2> That's truly inspiring!  It's one thing to achieve success, but it's another level to use that success to lift others up.  It speaks volumes about his character. </Person2>
+
+<Person1> I completely agree.  And his commitment to education is evident in his own academic journey.  Tharsis holds a Ph.D. in Computer Science from the prestigious UCL, University of London.  He earned his stripes with an M.Phil. and M.Sc. in Computer Science, building on a solid foundation from his B.Sc. in Computer Engineering. </Person1>
+
+<Person2> Wow, that's a lot of degrees!  He clearly believes in the power of knowledge and continuous learning. </Person2>
+
+<Person1> Absolutely!  And for those who want to delve deeper into his insights, Tharsis has given several interviews and talks.  He was featured in the "Mentorship Spotlight: Tharsis Souza, Two Sigma," shared his expertise on the "Innovative Data Panel" at the FactSet Investment Process Symposium, and provided valuable perspectives in an interview for "BattleFin Alternative Data." </Person1>
+
+<Person2> It sounds like he's generously sharing his knowledge across various platforms.  Are there any other interviews or talks worth checking out? </Person2>
+
+<Person1> Definitely!  He was also featured in "Beryl Elites - The Disruptors in Investment Management," offering a glimpse into his vision for the future of finance. </Person1>
+
+<Person2> It's amazing to see someone so accomplished and yet so dedicated to sharing their knowledge and lifting others up.  Tharsis Souza is a true inspiration for aspiring data scientists and anyone passionate about the power of data. </Person2>
+
+<Person1> I couldn't agree more!  He's a testament to the impact one person can have through a combination of expertise, innovation, and a genuine desire to make a difference.  And there you have it, the inspiring journey of Tharsis Souza! <emphasis>This has been PODCASTFY  - Your Personal Generative AI Podcast. Tune in next time for more inspiring stories. </emphasis> </Person1> 

@@ -1,0 +1,37 @@
+<Person1> <emphasis>Welcome to PODCASTFY - Your Personal Generative AI Podcast.</emphasis> Today, we're diving into the world of data science and finance with the impressive career of Tharsis Souza!  </Person1> 
+
+<Person2> <emphasis>Data-driven products and investment strategies are super hot right now, so this should be fascinating! </emphasis> So, what's the most interesting thing about his career path? </Person2>
+
+<Person1> Well, he's currently the Senior Vice President of Product Management, Modeling Engineering at Two Sigma Investments. <emphasis>Two Sigma is known for its cutting-edge use of technology and data in finance, so he's definitely at the forefront of the field.</emphasis> </Person1>
+
+<Person2> <emphasis>Wow, that's impressive! </emphasis> But it sounds like he's not just a tech whiz. He's also a lecturer at Columbia University for their Master's in Applied Analytics program. That's quite the combination! </Person2>
+
+<Person1> Absolutely! <emphasis>It seems like he really enjoys bridging the gap between academia and the industry. </emphasis> And get this, before Two Sigma, he spent over 10 years launching new tech products in various companies, from startups to Fortune 500s. Talk about a diverse background! </Person1>
+
+<Person2> <emphasis>That's a lot of experience! </emphasis> He must have some incredible insights from working in such different environments.  </Person2>
+
+<Person1> You're telling me! And it shows! He's authored scholarly publications and is a regular speaker at conferences. <emphasis>It seems like he's passionate about sharing his knowledge. </emphasis> </Person1>
+
+<Person2> That's awesome!  It sounds like he's really made a name for himself.  </Person2>
+
+<Person1> He has! And he's also passionate about mentorship, especially for under-represented students and professionals. <emphasis>It's really inspiring to see someone so accomplished giving back in such a meaningful way.</emphasis> </Person1>
+
+<Person2> I agree!  So, how did he get to where he is now? What did he study? </Person2>
+
+<Person1> Well, hold on to your hats because this is impressive. He has a Ph.D. in Computer Science from UCL, University of London. And before that, he earned not one, but two Master's degrees, an M.Phil. and an M.Sc., also in Computer Science.  </Person1>
+
+<Person2> Wow, he wasn't kidding about being passionate about data!  </Person2>
+
+<Person1> Not at all! And he even has a Bachelor's in Computer Engineering. <emphasis>Talk about a solid foundation for a career in tech!</emphasis> </Person1>
+
+<Person2> Absolutely!  So, where can our listeners go to learn more about him and his work? </Person2>
+
+<Person1> Well, there are several interviews and talks available online. He was featured in a Mentorship Spotlight by Two Sigma, participated in an Innovative Data Panel at the FactSet Investment Process Symposium, and was interviewed for BattleFin Alternative Data and Beryl Elites - The Disruptors in Investment Management.  </Person1>
+
+<Person2> <emphasis>It sounds like he's got a lot of wisdom to share! </emphasis> I'm definitely going to check those out.  </Person2>
+
+<Person1> Me too!  Tharsis Souza's career is a testament to the power of combining technical expertise with a passion for using data to make a real-world impact.  <emphasis>He's definitely someone to watch in the world of data science and finance.</emphasis> </Person1>
+
+<Person2> Absolutely!  Thanks for bringing his story to us today.  </Person2>
+
+<Person1> My pleasure!  And thank you for listening to PODCASTFY - Your Personal Generative AI Podcast.  Until next time! </Person1> 

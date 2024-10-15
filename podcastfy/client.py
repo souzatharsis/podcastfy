@@ -24,7 +24,8 @@ app = typer.Typer()
 
 
 def process_content(urls=None, transcript_file=None, tts_model="openai", generate_audio=True, config=None, 
-                    conversation_config: Optional[Dict[str, Any]] = None, image_paths: Optional[List[str]] = None):
+                    conversation_config: Optional[Dict[str, Any]] = None, image_paths: Optional[List[str]] = None,
+                    is_local: bool = False):
 	"""
 	Process URLs, a transcript file, or image paths to generate a podcast or transcript.
 
@@ -36,6 +37,7 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 			config (Config): Configuration object to use. If None, default config will be loaded.
 			conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
 			image_paths (Optional[List[str]]): List of image file paths to process.
+			is_local (bool): Whether to use a local LLM. Defaults to False.
 
 	Returns:
 			Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
@@ -66,7 +68,7 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 			random_filename = f"transcript_{uuid.uuid4().hex}.txt"
 			transcript_filepath = os.path.join(config.get('output_directories')['transcripts'], random_filename)
 			qa_content = content_generator.generate_qa_content(
-				combined_content, image_file_paths=image_paths or [], output_filepath=transcript_filepath
+				combined_content, image_file_paths=image_paths or [], output_filepath=transcript_filepath, is_local=is_local
 			)
 
 		if generate_audio:
@@ -113,6 +115,9 @@ def main(
 	image_paths: List[str] = typer.Option(
 		None, "--image", "-i", help="Paths to image files to process"
 	),
+	is_local: bool = typer.Option(
+		False, "--local", "-l", help="Use a local LLM instead of a remote one (http://localhost:8080)"
+	),
 ):
 	"""
 	Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -132,7 +137,8 @@ def main(
 				tts_model=tts_model,
 				generate_audio=not transcript_only,
 				conversation_config=conversation_config,
-				config=config
+				config=config,
+				is_local=is_local
 			)
 		else:
 			urls_list = urls or []
@@ -150,7 +156,8 @@ def main(
 				generate_audio=not transcript_only,
 				config=config,
 				conversation_config=conversation_config,
-				image_paths=image_paths
+				image_paths=image_paths,
+				is_local=is_local
 			)
 
 		if transcript_only:
@@ -177,7 +184,8 @@ def generate_podcast(
 	transcript_only: bool = False,
 	config: Optional[Dict[str, Any]] = None,
 	conversation_config: Optional[Dict[str, Any]] = None,
-	image_paths: Optional[List[str]] = None
+	image_paths: Optional[List[str]] = None,
+	is_local: bool = False
 ) -> Optional[str]:
 	"""
 	Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -191,6 +199,7 @@ def generate_podcast(
 		config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
 		conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.
 		image_paths (Optional[List[str]]): List of image file paths to process.
+		is_local (bool): Whether to use a local LLM. Defaults to False.
 
 	Returns:
 		Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
@@ -213,7 +222,8 @@ def generate_podcast(
 		...         'word_count': 150,
 		...         'conversation_style': ['informal', 'friendly'],
 		...         'podcast_name': 'My Custom Podcast'
-		...     }
+		...     },
+		...     is_local=True
 		... )
 	"""
 	try:
@@ -248,7 +258,8 @@ def generate_podcast(
 				tts_model=tts_model,
 				generate_audio=not transcript_only,
 				config=default_config,
-				conversation_config=conversation_config
+				conversation_config=conversation_config,
+				is_local=is_local
 			)
 		else:
 			urls_list = urls or []
@@ -267,7 +278,8 @@ def generate_podcast(
 				generate_audio=not transcript_only,
 				config=default_config,
 				conversation_config=conversation_config,
-				image_paths=image_paths
+				image_paths=image_paths,
+				is_local=is_local
 			)
 
 	except Exception as e:

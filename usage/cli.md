@@ -47,7 +47,11 @@ Please make sure you follow configuration instructions first - [See Setup](READM
    ```
    python -m podcastfy.client --url https://example.com/article1 --image path/to/image1.jpg
    ```
-
+   
+10. Generate a transcript using a local LLM:
+   ```
+   python -m podcastfy.client --url https://example.com/article1 --transcript-only --local
+   ```
 For more information on available options, use:
    ```
    python -m podcastfy.client --help
