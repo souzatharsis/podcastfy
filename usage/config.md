@@ -24,6 +24,10 @@ Ensure you have the necessary API keys based on your intended usage of Podcastfy
 
 See [conversation_custom.md](conversation_custom.md) for more details.
 
+## Running Local LLMs
+
+See [local_llm.md](local_llm.md) for more details.
+
 ## Optional configuration
 
 The `config.yaml` file in the root directory contains non-sensitive configuration settings. You can modify this file to adjust various parameters such as output directories, text-to-speech settings, and content generation options.
