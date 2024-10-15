@@ -30,7 +30,7 @@ class AudioSegment:
 
 
 class AudioManager:
-    def __init__(self, tts_backends: Dict[str, Union[SyncTTSBackend, AsyncTTSBackend]], n_jobs: int = 1) -> None:
+    def __init__(self, tts_backends: Dict[str, Union[SyncTTSBackend, AsyncTTSBackend]], n_jobs: int = 4) -> None:
         self.tts_backends = tts_backends
         self.n_jobs = n_jobs
         self.audio_segments = []

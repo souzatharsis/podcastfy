@@ -7,7 +7,7 @@ from podcastfy.content_generator import ContentGenerator
 from podcastfy.utils.config import Config
 from podcastfy.utils.config_conversation import ConversationConfig
 
-#TODO: Should be a fixture
+# TODO: Should be a fixture
 def sample_conversation_config():
     conversation_config = {
         "word_count": 2000,
@@ -19,9 +19,10 @@ def sample_conversation_config():
         "podcast_tagline": "Learning Through Conversation",
         "output_language": "English",
         "engagement_techniques": ["examples", "questions", "case studies"],
-        "creativity": 0
+        "creativity": 0,
     }
     return conversation_config
+
 
 class TestGenAIPodcast(unittest.TestCase):
     def setUp(self):
@@ -31,9 +32,6 @@ class TestGenAIPodcast(unittest.TestCase):
         config = Config()
         self.api_key = config.GEMINI_API_KEY
 
-
-
-    
     def test_generate_qa_content(self):
         """
         Test the generate_qa_content method of ContentGenerator.
@@ -56,21 +54,29 @@ class TestGenAIPodcast(unittest.TestCase):
         conversation_config = sample_conversation_config()
         content_generator = ContentGenerator(self.api_key, conversation_config)
         input_text = "Artificial Intelligence in Education"
-        
+
         result = content_generator.generate_qa_content(input_text)
 
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
-        
+
         # Check for elements from the custom config
         self.assertIn(conversation_config["podcast_name"], result)
         self.assertIn(conversation_config["podcast_tagline"], result)
-        self.assertTrue(any(role in result.lower() for role in [conversation_config["roles_person1"], 
-                                                                conversation_config["roles_person2"]]))
-        
+        self.assertTrue(
+            any(
+                role in result.lower()
+                for role in [
+                    conversation_config["roles_person1"],
+                    conversation_config["roles_person2"],
+                ]
+            )
+        )
+
         # Check word count (allow some flexibility)
         word_count = len(result.split())
+
 
 if __name__ == "__main__":
     unittest.main()

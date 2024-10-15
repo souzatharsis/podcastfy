@@ -4,7 +4,7 @@ import typer
 from pathlib import Path
 from typing import List, Optional, Dict, Any, Union
 
-from podcastfy.aiengines.llm.legacy_gemini_langchain import DefaultPodcastifyTranscriptEngine
+from podcastfy.aiengines.llm.gemini_langchain import DefaultPodcastifyTranscriptEngine
 from podcastfy.aiengines.tts.tts_backends import OpenAITTS, ElevenLabsTTS, EdgeTTS
 from podcastfy.core.character import Character
 from podcastfy.core.podcast import Podcast, SyncTTSBackend, AsyncTTSBackend
@@ -18,35 +18,54 @@ logger = setup_logger(__name__)
 
 app = typer.Typer()
 
+
 def create_characters(config: Dict[str, Any]) -> List[Character]:
     host = Character(
         name="Host",
         role="Podcast host",
         tts_configs={
-            "openai": TTSConfig(voice=config["text_to_speech"]["openai"]["default_voices"]["question"], backend="openai"),
-            "elevenlabs": TTSConfig(voice=config["text_to_speech"]["elevenlabs"]["default_voices"]["question"], backend="elevenlabs"),
+            "openai": TTSConfig(
+                voice=config["text_to_speech"]["openai"]["default_voices"]["question"],
+                backend="openai",
+            ),
+            "elevenlabs": TTSConfig(
+                voice=config["text_to_speech"]["elevenlabs"]["default_voices"][
+                    "question"
+                ],
+                backend="elevenlabs",
+            ),
         },
-        default_description_for_llm="{name} is an enthusiastic podcast host. Speaks clearly and engagingly."
+        default_description_for_llm="{name} is an enthusiastic podcast host. Speaks clearly and engagingly.",
     )
 
     guest = Character(
         name="Guest",
         role="Expert guest",
         tts_configs={
-            "openai": TTSConfig(voice=config["text_to_speech"]["openai"]["default_voices"]["answer"], backend="openai"),
-            "elevenlabs": TTSConfig(voice=config["text_to_speech"]["elevenlabs"]["default_voices"]["answer"], backend="elevenlabs"),
+            "openai": TTSConfig(
+                voice=config["text_to_speech"]["openai"]["default_voices"]["answer"],
+                backend="openai",
+            ),
+            "elevenlabs": TTSConfig(
+                voice=config["text_to_speech"]["elevenlabs"]["default_voices"][
+                    "answer"
+                ],
+                backend="elevenlabs",
+            ),
         },
-        default_description_for_llm="{name} is an expert guest. Shares knowledge in a friendly manner."
+        default_description_for_llm="{name} is an expert guest. Shares knowledge in a friendly manner.",
     )
 
     return [host, guest]
+
 
 def create_tts_backends(config: Config) -> List[Union[SyncTTSBackend, AsyncTTSBackend]]:
     return [
         OpenAITTS(api_key=config.OPENAI_API_KEY),
         ElevenLabsTTS(api_key=config.ELEVENLABS_API_KEY),
-        EdgeTTS()
+        EdgeTTS(),
     ]
+
 
 def process_links(
     links: List[str],
@@ -54,7 +73,7 @@ def process_links(
     tts_model: str = "openai",  # could be removed now ?
     generate_audio: bool = True,
     config: Optional[Config] = None,
-    conversation_config: Optional[Dict[str, Any]] = None
+    conversation_config: Optional[Dict[str, Any]] = None,
 ) -> Podcast:
     if config is None:
         config = load_config()
@@ -62,12 +81,16 @@ def process_links(
     tts_backends = create_tts_backends(config)
     if transcript_file:
         logger.info(f"Using transcript file: {transcript_file}")
-        transcript = Transcript.load(transcript_file, {char.name: char for char in characters})
+        transcript = Transcript.load(
+            transcript_file, {char.name: char for char in characters}
+        )
         podcast = Podcast.from_transcript(transcript, tts_backends, characters)
     else:
         logger.info(f"Processing {len(links)} links")
         content_extractor = ContentExtractor(config.JINA_API_KEY)
-        content_generator = DefaultPodcastifyTranscriptEngine(config.GEMINI_API_KEY, conversation_config)
+        content_generator = DefaultPodcastifyTranscriptEngine(
+            config.GEMINI_API_KEY, conversation_config
+        )
 
         contents = [content_extractor.extract_content(link) for link in links]
         combined_content = "\n\n".join(contents)
@@ -92,21 +115,36 @@ def process_links(
 @app.command()
 def main(
     urls: List[str] = typer.Option(None, "--url", "-u", help="URLs to process"),
-    file: typer.FileText = typer.Option(None, "--file", "-f", help="File containing URLs, one per line"),
-    transcript: typer.FileText = typer.Option(None, "--transcript", "-t", help="Path to a transcript file"),
-    tts_model: str = typer.Option(None, "--tts-model", "-tts", help="TTS model to use (openai or elevenlabs)"),
-    transcript_only: bool = typer.Option(False, "--transcript-only", help="Generate only a transcript without audio"),
-    conversation_config: str = typer.Option(None, "--conversation-config", "-cc", help="Path to custom conversation configuration YAML file"),
-    output_dir: str = typer.Option("./output", "--output-dir", "-o", help="Directory to save output files"),
+    file: typer.FileText = typer.Option(
+        None, "--file", "-f", help="File containing URLs, one per line"
+    ),
+    transcript: typer.FileText = typer.Option(
+        None, "--transcript", "-t", help="Path to a transcript file"
+    ),
+    tts_model: str = typer.Option(
+        None, "--tts-model", "-tts", help="TTS model to use (openai or elevenlabs)"
+    ),
+    transcript_only: bool = typer.Option(
+        False, "--transcript-only", help="Generate only a transcript without audio"
+    ),
+    conversation_config: str = typer.Option(
+        None,
+        "--conversation-config",
+        "-cc",
+        help="Path to custom conversation configuration YAML file",
+    ),
+    output_dir: str = typer.Option(
+        "./output", "--output-dir", "-o", help="Directory to save output files"
+    ),
 ):
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, or a transcript file.
     """
     try:
         config = load_config()
-        main_config = config.config.get('main', {})
+        main_config = config.config.get("main", {})
         if tts_model is None:
-            tts_model = main_config.get('default_tts_model', 'openai')
+            tts_model = main_config.get("default_tts_model", "openai")
 
         urls_list = urls or []
         if file:
@@ -123,7 +161,7 @@ def main(
             tts_model=tts_model,
             generate_audio=not transcript_only,
             config=config,
-            conversation_config=conversation_config
+            conversation_config=conversation_config,
         )
 
         output_dir = Path(output_dir)
@@ -138,15 +176,19 @@ def main(
             podcast.save(str(audio_file))
             transcript_file = output_dir / f"transcript_{uuid.uuid4().hex}.txt"
             podcast.export_transcript(str(transcript_file))
-            typer.echo(f"Podcast generated successfully using {tts_model} TTS model: {audio_file}")
+            typer.echo(
+                f"Podcast generated successfully using {tts_model} TTS model: {audio_file}"
+            )
             typer.echo(f"Transcript saved to: {transcript_file}")
 
     except Exception as e:
         typer.echo(f"An error occurred: {str(e)}", err=True)
         raise typer.Exit(code=1)
 
+
 if __name__ == "__main__":
     app()
+
 
 def generate_podcast(
     urls: Optional[List[str]] = None,
@@ -155,7 +197,7 @@ def generate_podcast(
     tts_model: Optional[str] = None,
     transcript_only: bool = False,
     config: Optional[Dict[str, Any]] = None,
-    conversation_config: Optional[Dict[str, Any]] = None
+    conversation_config: Optional[Dict[str, Any]] = None,
 ) -> Podcast:
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, or a transcript file.
@@ -206,16 +248,18 @@ def generate_podcast(
             elif isinstance(config, Config):
                 default_config = config
             else:
-                raise ValueError("Config must be either a dictionary or a Config object")
+                raise ValueError(
+                    "Config must be either a dictionary or a Config object"
+                )
 
-        main_config = default_config.config.get('main', {})
+        main_config = default_config.config.get("main", {})
 
         if tts_model is None:
-            tts_model = main_config.get('default_tts_model', 'openai')
+            tts_model = main_config.get("default_tts_model", "openai")
 
         urls_list = urls or []
         if url_file:
-            with open(url_file, 'r') as file:
+            with open(url_file, "r") as file:
                 urls_list.extend([line.strip() for line in file if line.strip()])
 
         if not urls_list and not transcript_file:
@@ -229,7 +273,7 @@ def generate_podcast(
             tts_model=tts_model,
             generate_audio=not transcript_only,
             config=default_config,
-            conversation_config=conversation_config
+            conversation_config=conversation_config,
         )
 
         return podcast
