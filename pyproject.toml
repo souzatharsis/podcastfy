@@ -39,6 +39,7 @@ sphinx-rtd-theme = "^3.0.1"
 sphinx-autodoc-typehints = "^2.5.0"
 nbsphinx = "^0.9.5"
 edge-tts = "^6.1.12"
+langchain-community = "^0.3.2"
 
 
 [tool.poetry.group.dev.dependencies]
