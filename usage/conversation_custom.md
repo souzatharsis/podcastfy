@@ -1,6 +1,6 @@
 # Podcastfy Conversation Configuration
 
-Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs. See [System Config](https://github.com/souzatharsis/podcastfy/blob/main/usage/config_custom.md) for additional seetings. See [Notes of Caution](#notes-of-caution) to avoid unexpected results.
+Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs. See [System Config](https://github.com/souzatharsis/podcastfy/blob/main/usage/config_custom.md) for additional settings. See [Notes of Caution](#notes-of-caution) to avoid unexpected results.
 
 
 ## Table of Contents
@@ -31,7 +31,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 | engagement_techniques | ["rhetorical questions", "anecdotes", "analogies", "humor"] | list[str] | Techniques to engage the audience |
 | creativity | 0 | int | Level of creativity/temperature (0-1) |
 
-Podcastfy uses the the default conversation configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
+Podcastfy uses the default conversation configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
 
 ## Customization Examples
 
