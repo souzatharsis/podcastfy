@@ -58,9 +58,13 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Updates 🚀
 
+### v0.2.3 release
+- Add support for running LLMs locally
+- Enable config for running podcastfy with no API KEYs
+- and [more...](https://github.com/souzatharsis/podcastfy/blob/main/CHANGELOG.md#023---2024-10-15)
+
 ### v0.2.2 release
-- Podcastfy is now multi-modal! Users can generate audio from images as well as text inputs!
-- Added API reference docs and published it to https://podcastfy.readthedocs.io/en/latest/
+- Podcastfy is now multi-modal! Users can generate audio from images + text inputs!
 
 ### v0.2.0 release
 - Users can now customize podcast style, structure, and content
