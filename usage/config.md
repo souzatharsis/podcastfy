@@ -8,13 +8,11 @@ The project uses a combination of a `.env` file for managing API keys and sensit
 2. Add your API keys and other sensitive information to the `.env` file. For example:
 
    ```
-   JINA_API_KEY=your_jina_api_key_here
    GEMINI_API_KEY=your_gemini_api_key_here
    ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
    OPENAI_API_KEY=your_openai_api_key_here
    ```
 API Key Requirements:
-- JINA_API_KEY: Required only for parsing website content as input. (get your [free API key](https://jina.ai/reader/#apiform))
 - GEMINI_API_KEY: Required for transcript generation if not using a [local llm](local_llm.md). (get your [free API key](aistudio.google.com/app/apikey))
 - OPENAI_API_KEY or ELEVENLABS_API_KEY: Required for audio generation if not using Microsoft Edge TTS `tts_model=edge`.
 

@@ -73,8 +73,6 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 
 ## Website Extractor
 
-- `jina_api_url`: "https://r.jina.ai"
-  - URL for the Jina API used in content extraction.
 - `markdown_cleaning`:
   - `remove_patterns`:
     - Patterns to remove from extracted markdown content.
@@ -97,3 +95,25 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 
 - `default_tts_model`: "openai"
   - Default Text-to-Speech model to use when not specified.
+
+
+
+## Website Extractor
+
+- `markdown_cleaning`:
+	- `remove_patterns`:
+		- Additional patterns to remove from extracted markdown content:
+		- '\[.*?\]': Remove square brackets and their contents
+		- '\(.*?\)': Remove parentheses and their contents
+		- '^\s*[-*]\s': Remove list item markers
+		- '^\s*\d+\.\s': Remove numbered list markers
+		- '^\s*#+': Remove markdown headers
+- `unwanted_tags`:
+	- HTML tags to be removed during extraction:
+		- 'script', 'style', 'nav', 'footer', 'header', 'aside', 'noscript'
+- `user_agent`: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+	- User agent string to be used for web requests
+- `timeout`: 10
+	- Request timeout in seconds for web scraping
+
+

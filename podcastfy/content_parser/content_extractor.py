@@ -18,18 +18,15 @@ from podcastfy.utils.config import load_config
 logger = logging.getLogger(__name__)
 
 class ContentExtractor:
-	def __init__(self, jina_api_key: str):
+	def __init__(self):
 		"""
 		Initialize the ContentExtractor.
-
-		Args:
-			jina_api_key (str): API key for Jina AI.
 		"""
 		self.youtube_transcriber = YouTubeTranscriber()
-		self.website_extractor = WebsiteExtractor(jina_api_key)
+		self.website_extractor = WebsiteExtractor()
 		self.pdf_extractor = PDFExtractor()
 		self.config = load_config()
-		self.content_extractor_config = self.config.get('content_extractor')
+		self.content_extractor_config = self.config.get('content_extractor', {})
 
 	def is_url(self, source: str) -> bool:
 		"""
@@ -66,7 +63,7 @@ class ContentExtractor:
 		"""
 		try:
 			if self.is_url(source):
-				if any(pattern in source for pattern in self.content_extractor_config['youtube_url_patterns']):
+				if any(pattern in source for pattern in self.content_extractor_config.get('youtube_url_patterns', [])):
 					return self.youtube_transcriber.extract_transcript(source)
 				else:
 					return self.website_extractor.extract_content(source)
@@ -77,3 +74,37 @@ class ContentExtractor:
 		except Exception as e:
 			logger.error(f"Error extracting content from {source}: {str(e)}")
 			raise
+
+def main(seed: int = 42) -> None:
+	"""
+	Main function to test the ContentExtractor class.
+	"""
+	logging.basicConfig(level=logging.INFO)
+
+	# Create an instance of ContentExtractor
+	extractor = ContentExtractor()
+
+	# Test sources
+	test_sources: List[str] = [
+		"www.souzatharsis.com",
+		"https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+		"path/to/sample.pdf"
+	]
+
+	for source in test_sources:
+		try:
+			logger.info(f"Extracting content from: {source}")
+			content = extractor.extract_content(source)
+
+			# Print the first 500 characters of the extracted content
+			logger.info(f"Extracted content (first 500 characters):\n{content[:500]}...")
+
+			# Print the total length of the extracted content
+			logger.info(f"Total length of extracted content: {len(content)} characters")
+			logger.info("-" * 50)
+
+		except Exception as e:
+			logger.error(f"An error occurred while processing {source}: {str(e)}")
+
+if __name__ == "__main__":
+	main()

@@ -41,19 +41,18 @@ class TestContentParser(unittest.TestCase):
 
         # Initialize WebsiteExtractor
         config = load_config()
-        jina_api_key = config.JINA_API_KEY
-        extractor = WebsiteExtractor(jina_api_key)
+        extractor = WebsiteExtractor()
 
         # Test URL
         test_url = "http://www.souzatharsis.com"
 
         # Extract content
         extracted_content = extractor.extract_content(test_url)
-
+        print(extracted_content.strip())
         # Load expected content from website.md file
         with open("./tests/data/mock/website.md", "r") as f:
             expected_content = f.read()
-
+        print(expected_content.strip())
         # Assert that the extracted content matches the expected content
         self.assertEqual(extracted_content.strip(), expected_content.strip())
 

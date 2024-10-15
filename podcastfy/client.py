@@ -56,7 +56,7 @@ def process_content(urls=None, transcript_file=None, tts_model="openai", generat
 
 			if urls:
 				logger.info(f"Processing {len(urls)} links")
-				content_extractor = ContentExtractor(config.JINA_API_KEY)
+				content_extractor = ContentExtractor()  # Remove the JINA_API_KEY parameter
 				# Extract content from links
 				contents = [content_extractor.extract_content(link) for link in urls]
 				# Combine all extracted content
