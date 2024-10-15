@@ -7,7 +7,8 @@ from podcastfy.content_generator import ContentGenerator
 from podcastfy.utils.config import Config
 from podcastfy.utils.config_conversation import ConversationConfig
 
-#TODO: Should be a fixture
+
+# TODO: Should be a fixture
 def sample_conversation_config():
     conversation_config = {
         "word_count": 2000,
@@ -19,9 +20,10 @@ def sample_conversation_config():
         "podcast_tagline": "Learning Through Conversation",
         "output_language": "English",
         "engagement_techniques": ["examples", "questions", "case studies"],
-        "creativity": 0
+        "creativity": 0,
     }
     return conversation_config
+
 
 class TestGenAIPodcast(unittest.TestCase):
     def setUp(self):
@@ -54,19 +56,26 @@ class TestGenAIPodcast(unittest.TestCase):
         conversation_config = sample_conversation_config()
         content_generator = ContentGenerator(self.api_key, conversation_config)
         input_text = "Artificial Intelligence in Education"
-        
+
         result = content_generator.generate_qa_content(input_text)
 
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
-        
+
         # Check for elements from the custom config
         self.assertIn(conversation_config["podcast_name"], result)
         self.assertIn(conversation_config["podcast_tagline"], result)
-        self.assertTrue(any(role in result.lower() for role in [conversation_config["roles_person1"], 
-                                                                conversation_config["roles_person2"]]))
-        
+        self.assertTrue(
+            any(
+                role in result.lower()
+                for role in [
+                    conversation_config["roles_person1"],
+                    conversation_config["roles_person2"],
+                ]
+            )
+        )
+
         # Check word count (allow some flexibility)
         word_count = len(result.split())
 
@@ -74,30 +83,33 @@ class TestGenAIPodcast(unittest.TestCase):
         """Test generating Q&A content from two input images."""
         image_paths = [
             "tests/data/images/Senecio.jpeg",
-            "tests/data/images/connection.jpg"
+            "tests/data/images/connection.jpg",
         ]
 
         content_generator = ContentGenerator(self.api_key)
-        
-        with tempfile.NamedTemporaryFile(mode='w+', suffix='.txt', delete=False) as temp_file:
+
+        with tempfile.NamedTemporaryFile(
+            mode="w+", suffix=".txt", delete=False
+        ) as temp_file:
             result = content_generator.generate_qa_content(
                 input_texts="",  # Empty string for input_texts
                 image_file_paths=image_paths,
-                output_filepath=temp_file.name
+                output_filepath=temp_file.name,
             )
 
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
-        
+
         # Check if the output file was created and contains the same content
-        with open(temp_file.name, 'r') as f:
+        with open(temp_file.name, "r") as f:
             file_content = f.read()
-        
+
         self.assertEqual(result, file_content)
-        
+
         # Clean up the temporary file
         os.unlink(temp_file.name)
+
 
 if __name__ == "__main__":
     unittest.main()

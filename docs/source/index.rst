@@ -3,16 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Podcastfy.ai documentation
+Podcastfy.ai API Referece Manual
 ==========================
 
-Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
-   
-.. toctree::
-   :maxdepth: 3
-   :caption: User Documentation:
-   
-   podcastfy_demo.ipynb
+This documentation site is focused on the Podcastfy Python package, its classes, functions, and methods.
+For additional documentation, see the `Podcastfy <https://github.com/souzatharsis/podcastfy/>`_ GitHub repository.
        
 .. toctree::
    :maxdepth: 2
@@ -54,16 +49,20 @@ CLI
 Usage
 -----
 
-- `Python Package <podcastfy.ipynb>`_
+- `Python Package <https://github.com/souzatharsis/podcastfy/blob/main/podcastfy.ipynb>`_
 
 - `CLI <https://github.com/souzatharsis/podcastfy/blob/main/usage/cli.md>`_
 
-Experience Podcastfy with our `HuggingFace <https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo>`_ 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested than the Python package.)
+Experience Podcastfy with our `HuggingFace <https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo>`_ 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested and capable than the Python package.)
 
 Customization
 -------------
 
-Podcastfy offers a range of `Conversation Customization <https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md>`_ options to tailor your AI-generated podcasts. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.
+Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
+
+* Customize podcast `Conversation <https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md>`_ (e.g. format, style)
+* Choose to run `Local LLMs <https://github.com/souzatharsis/podcastfy/blob/main/usage/local_llm.md>`_ (156+ HuggingFace models)
+* Set `System Settings <https://github.com/souzatharsis/podcastfy/blob/main/usage/config_custom.md>`_ (e.g. text-to-speech and output directory settings)
 
 
 Collaborate

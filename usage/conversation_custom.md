@@ -16,7 +16,9 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 4. [Notes of Caution](#notes-of-caution)
 
 
-## Parameters
+## Conversation Parameters
+
+Podcastfy uses the default conversation configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
 
 | Parameter | Default Value | Type | Description |
 |-----------|---------------|------|-------------|
@@ -31,7 +33,46 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 | engagement_techniques | ["rhetorical questions", "anecdotes", "analogies", "humor"] | list[str] | Techniques to engage the audience |
 | creativity | 0 | int | Level of creativity/temperature (0-1) |
 
-Podcastfy uses the default conversation configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
+## Text-to-Speech (TTS) Settings
+
+Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
+
+### ElevenLabs TTS
+
+- `default_voices`:
+  - `question`: "Chris"
+    - Default voice for questions in the podcast.
+  - `answer`: "Jessica"
+    - Default voice for answers in the podcast.
+- `model`: "eleven_multilingual_v2"
+  - The ElevenLabs TTS model to use.
+
+### OpenAI TTS
+
+- `default_voices`:
+  - `question`: "echo"
+    - Default voice for questions using OpenAI TTS.
+  - `answer`: "shimmer"
+    - Default voice for answers using OpenAI TTS.
+- `model`: "tts-1-hd"
+  - The OpenAI TTS model to use.
+
+### Edge TTS
+
+- `default_voices`:
+  - `question`: "en-US-JennyNeural"
+    - Default voice for questions using Edge TTS.
+  - `answer`: "en-US-EricNeural"
+    - Default voice for answers using Edge TTS.
+
+### General TTS Settings
+
+- `audio_format`: "mp3"
+  - Format of the generated audio files.
+- `temp_audio_dir`: "data/audio/tmp/"
+  - Temporary directory for audio processing.
+- `ending_message`: "Tchau!"
+  - Message to be appended at the end of the podcast.
 
 ## Customization Examples
 

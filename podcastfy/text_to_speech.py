@@ -11,6 +11,7 @@ import asyncio
 import edge_tts
 from elevenlabs import client as elevenlabs_client
 from podcastfy.utils.config import load_config
+from podcastfy.utils.config_conversation import load_conversation_config
 from pydub import AudioSegment
 import os
 import re
@@ -32,7 +33,8 @@ class TextToSpeech:
 		"""
 		self.model = model.lower()
 		self.config = load_config()
-		self.tts_config = self.config.get('text_to_speech')
+		self.conversation_config = load_conversation_config()
+		self.tts_config = self.conversation_config.get('text_to_speech')
 
 		if self.model == 'elevenlabs':
 			self.api_key = api_key or self.config.ELEVENLABS_API_KEY
@@ -234,40 +236,6 @@ class TextToSpeech:
 			for file in audio_files:
 				os.remove(file)
 			logger.info(f"Audio saved to {output_file}")		
-
-		except Exception as e:
-			logger.error(f"Error converting text to speech with Edge: {str(e)}")
-			raise
-
-
-	def __convert_to_speech_edge(self, text: str, output_file: str) -> None:
-		try:
-			qa_pairs = self.split_qa(text)
-			audio_files = []
-			counter = 0
-
-			async def edge_tts_conversion(text_chunk: str, output_path: str, voice: str):
-				tts = edge_tts.Communicate(text_chunk, voice)
-				await tts.save(output_path)
-
-			for question, answer in qa_pairs:
-				for speaker, content in [
-					(self.tts_config['edge']['default_voices']['question'], question),
-					(self.tts_config['edge']['default_voices']['answer'], answer)
-				]:
-					counter += 1
-					file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
-					asyncio.run(edge_tts_conversion(content, file_name, speaker))
-					audio_files.append(file_name)
-
-			# Merge all audio files
-			self.__merge_audio_files(self.temp_audio_dir, output_file)
-
-			# Clean up individual audio files
-			for file in audio_files:
-				os.remove(file)
-
-			logger.info(f"Audio saved to {output_file}")
 
 		except Exception as e:
 			logger.error(f"Error converting text to speech with Edge: {str(e)}")

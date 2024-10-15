@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.2.2"
+version = "0.2.3"
 description = "Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"
@@ -40,6 +40,7 @@ sphinx-autodoc-typehints = "^2.5.0"
 nbsphinx = "^0.9.5"
 edge-tts = "^6.1.12"
 langchain-community = "^0.3.2"
+types-pyyaml = "^6.0.12.20240917"
 
 
 [tool.poetry.group.dev.dependencies]

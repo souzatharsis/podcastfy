@@ -18,6 +18,12 @@ def sample_config():
 
 @pytest.fixture
 def sample_conversation_config():
+	"""
+	Fixture to provide a sample conversation configuration for testing.
+
+	Returns:
+		dict: A dictionary containing sample conversation configuration parameters.
+	"""
 	conversation_config = {
 		"word_count": 300,
 		"conversation_style": ["formal", "educational"],
@@ -28,7 +34,10 @@ def sample_conversation_config():
 		"podcast_tagline": "Learning Through Conversation",
 		"output_language": "English",
 		"engagement_techniques": ["examples", "questions"],
-		"creativity": 0
+		"creativity": 0,
+		"text_to_speech": {
+			"model": "edge"
+		}
 	}
 	return conversation_config
 
@@ -41,6 +50,7 @@ def test_generate_podcast_from_urls(sample_config):
 	
 	audio_file = generate_podcast(
 		urls=urls,
+		tts_model="edge",
 		config=sample_config
 	)
 
@@ -56,6 +66,7 @@ def test_generate_transcript_only(sample_config):
 	result = generate_podcast(
 		urls=urls,
 		transcript_only=True,
+		tts_model="edge",
 		config=sample_config
 	)
 	
@@ -71,6 +82,7 @@ def test_generate_podcast_from_transcript_file(sample_config):
 	# Now use this transcript to generate a podcast
 	audio_file = generate_podcast(
 		transcript_file=transcript_file,
+		tts_model="edge",
 		config=sample_config
 	)
 	
@@ -108,6 +120,7 @@ def test_generate_podcast_from_images(sample_config):
 
 	audio_file = generate_podcast(
 		image_paths=image_paths,
+		tts_model="edge",
 		config=sample_config
 	)
 

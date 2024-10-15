@@ -1,33 +1,40 @@
 podcastfy package
 =================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   podcastfy.content_parser
+
 Submodules
 ----------
 
-podcastfy.text_to_speech module
--------------------------------
+podcastfy.client module
+-----------------------
 
-.. automodule:: podcastfy.text_to_speech
+.. automodule:: podcastfy.client
    :members:
    :undoc-members:
    :show-inheritance:
 
-podcastfy.content_generator module
-----------------------------------
+podcastfy.content\_generator module
+-----------------------------------
 
 .. automodule:: podcastfy.content_generator
    :members:
    :undoc-members:
    :show-inheritance:
 
-podcastfy.content_parser.content_extractor module
--------------------------------------------------
+podcastfy.text\_to\_speech module
+---------------------------------
 
-.. automodule:: podcastfy.content_parser.content_extractor
+.. automodule:: podcastfy.text_to_speech
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------
