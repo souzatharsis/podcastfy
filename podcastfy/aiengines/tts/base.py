@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 
 import yaml
 
 from podcastfy.core.character import Character
 from podcastfy.core.tts_configs import TTSConfig
+
+TTSBackend = Union["SyncTTSBackend", "AsyncTTSBackend"]
 
 
 class SyncTTSBackend(ABC):

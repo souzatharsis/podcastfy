@@ -19,7 +19,7 @@ from langchain import hub
 from podcastfy.content_generator import ContentGenerator
 from podcastfy.core.character import Character
 from podcastfy.aiengines.llm.base import LLMBackend
-from podcastfy.core.llm_content import LLMContent
+from podcastfy.core.content import Content
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
@@ -180,7 +180,7 @@ class DefaultPodcastifyTranscriptEngine(LLMBackend):
 		]
 		return processed_matches
 
-	def generate_transcript(self, content: List[LLMContent], characters: List[Character]) -> List[Tuple[Character, str]]:
+	def generate_transcript(self, content: List[Content], characters: List[Character]) -> List[Tuple[Character, str]]:
 		image_file_paths = [c.value for c in content if c.type == 'image_path']
 		text_content = "\n\n".join(c.value for c in content if c.type == 'text')
 		content = self.content_generator.generate_qa_content(text_content, image_file_paths, is_local=self.is_local) # ideally in the future we pass characters here

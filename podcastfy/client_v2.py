@@ -5,9 +5,10 @@ from pathlib import Path
 from typing import List, Optional, Dict, Any, Union, Tuple
 
 from podcastfy.aiengines.llm.gemini_langchain import DefaultPodcastifyTranscriptEngine
+from podcastfy.aiengines.tts.base import TTSBackend
 from podcastfy.aiengines.tts.tts_backends import OpenAITTS, ElevenLabsTTS, EdgeTTS
 from podcastfy.core.character import Character
-from podcastfy.core.llm_content import LLMContent
+from podcastfy.core.content import Content
 from podcastfy.core.podcast import Podcast, SyncTTSBackend, AsyncTTSBackend
 from podcastfy.core.transcript import Transcript
 from podcastfy.content_parser.content_extractor import ContentExtractor
@@ -62,7 +63,7 @@ def create_characters(config: Dict[str, Any]) -> List[Character]:
     return [host, guest]
 
 
-def create_tts_backends(config: Config) -> List[Union[SyncTTSBackend, AsyncTTSBackend]]:
+def create_tts_backends(config: Config) -> List[TTSBackend]:
     return [
         OpenAITTS(api_key=config.OPENAI_API_KEY),
         ElevenLabsTTS(api_key=config.ELEVENLABS_API_KEY),
@@ -95,9 +96,7 @@ def process_content_v2(
         if conversation_config:
             conv_config.configure(conversation_config)
         characters = create_characters(conv_config.config_conversation)
-        tts_backends = create_tts_backends(config)
-        # filter out the tts backends that are not in the tts_model, temporary solution
-        tts_backends = [tts for tts in tts_backends if tts.name == tts_model]
+        tts_backends = obtain_tts_backend(config, tts_model)
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
             transcript = Transcript.load(
@@ -114,10 +113,10 @@ def process_content_v2(
             contents = [content_extractor.extract_content(url) for url in urls]
             llm_contents = []
             if contents:
-                llm_contents.append(LLMContent(value="\n\n".join(contents), type="text"))
+                llm_contents.append(Content(value="\n\n".join(contents), type="text"))
             if image_paths:
                 llm_contents.extend(
-                    [LLMContent(value=image_path, type="image_path") for image_path in image_paths]
+                    [Content(value=image_path, type="image_path") for image_path in image_paths]
                 )
 
 
@@ -147,3 +146,11 @@ def process_content_v2(
     except Exception as e:
         logger.error(f"An error occurred in the process_content function: {str(e)}")
         raise
+
+
+def obtain_tts_backend(config, tts_model):
+    # temporary solution
+    tts_backends = create_tts_backends(config)
+    # filter out the tts backends that are not in the tts_model, temporary solution
+    tts_backends = [tts for tts in tts_backends if tts.name == tts_model]
+    return tts_backends

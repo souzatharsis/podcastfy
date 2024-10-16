@@ -8,10 +8,10 @@ from functools import wraps
 from contextlib import contextmanager
 
 from podcastfy.aiengines.llm.base import LLMBackend
-from podcastfy.aiengines.tts.base import SyncTTSBackend, AsyncTTSBackend
+from podcastfy.aiengines.tts.base import SyncTTSBackend, AsyncTTSBackend, TTSBackend
 from podcastfy.core.audio import PodcastsAudioSegment, AudioManager
 from podcastfy.core.character import Character
-from podcastfy.core.llm_content import LLMContent
+from podcastfy.core.content import Content
 from podcastfy.core.transcript import TranscriptSegment, Transcript
 from podcastfy.core.tts_configs import TTSConfig
 
@@ -55,8 +55,8 @@ def podcast_stage(func):
 class Podcast:
     """Main class for podcast creation and management."""
 
-    def __init__(self, content: List[LLMContent], llm_backend: LLMBackend,
-                 tts_backends: List[Union[SyncTTSBackend, AsyncTTSBackend]], audio_temp_dir: Optional[Union[str, Path]] = None,
+    def __init__(self, content: List[Content], llm_backend: LLMBackend,
+                 tts_backends: List[TTSBackend], audio_temp_dir: Optional[Union[str, Path]] = None,
                  characters: Optional[List[Character]] = None,
                  default_tts_n_jobs: int = 1) -> None:
         """
@@ -65,7 +65,7 @@ class Podcast:
         Args:
             content (str): The raw content to be processed into a podcast.
             llm_backend (LLMBackend): The language model backend for generating the transcript.
-            tts_backends (List[Union[SyncTTSBackend, AsyncTTSBackend]]): List of available TTS backends.
+            tts_backends (List[TTSBackend]): List of available TTS backends.
             audio_temp_dir (Optional[str]): Path to a temporary directory for audio files. If None, a temporary
                 directory will be created.
             characters (List[Character]): List of characters participating in the podcast.
@@ -77,7 +77,7 @@ class Podcast:
         """
         self.content = content
         self.llm_backend = llm_backend
-        self.tts_backends: Dict[str, Union[SyncTTSBackend, AsyncTTSBackend]] = {backend.name: backend for backend in tts_backends}
+        self.tts_backends: Dict[str, TTSBackend] = {backend.name: backend for backend in tts_backends}
         self.characters: Dict[str, Character] = {char.name: char for char in (characters or [Character("Host", "Podcast host", {}), Character("Guest", "Expert guest", {})])}
         self.default_tts_n_jobs = default_tts_n_jobs
         self.state = PodcastState.INITIALIZED
@@ -95,7 +95,7 @@ class Podcast:
         # Initialize attributes with null values
         self.transcript: Optional[Transcript] = None
         self.audio_segments: List[PodcastsAudioSegment] = []
-        self.audio: Optional[PydubAudioSegment] = None
+        self.audio: Optional[AudioSegment] = None
 
         # Define the sequence of methods to be called for each stage
         self._next_stage_methods: Dict[PodcastState, Callable[[], None]] = {
@@ -268,7 +268,7 @@ if __name__ == "__main__":
             self.name = name
 
         def text_to_speech(self, text: str, character: Character, output_path: Path) -> Path:
-            audio = PydubAudioSegment.silent(duration=1000)
+            audio = AudioSegment.silent(duration=1000)
             audio.export(str(output_path), format="mp3")
             return output_path
 
@@ -338,7 +338,7 @@ if __name__ == "__main__":
 
     # Add a new audio segment (auto_finalize is True by default)
     with NamedTemporaryFile(suffix=".mp3", delete=False) as temp_file:
-        PydubAudioSegment.silent(duration=500).export(temp_file.name, format="mp3")
+        AudioSegment.silent(duration=500).export(temp_file.name, format="mp3")
 
     with podcast.rework(PodcastState.AUDIO_SEGMENTS_BUILT):
         new_segment = PodcastsAudioSegment(Path(temp_file.name), 500,
