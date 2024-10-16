@@ -10,17 +10,12 @@ You just need to use ElevenLabs TSS backend and pass a custom config to use your
 
 2. Clone your voice on elevenlabs website (let's say its name is 'Robbert')
 
-4. Create custom conversation config to use your voice name instead of the default as described [here](https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md#text-to-speech-tts-settings). Set either question or answer voice below to 'Robbert' in elevenlabs > default_voices.
+4. Create custom conversation config (let's call it custom_config.yaml) to use your voice name instead of the default as described [here](https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md#text-to-speech-tts-settings). Set either question or answer voice below to 'Robbert' in elevenlabs > default_voices.
 
 6. Run podcastfy with tts-model param as elevenlabs
 
 CLI
    ```
-   python -m podcastfy.client --url https://example.com/article1 --url https://example.com/article2 --tts-model elevenlabs
+   python -m podcastfy.client --url https://example.com/article1 --url https://example.com/article2 --tts-model elevenlabs --conversation-config path/to/custom_config.yaml
    ```
-Python package
-```python
-from podcastfy.client import generate_podcast
-
-audio_file = generate_podcast(urls=["https://example.com/article1"], tss-model="elevenlabs)
-```
+For Python example, checkout Customization section at [python notebook](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy.ipynb).
