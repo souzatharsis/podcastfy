@@ -83,7 +83,8 @@ class AudioManager:
 
 
         with ThreadPoolExecutor(max_workers=self.n_jobs) as executor:
-            return list(executor.map(process_segment, transcript.segments))
+            return list(executor.map(process_segment,
+                                     ((segment, i) for i, segment in enumerate(transcript.segments))))
 
     def create_audio_segments(self, transcript: Transcript) -> List[PodcastsAudioSegment]:
         if self.has_async_backend:
