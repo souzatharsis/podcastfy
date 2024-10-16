@@ -1,6 +1,6 @@
 # Podcastfy Conversation Configuration
 
-Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs. Whether you're creating educational content, storytelling experiences, or anything in between, these configuration options allow you to fine-tune your podcast's tone, length, and format.  See [Notes of Caution](#notes-of-caution) before starting to customize to avoid unexpected results.
+Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs. See [System Config](https://github.com/souzatharsis/podcastfy/blob/main/usage/config_custom.md) for additional settings. See [Notes of Caution](#notes-of-caution) to avoid unexpected results.
 
 
 ## Table of Contents
@@ -16,7 +16,9 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 4. [Notes of Caution](#notes-of-caution)
 
 
-## Parameters
+## Conversation Parameters
+
+Podcastfy uses the default conversation configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
 
 | Parameter | Default Value | Type | Description |
 |-----------|---------------|------|-------------|
@@ -31,7 +33,46 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 | engagement_techniques | ["rhetorical questions", "anecdotes", "analogies", "humor"] | list[str] | Techniques to engage the audience |
 | creativity | 0 | int | Level of creativity/temperature (0-1) |
 
-Podcastfy uses the following default conversation configuration stored in `podcastfy/conversation_config.yaml`. You can view the default configuration [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
+## Text-to-Speech (TTS) Settings
+
+Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml).
+
+### ElevenLabs TTS
+
+- `default_voices`:
+  - `question`: "Chris"
+    - Default voice for questions in the podcast.
+  - `answer`: "Jessica"
+    - Default voice for answers in the podcast.
+- `model`: "eleven_multilingual_v2"
+  - The ElevenLabs TTS model to use.
+
+### OpenAI TTS
+
+- `default_voices`:
+  - `question`: "echo"
+    - Default voice for questions using OpenAI TTS.
+  - `answer`: "shimmer"
+    - Default voice for answers using OpenAI TTS.
+- `model`: "tts-1-hd"
+  - The OpenAI TTS model to use.
+
+### Edge TTS
+
+- `default_voices`:
+  - `question`: "en-US-JennyNeural"
+    - Default voice for questions using Edge TTS.
+  - `answer`: "en-US-EricNeural"
+    - Default voice for answers using Edge TTS.
+
+### General TTS Settings
+
+- `audio_format`: "mp3"
+  - Format of the generated audio files.
+- `temp_audio_dir`: "data/audio/tmp/"
+  - Temporary directory for audio processing.
+- `ending_message`: "Tchau!"
+  - Message to be appended at the end of the podcast.
 
 ## Customization Examples
 
@@ -135,13 +176,13 @@ creativity: 7
 
 ### 3. Dev Config
 
-For contributors to the Podcastfy package, the default configuration is stored in a `conversation_config.yaml` file in the project root. This file serves as the baseline configuration for all generated podcasts.
+For contributors to the Podcastfy package, the default configuration is stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml). This file serves as the baseline configuration for all generated podcasts.
 
 To modify the default configuration:
 
 1. Locate the `conversation_config.yaml` file in the project root.
 2. Edit the file using your preferred text editor.
-3. Commit and push your changes, following the project's contribution guidelines.
+3. Commit and push your changes, justifying proposed changes.
 
 Remember that changes to this file will affect the default behavior of Podcastfy for all users. Consider the impact of your changes and discuss significant modifications with the project maintainers before implementing them.
 
@@ -152,6 +193,6 @@ Remember that changes to this file will affect the default behavior of Podcastfy
 - The `output_language` defines both the language of the transcript and the language of the audio. Here's some relevant information:
   - Bottom-line: non-English transcripts are good enough but non-English audio is work-in-progress.
   - Transcripts are generated using Google's Gemini 1.5 Pro, which supports 100+ languages by default.
-  - Audio is generated using `openai` (default) or `elevenlabs` TTS models. 
+  - Audio is generated using `openai` (default), `elevenlabs`, or `edge` TTS models. 
     - The `openai` TTS model supports multiple languages automatically, however non-English voices still present sub-par quality in my experience.
     - The `elevenlabs` TTS model has English voices by default, in order to use a non-English voice you would need to download a custom voice for the target language in your `elevenlabs` account settings and then set the `text_to_speech.elevenlabs.default_voices` parameters to the voice you want to use in the [config.yaml file](https://github.com/pedroslopez/podcastfy/blob/main/podcastfy/config.yaml) (this config file is only available in the source code of the project, not in the pip package, hence if you are using the pip package you will not be able to change the ElevenLabs voice). For more information on ElevenLabs voices, visit [ElevenLabs Voice Library](https://elevenlabs.io/voice-library)

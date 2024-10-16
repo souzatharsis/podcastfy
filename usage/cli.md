@@ -30,9 +30,28 @@ Please make sure you follow configuration instructions first - [See Setup](READM
 
 6. Generate a podcast using a combination of URLs and a file:
    ```
-   python -m podcastfy.client --url https://example.com/article1 --file path/to/urls.txt --tts-model openai
+   python -m podcastfy.client --url https://example.com/article1 --file path/to/urls.txt
    ```
 
+7. Generate a podcast from image files:
+   ```
+   python -m podcastfy.client --image path/to/image1.jpg --image path/to/image2.png
+   ```
+
+8. Generate a podcast with a custom conversation configuration:
+   ```
+   python -m podcastfy.client --url https://example.com/article1 --conversation-config path/to/custom_config.yaml
+   ```
+
+9. Generate a podcast from URLs and images:
+   ```
+   python -m podcastfy.client --url https://example.com/article1 --image path/to/image1.jpg
+   ```
+   
+10. Generate a transcript using a local LLM:
+   ```
+   python -m podcastfy.client --url https://example.com/article1 --transcript-only --local
+   ```
 For more information on available options, use:
    ```
    python -m podcastfy.client --help

@@ -16,8 +16,10 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
 
+from podcastfy.content_generator import ContentGenerator
 from podcastfy.core.character import Character
 from podcastfy.aiengines.llm.base import LLMBackend
+from podcastfy.core.llm_content import LLMContent
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
@@ -136,146 +138,6 @@ class LLMBackend:
             )
 
 
-class ContentGenerator:
-    def __init__(
-        self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None
-    ):
-        """
-        Initialize the ContentGenerator.
-
-        Args:
-                api_key (str): API key for Google's Generative AI.
-                conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
-        """
-        os.environ["GOOGLE_API_KEY"] = api_key
-        self.config = load_config()
-        self.content_generator_config = self.config.get("content_generator", {})
-
-        self.config_conversation = load_conversation_config(conversation_config)
-
-    def __compose_prompt(self, num_images: int):
-        """
-        Compose the prompt for the LLM based on the content list.
-        """
-        prompt_template = hub.pull(
-            self.config.get("content_generator", {}).get(
-                "prompt_template", "souzatharsis/podcastfy_multimodal"
-            )
-        )
-
-        image_path_keys = []
-        messages = []
-        text_content = {"type": "text", "text": "{input_text}"}
-        messages.append(text_content)
-        for i in range(num_images):
-            key = f"image_path_{i}"
-            image_content = {
-                "image_url": {"path": f"{{{key}}}", "detail": "high"},
-                "type": "image_url",
-            }
-            image_path_keys.append(key)
-            messages.append(image_content)
-
-        user_prompt_template = ChatPromptTemplate.from_messages(
-            messages=[HumanMessagePromptTemplate.from_template(messages)]
-        )
-
-        # Compose messages from podcastfy_prompt_template and user_prompt_template
-        combined_messages = prompt_template.messages + user_prompt_template.messages
-
-        # Create a new ChatPromptTemplate object with the combined messages
-        composed_prompt_template = ChatPromptTemplate.from_messages(combined_messages)
-
-        return composed_prompt_template, image_path_keys
-
-    def __compose_prompt_params(
-        self, image_file_paths: List[str], image_path_keys: List[str], input_texts: str
-    ):
-        prompt_params = {
-            "input_text": input_texts,
-            "word_count": self.config_conversation.get("word_count"),
-            "conversation_style": ", ".join(
-                self.config_conversation.get("conversation_style", [])
-            ),
-            "roles_person1": self.config_conversation.get("roles_person1"),
-            "roles_person2": self.config_conversation.get("roles_person2"),
-            "dialogue_structure": ", ".join(
-                self.config_conversation.get("dialogue_structure", [])
-            ),
-            "podcast_name": self.config_conversation.get("podcast_name"),
-            "podcast_tagline": self.config_conversation.get("podcast_tagline"),
-            "output_language": self.config_conversation.get("output_language"),
-            "engagement_techniques": ", ".join(
-                self.config_conversation.get("engagement_techniques", [])
-            ),
-        }
-
-        # for each image_path_key, add the corresponding image_file_path to the prompt_params
-        for key, path in zip(image_path_keys, image_file_paths):
-            prompt_params[key] = path
-
-        return prompt_params
-
-    def generate_qa_content(
-        self,
-        input_texts: str = "",
-        image_file_paths: List[str] = [],
-        output_filepath: Optional[str] = None,
-        is_local: bool = False,
-    ) -> str:
-        """
-        Generate Q&A content based on input texts.
-
-        Args:
-                input_texts (str): Input texts to generate content from.
-                image_file_paths (List[str]): List of image file paths.
-                output_filepath (Optional[str]): Filepath to save the response content. Defaults to None.
-                is_local (bool): Whether to use a local LLM or not. Defaults to False.
-
-        Returns:
-                str: Formatted Q&A content.
-
-        Raises:
-                Exception: If there's an error in generating content.
-        """
-        try:
-            llmbackend = LLMBackend(
-                is_local=is_local,
-                temperature=self.config_conversation.get("creativity", 0),
-                max_output_tokens=self.content_generator_config.get(
-                    "max_output_tokens", 8192
-                ),
-                model_name=(
-                    self.content_generator_config.get(
-                        "gemini_model", "gemini-1.5-pro-latest"
-                    )
-                    if not is_local
-                    else "User provided model"
-                ),
-            )
-
-            num_images = 0 if is_local else len(image_file_paths)
-            self.prompt_template, image_path_keys = self.__compose_prompt(num_images)
-            self.parser = StrOutputParser()
-            self.chain = self.prompt_template | llmbackend.llm | self.parser
-
-            prompt_params = self.__compose_prompt_params(
-                image_file_paths, image_path_keys, input_texts
-            )
-
-            self.response = self.chain.invoke(prompt_params)
-
-            logger.info(f"Content generated successfully")
-
-            if output_filepath:
-                with open(output_filepath, "w") as file:
-                    file.write(self.response)
-                logger.info(f"Response content saved to {output_filepath}")
-
-            return self.response
-        except Exception as e:
-            logger.error(f"Error generating content: {str(e)}")
-            raise
 
 class DefaultPodcastifyTranscriptEngine(LLMBackend):
 	def __init__(self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None):
@@ -317,9 +179,10 @@ class DefaultPodcastifyTranscriptEngine(LLMBackend):
 		]
 		return processed_matches
 
-	def generate_transcript(self, prompt: str, characters: List[Character]) -> List[Tuple[Character, str]]:
-		content = self.content_generator.generate_qa_content(prompt, output_filepath=None)
-		# content = self.content_generator.generate_qa_content(prompt, output_filepath=None, characters=characters)  # ideally in the future.
+	def generate_transcript(self, content: List[LLMContent], characters: List[Character]) -> List[Tuple[Character, str]]:
+		image_file_paths = [c.value for c in content if c.type == 'image_path']
+		text_content = "\n\n".join(c.value for c in content if c.type == 'text')
+		content = self.content_generator.generate_qa_content(text_content, image_file_paths) # ideally in the future we pass characters here
 
 		q_a_pairs = self.split_qa(content)
 		transcript = []

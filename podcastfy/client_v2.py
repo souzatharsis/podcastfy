@@ -2,11 +2,12 @@ import os
 import uuid
 import typer
 from pathlib import Path
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional, Dict, Any, Union, Tuple
 
 from podcastfy.aiengines.llm.gemini_langchain import DefaultPodcastifyTranscriptEngine
 from podcastfy.aiengines.tts.tts_backends import OpenAITTS, ElevenLabsTTS, EdgeTTS
 from podcastfy.core.character import Character
+from podcastfy.core.llm_content import LLMContent
 from podcastfy.core.podcast import Podcast, SyncTTSBackend, AsyncTTSBackend
 from podcastfy.core.transcript import Transcript
 from podcastfy.content_parser.content_extractor import ContentExtractor
@@ -67,16 +68,21 @@ def create_tts_backends(config: Config) -> List[Union[SyncTTSBackend, AsyncTTSBa
     ]
 
 
-def process_links(
-    links: List[str],
+
+def process_content_v2(
+    urls: Optional[List[str]] = None,
     transcript_file: Optional[str] = None,
-    tts_model: str = "openai",  # could be removed now ?
+    tts_model: str = "openai",
     generate_audio: bool = True,
     config: Optional[Config] = None,
     conversation_config: Optional[Dict[str, Any]] = None,
-) -> Podcast:
+    image_paths: Optional[List[str]] = None,
+    is_local: bool = False,
+) -> Tuple[Optional[str], Podcast]:
     if config is None:
         config = load_config()
+    if urls is None:
+        urls = []
     characters = create_characters(config.config)
     tts_backends = create_tts_backends(config)
     if transcript_file:
@@ -86,23 +92,30 @@ def process_links(
         )
         podcast = Podcast.from_transcript(transcript, tts_backends, characters)
     else:
-        logger.info(f"Processing {len(links)} links")
+        logger.info(f"Processing {len(urls)} links")
         content_extractor = ContentExtractor(config.JINA_API_KEY)
         content_generator = DefaultPodcastifyTranscriptEngine(
-            config.GEMINI_API_KEY, conversation_config
+            config.GEMINI_API_KEY, conversation_config, is_local=is_local
         )
 
-        contents = [content_extractor.extract_content(link) for link in links]
-        combined_content = "\n\n".join(contents)
+        contents = [content_extractor.extract_content(url) for url in urls]
+        llm_contents = []
+        if contents:
+            llm_contents.append(LLMContent(value="\n\n".join(contents), type="text"))
+        if image_paths:
+            llm_contents.extend(
+                [LLMContent(value=image_path, type="image_path") for image_path in image_paths]
+            )
 
-        llm_backend = content_generator  # Assuming ContentGenerator implements the LLMBackend interface
+
 
         podcast = Podcast(
-            content=combined_content,
-            llm_backend=llm_backend,
+            content=llm_contents,
+            llm_backend=content_generator,
             tts_backends=tts_backends,
             characters=characters,
         )
+        
 
     if generate_audio:
         podcast.finalize()

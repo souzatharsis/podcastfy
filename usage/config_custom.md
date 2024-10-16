@@ -13,36 +13,6 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 - `audio`: "./data/audio"
   - Directory where generated audio files are saved.
 
-## Text-to-Speech (TTS) Settings
-
-### ElevenLabs TTS
-
-- `default_voices`:
-  - `question`: "Chris"
-    - Default voice for questions in the podcast.
-  - `answer`: "BrittneyHart"
-    - Default voice for answers in the podcast.
-- `model`: "eleven_multilingual_v2"
-  - The ElevenLabs TTS model to use.
-
-### OpenAI TTS
-
-- `default_voices`:
-  - `question`: "echo"
-    - Default voice for questions using OpenAI TTS.
-  - `answer`: "shimmer"
-    - Default voice for answers using OpenAI TTS.
-- `model`: "tts-1-hd"
-  - The OpenAI TTS model to use.
-
-### General TTS Settings
-
-- `audio_format`: "mp3"
-  - Format of the generated audio files.
-- `temp_audio_dir`: "data/audio/tmp/"
-  - Temporary directory for audio processing.
-- `ending_message`: "Tchau!"
-  - Message to be appended at the end of the podcast.
 
 ## Content Generator
 
@@ -65,8 +35,6 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 
 ## Website Extractor
 
-- `jina_api_url`: "https://r.jina.ai"
-  - URL for the Jina API used in content extraction.
 - `markdown_cleaning`:
   - `remove_patterns`:
     - Patterns to remove from extracted markdown content.
@@ -89,3 +57,25 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 
 - `default_tts_model`: "openai"
   - Default Text-to-Speech model to use when not specified.
+
+
+
+## Website Extractor
+
+- `markdown_cleaning`:
+	- `remove_patterns`:
+		- Additional patterns to remove from extracted markdown content:
+		- '\[.*?\]': Remove square brackets and their contents
+		- '\(.*?\)': Remove parentheses and their contents
+		- '^\s*[-*]\s': Remove list item markers
+		- '^\s*\d+\.\s': Remove numbered list markers
+		- '^\s*#+': Remove markdown headers
+- `unwanted_tags`:
+	- HTML tags to be removed during extraction:
+		- 'script', 'style', 'nav', 'footer', 'header', 'aside', 'noscript'
+- `user_agent`: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+	- User agent string to be used for web requests
+- `timeout`: 10
+	- Request timeout in seconds for web scraping
+
+

@@ -8,21 +8,34 @@ The project uses a combination of a `.env` file for managing API keys and sensit
 2. Add your API keys and other sensitive information to the `.env` file. For example:
 
    ```
-   JINA_API_KEY=your_jina_api_key_here
    GEMINI_API_KEY=your_gemini_api_key_here
    ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
    OPENAI_API_KEY=your_openai_api_key_here
    ```
 API Key Requirements:
-- JINA_API_KEY: Required only for parsing website content as input. (get your [free API key](https://jina.ai/reader/#apiform))
-- GEMINI_API_KEY: Mandatory for all operations. (get your [free API key](aistudio.google.com/app/apikey))
-- OPENAI_API_KEY or ELEVENLABS_API_KEY: At least one is required for audio generation. (paid service)
+- GEMINI_API_KEY: Required for transcript generation if not using a [local llm](local_llm.md). (get your [free API key](aistudio.google.com/app/apikey))
+- OPENAI_API_KEY or ELEVENLABS_API_KEY: Required for audio generation if not using Microsoft Edge TTS `tts_model=edge`.
 
 Ensure you have the necessary API keys based on your intended usage of Podcastfy. Note: Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
+
+## Example Configurations
+
+Here's a table showing example configurations:
+
+| Configuration | Base LLM | TTS Model | API Keys Required |
+|---------------|----------|-----------|-------------------|
+| Default | Gemini | OpenAI | GEMINI_API_KEY and OPENAI_API_KEY |
+| No API Keys Required | Local LLM | Edge | None |
+| Optimal | Gemini | ElevenLabs | GEMINI_API_KEY and ELEVENLABS_API_KEY |
+
 
 ## Conversation Configuration
 
 See [conversation_custom.md](conversation_custom.md) for more details.
+
+## Running Local LLMs
+
+See [local_llm.md](local_llm.md) for more details.
 
 ## Optional configuration
 

@@ -62,11 +62,17 @@ class ConversationConfig:
 			self.config_conversation = copy.deepcopy(self.config_conversation)
 			
 			# Update the configuration with provided values
-			for key, value in config_conversation.items():
-				if key in self.config_conversation:
-					self.config_conversation[key] = value
-				else:
-					print(f"Warning: Unknown configuration key '{key}' will be ignored.")
+			if isinstance(config_conversation, dict):
+				for key, value in config_conversation.items():
+					if key == 'config_conversation':
+						# If 'config_conversation' key is present, update with its contents
+						self.config_conversation.update(value)
+					elif key in self.config_conversation:
+						self.config_conversation[key] = value
+					else:
+						print(f"Warning: Unknown configuration key '{key}' will be ignored.")
+			else:
+				print("Warning: config_conversation should be a dictionary.")
 		
 		# Set attributes based on the final configuration
 		self._set_attributes()
@@ -128,6 +134,15 @@ class ConversationConfig:
 		if isinstance(value, str):
 			return [item.strip() for item in value.split(',')]
 		return value if isinstance(value, list) else default or []
+
+	def to_dict(self):
+		"""
+		Convert the ConversationConfig object to a dictionary.
+		"""
+		return {
+			key: value for key, value in self.__dict__.items()
+			if not key.startswith('_')
+		}
 
 def load_conversation_config(config_conversation: Optional[Dict[str, Any]] = None) -> ConversationConfig:
 	"""

@@ -11,6 +11,7 @@ from podcastfy.aiengines.llm.base import LLMBackend
 from podcastfy.aiengines.tts.base import SyncTTSBackend, AsyncTTSBackend
 from podcastfy.core.audio import PodcastsAudioSegment, AudioManager
 from podcastfy.core.character import Character
+from podcastfy.core.llm_content import LLMContent
 from podcastfy.core.transcript import TranscriptSegment, Transcript
 from podcastfy.core.tts_configs import TTSConfig
 
@@ -54,7 +55,7 @@ def podcast_stage(func):
 class Podcast:
     """Main class for podcast creation and management."""
 
-    def __init__(self, content: str, llm_backend: LLMBackend,
+    def __init__(self, content: List[LLMContent], llm_backend: LLMBackend,
                  tts_backends: List[Union[SyncTTSBackend, AsyncTTSBackend]], audio_temp_dir: Optional[Union[str, Path]] = None,
                  characters: Optional[List[Character]] = None,
                  default_tts_n_jobs: int = 1) -> None:
@@ -168,9 +169,7 @@ class Podcast:
     @podcast_stage
     def build_transcript(self) -> None:
         """Build the podcast transcript using the LLM backend."""
-        character_prompts = "\n\n".join([char.to_prompt() for char in self.characters.values()])
-        full_prompt = f"{self.content}\n\nCharacters:\n{character_prompts}"
-        generated_segments = self.llm_backend.generate_transcript(full_prompt, list(self.characters.values()))
+        generated_segments = self.llm_backend.generate_transcript(self.content, list(self.characters.values()))
 
         segments = []
         for segment in generated_segments:
