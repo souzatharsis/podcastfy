@@ -158,3 +158,5 @@ This tool is designed for personal or educational use. Please ensure you have th
         ↑ Back to Top ↑
     </a>
 </p>
+
+Copyright (c) 2024. Tharsis T. P. Souza, New York, NY.
