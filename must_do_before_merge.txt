@@ -1,0 +1,5 @@
+- one test or two on the Podcast Class
+- delete client_v2 and merge it with client
+- check that all config options are taken
+- remove the excessive prints
+- ... ?
