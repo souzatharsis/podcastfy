@@ -15,12 +15,12 @@ from podcastfy.aiengines.tts.base import SyncTTSBackend, TTSConfigMixin, AsyncTT
 from podcastfy.core.character import Character
 
 
-class ElevenLabsTTS(SyncTTSBackend, TTSConfigMixin):
+class ElevenLabsTTS(SyncTTSBackend, AsyncTTSBackend, TTSConfigMixin):
     name: str = "elevenlabs"
 
     def __init__(self, api_key: str = None, config_file: str = 'podcastfy/config.yaml'):
         # TODO: not the right path for final client
-        TTSConfigMixin.__init__(self, config_file)
+        TTSConfigMixin.__init__(self, config_file, name=self.name)
         self.api_key = api_key or os.getenv("ELEVENLABS_API_KEY")
 
     def text_to_speech(self, text: str, character: Character, output_path: Path) -> Path:
@@ -37,6 +37,19 @@ class ElevenLabsTTS(SyncTTSBackend, TTSConfigMixin):
                     out.write(chunk)
         return output_path
 
+    async def async_text_to_speech(self, text: str, character: Character, output_path: Path) -> Path:
+        config = self.tts_config_for_character(character)
+        client = elevenlabs_client.AsyncElevenLabs(api_key=self.api_key)
+        content = await client.generate(
+            text=text,
+            voice=config.voice,
+            model=config.extra_args.get('model', self.get_default_config().get('model', 'default'))
+        )
+        with open(output_path, "wb") as out:
+            for chunk in content:
+                if chunk:
+                    out.write(chunk)
+
 
 class OpenAITTS(SyncTTSBackend, TTSConfigMixin):
     name: str = "openai"
@@ -45,7 +58,7 @@ class OpenAITTS(SyncTTSBackend, TTSConfigMixin):
         TTSConfigMixin.__init__(self, config_file, name=self.name)
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
 
-    def text_to_speech(self, text: str, character: Character, output_path: Path) -> Path:
+    def text_to_speech(self, text: str, character: Character, output_path: Path) -> None:
         config = self.tts_config_for_character(character)
 
         print(f"OpenAI TTS: Converting text to speech for character {character.name} with voice {config.voice} \n text: {text}")
@@ -57,23 +70,20 @@ class OpenAITTS(SyncTTSBackend, TTSConfigMixin):
         )
         with open(output_path, "wb") as file:
             file.write(response.content)
-        return output_path
+
 
 
 class EdgeTTS(AsyncTTSBackend, TTSConfigMixin):
-    name: str = "edge-tts"
+    name: str = "edge"
 
     def __init__(self, config_file: str = 'podcastfy/config.yaml'):
-        TTSConfigMixin.__init__(self, config_file)
+        TTSConfigMixin.__init__(self, config_file, name=self.name)
 
-    async def text_to_speech(self, text: str, character: Character, output_path: Path) -> None:
+    async def async_text_to_speech(self, text: str, character: Character, output_path: Path) -> None:
         config = self.tts_config_for_character(character)
         communicate = edge_tts.Communicate(text, config.voice)
         await communicate.save(output_path)
-        return output_path
 
-    async def async_text_to_speech(self, text: str, character: Character, output_path: Path) -> Path:
-        return await self.text_to_speech(text, character, output_path)
 
 
 
