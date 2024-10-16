@@ -58,8 +58,10 @@ def process_content(
         if config is None:
             config = load_config()
         
-        # Load default conversation config and update with provided config
+        # Load default conversation config
         conv_config = load_conversation_config()
+        
+        # Update with provided config if any
         if conversation_config:
             conv_config.configure(conversation_config)
 
@@ -74,9 +76,7 @@ def process_content(
 
             if urls:
                 logger.info(f"Processing {len(urls)} links")
-                content_extractor = (
-                    ContentExtractor()
-                )  # Remove the JINA_API_KEY parameter
+                content_extractor = ContentExtractor()
                 # Extract content from links
                 contents = [content_extractor.extract_content(link) for link in urls]
                 # Combine all extracted content
@@ -161,17 +161,17 @@ def main(
         config = load_config()
         main_config = config.get("main", {})
 
-
-        # Load conversation config if provided
         conversation_config = None
+        # Load conversation config if provided
         if conversation_config_path:
             with open(conversation_config_path, "r") as f:
-                conversation_config = yaml.safe_load(f)
+                conversation_config: Dict[str, Any] | None = yaml.safe_load(f)
+            
+                
                 
         # Use default TTS model from conversation config if not specified
         if tts_model is None:
-            conversation_config = load_conversation_config()
-            tts_config = conversation_config.get('text_to_speech', {})
+            tts_config = load_conversation_config().get('text_to_speech', {})
             tts_model = tts_config.get('default_tts_model', 'openai')
             
         if transcript:
