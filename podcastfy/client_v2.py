@@ -97,7 +97,7 @@ def process_content_v2(
         characters = create_characters(conv_config.config_conversation)
         tts_backends = create_tts_backends(config)
         # filter out the tts backends that are not in the tts_model, temporary solution
-        tts_backends = [tts for tts in tts_backends if tts.name != tts_model]
+        tts_backends = [tts for tts in tts_backends if tts.name == tts_model]
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
             transcript = Transcript.load(

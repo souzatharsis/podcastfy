@@ -46,7 +46,7 @@ class ElevenLabsTTS(SyncTTSBackend, AsyncTTSBackend, TTSConfigMixin):
             model=config.extra_args.get('model', self.get_default_config().get('model', 'default'))
         )
         with open(output_path, "wb") as out:
-            for chunk in content:
+            async for chunk in content:
                 if chunk:
                     out.write(chunk)
 
