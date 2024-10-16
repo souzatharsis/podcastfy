@@ -21,7 +21,7 @@ app = typer.Typer()
 
 def create_characters(config: Dict[str, Any]) -> List[Character]:
     host = Character(
-        name="Host",
+        name="Person1",
         role="Podcast host",
         tts_configs={
             "openai": TTSConfig(
@@ -39,7 +39,7 @@ def create_characters(config: Dict[str, Any]) -> List[Character]:
     )
 
     guest = Character(
-        name="Guest",
+        name="Person2",
         role="Expert guest",
         tts_configs={
             "openai": TTSConfig(
