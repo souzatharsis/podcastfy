@@ -41,6 +41,7 @@ nbsphinx = "^0.9.5"
 edge-tts = "^6.1.12"
 langchain-community = "^0.3.2"
 types-pyyaml = "^6.0.12.20240917"
+nest-asyncio = "^1.6.0"
 
 
 [tool.poetry.group.dev.dependencies]
