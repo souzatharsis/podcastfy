@@ -3,13 +3,13 @@ from pathlib import Path
 from typing import List, Optional, Dict, Any, Callable, Tuple, Union, Sequence, cast
 from tempfile import TemporaryDirectory
 import atexit
-from pydub import AudioSegment as PydubAudioSegment
+from pydub import AudioSegment
 from functools import wraps
 from contextlib import contextmanager
 
 from podcastfy.aiengines.llm.base import LLMBackend
 from podcastfy.aiengines.tts.base import SyncTTSBackend, AsyncTTSBackend
-from podcastfy.core.audio import AudioSegment, AudioManager
+from podcastfy.core.audio import PodcastsAudioSegment, AudioManager
 from podcastfy.core.character import Character
 from podcastfy.core.transcript import TranscriptSegment, Transcript
 from podcastfy.core.tts_configs import TTSConfig
@@ -93,7 +93,7 @@ class Podcast:
 
         # Initialize attributes with null values
         self.transcript: Optional[Transcript] = None
-        self.audio_segments: List[AudioSegment] = []
+        self.audio_segments: List[PodcastsAudioSegment] = []
         self.audio: Optional[PydubAudioSegment] = None
 
         # Define the sequence of methods to be called for each stage
@@ -195,10 +195,14 @@ class Podcast:
     @podcast_stage
     def stitch_audio_segments(self) -> None:
         """Stitch all audio segments together to form the final podcast audio."""
-        self.audio = sum([segment.audio for segment in self.audio_segments])
+        # order segments by filename
+        segments_to_stitch = sorted(self.audio_segments, key=lambda segment: segment.filepath)
+
+        self.audio = sum((segment.audio for segment in segments_to_stitch), AudioSegment.empty())
 
     def _build_next_stage(self) -> bool:
         """Build the next stage of the podcast."""
+        print("state: ", self.state)
         if self.state == PodcastState.STITCHED:
             return False
 
@@ -338,8 +342,8 @@ if __name__ == "__main__":
         PydubAudioSegment.silent(duration=500).export(temp_file.name, format="mp3")
 
     with podcast.rework(PodcastState.AUDIO_SEGMENTS_BUILT):
-        new_segment = AudioSegment(Path(temp_file.name), 500,
-                                   TranscriptSegment("New audio segment", podcast.characters["Host"]))
+        new_segment = PodcastsAudioSegment(Path(temp_file.name), 500,
+                                           TranscriptSegment("New audio segment", podcast.characters["Host"]))
         podcast.audio_segments.insert(0, new_segment)
 
     # Save the final podcast
