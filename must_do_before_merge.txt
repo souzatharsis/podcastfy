@@ -2,4 +2,5 @@
 - delete client_v2 and merge it with client
 - check that all config options are taken
 - remove the excessive prints
+- check that all tts work
 - ... ?
