@@ -7,6 +7,7 @@ provides methods to generate and save the generated content.
 """
 
 import os
+import re
 from typing import Optional, Dict, Any, List, Tuple
 
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -41,12 +42,12 @@ class ContentGenerator:
 		self.llm = ChatGoogleGenerativeAI(
 			model=self.content_generator_config.get('gemini_model', 'gemini-1.5-pro-latest'),
 			temperature=self.config_conversation.get('creativity', 0),
-			max_output_tokens=self.content_generator_config.get('max_output_tokens', 8192)
+			max_output_tokens=self.content_generator_config.get('max_output_tokens', 8192),
 		)
 		
 		#pick podcastfy prompt from langchain hub
 		self.prompt_template = hub.pull(self.config.get('content_generator', {}).get('prompt_template', 'souzatharsis/podcastfy_'))
-		self.prompt_template
+		self.ending_message = self.config.get('text_to_speech')['ending_message']
 
 		self.parser = StrOutputParser()
 		
@@ -109,19 +110,61 @@ class DefaultPodcastifyTranscriptEngine(LLMBackend):
 		"""
 		self.content_generator = ContentGenerator(api_key, conversation_config)
 
+	def split_qa(self, input_text: str) -> List[Tuple[str, str]]:
+		"""
+		Split the input text into question-answer pairs.
+
+		Args:
+			input_text (str): The input text containing Person1 and Person2 dialogues.
+
+		Returns:
+			List[Tuple[str, str]]: A list of tuples containing (Person1, Person2) dialogues.
+		"""
+		# Add ending message to the end of input_text
+		input_text += f"<Person2>{self.content_generator.ending_message}</Person2>"
+
+		# Regular expression pattern to match Person1 and Person2 dialogues
+		pattern = r'<Person1>(.*?)</Person1>\s*<Person2>(.*?)</Person2>'
+
+		# Find all matches in the input text
+		matches = re.findall(pattern, input_text, re.DOTALL)
+
+		# Process the matches to remove extra whitespace and newlines
+		processed_matches = [
+			(
+				' '.join(person1.split()).strip(),
+				' '.join(person2.split()).strip()
+			)
+			for person1, person2 in matches
+		]
+		return processed_matches
+
 	def generate_transcript(self, prompt: str, characters: List[Character]) -> List[Tuple[Character, str]]:
 		content = self.content_generator.generate_qa_content(prompt, output_filepath=None, characters=characters)
-		
-		# Parse the generated content into the required format
+
+		q_a_pairs = self.split_qa(content)
 		transcript = []
-		for line in content.split('\n'):
-			if ':' in line:
-				speaker_name, text = line.split(':', 1)
-				speaker = next((char for char in characters if char.name == speaker_name.strip()), None)
-				if speaker:
-					transcript.append((speaker, text.strip()))
-		
+		for q_a_pair in q_a_pairs:
+			# Assign the speakers based on the order of the characters
+			speaker1, speaker2 = characters
+			speaker_1_text, speaker_2_text = q_a_pair
+			transcript.append((speaker1, speaker_1_text))
+			transcript.append((speaker2, speaker_2_text))
 		return transcript
+
+	# def generate_transcript(self, prompt: str, characters: List[Character]) -> List[Tuple[Character, str]]:
+	# 	content = self.content_generator.generate_qa_content(prompt, output_filepath=None, characters=characters)
+	#
+	# 	# Parse the generated content into the required format
+	# 	transcript = []
+	# 	for line in content.split('\n'):
+	# 		if ':' in line:
+	# 			speaker_name, text = line.split(':', 1)
+	# 			speaker = next((char for char in characters if char.name == speaker_name.strip()), None)
+	# 			if speaker:
+	# 				transcript.append((speaker, text.strip()))
+	#
+	# 	return transcript
 
 
 
