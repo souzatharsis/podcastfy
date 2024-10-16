@@ -18,7 +18,7 @@ from podcastfy.core.character import Character
 class ElevenLabsTTS(SyncTTSBackend, AsyncTTSBackend, TTSConfigMixin):
     name: str = "elevenlabs"
 
-    def __init__(self, api_key: str = None, config_file: str = 'podcastfy/config.yaml'):
+    def __init__(self, api_key: str = None, config_file: str = 'podcastfy/conversation_config.yaml'):
         # TODO: not the right path for final client
         TTSConfigMixin.__init__(self, config_file, name=self.name)
         self.api_key = api_key or os.getenv("ELEVENLABS_API_KEY")
@@ -76,7 +76,7 @@ class OpenAITTS(SyncTTSBackend, TTSConfigMixin):
 class EdgeTTS(AsyncTTSBackend, TTSConfigMixin):
     name: str = "edge"
 
-    def __init__(self, config_file: str = 'podcastfy/config.yaml'):
+    def __init__(self, config_file: str = 'podcastfy/conversation_config.yaml'):
         TTSConfigMixin.__init__(self, config_file, name=self.name)
 
     async def async_text_to_speech(self, text: str, character: Character, output_path: Path) -> None:

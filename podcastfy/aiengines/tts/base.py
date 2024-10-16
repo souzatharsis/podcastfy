@@ -51,7 +51,7 @@ class AsyncTTSBackend(ABC):
 class TTSConfigMixin:
     """Mixin class to manage TTS external configurations."""
 
-    def __init__(self, config_file: str = 'podcastfy/config.yaml', name: str = "") -> None:
+    def __init__(self, config_file: str = 'podcastfy/conversation_config.yaml', name: str = "") -> None:
         # TODO: probably bad config files for final client
         self.name = name
         self.config_file = config_file
