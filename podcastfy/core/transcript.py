@@ -56,6 +56,7 @@ class Transcript:
     @classmethod
     def load(cls, filepath: str, characters: Dict[str, Character]) -> 'Transcript':
         """Load a transcript from a JSON file."""
+        # There are a loss of characters informations when loading a transcript, is it acceptable?
         with open(filepath, 'r') as f:
             content = f.read()
 
