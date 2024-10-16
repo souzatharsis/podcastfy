@@ -71,7 +71,7 @@ class ContentGenerator:
         self.content_generator_config = self.config.get("content_generator", {})
 
         self.config_conversation = load_conversation_config(conversation_config)
-        self.ending_message = self.config_conversation.get('text_to_speech')['ending_message']
+        self.ending_message = self.config_conversation.get('text_to_speech').get('ending_message','')
 
     def __compose_prompt(self, num_images: int):
         """
