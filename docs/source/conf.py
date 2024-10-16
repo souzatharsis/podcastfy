@@ -9,7 +9,7 @@
 project = 'podcastfy'
 copyright = '2024, Tharsis T. P. Souza'
 author = 'Tharsis T. P. Souza'
-release = 'v0.2.3'
+release = 'v0.2.4'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

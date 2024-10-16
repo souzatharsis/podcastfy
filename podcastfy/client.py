@@ -42,21 +42,26 @@ def process_content(
     Process URLs, a transcript file, or image paths to generate a podcast or transcript.
 
     Args:
-                    urls (Optional[List[str]]): A list of URLs to process.
-                    transcript_file (Optional[str]): Path to a transcript file.
-                    tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'openai'.
-                    generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
-                    config (Config): Configuration object to use. If None, default config will be loaded.
-                    conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
-                    image_paths (Optional[List[str]]): List of image file paths to process.
-                    is_local (bool): Whether to use a local LLM. Defaults to False.
+        urls (Optional[List[str]]): A list of URLs to process.
+        transcript_file (Optional[str]): Path to a transcript file.
+        tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'openai'.
+        generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
+        config (Config): Configuration object to use. If None, default config will be loaded.
+        conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
+        image_paths (Optional[List[str]]): List of image file paths to process.
+        is_local (bool): Whether to use a local LLM. Defaults to False.
 
     Returns:
-                    Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
+        Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
     """
     try:
         if config is None:
             config = load_config()
+        
+        # Load default conversation config and update with provided config
+        conv_config = load_conversation_config()
+        if conversation_config:
+            conv_config.configure(conversation_config)
 
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
@@ -64,7 +69,7 @@ def process_content(
                 qa_content = file.read()
         else:
             content_generator = ContentGenerator(
-                api_key=config.GEMINI_API_KEY, conversation_config=conversation_config
+                api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
             )
 
             if urls:
@@ -231,40 +236,40 @@ def generate_podcast(
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
 
     Args:
-            urls (Optional[List[str]]): List of URLs to process.
-            url_file (Optional[str]): Path to a file containing URLs, one per line.
-            transcript_file (Optional[str]): Path to a transcript file.
-            tts_model (Optional[str]): TTS model to use ('openai', 'elevenlabs' or 'edge').
-            transcript_only (bool): Generate only a transcript without audio. Defaults to False.
-            config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
-            conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.
-            image_paths (Optional[List[str]]): List of image file paths to process.
-            is_local (bool): Whether to use a local LLM. Defaults to False.
+        urls (Optional[List[str]]): List of URLs to process.
+        url_file (Optional[str]): Path to a file containing URLs, one per line.
+        transcript_file (Optional[str]): Path to a transcript file.
+        tts_model (Optional[str]): TTS model to use ('openai', 'elevenlabs' or 'edge').
+        transcript_only (bool): Generate only a transcript without audio. Defaults to False.
+        config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
+        conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.
+        image_paths (Optional[List[str]]): List of image file paths to process.
+        is_local (bool): Whether to use a local LLM. Defaults to False.
 
     Returns:
-            Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
+        Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
 
     Example:
-            >>> from podcastfy.client import generate_podcast
-            >>> result = generate_podcast(
-            ...     image_paths=['/path/to/image1.jpg', '/path/to/image2.png'],
-            ...     tts_model='elevenlabs',
-            ...     config={
-            ...         'main': {
-            ...             'default_tts_model': 'elevenlabs'
-            ...         },
-            ...         'output_directories': {
-            ...             'audio': '/custom/path/to/audio',
-            ...             'transcripts': '/custom/path/to/transcripts'
-            ...         }
-            ...     },
-            ...     conversation_config={
-            ...         'word_count': 150,
-            ...         'conversation_style': ['informal', 'friendly'],
-            ...         'podcast_name': 'My Custom Podcast'
-            ...     },
-            ...     is_local=True
-            ... )
+        >>> from podcastfy.client import generate_podcast
+        >>> result = generate_podcast(
+        ...     image_paths=['/path/to/image1.jpg', '/path/to/image2.png'],
+        ...     tts_model='elevenlabs',
+        ...     config={
+        ...         'main': {
+        ...             'default_tts_model': 'elevenlabs'
+        ...         },
+        ...         'output_directories': {
+        ...             'audio': '/custom/path/to/audio',
+        ...             'transcripts': '/custom/path/to/transcripts'
+        ...         }
+        ...     },
+        ...     conversation_config={
+        ...         'word_count': 150,
+        ...         'conversation_style': ['informal', 'friendly'],
+        ...         'podcast_name': 'My Custom Podcast'
+        ...     },
+        ...     is_local=True
+        ... )
     """
     try:
         # Load default config

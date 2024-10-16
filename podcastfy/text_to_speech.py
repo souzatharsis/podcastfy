@@ -307,6 +307,8 @@ class TextToSpeech:
 								  f'<{tag}>\\1</{tag}>', 
 								  cleaned_text, 
 								  flags=re.DOTALL)
+		# Remove '(scratchpad)' from cleaned_text
+		cleaned_text = cleaned_text.replace('(scratchpad)', '')
 
 		return cleaned_text.strip()
 
