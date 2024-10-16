@@ -21,6 +21,7 @@ from podcastfy.utils.config_conversation import (
 from podcastfy.utils.logger import setup_logger
 from typing import List, Optional, Dict, Any
 import copy
+from podcastfy.client_v2 import process_content_v2 as process_content
 
 
 logger = setup_logger(__name__)
@@ -28,96 +29,96 @@ logger = setup_logger(__name__)
 app = typer.Typer()
 
 
-def process_content(
-    urls=None,
-    transcript_file=None,
-    tts_model="openai",
-    generate_audio=True,
-    config=None,
-    conversation_config: Optional[Dict[str, Any]] = None,
-    image_paths: Optional[List[str]] = None,
-    is_local: bool = False,
-):
-    """
-    Process URLs, a transcript file, or image paths to generate a podcast or transcript.
-
-    Args:
-        urls (Optional[List[str]]): A list of URLs to process.
-        transcript_file (Optional[str]): Path to a transcript file.
-        tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'openai'.
-        generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
-        config (Config): Configuration object to use. If None, default config will be loaded.
-        conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
-        image_paths (Optional[List[str]]): List of image file paths to process.
-        is_local (bool): Whether to use a local LLM. Defaults to False.
-
-    Returns:
-        Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
-    """
-    try:
-        if config is None:
-            config = load_config()
-        
-        # Load default conversation config
-        conv_config = load_conversation_config()
-        
-        # Update with provided config if any
-        if conversation_config:
-            conv_config.configure(conversation_config)
-
-        if transcript_file:
-            logger.info(f"Using transcript file: {transcript_file}")
-            with open(transcript_file, "r") as file:
-                qa_content = file.read()
-        else:
-            content_generator = ContentGenerator(
-                api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
-            )
-
-            if urls:
-                logger.info(f"Processing {len(urls)} links")
-                content_extractor = ContentExtractor()
-                # Extract content from links
-                contents = [content_extractor.extract_content(link) for link in urls]
-                # Combine all extracted content
-                combined_content = "\n\n".join(contents)
-            else:
-                combined_content = ""  # Empty string if no URLs provided
-
-            # Generate Q&A content
-            random_filename = f"transcript_{uuid.uuid4().hex}.txt"
-            transcript_filepath = os.path.join(
-                config.get("output_directories")["transcripts"], random_filename
-            )
-            qa_content = content_generator.generate_qa_content(
-                combined_content,
-                image_file_paths=image_paths or [],
-                output_filepath=transcript_filepath,
-                is_local=is_local,
-            )
-
-        if generate_audio:
-            api_key = None
-            # edge does not require an API key
-            if tts_model != "edge":
-                api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
-
-            text_to_speech = TextToSpeech(model=tts_model, api_key=api_key)
-            # Convert text to speech using the specified model
-            random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
-            audio_file = os.path.join(
-                config.get("output_directories")["audio"], random_filename
-            )
-            text_to_speech.convert_to_speech(qa_content, audio_file)
-            logger.info(f"Podcast generated successfully using {tts_model} TTS model")
-            return audio_file
-        else:
-            logger.info(f"Transcript generated successfully")
-            return None
-
-    except Exception as e:
-        logger.error(f"An error occurred in the process_content function: {str(e)}")
-        raise
+# def process_content(
+#     urls=None,
+#     transcript_file=None,
+#     tts_model="openai",
+#     generate_audio=True,
+#     config=None,
+#     conversation_config: Optional[Dict[str, Any]] = None,
+#     image_paths: Optional[List[str]] = None,
+#     is_local: bool = False,
+# ):
+#     """
+#     Process URLs, a transcript file, or image paths to generate a podcast or transcript.
+#
+#     Args:
+#         urls (Optional[List[str]]): A list of URLs to process.
+#         transcript_file (Optional[str]): Path to a transcript file.
+#         tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'openai'.
+#         generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
+#         config (Config): Configuration object to use. If None, default config will be loaded.
+#         conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
+#         image_paths (Optional[List[str]]): List of image file paths to process.
+#         is_local (bool): Whether to use a local LLM. Defaults to False.
+#
+#     Returns:
+#         Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
+#     """
+#     try:
+#         if config is None:
+#             config = load_config()
+#
+#         # Load default conversation config
+#         conv_config = load_conversation_config()
+#
+#         # Update with provided config if any
+#         if conversation_config:
+#             conv_config.configure(conversation_config)
+#
+#         if transcript_file:
+#             logger.info(f"Using transcript file: {transcript_file}")
+#             with open(transcript_file, "r") as file:
+#                 qa_content = file.read()
+#         else:
+#             content_generator = ContentGenerator(
+#                 api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
+#             )
+#
+#             if urls:
+#                 logger.info(f"Processing {len(urls)} links")
+#                 content_extractor = ContentExtractor()
+#                 # Extract content from links
+#                 contents = [content_extractor.extract_content(link) for link in urls]
+#                 # Combine all extracted content
+#                 combined_content = "\n\n".join(contents)
+#             else:
+#                 combined_content = ""  # Empty string if no URLs provided
+#
+#             # Generate Q&A content
+#             random_filename = f"transcript_{uuid.uuid4().hex}.txt"
+#             transcript_filepath = os.path.join(
+#                 config.get("output_directories")["transcripts"], random_filename
+#             )
+#             qa_content = content_generator.generate_qa_content(
+#                 combined_content,
+#                 image_file_paths=image_paths or [],
+#                 output_filepath=transcript_filepath,
+#                 is_local=is_local,
+#             )
+#
+#         if generate_audio:
+#             api_key = None
+#             # edge does not require an API key
+#             if tts_model != "edge":
+#                 api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
+#
+#             text_to_speech = TextToSpeech(model=tts_model, api_key=api_key)
+#             # Convert text to speech using the specified model
+#             random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
+#             audio_file = os.path.join(
+#                 config.get("output_directories")["audio"], random_filename
+#             )
+#             text_to_speech.convert_to_speech(qa_content, audio_file)
+#             logger.info(f"Podcast generated successfully using {tts_model} TTS model")
+#             return audio_file
+#         else:
+#             logger.info(f"Transcript generated successfully")
+#             return None
+#
+#     except Exception as e:
+#         logger.error(f"An error occurred in the process_content function: {str(e)}")
+#         raise
 
 
 @app.command()
