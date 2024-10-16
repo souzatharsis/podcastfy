@@ -82,7 +82,7 @@ class EdgeTTS(AsyncTTSBackend, TTSConfigMixin):
     async def async_text_to_speech(self, text: str, character: Character, output_path: Path) -> None:
         config = self.tts_config_for_character(character)
         communicate = edge_tts.Communicate(text, config.voice)
-        await communicate.save(output_path)
+        await communicate.save(str(output_path))
 
 
 
