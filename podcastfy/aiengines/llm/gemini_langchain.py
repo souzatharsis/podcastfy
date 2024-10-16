@@ -10,6 +10,8 @@ import os
 import re
 from typing import Optional, Dict, Any, List, Tuple
 
+from langchain_community.llms.llamafile import Llamafile
+from langchain_core.prompts import HumanMessagePromptTemplate, ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
@@ -22,7 +24,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class ContentGenerator:
+
+
+class OldContentGenerator:
+	# note: to be deleted but stays around few days for reference and troubleshooting
 	def __init__(self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None):
 		"""
 		Initialize the ContentGenerator.
@@ -34,7 +39,7 @@ class ContentGenerator:
 		os.environ["GOOGLE_API_KEY"] = api_key
 		self.config = load_config()
 		self.content_generator_config = self.config.get('content_generator', {})
-		
+
 		# Load default conversation config and update with custom config if provided
 
 		self.config_conversation = load_conversation_config(conversation_config)
@@ -44,13 +49,13 @@ class ContentGenerator:
 			temperature=self.config_conversation.get('creativity', 0),
 			max_output_tokens=self.content_generator_config.get('max_output_tokens', 8192),
 		)
-		
+
 		#pick podcastfy prompt from langchain hub
 		self.prompt_template = hub.pull(self.config.get('content_generator', {}).get('prompt_template', 'souzatharsis/podcastfy_'))
 		self.ending_message = self.config.get('text_to_speech')['ending_message']
 
 		self.parser = StrOutputParser()
-		
+
 		self.chain = (self.prompt_template | self.llm | self.parser)
 
 	def generate_qa_content(self, input_texts: str, output_filepath: Optional[str] = None, characters: List[Character] = None) -> str:
@@ -69,8 +74,8 @@ class ContentGenerator:
 		"""
 		assert len(characters) == 2, "The number of characters should be 2 for this implementation"
 		try:
-			
-			
+
+
 			prompt_params = {
 				"input_text": input_texts,
 				"word_count": self.config_conversation.get('word_count'),
@@ -85,19 +90,192 @@ class ContentGenerator:
 			}
 
 			self.response = self.chain.invoke(prompt_params)
-			
+
 			logger.info(f"Content generated successfully")
-			
+
 			if output_filepath:
 				with open(output_filepath, 'w') as file:
 					file.write(self.response)
 				logger.info(f"Response content saved to {output_filepath}")
-			
+
 			return self.response
 		except Exception as e:
 			logger.error(f"Error generating content: {str(e)}")
 			raise
 
+class LLMBackend:
+    def __init__(
+        self,
+        is_local: bool,
+        temperature: float,
+        max_output_tokens: int,
+        model_name: str,
+    ):
+        """
+        Initialize the LLMBackend.
+
+        Args:
+                is_local (bool): Whether to use a local LLM or not.
+                temperature (float): The temperature for text generation.
+                max_output_tokens (int): The maximum number of output tokens.
+                model_name (str): The name of the model to use.
+        """
+        self.is_local = is_local
+        self.temperature = temperature
+        self.max_output_tokens = max_output_tokens
+        self.model_name = model_name
+        self.is_multimodal = not is_local  # Does not assume local LLM is multimodal
+
+        if is_local:
+            self.llm = Llamafile()
+        else:
+            self.llm = ChatGoogleGenerativeAI(
+                model=model_name,
+                temperature=temperature,
+                max_output_tokens=max_output_tokens,
+            )
+
+
+class ContentGenerator:
+    def __init__(
+        self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None
+    ):
+        """
+        Initialize the ContentGenerator.
+
+        Args:
+                api_key (str): API key for Google's Generative AI.
+                conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
+        """
+        os.environ["GOOGLE_API_KEY"] = api_key
+        self.config = load_config()
+        self.content_generator_config = self.config.get("content_generator", {})
+
+        self.config_conversation = load_conversation_config(conversation_config)
+
+    def __compose_prompt(self, num_images: int):
+        """
+        Compose the prompt for the LLM based on the content list.
+        """
+        prompt_template = hub.pull(
+            self.config.get("content_generator", {}).get(
+                "prompt_template", "souzatharsis/podcastfy_multimodal"
+            )
+        )
+
+        image_path_keys = []
+        messages = []
+        text_content = {"type": "text", "text": "{input_text}"}
+        messages.append(text_content)
+        for i in range(num_images):
+            key = f"image_path_{i}"
+            image_content = {
+                "image_url": {"path": f"{{{key}}}", "detail": "high"},
+                "type": "image_url",
+            }
+            image_path_keys.append(key)
+            messages.append(image_content)
+
+        user_prompt_template = ChatPromptTemplate.from_messages(
+            messages=[HumanMessagePromptTemplate.from_template(messages)]
+        )
+
+        # Compose messages from podcastfy_prompt_template and user_prompt_template
+        combined_messages = prompt_template.messages + user_prompt_template.messages
+
+        # Create a new ChatPromptTemplate object with the combined messages
+        composed_prompt_template = ChatPromptTemplate.from_messages(combined_messages)
+
+        return composed_prompt_template, image_path_keys
+
+    def __compose_prompt_params(
+        self, image_file_paths: List[str], image_path_keys: List[str], input_texts: str
+    ):
+        prompt_params = {
+            "input_text": input_texts,
+            "word_count": self.config_conversation.get("word_count"),
+            "conversation_style": ", ".join(
+                self.config_conversation.get("conversation_style", [])
+            ),
+            "roles_person1": self.config_conversation.get("roles_person1"),
+            "roles_person2": self.config_conversation.get("roles_person2"),
+            "dialogue_structure": ", ".join(
+                self.config_conversation.get("dialogue_structure", [])
+            ),
+            "podcast_name": self.config_conversation.get("podcast_name"),
+            "podcast_tagline": self.config_conversation.get("podcast_tagline"),
+            "output_language": self.config_conversation.get("output_language"),
+            "engagement_techniques": ", ".join(
+                self.config_conversation.get("engagement_techniques", [])
+            ),
+        }
+
+        # for each image_path_key, add the corresponding image_file_path to the prompt_params
+        for key, path in zip(image_path_keys, image_file_paths):
+            prompt_params[key] = path
+
+        return prompt_params
+
+    def generate_qa_content(
+        self,
+        input_texts: str = "",
+        image_file_paths: List[str] = [],
+        output_filepath: Optional[str] = None,
+        is_local: bool = False,
+    ) -> str:
+        """
+        Generate Q&A content based on input texts.
+
+        Args:
+                input_texts (str): Input texts to generate content from.
+                image_file_paths (List[str]): List of image file paths.
+                output_filepath (Optional[str]): Filepath to save the response content. Defaults to None.
+                is_local (bool): Whether to use a local LLM or not. Defaults to False.
+
+        Returns:
+                str: Formatted Q&A content.
+
+        Raises:
+                Exception: If there's an error in generating content.
+        """
+        try:
+            llmbackend = LLMBackend(
+                is_local=is_local,
+                temperature=self.config_conversation.get("creativity", 0),
+                max_output_tokens=self.content_generator_config.get(
+                    "max_output_tokens", 8192
+                ),
+                model_name=(
+                    self.content_generator_config.get(
+                        "gemini_model", "gemini-1.5-pro-latest"
+                    )
+                    if not is_local
+                    else "User provided model"
+                ),
+            )
+
+            num_images = 0 if is_local else len(image_file_paths)
+            self.prompt_template, image_path_keys = self.__compose_prompt(num_images)
+            self.parser = StrOutputParser()
+            self.chain = self.prompt_template | llmbackend.llm | self.parser
+
+            prompt_params = self.__compose_prompt_params(
+                image_file_paths, image_path_keys, input_texts
+            )
+
+            self.response = self.chain.invoke(prompt_params)
+
+            logger.info(f"Content generated successfully")
+
+            if output_filepath:
+                with open(output_filepath, "w") as file:
+                    file.write(self.response)
+                logger.info(f"Response content saved to {output_filepath}")
+
+            return self.response
+        except Exception as e:
+            logger.error(f"Error generating content: {str(e)}")
+            raise
 
 class DefaultPodcastifyTranscriptEngine(LLMBackend):
 	def __init__(self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None):
@@ -140,7 +318,8 @@ class DefaultPodcastifyTranscriptEngine(LLMBackend):
 		return processed_matches
 
 	def generate_transcript(self, prompt: str, characters: List[Character]) -> List[Tuple[Character, str]]:
-		content = self.content_generator.generate_qa_content(prompt, output_filepath=None, characters=characters)
+		content = self.content_generator.generate_qa_content(prompt, output_filepath=None)
+		# content = self.content_generator.generate_qa_content(prompt, output_filepath=None, characters=characters)  # ideally in the future.
 
 		q_a_pairs = self.split_qa(content)
 		transcript = []
