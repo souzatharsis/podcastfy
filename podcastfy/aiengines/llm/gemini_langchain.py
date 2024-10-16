@@ -140,7 +140,7 @@ class LLMBackend:
 
 
 class DefaultPodcastifyTranscriptEngine(LLMBackend):
-	def __init__(self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None):
+	def __init__(self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None, is_local: bool = False):
 		"""
 		Initialize the DefaultPodcastifyTranscriptEngine.
 
@@ -149,6 +149,7 @@ class DefaultPodcastifyTranscriptEngine(LLMBackend):
 			conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
 		"""
 		self.content_generator = ContentGenerator(api_key, conversation_config)
+		self.is_local = is_local
 
 	def split_qa(self, input_text: str) -> List[Tuple[str, str]]:
 		"""
@@ -182,7 +183,7 @@ class DefaultPodcastifyTranscriptEngine(LLMBackend):
 	def generate_transcript(self, content: List[LLMContent], characters: List[Character]) -> List[Tuple[Character, str]]:
 		image_file_paths = [c.value for c in content if c.type == 'image_path']
 		text_content = "\n\n".join(c.value for c in content if c.type == 'text')
-		content = self.content_generator.generate_qa_content(text_content, image_file_paths) # ideally in the future we pass characters here
+		content = self.content_generator.generate_qa_content(text_content, image_file_paths, is_local=self.is_local) # ideally in the future we pass characters here
 
 		q_a_pairs = self.split_qa(content)
 		transcript = []
