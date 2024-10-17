@@ -6,7 +6,8 @@ All assume you have podcastfy installed and running.
 
 - [How to use your own voice in audio podcasts](#how-to-use-your-own-voice-in-audio-podcasts)
 - [How to customize the conversation](#how-to-customize-the-conversation)
-- [How to Use Markdown Files as Input](#how-to-use-markdown-files-as-input)
+- [How to generate multilingual content](#how-to-generate-multilingual-content)
+
 
 
 ## How to use your own voice in audio podcasts
@@ -52,10 +53,19 @@ generate_podcast(
     conversation_config=custom_config
 )
 ```
-
 For more details, checkout [conversation_custom.md](https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md).
 
-## How to Use Markdown Files as Input
+## How to generate multilingual content
+
+In order to generate transcripts in a target language, simply set `output_language` = your target language. See [How to customize the conversation](#how-to-customize-the-conversation) on how to pass custom configuration to podcastfy. Set --transcript-only to get only the transcript without audio generation.
+
+In order to generation audio, you can simply use openai TTS model which by default is multilingual. However, in my experience OpenAI's TTS multilingual quality is subpar. Instead, consdier using elevenlabs backend. See [How to use your own voice in audio podcasts](#how-to-use-your-own-voice-in-audio-podcasts) but instead of using your own voice you should download and set a voice in your target language for it to work.
+
+Sample audio:
+- [French](https://github.com/souzatharsis/podcastfy/blob/main/data/audio/podcast_FR_AGRO.mp3)
+- [Portugue-BR](https://github.com/souzatharsis/podcastfy/blob/main/data/audio/podcast_thatupiso_BR.mp3)
+
+The PT-BR audio actually uses my own cloned voice as AI Host 2.
 
 Podcastfy now supports extracting content from markdown (.md) files. This feature allows you to generate podcasts from your markdown documentation, notes, or any other markdown-formatted content.
 
