@@ -83,5 +83,5 @@ def test_transcript_str(characters):
         TranscriptSegment("Hi there", characters["Person2"])
     ]
     transcript = Transcript(segments, {"title": "Test Transcript"})
-    expected_str = "Metadata:\ntitle: Test Transcript\n\nTranscript:\nPerson1: Hello\nPerson2: Hi there"
+    expected_str = "<Person1>Hello</Person1>\n<Person2>Hi there</Person2>"
     assert str(transcript) == expected_str

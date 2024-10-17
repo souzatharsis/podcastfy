@@ -1,8 +1,8 @@
-- one test or two on the Podcast Class
-- delete client_v2 and merge it with client
-- check that all config options are taken
-- remove the excessive prints
-- check that all tts work
+- one test or two on the Podcast Class [x]
+- delete client_v2 and merge it with client [] will be done during PR
+- check that all config options are taken [x]
+- remove the excessive prints [x]
+- check that all tts work [x]
 - ... ?
 - 100% of current pytest unit tests pass  [x] (except for test_generate_podcast_with_custom_config, exhausted credits)
-- 100% of of CLI case scenarios from usage/cli.md
+- 100% of of CLI case scenarios from usage/cli.md [x] except local
