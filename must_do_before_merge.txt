@@ -4,5 +4,5 @@
 - remove the excessive prints
 - check that all tts work
 - ... ?
-- 100% of current pytest unit tests pass
+- 100% of current pytest unit tests pass  [x] (except for test_generate_podcast_with_custom_config, exhausted credits)
 - 100% of of CLI case scenarios from usage/cli.md

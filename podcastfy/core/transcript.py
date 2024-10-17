@@ -28,7 +28,7 @@ class TranscriptSegment:
 
 
 class Transcript:
-    def __init__(self, segments: List[TranscriptSegment], metadata: Dict[str, Any]) -> None:
+    def __init__(self, segments: List[TranscriptSegment], metadata: Dict[str, Any] = {}) -> None:
         self.segments = segments
         self.metadata = metadata
 

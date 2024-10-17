@@ -226,7 +226,7 @@ class Podcast:
 
     def export_transcript(self, filepath: str, format_: str = "plaintext") -> None:
         """Save the podcast transcript to a file."""
-        if self.state < PodcastState.TRANSCRIPT_BUILT:
+        if self.state.value < PodcastState.TRANSCRIPT_BUILT.value:
             raise ValueError("Transcript can only be saved after it is built")
 
         if self.transcript:
@@ -236,7 +236,7 @@ class Podcast:
 
     def dump_transcript(self, filepath: str) -> None:
         """Dump the podcast transcript to a JSON file."""
-        if self.state < PodcastState.TRANSCRIPT_BUILT:
+        if self.state.value < PodcastState.TRANSCRIPT_BUILT.value:
             raise ValueError("Transcript can only be dumped after it is built")
 
         if self.transcript:
