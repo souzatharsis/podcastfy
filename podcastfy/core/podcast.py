@@ -44,7 +44,7 @@ def podcast_stage(func):
             result = func(self, *args, **kwargs)
             next_state = PodcastState(self.state.value + 1)
             self.state = next_state or self.state
-            print(f"Done! Current State: {self.state.name}")
+            print(f"Done!")
             return result
         except Exception as e:
             print(f"Error in {func.__name__}: {str(e)}")
