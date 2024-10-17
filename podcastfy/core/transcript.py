@@ -22,7 +22,7 @@ def clean_markups(input_text: str) -> str:
     ]
     # Append additional tags to the supported tags list
     # Create a pattern that matches any tag not in the supported list
-    pattern = r'</?(?!(?:' + '|'.join(supported_tags) + r')\b)[^>]+>'
+    pattern = r'<(?!(?:/?' + '|'.join(supported_tags) + r')\b)[^>]+>'
 
     # Remove unsupported tags
     cleaned_text = re.sub(pattern, '', input_text)
