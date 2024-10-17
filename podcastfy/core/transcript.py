@@ -80,6 +80,8 @@ class Transcript:
 
     @staticmethod
     def _parse_legacy_transcript(content: str) -> List[Tuple[str, str]]:
+        # in the future, Person should be replaced by any character name, but for now, it's Person
+        # this is tricky because we don't want to take a random tag as a character name, but maybe it's ok to assume that the first tag of each line is the character name
         pattern = r'<Person(\d)>\s*(.*?)\s*</Person\1>'
         matches = re.findall(pattern, content, re.DOTALL)
         return [('Person' + person_num, text) for person_num, text in matches]
@@ -117,11 +119,9 @@ class Transcript:
         }
 
     def __str__(self) -> str:
-        """Convert the transcript to a string representation."""
+        """Convert the transcript to a xml representation."""
         lines = []
         for segment in self.segments:
-            lines.append(f"{segment.speaker.name}: {segment.text}")
+            lines.append(f'<{segment.speaker.name}>{segment.text}</{segment.speaker.name}>')
+        return '\n'.join(lines)
 
-        metadata_str = "\n".join([f"{key}: {value}" for key, value in self.metadata.items()])
-
-        return f"Metadata:\n{metadata_str}\n\nTranscript:\n" + "\n".join(lines)
