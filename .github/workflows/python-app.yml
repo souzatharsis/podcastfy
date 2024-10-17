@@ -11,38 +11,29 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # This will use the latest Ubuntu LTS available on GitHub Actions
+
+    container:
+      image: ubuntu:24.04  # This will use Ubuntu 24.04 inside a container
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
-
-    - name: Install FFmpeg 6.x
+    - name: Set up environment
       run: |
-        sudo add-apt-repository ppa:savoury1/ffmpeg6
-        sudo apt-get update
-        sudo apt-get install -y ffmpeg
+        apt-get update
+        apt-get install -y python3 python3-pip ffmpeg
+        python3 -m pip install --upgrade pip
 
-    - name: Check FFmpeg version
-      run: ffmpeg -version
-
-    - name: Cache pip dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+    - name: Check Ubuntu and FFmpeg versions
+      run: |
+        cat /etc/os-release
+        ffmpeg -version
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip3 install flake8 pytest
+        if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
 
     - name: Lint with flake8
       run: |
