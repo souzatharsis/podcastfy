@@ -1,50 +1,52 @@
-import unittest
 import pytest
 import os
-from podcastfy.text_to_speech import TextToSpeech
+from pathlib import Path
+from podcastfy.core.character import Character
+from podcastfy.aiengines.tts.tts_backends import ElevenLabsTTS, OpenAITTS, EdgeTTS
 
+@pytest.fixture
+def test_setup():
+    test_text = "<Person1>Hello, how are you?</Person1><Person2>I'm doing great, thanks for asking!</Person2>"
+    output_dir = Path("tests/data/audio")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    dummy_character = Character("test_character", "host", {}, "A test character")
+    return test_text, output_dir, dummy_character
 
-class TestAudio(unittest.TestCase):
-    def setUp(self):
-        self.test_text = "<Person1>Hello, how are you?</Person1><Person2>I'm doing great, thanks for asking!</Person2>"
-        self.output_dir = "tests/data/audio"
-        os.makedirs(self.output_dir, exist_ok=True)
+@pytest.mark.skip(reason="Testing Eleven Labs only on Github Action as it requires API key")
+def test_text_to_speech_elevenlabs(test_setup):
+    test_text, output_dir, dummy_character = test_setup
+    tts = ElevenLabsTTS()
+    output_file = output_dir / "test_elevenlabs.mp3"
+    tts.text_to_speech(test_text, dummy_character, output_file)
 
-    @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
-    def test_text_to_speech_openai(self):
-        tts = TextToSpeech(model="openai")
-        output_file = os.path.join(self.output_dir, "test_openai.mp3")
-        tts.convert_to_speech(self.test_text, output_file)
+    assert output_file.exists()
+    assert output_file.stat().st_size > 0
 
-        self.assertTrue(os.path.exists(output_file))
-        self.assertGreater(os.path.getsize(output_file), 0)
+    # Clean up
+    output_file.unlink()
 
-        # Clean up
-        os.remove(output_file)
+@pytest.mark.skip(reason="Testing OpenAI only on Github Action as it requires API key")
+def test_text_to_speech_openai(test_setup):
+    test_text, output_dir, dummy_character = test_setup
+    tts = OpenAITTS()
+    output_file = output_dir / "test_openai.mp3"
+    tts.text_to_speech(test_text, dummy_character, output_file)
 
-    @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
-    def test_text_to_speech_elevenlabs(self):
-        tts = TextToSpeech(model="elevenlabs")
-        output_file = os.path.join(self.output_dir, "test_elevenlabs.mp3")
-        tts.convert_to_speech(self.test_text, output_file)
+    assert output_file.exists()
+    assert output_file.stat().st_size > 0
 
-        self.assertTrue(os.path.exists(output_file))
-        self.assertGreater(os.path.getsize(output_file), 0)
+    # Clean up
+    output_file.unlink()
 
-        # Clean up
-        os.remove(output_file)
+@pytest.mark.asyncio
+async def test_text_to_speech_edge(test_setup):
+    test_text, output_dir, dummy_character = test_setup
+    tts = EdgeTTS()
+    output_file = output_dir / "test_edge.mp3"
+    await tts.async_text_to_speech(test_text, dummy_character, output_file)
 
-    def test_text_to_speech_edge(self):
-        tts = TextToSpeech(model="edge")
-        output_file = os.path.join(self.output_dir, "test_edge.mp3")
-        tts.convert_to_speech(self.test_text, output_file)
+    assert output_file.exists()
+    assert output_file.stat().st_size > 0
 
-        self.assertTrue(os.path.exists(output_file))
-        self.assertGreater(os.path.getsize(output_file), 0)
-
-        # Clean up
-        os.remove(output_file)
-
-
-if __name__ == "__main__":
-    unittest.main()
+    # Clean up
+    output_file.unlink()
