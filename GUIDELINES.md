@@ -17,7 +17,8 @@ Thank you for your interest in contributing to Podcastfy! We welcome contributio
 
 ## Development
 
-- Poetry is used as the dependency manager. Install it with `pip install poetry`.
+- Poetry is the preferred but not mandatory dependency manager. Install it with `pip install poetry`.
+    - Contributors can opt to use `uv` instead and generate and push updated requirements.txt from it. 
 - Sphinx is used as the documentation generator. Install it with `pip install sphinx`.
     - `make doc-gen` to generate the documentation.
 
