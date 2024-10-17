@@ -9,6 +9,7 @@ All assume you have podcastfy installed and running.
 - [How to generate multilingual content](#how-to-generate-multilingual-content)
 
 
+
 ## How to use your own voice in audio podcasts
 
 You just need to use ElevenLabs TSS backend and pass a custom config to use your voice instead of podcastfy's default:
@@ -66,6 +67,24 @@ Sample audio:
 
 The PT-BR audio actually uses my own cloned voice as AI Host 2.
 
+Podcastfy now supports extracting content from markdown (.md) files. This feature allows you to generate podcasts from your markdown documentation, notes, or any other markdown-formatted content.
 
+To use a markdown file as input:
 
+1. Ensure your markdown file has a `.md` extension.
+2. Use the file path as the input when generating a podcast:
 
+   ```python
+   from podcastfy import GenAIPodcast
+
+   podcast = GenAIPodcast()
+   podcast.generate_podcast(input_texts="path/to/your/file.md")
+   ```
+
+   Or via CLI:
+
+   ```bash
+   podcastfy generate --input "path/to/your/file.md"
+   ```
+
+The markdown extractor will convert the markdown content to plain text, preserving the structure of headers, paragraphs, and lists while removing markdown syntax. This allows for a natural flow of content in the generated podcast.

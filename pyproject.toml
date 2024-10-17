@@ -44,23 +44,5 @@ types-pyyaml = "^6.0.12.20240917"
 nest-asyncio = "^1.6.0"
 ffmpeg = "^1.4"
 pytest = "^8.3.3"
-
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.3"
-black = "^24.8.0"
-sphinx = ">=8.0.2"
-nbsphinx = "0.9.5"
-ipykernel = "^6.29.5"
-ffmpeg = "^1.4"
-mypy = "^1.11.2"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-build_docs = "build_docs:main"
-
-
-
+langchain-openai = "^0.2.2"
+markdown = "^3.3.4"

@@ -47,15 +47,18 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 | French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
 | Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
-## Features ✨
+## Features 🌟
 
-- Generate conversational content from multiple-sources and formats (images, websites, YouTube, and PDFs)
-- Customize transcript and audio generation (e.g. style, language, structure, length)
-- Create podcasts from pre-existing or edited transcripts
-- Support for advanced text-to-speech models (OpenAI, ElevenLabs and Edge)
-- Support for running local llms for transcript generation (increased privacy and control)
-- Seamless CLI and Python package integration for automated workflows
-- Multi-language support for global content creation (experimental!)
+- Generate AI-powered podcasts from various sources:
+  - URLs (websites, YouTube videos)
+  - PDF files
+  - Markdown files (NEW!)
+  - Plain text
+  - Images
+- Customizable conversation styles and structures
+- Multiple text-to-speech options (OpenAI, ElevenLabs, Edge TTS)
+- Support for local LLMs
+- CLI for easy use
 
 ## Updates 🚀
 

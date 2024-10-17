@@ -12,6 +12,14 @@ podcastfy.content\_parser.content\_extractor module
    :undoc-members:
    :show-inheritance:
 
+podcastfy.content\_parser.markdown\_extractor module
+----------------------------------------------------
+
+.. automodule:: podcastfy.content_parser.markdown_extractor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 podcastfy.content\_parser.pdf\_extractor module
 -----------------------------------------------
 
