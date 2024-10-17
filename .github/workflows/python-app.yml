@@ -24,11 +24,30 @@ jobs:
         set -e
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install -y python3-full python3-pip python3-venv ffmpeg
+
+    - name: Cache virtual environment
+      uses: actions/cache@v3
+      with:
+        path: /opt/venv
+        key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-venv-
+
+    - name: Set up Python virtual environment
+      run: |
+        set -e
         python3 -m venv /opt/venv
         . /opt/venv/bin/activate
         python3 -m pip install --upgrade pip
 
-    - name: Check Ubuntu and FFmpeg versions
+    - name: Install dependencies
+      run: |
+        set -e
+        . /opt/venv/bin/activate
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Check versions and list packages
       run: |
         set -e
         . /opt/venv/bin/activate
@@ -40,13 +59,8 @@ jobs:
         python3 --version
         echo "Pip version:"
         pip --version
-
-    - name: Install dependencies
-      run: |
-        set -e
-        . /opt/venv/bin/activate
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        echo "Installed packages:"
+        pip list
 
     - name: Lint with flake8
       run: |
@@ -63,3 +77,10 @@ jobs:
         set -e
         . /opt/venv/bin/activate
         pytest
+
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: path/to/test/artifacts
+      if: always()
