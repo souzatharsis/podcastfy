@@ -5,6 +5,7 @@
 [![PyPi Status](https://img.shields.io/pypi/v/podcastfy)](https://pypi.org/project/podcastfy/)
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
 [![Issues](https://img.shields.io/github/issues-raw/souzatharsis/podcastfy)](https://github.com/souzatharsis/podcastfy/issues)
+[![Pytest](https://github.com/souzatharsis/podcastfy/actions/workflows/python-app.yml/badge.svg)](https://github.com/souzatharsis/podcastfy/actions/workflows/python-app.yml)
 [![Documentation Status](https://readthedocs.org/projects/podcastfy/badge/?version=latest)](https://podcastfy.readthedocs.io/en/latest/?badge=latest)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
@@ -101,6 +102,8 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [CLI](usage/cli.md)
 
+- [How to](usage/how-to.md)
+
 Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested and capable than the Python package.)
 
 ## Customization 🔧
@@ -112,7 +115,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 
 ## Contributing 🤝
 
-We welcome contributions! Please submit [Issues](https://github.com/souzatharsis/podcastfy/issues) or Pull Requests. Feel free to fork the repo and create your own applications. We're excited to learn about your use cases!
+We welcome contributions! See [Guidelines](GUIDELINES.md) for more details.
 
 ## Example Use Cases 🎧🎶
 
@@ -156,3 +159,5 @@ This tool is designed for personal or educational use. Please ensure you have th
         ↑ Back to Top ↑
     </a>
 </p>
+
+Copyright (c) 2024. Tharsis T. P. Souza, New York, NY.

@@ -1,4 +1,5 @@
 import unittest
+import pytest
 from podcastfy.utils.config import load_config
 from podcastfy.content_parser.content_extractor import ContentExtractor
 from podcastfy.content_parser.youtube_transcriber import YouTubeTranscriber
@@ -11,6 +12,7 @@ class TestContentParser(unittest.TestCase):
         # Add tests for ContentExtractor
         pass
 
+    @pytest.mark.skip(reason="IP getting blocked by YouTube when running from GitHub Actions")
     def test_youtube_transcriber(self):
         """
         Test the YouTubeTranscriber class to ensure it correctly extracts and cleans transcripts from a YouTube video.
