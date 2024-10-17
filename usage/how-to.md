@@ -2,6 +2,12 @@
 
 All assume you have podcastfy installed and running.
 
+## Table of Contents
+
+- [How to use your own voice in audio podcasts](#how-to-use-your-own-voice-in-audio-podcasts)
+- [How to customize the conversation](#how-to-customize-the-conversation)
+
+
 ## How to use your own voice in audio podcasts
 
 You just need to use ElevenLabs TSS backend and pass a custom config to use your voice instead of podcastfy's default:
@@ -19,3 +25,35 @@ CLI
    python -m podcastfy.client --url https://example.com/article1 --url https://example.com/article2 --tts-model elevenlabs --conversation-config path/to/custom_config.yaml
    ```
 For Python example, checkout Customization section at [python notebook](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy.ipynb).
+
+## How to customize the conversation
+
+You can customize the conversation by passing a custom [conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml) file to the CLI: 
+
+```
+python -m podcastfy.client --url https://example.com/article1 --url https://example.com/article2 --tts-model elevenlabs --conversation-config path/to/custom_config.yaml
+```
+
+You can also pass a dictionary with the custom config to the python interface generate_podcast function:
+
+```python
+from podcastfy.client import generate_podcast
+
+custom_config = {
+    "word_count": 200,
+    "conversation_style": ["casual", "humorous"],
+    "podcast_name": "Tech Chuckles",
+    "creativity": 7
+}
+
+generate_podcast(
+    urls=["https://example.com/tech-news"],
+    conversation_config=custom_config
+)
+```
+
+For more details, checkout [conversation_custom.md](https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md).
+
+
+
+
