@@ -114,7 +114,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 
 ## Contributing 🤝
 
-We welcome contributions! Please submit [Issues](https://github.com/souzatharsis/podcastfy/issues) or Pull Requests. Feel free to fork the repo and create your own applications. We're excited to learn about your use cases!
+We welcome contributions! See [Guidelines](GUIDELINES.md) for more details.
 
 ## Example Use Cases 🎧🎶
 
