@@ -133,12 +133,14 @@ def process_content_v2(
             podcast.finalize()
 
             # for the sake of the tests currently in place, but in the future, we should remove this and return the podcast object
-            random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
+            random_filename_no_suffix = f"podcast_{uuid.uuid4().hex}"
+            random_filename_mp3 = f"{random_filename_no_suffix}.mp3"
+            random_filename_transcript = f"{random_filename_no_suffix}.txt"
             directories = config.get("output_directories")
             audio_file = os.path.join(
-                directories["audio"], random_filename
+                directories["audio"], random_filename_mp3
             )
-            podcast.transcript.export(directories["transcripts"])
+            podcast.transcript.export(os.path.join(directories["transcripts"], random_filename_transcript))
             podcast.save(filepath=audio_file)
             return audio_file  # note: should return the podcast object instead, but for the sake of the tests, we return the audio file
         else:
