@@ -71,14 +71,20 @@ def process_content(
                 qa_content = file.read()
         else:
             content_generator = ContentGenerator(
-                api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
+                api_key=config.OPENAI_API_KEY, conversation_config=conv_config.to_dict()
             )
 
             if urls:
                 logger.info(f"Processing {len(urls)} links")
                 content_extractor = ContentExtractor()
-                # Extract content from links
-                contents = [content_extractor.extract_content(link) for link in urls]
+                # Extract content from links or file paths
+                contents = []
+                for link in urls:
+                    if os.path.isfile(link):
+                        with open(link, 'r', encoding='utf-8') as file:
+                            contents.append(file.read())
+                    else:
+                        contents.append(content_extractor.extract_content(link))
                 # Combine all extracted content
                 combined_content = "\n\n".join(contents)
             else:
@@ -332,3 +338,4 @@ def generate_podcast(
     except Exception as e:
         logger.error(f"An error occurred: {str(e)}")
         raise
+

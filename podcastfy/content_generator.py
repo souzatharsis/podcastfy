@@ -18,6 +18,7 @@ from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
 from langchain.prompts import HumanMessagePromptTemplate
+from langchain_openai import ChatOpenAI
 
 logger = logging.getLogger(__name__)
 
@@ -48,10 +49,10 @@ class LLMBackend:
         if is_local:
             self.llm = Llamafile()
         else:
-            self.llm = ChatGoogleGenerativeAI(
-                model=model_name,
+            self.llm = ChatOpenAI(
+                model_name=model_name,
                 temperature=temperature,
-                max_output_tokens=max_output_tokens,
+                max_tokens=max_output_tokens,
             )
 
 
@@ -63,10 +64,10 @@ class ContentGenerator:
         Initialize the ContentGenerator.
 
         Args:
-                api_key (str): API key for Google's Generative AI.
+                api_key (str): API key for OpenAI.
                 conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
         """
-        os.environ["GOOGLE_API_KEY"] = api_key
+        os.environ["OPENAI_API_KEY"] = api_key
         self.config = load_config()
         self.content_generator_config = self.config.get("content_generator", {})
 
@@ -166,7 +167,7 @@ class ContentGenerator:
                 ),
                 model_name=(
                     self.content_generator_config.get(
-                        "gemini_model", "gemini-1.5-pro-latest"
+                        "openai_model", "gpt-4o-mini"
                     )
                     if not is_local
                     else "User provided model"
@@ -210,9 +211,9 @@ def main(seed: int = 42, is_local: bool = False) -> None:
     """
     try:
         config = load_config()
-        api_key = config.GEMINI_API_KEY if not is_local else ""
+        api_key = config.OPENAI_API_KEY if not is_local else ""
         if not is_local and not api_key:
-            raise ValueError("GEMINI_API_KEY not found in configuration")
+            raise ValueError("OPENAI_API_KEY not found in configuration")
 
         content_generator = ContentGenerator(api_key)
 
