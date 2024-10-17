@@ -13,7 +13,10 @@ from urllib.parse import urlparse
 from .youtube_transcriber import YouTubeTranscriber
 from .website_extractor import WebsiteExtractor
 from .pdf_extractor import PDFExtractor
+from .markdown_extractor import MarkdownExtractor
 from podcastfy.utils.config import load_config
+import os
+import markdown
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +28,7 @@ class ContentExtractor:
 		self.youtube_transcriber = YouTubeTranscriber()
 		self.website_extractor = WebsiteExtractor()
 		self.pdf_extractor = PDFExtractor()
+		self.markdown_extractor = MarkdownExtractor()
 		self.config = load_config()
 		self.content_extractor_config = self.config.get('content_extractor', {})
 
@@ -62,15 +66,17 @@ class ContentExtractor:
 			ValueError: If the source type is unsupported.
 		"""
 		try:
-			if self.is_url(source):
+			if source.startswith(("http://", "https://")):
 				if any(pattern in source for pattern in self.content_extractor_config.get('youtube_url_patterns', [])):
 					return self.youtube_transcriber.extract_transcript(source)
 				else:
 					return self.website_extractor.extract_content(source)
 			elif source.lower().endswith('.pdf'):
-				return self.pdf_extractor.extract_content(source)
+				return self.pdf_extractor.extract_text(source)
+			elif source.lower().endswith('.md'):
+				return self.markdown_extractor.extract_content(source)
 			else:
-				raise ValueError("Unsupported source type")
+				raise ValueError(f"Unsupported source type: {source}")
 		except Exception as e:
 			logger.error(f"Error extracting content from {source}: {str(e)}")
 			raise

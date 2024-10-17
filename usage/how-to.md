@@ -6,6 +6,7 @@ All assume you have podcastfy installed and running.
 
 - [How to use your own voice in audio podcasts](#how-to-use-your-own-voice-in-audio-podcasts)
 - [How to customize the conversation](#how-to-customize-the-conversation)
+- [How to Use Markdown Files as Input](#how-to-use-markdown-files-as-input)
 
 
 ## How to use your own voice in audio podcasts
@@ -54,6 +55,26 @@ generate_podcast(
 
 For more details, checkout [conversation_custom.md](https://github.com/souzatharsis/podcastfy/blob/main/usage/conversation_custom.md).
 
+## How to Use Markdown Files as Input
 
+Podcastfy now supports extracting content from markdown (.md) files. This feature allows you to generate podcasts from your markdown documentation, notes, or any other markdown-formatted content.
 
+To use a markdown file as input:
 
+1. Ensure your markdown file has a `.md` extension.
+2. Use the file path as the input when generating a podcast:
+
+   ```python
+   from podcastfy import GenAIPodcast
+
+   podcast = GenAIPodcast()
+   podcast.generate_podcast(input_texts="path/to/your/file.md")
+   ```
+
+   Or via CLI:
+
+   ```bash
+   podcastfy generate --input "path/to/your/file.md"
+   ```
+
+The markdown extractor will convert the markdown content to plain text, preserving the structure of headers, paragraphs, and lists while removing markdown syntax. This allows for a natural flow of content in the generated podcast.
