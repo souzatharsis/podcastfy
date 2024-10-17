@@ -128,15 +128,14 @@ def process_content_v2(
                 characters=characters,
             )
 
-
+        directories = config.get("output_directories")
+        random_filename_no_suffix = f"podcast_{uuid.uuid4().hex}"
+        random_filename_mp3 = f"{random_filename_no_suffix}.mp3"
+        random_filename_transcript = f"{random_filename_no_suffix}.txt"
         if generate_audio:
             podcast.finalize()
 
             # for the sake of the tests currently in place, but in the future, we should remove this and return the podcast object
-            random_filename_no_suffix = f"podcast_{uuid.uuid4().hex}"
-            random_filename_mp3 = f"{random_filename_no_suffix}.mp3"
-            random_filename_transcript = f"{random_filename_no_suffix}.txt"
-            directories = config.get("output_directories")
             audio_file = os.path.join(
                 directories["audio"], random_filename_mp3
             )
@@ -145,6 +144,7 @@ def process_content_v2(
             return audio_file  # note: should return the podcast object instead, but for the sake of the tests, we return the audio file
         else:
             podcast.build_transcript()
+            podcast.transcript.export(os.path.join(directories["transcripts"], random_filename_transcript))
 
         return None # note: should return the podcast object instead, but for the sake of the tests, we return None
     except Exception as e:
