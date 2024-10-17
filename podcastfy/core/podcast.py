@@ -34,7 +34,8 @@ def podcast_stage(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         current_method = self._next_stage_methods[self.state]
-        print(f"Executing {func.__name__} in state {self.state.name}")
+        print(f"Current state: {self.state.name}")
+        print(f"Executing: {func.__name__}")
         if not probably_same_func(current_method, func) and not self._reworking:
             print(f"Cannot execute {func.__name__} in current state {self.state.name}. Skipping.")
             raise Exception(f"Cannot execute {func.__name__} in current state {self.state.name}")
@@ -43,7 +44,7 @@ def podcast_stage(func):
             result = func(self, *args, **kwargs)
             next_state = PodcastState(self.state.value + 1)
             self.state = next_state or self.state
-            print(f"Transitioned to state {self.state.name}")
+            print(f"Done! Current State: {self.state.name}")
             return result
         except Exception as e:
             print(f"Error in {func.__name__}: {str(e)}")
@@ -178,6 +179,9 @@ class Podcast:
                 if speaker.name in self.characters:
                     tts_config = cast(Dict[str, Any], self.characters[speaker.name].tts_configs.get(self.characters[speaker.name].preferred_tts, {}))
                     segments.append(TranscriptSegment(text, self.characters[speaker.name], tts_config))
+            else:
+                print(f"Invalid segment: {segment}")
+                continue
             # If the segment doesn't match the expected format, we'll skip it
 
         self.transcript = Transcript(segments, {"source": "Generated content"})
