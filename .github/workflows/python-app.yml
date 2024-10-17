@@ -22,7 +22,7 @@ jobs:
     - name: Set up environment
       run: |
         apt-get update
-        apt-get install -y python3-full python3-venv ffmpeg
+        DEBIAN_FRONTEND=noninteractive apt-get install -y python3-full python3-pip python3-venv ffmpeg
         python3 -m venv /opt/venv
         . /opt/venv/bin/activate
 
@@ -30,17 +30,24 @@ jobs:
       run: |
         cat /etc/os-release
         ffmpeg -version
-        python --version
-        pip --version
+        python3 --version
+        pip3 --version
 
     - name: Install dependencies
       run: |
-        pip install pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        . /opt/venv/bin/activate
+        pip3 install flake8 pytest
+        if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+
+    - name: Lint with flake8
+      run: |
+        . /opt/venv/bin/activate
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Test with pytest
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        pytest
+        . /opt/venv/bin
