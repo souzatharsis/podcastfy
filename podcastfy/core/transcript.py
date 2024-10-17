@@ -5,41 +5,42 @@ from typing import Optional, Dict, Any, List, Tuple
 from podcastfy.core.character import Character
 
 
-def clean_markups(input_text: str) -> str:
-    """
-    Remove unsupported TSS markup tags from the input text while preserving supported SSML tags.
-
-    Args:
-        input_text (str): The input text containing TSS markup tags.
-
-    Returns:
-        str: Cleaned text with unsupported TSS markup tags removed.
-    """
-    # List of SSML tags supported by both OpenAI and ElevenLabs
-    supported_tags = [
-        'speak', 'lang', 'p', 'phoneme',
-        's', 'say-as', 'sub'
-    ]
-    # Append additional tags to the supported tags list
-    # Create a pattern that matches any tag not in the supported list
-    pattern = r'<(?!(?:/?' + '|'.join(supported_tags) + r')\b)[^>]+>'
-
-    # Remove unsupported tags
-    cleaned_text = re.sub(pattern, '', input_text)
-
-    # Remove any leftover empty lines
-    cleaned_text = re.sub(r'\n\s*\n', '\n', cleaned_text)
-    cleaned_text = cleaned_text.replace('(scratchpad)', '')
-    return cleaned_text
-
 
 class TranscriptSegment:
     def __init__(self, text: str, speaker: Character,
                  tts_args: Optional[Dict[str, Any]] = None,
                  auto_clean_markup=True) -> None:
-        self.text = clean_markups(text) if auto_clean_markup else text
+        self.text = self._clean_markups(text) if auto_clean_markup else text
         self.speaker = speaker
         self.tts_args = tts_args or {}
+
+    @staticmethod
+    def _clean_markups(input_text: str) -> str:
+        """
+        Remove unsupported TSS markup tags from the input text while preserving supported SSML tags.
+
+        Args:
+            input_text (str): The input text containing TSS markup tags.
+
+        Returns:
+            str: Cleaned text with unsupported TSS markup tags removed.
+        """
+        # List of SSML tags supported by both OpenAI and ElevenLabs
+        supported_tags = [
+            'speak', 'speak', 'lang', 'p', 'phoneme',
+            's', 'say-as', 'sub'
+        ]
+        # Append additional tags to the supported tags list
+        # Create a pattern that matches any tag not in the supported list
+        pattern = r'<(?!(?:/?' + '|'.join(supported_tags) + r')\b)[^>]+>'
+
+        # Remove unsupported tags
+        cleaned_text = re.sub(pattern, '', input_text)
+
+        # Remove any leftover empty lines
+        cleaned_text = re.sub(r'\n\s*\n', '\n', cleaned_text)
+        cleaned_text = cleaned_text.replace('(scratchpad)', '')
+        return cleaned_text
 
     def to_dict(self) -> Dict[str, Any]:
         return {

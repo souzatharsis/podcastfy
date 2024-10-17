@@ -1,5 +1,5 @@
 import pytest
-from podcastfy.core.transcript import clean_markups, TranscriptSegment, Transcript, Character
+from podcastfy.core.transcript import TranscriptSegment, Transcript, Character
 from unittest.mock import patch, mock_open
 
 @pytest.fixture
@@ -11,12 +11,12 @@ def characters():
 def test_clean_markups():
     input_text = "<speak>Hello <unsupported>World</unsupported><prosody rate='slow'>. This is a test</prosody></speak>"
     expected_output = "<speak>Hello World. This is a test</speak>"
-    assert clean_markups(input_text) == expected_output
+    assert TranscriptSegment._clean_markups(input_text) == expected_output
 
 def test_clean_markups_with_scratchpad():
     input_text = "Hello (scratchpad)<prosody pitch='high'>World</prosody>"
     expected_output = "Hello World"
-    assert clean_markups(input_text) == expected_output
+    assert TranscriptSegment._clean_markups(input_text) == expected_output
 
 def test_transcript_segment_init(characters):
     segment = TranscriptSegment("Hello <unsupported>World </unsupported><prosody volume='loud'>Test</prosody>", characters["Person1"])
