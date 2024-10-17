@@ -7,6 +7,7 @@ from typing import List, Optional, Dict, Any, Union, Tuple
 from podcastfy.aiengines.llm.gemini_langchain import DefaultPodcastifyTranscriptEngine
 from podcastfy.aiengines.tts.base import TTSBackend
 from podcastfy.aiengines.tts.tts_backends import OpenAITTS, ElevenLabsTTS, EdgeTTS
+from podcastfy.core.audio import AudioManager
 from podcastfy.core.character import Character
 from podcastfy.core.content import Content
 from podcastfy.core.podcast import Podcast, SyncTTSBackend, AsyncTTSBackend
@@ -97,12 +98,15 @@ def process_content_v2(
             conv_config.configure(conversation_config)
         characters = create_characters(conv_config.config_conversation)
         tts_backends = obtain_tts_backend(config, tts_model)
+        audio_format = conv_config.config_conversation.get('text_to_speech')['audio_format']
+        temp_dir = conv_config.config_conversation.get('text_to_speech').get('temp_audio_dir')
+        audio_manager = AudioManager(tts_backends, audio_format=audio_format, audio_temp_dir=temp_dir, n_jobs=4)
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
             transcript = Transcript.load(
                 transcript_file, {char.name: char for char in characters}
             )
-            podcast = Podcast.from_transcript(transcript, tts_backends, characters)
+            podcast = Podcast.from_transcript(transcript, audio_manager, characters)
         else:
             logger.info(f"Processing {len(urls)} links")
             content_extractor = ContentExtractor()
@@ -118,13 +122,10 @@ def process_content_v2(
                 llm_contents.extend(
                     [Content(value=image_path, type="image_path") for image_path in image_paths]
                 )
-
-
-
             podcast = Podcast(
                 content=llm_contents,
                 llm_backend=content_generator,
-                tts_backends=tts_backends,
+                audio_manager=audio_manager,
                 characters=characters,
             )
 
@@ -152,9 +153,9 @@ def process_content_v2(
         raise
 
 
-def obtain_tts_backend(config, tts_model):
+def obtain_tts_backend(config, tts_model) -> Dict[str, TTSBackend]:
     # temporary solution
     tts_backends = create_tts_backends(config)
     # filter out the tts backends that are not in the tts_model, temporary solution
-    tts_backends = [tts for tts in tts_backends if tts.name == tts_model]
+    tts_backends = {tts.name: tts for tts in tts_backends if tts.name == tts_model}
     return tts_backends

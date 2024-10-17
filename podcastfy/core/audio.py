@@ -1,11 +1,13 @@
 import asyncio
+import atexit
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Optional, Dict, Union, List, cast, Tuple
 
 from pydub import AudioSegment
 
-from podcastfy.core.podcast import SyncTTSBackend, AsyncTTSBackend
+from podcastfy.aiengines.tts.base import TTSBackend, SyncTTSBackend, AsyncTTSBackend
 from podcastfy.core.transcript import TranscriptSegment, Transcript
 
 
@@ -26,20 +28,25 @@ class PodcastsAudioSegment:
 
 
 class AudioManager:
-    def __init__(self, tts_backends: Dict[str, Union[SyncTTSBackend, AsyncTTSBackend]], n_jobs: int = 4, file_prefix: str = "") -> None:
+    def __init__(self, tts_backends: Dict[str, TTSBackend], audio_format, n_jobs: int = 4, file_prefix: str = "", audio_temp_dir: str = None) -> None:
+        self.audio_format = audio_format
         self.tts_backends = tts_backends
         self.n_jobs = n_jobs
         self.has_async_backend = any(isinstance(backend, AsyncTTSBackend) for backend in self.tts_backends.values())
         self.file_prefix = file_prefix
-        self.audio_segments = []
         self.final_audio: Optional[AudioSegment] = None
-        self.temp_dir: Optional[Union[str, Path]] = None
+        if audio_temp_dir:
+            self.temp_dir = Path(audio_temp_dir)
+        else:
+            self._temp_dir = TemporaryDirectory()
+            self.temp_dir = Path(self._temp_dir.name)
+            atexit.register(self._temp_dir.cleanup)
 
     async def _async_build_audio_segments(self, transcript: Transcript) -> List[PodcastsAudioSegment]:
         async def process_segment(segment_tuple: Tuple[TranscriptSegment, int]):
             segment, index = segment_tuple
-            tts_backend = self.get_tts_backend(segment)
-            audio_path = Path(self.temp_dir) / f"{self.file_prefix}{index:04d}.mp3"
+            tts_backend = self._get_tts_backend(segment)
+            audio_path = Path(self.temp_dir) / f"{self.file_prefix}{index:04d}.{self.audio_format}"
             if isinstance(tts_backend, AsyncTTSBackend):
                 await tts_backend.async_text_to_speech(
                     segment.text,
@@ -63,7 +70,7 @@ class AudioManager:
         tasks = [asyncio.create_task(bounded_process_segment((segment, i))) for i, segment in enumerate(transcript.segments)]
         return list(await asyncio.gather(*tasks))
 
-    def get_tts_backend(self, segment):
+    def _get_tts_backend(self, segment):
         tts_backend = self.tts_backends.get(segment.speaker.preferred_tts)
         if tts_backend is None:
             # Take the first available TTS backend
@@ -73,8 +80,8 @@ class AudioManager:
     def _sync_build_audio_segments(self, transcript: Transcript) -> List[PodcastsAudioSegment]:
         def process_segment(segment_tuple: Tuple[TranscriptSegment, int]):
             segment, index = segment_tuple
-            tts_backend = self.get_tts_backend(segment)
-            filepath = Path(str(self.temp_dir)) / f"{self.file_prefix}{index:04d}.mp3"
+            tts_backend = self._get_tts_backend(segment)
+            filepath = Path(str(self.temp_dir)) / f"{self.file_prefix}{index:04d}.{self.audio_format}"
             cast(SyncTTSBackend, tts_backend).text_to_speech(
                 segment.text,
                 segment.speaker,

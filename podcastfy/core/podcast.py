@@ -57,9 +57,8 @@ class Podcast:
     """Main class for podcast creation and management."""
 
     def __init__(self, content: List[Content], llm_backend: LLMBackend,
-                 tts_backends: List[TTSBackend], audio_temp_dir: Optional[Union[str, Path]] = None,
-                 characters: Optional[List[Character]] = None,
-                 default_tts_n_jobs: int = 1) -> None:
+                 audio_manager: AudioManager,
+                 characters: Optional[List[Character]] = None):
         """
         Initialize a new Podcast instance.
 
@@ -78,20 +77,10 @@ class Podcast:
         """
         self.content = content
         self.llm_backend = llm_backend
-        self.tts_backends: Dict[str, TTSBackend] = {backend.name: backend for backend in tts_backends}
         self.characters: Dict[str, Character] = {char.name: char for char in (characters or [Character("Host", "Podcast host", {}), Character("Guest", "Expert guest", {})])}
-        self.default_tts_n_jobs = default_tts_n_jobs
         self.state = PodcastState.INITIALIZED
         self._reworking = False
-        
-        if audio_temp_dir:
-            self.temp_dir = Path(audio_temp_dir)
-        else:
-            self._temp_dir = TemporaryDirectory()
-            self.temp_dir = Path(self._temp_dir.name)
-            atexit.register(self._temp_dir.cleanup)
-        self.audio_manager = AudioManager(self.tts_backends, self.default_tts_n_jobs)
-        self.audio_manager.temp_dir = self.temp_dir
+        self.audio_manager = audio_manager
 
         # Initialize attributes with null values
         self.transcript: Optional[Transcript] = None
@@ -111,23 +100,20 @@ class Podcast:
 
     @classmethod
     def from_transcript(cls, transcript: Union[Sequence[Tuple[str, str]], Transcript],
-                        tts_backends: List[Union[SyncTTSBackend, AsyncTTSBackend]],
-                        characters: List[Character], default_tts_n_jobs: int = 1) -> 'Podcast':
+                        audio_manager: AudioManager,
+                        characters: List[Character]) -> 'Podcast':
         """
         Create a Podcast instance from a pre-existing transcript.
 
         Args:
             transcript (Union[Sequence[Tuple[str, str]], Transcript]): Pre-existing transcript.
-            tts_backends (Dict[str, Union[SyncTTSBackend, AsyncTTSBackend]]): Dictionary of available TTS backends.
+            audio_manager (AudioManager): The audio manager instance for creating audio segments.
             characters (List[Character]): List of characters participating in the podcast.
-            default_tts_n_jobs (int, optional): The default number of concurrent jobs for TTS processing.
-                Defaults to 1.
-
         Returns:
             Podcast: A new Podcast instance with the transcript built and ready for audio generation.
         """
         if isinstance(transcript, Transcript):
-            podcast = cls("", cast(LLMBackend, None), tts_backends, characters=characters, default_tts_n_jobs=default_tts_n_jobs)
+            podcast = cls("", cast(LLMBackend, None), audio_manager=audio_manager, characters=characters)
             podcast.transcript = transcript
         else:
             raise ValueError("Transcript must be a Transcript instance")  # unimplemented
