@@ -11,7 +11,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
 
 
-Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
+An Open Source alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
 
 https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
@@ -109,9 +109,9 @@ Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatup
 ## Customization 🔧
 
 Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
-- Customize podcast [Conversation](usage/conversation_custom.md) (e.g. format, style)
+- Customize podcast [Conversation](usage/conversation_custom.md) (e.g. format, style, voices)
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
-- Set [System Settings](usage/config_custom.md) (e.g. text-to-speech and output directory settings)
+- Set [System Settings](usage/config_custom.md) (e.g. output directory settings)
 
 ## Contributing 🤝
 

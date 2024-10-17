@@ -11,16 +11,11 @@ from podcastfy.utils.config_conversation import ConversationConfig
 # TODO: Should be a fixture
 def sample_conversation_config():
     conversation_config = {
-        "word_count": 2000,
-        "conversation_style": ["formal", "educational"],
+        "word_count": 500,
         "roles_person1": "professor",
         "roles_person2": "student",
-        "dialogue_structure": ["Introduction", "Main Points", "Conclusion"],
         "podcast_name": "Teachfy",
-        "podcast_tagline": "Learning Through Conversation",
-        "output_language": "English",
-        "engagement_techniques": ["examples", "questions", "case studies"],
-        "creativity": 0,
+        "podcast_tagline": "Learning Through Conversation"
     }
     return conversation_config
 
@@ -54,7 +49,7 @@ class TestGenAIPodcast(unittest.TestCase):
         """
         conversation_config = sample_conversation_config()
         content_generator = ContentGenerator(self.api_key, conversation_config)
-        input_text = "Artificial Intelligence in Education"
+        input_text = "United States of America"
 
         result = content_generator.generate_qa_content(input_text)
 
