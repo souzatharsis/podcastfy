@@ -21,11 +21,11 @@ jobs:
       with:
         python-version: "3.11"
 
-    - name: Install FFmpeg 6.1.1-3
+    - name: Install FFmpeg 6.x
       run: |
         sudo add-apt-repository ppa:savoury1/ffmpeg6
         sudo apt-get update
-        sudo apt-get install -y ffmpeg=6.1.1-3~jammy
+        sudo apt-get install -y ffmpeg
 
     - name: Check FFmpeg version
       run: ffmpeg -version
@@ -46,4 +46,12 @@ jobs:
 
     - name: Lint with flake8
       run: |
-        flake8 . --count --select=E
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Test with pytest
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        pytest
