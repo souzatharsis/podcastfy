@@ -16,7 +16,7 @@ class SyncTTSBackend(ABC):
     name: str
 
     @abstractmethod
-    def text_to_speech(self, text: str, character: Character, output_path: Path) -> Path:
+    def text_to_speech(self, text: str, character: Character, output_path: Path) -> None:
         """
         Convert text to speech synchronously.
 
@@ -37,7 +37,7 @@ class AsyncTTSBackend(ABC):
     name: str
 
     @abstractmethod
-    async def async_text_to_speech(self, text: str, character: Character, output_path: Path) -> Path:
+    async def async_text_to_speech(self, text: str, character: Character, output_path: Path) -> None:
         """
         Convert text to speech asynchronously.
 

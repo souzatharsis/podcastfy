@@ -74,12 +74,13 @@ class AudioManager:
         def process_segment(segment_tuple: Tuple[TranscriptSegment, int]):
             segment, index = segment_tuple
             tts_backend = self.get_tts_backend(segment)
-            audio_file = cast(SyncTTSBackend, tts_backend).text_to_speech(
+            filepath = Path(str(self.temp_dir)) / f"{self.file_prefix}{index:04d}.mp3"
+            cast(SyncTTSBackend, tts_backend).text_to_speech(
                 segment.text,
                 segment.speaker,
-                Path(str(self.temp_dir)) / f"{self.file_prefix}{index:04d}.mp3"
+                filepath
             )
-            return PodcastsAudioSegment(audio_file, segment)
+            return PodcastsAudioSegment(filepath, segment)
 
 
         with ThreadPoolExecutor(max_workers=self.n_jobs) as executor:
