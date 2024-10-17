@@ -54,7 +54,6 @@ class TTSConfigMixin:
     """Mixin class to manage TTS external configurations."""
 
     def __init__(self, config_file: str = 'podcastfy/conversation_config.yaml', name: str = "") -> None:
-        # TODO: probably bad config files for final client
         self.name = name
         self.config_file = config_file
         self.default_configs = self._load_default_configs()
@@ -74,7 +73,7 @@ class TTSConfigMixin:
         self.default_configs.update(new_config)
 
     def tts_config_for_character(self, character: Character) -> TTSConfig:
-        # todo a bit constrained by the fact that the config has just the question and answer fields
+        # note: a bit constrained by the fact that the config has just the question and answer fields
         if character.name in self.character_tts_mapping:
             return self.character_tts_mapping[character.name]
 

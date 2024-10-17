@@ -19,7 +19,6 @@ class ElevenLabsTTS(SyncTTSBackend, AsyncTTSBackend, TTSConfigMixin):
     name: str = "elevenlabs"
 
     def __init__(self, api_key: str = None, config_file: str = 'podcastfy/conversation_config.yaml'):
-        # TODO: not the right path for final client
         TTSConfigMixin.__init__(self, config_file, name=self.name)
         self.api_key = api_key or os.getenv("ELEVENLABS_API_KEY")
 
