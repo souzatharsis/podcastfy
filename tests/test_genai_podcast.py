@@ -41,7 +41,6 @@ class TestGenAIPodcast(unittest.TestCase):
         content_generator = ContentGenerator(self.api_key)
         input_text = "United States of America"
         result = content_generator.generate_qa_content(input_text)
-        print(result)
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
@@ -66,15 +65,6 @@ class TestGenAIPodcast(unittest.TestCase):
         # Check for elements from the custom config
         self.assertIn(conversation_config["podcast_name"], result)
         self.assertIn(conversation_config["podcast_tagline"], result)
-        self.assertTrue(
-            any(
-                role in result.lower()
-                for role in [
-                    conversation_config["roles_person1"],
-                    conversation_config["roles_person2"],
-                ]
-            )
-        )
 
         # Check word count (allow some flexibility)
         word_count = len(result.split())

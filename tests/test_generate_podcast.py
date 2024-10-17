@@ -77,7 +77,7 @@ def test_generate_podcast_from_transcript_file(sample_config):
 	# First, generate a transcript
 	transcript_file = os.path.join(sample_config.get('output_directories', {}).get('transcripts'), 'test_transcript.txt')
 	with open(transcript_file, 'w') as f:
-		f.write("<Person1>Joe Biden and the US Politics<Person1><Person2>Joe Biden is the current president of the United States of America<Person2>")
+		f.write("<Person1>Joe Biden and the US Politics</Person1><Person2>Joe Biden is the current president of the United States of America</Person2>")
 	
 	# Now use this transcript to generate a podcast
 	audio_file = generate_podcast(
