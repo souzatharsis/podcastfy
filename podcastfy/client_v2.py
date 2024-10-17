@@ -134,9 +134,11 @@ def process_content_v2(
 
             # for the sake of the tests currently in place, but in the future, we should remove this and return the podcast object
             random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
+            directories = config.get("output_directories")
             audio_file = os.path.join(
-                config.get("output_directories")["audio"], random_filename
+                directories["audio"], random_filename
             )
+            podcast.transcript.export(directories["transcripts"])
             podcast.save(filepath=audio_file)
             return audio_file  # note: should return the podcast object instead, but for the sake of the tests, we return the audio file
         else:
