@@ -28,7 +28,6 @@ from podcastfy.utils.config_conversation import (
 )
 from podcastfy.utils.logger import setup_logger
 from typing import List, Optional, Dict, Any
-from podcastfy.client_v2 import process_content_v2 as process_content
 
 logger = setup_logger(__name__)
 
