@@ -112,8 +112,8 @@ def process_content(
             logger.info(f"Podcast generated successfully using {tts_model} TTS model")
             return audio_file
         else:
-            logger.info(f"Transcript generated successfully")
-            return None
+            logger.info(f"Transcript generated successfully: {transcript_filepath}")
+            return transcript_filepath
 
     except Exception as e:
         logger.error(f"An error occurred in the process_content function: {str(e)}")
