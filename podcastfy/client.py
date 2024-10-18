@@ -157,6 +157,8 @@ def process_content(
         else:
             podcast.build_transcript()
             podcast.transcript.export(os.path.join(directories["transcripts"], random_filename_transcript))
+            logger.info(f"Transcript generated successfully: {random_filename_transcript}")
+            return transcript_filepath
 
         return None # note: should return the podcast object instead, but for the sake of the tests, we return None
     except Exception as e:
