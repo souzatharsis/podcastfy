@@ -70,7 +70,10 @@ def test_generate_transcript_only(sample_config):
 		config=sample_config
 	)
 	
-	assert result is None
+	assert result is not None
+	assert os.path.exists(result)
+	assert result.endswith('.txt')
+	assert os.path.dirname(result) == sample_config.get('output_directories', {}).get('transcripts')
 
 def test_generate_podcast_from_transcript_file(sample_config):
 	"""Test generating a podcast from an existing transcript file."""
