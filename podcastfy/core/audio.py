@@ -1,5 +1,6 @@
 import asyncio
 import atexit
+import os
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -36,6 +37,7 @@ class AudioManager:
         self.file_prefix = file_prefix
         self.final_audio: Optional[AudioSegment] = None
         if audio_temp_dir:
+            os.makedirs(audio_temp_dir, exist_ok=True)
             self.temp_dir = Path(audio_temp_dir)
         else:
             self._temp_dir = TemporaryDirectory()
