@@ -162,7 +162,7 @@ class Podcast:
         for segment in generated_segments:
             if isinstance(segment, tuple) and len(segment) == 2:
                 speaker, text = segment
-                if speaker.name in self.characters:
+                if speaker.name in self.characters and text.strip():
                     tts_config = cast(Dict[str, Any], self.characters[speaker.name].tts_configs.get(self.characters[speaker.name].preferred_tts, {}))
                     segments.append(TranscriptSegment(text, self.characters[speaker.name], tts_config))
             else:
