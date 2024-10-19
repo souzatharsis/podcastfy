@@ -53,7 +53,7 @@ class ElevenLabsTTS(SyncTTSBackend, AsyncTTSBackend, TTSConfigMixin):
 class OpenAITTS(SyncTTSBackend, TTSConfigMixin):
     name: str = "openai"
 
-    def __init__(self, api_key: str = None, config_file: str = 'podcastfy/config.yaml'):
+    def __init__(self, api_key: str = None, config_file: str = 'podcastfy/conversation_config.yaml'):
         TTSConfigMixin.__init__(self, config_file, name=self.name)
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
 
@@ -83,6 +83,11 @@ class EdgeTTS(AsyncTTSBackend, TTSConfigMixin):
         communicate = edge_tts.Communicate(text, config.voice)
         await communicate.save(str(output_path))
 
+# register
+SyncTTSBackend.register(ElevenLabsTTS)
+AsyncTTSBackend.register(ElevenLabsTTS)
+SyncTTSBackend.register(OpenAITTS)
+AsyncTTSBackend.register(EdgeTTS)
 
 
 
