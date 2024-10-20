@@ -96,7 +96,7 @@ def test_generate_podcast_with_custom_config(sample_config, sample_conversation_
 
 def test_generate_from_local_pdf(sample_config):
 	"""Test generating a podcast from a local PDF file."""
-	pdf_file = "tests/data/pdf/file.pdf"
+	pdf_file = "data/pdf/file.pdf"
 	audio_file = generate_podcast(
 		urls=[pdf_file],
 		config=sample_config
