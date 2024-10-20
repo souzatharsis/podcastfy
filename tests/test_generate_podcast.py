@@ -18,6 +18,12 @@ def sample_config():
 
 @pytest.fixture
 def sample_conversation_config():
+	"""
+	Fixture to provide a sample conversation configuration for testing.
+
+	Returns:
+		dict: A dictionary containing sample conversation configuration parameters.
+	"""
 	conversation_config = {
 		"word_count": 300,
 		"conversation_style": ["formal", "educational"],
@@ -28,7 +34,10 @@ def sample_conversation_config():
 		"podcast_tagline": "Learning Through Conversation",
 		"output_language": "English",
 		"engagement_techniques": ["examples", "questions"],
-		"creativity": 0
+		"creativity": 0,
+		"text_to_speech": {
+			"model": "edge"
+		}
 	}
 	return conversation_config
 
@@ -41,6 +50,7 @@ def test_generate_podcast_from_urls(sample_config):
 	
 	audio_file = generate_podcast(
 		urls=urls,
+		tts_model="edge",
 		config=sample_config
 	)
 
@@ -51,26 +61,31 @@ def test_generate_podcast_from_urls(sample_config):
 
 def test_generate_transcript_only(sample_config):
 	"""Test generating only a transcript without audio."""
-	urls = ["https://en.wikipedia.org/wiki/Natural_language_processing"]
+	urls = ["https://www.souzatharsis.com/"]
 	
 	result = generate_podcast(
 		urls=urls,
 		transcript_only=True,
+		tts_model="edge",
 		config=sample_config
 	)
 	
-	assert result is None
+	assert result is not None
+	assert os.path.exists(result)
+	assert result.endswith('.txt')
+	assert os.path.dirname(result) == sample_config.get('output_directories', {}).get('transcripts')
 
 def test_generate_podcast_from_transcript_file(sample_config):
 	"""Test generating a podcast from an existing transcript file."""
 	# First, generate a transcript
 	transcript_file = os.path.join(sample_config.get('output_directories', {}).get('transcripts'), 'test_transcript.txt')
 	with open(transcript_file, 'w') as f:
-		f.write("<Person1>Joe Biden and the US Politics<Person1><Person2>Joe Biden is the current president of the United States of America<Person2>")
+		f.write("<Person1>Joe Biden and the US Politics</Person1><Person2>Joe Biden is the current president of the United States of America</Person2>")
 	
 	# Now use this transcript to generate a podcast
 	audio_file = generate_podcast(
 		transcript_file=transcript_file,
+		tts_model="edge",
 		config=sample_config
 	)
 	
@@ -110,6 +125,29 @@ def test_generate_podcast_no_urls_or_transcript():
 	"""Test that an error is raised when no URLs or transcript file is provided."""
 	with pytest.raises(ValueError):
 		generate_podcast()
+
+def test_generate_podcast_from_images(sample_config):
+	"""Test generating a podcast from two input images."""
+	image_paths = [
+		"tests/data/images/Senecio.jpeg",
+		"tests/data/images/connection.jpg"
+	]
+
+	audio_file = generate_podcast(
+		image_paths=image_paths,
+		tts_model="edge",
+		config=sample_config
+	)
+
+	assert audio_file is not None
+	assert os.path.exists(audio_file)
+	assert audio_file.endswith('.mp3')
+	assert os.path.dirname(audio_file) == sample_config.get('output_directories', {}).get('audio')
+
+	# Check if a transcript was generated
+	transcript_dir = sample_config.get('output_directories', {}).get('transcripts')
+	transcript_files = [f for f in os.listdir(transcript_dir) if f.startswith('transcript_') and f.endswith('.txt')]
+	assert len(transcript_files) > 0
 
 if __name__ == "__main__":
 	pytest.main()

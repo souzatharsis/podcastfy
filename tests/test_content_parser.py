@@ -1,4 +1,5 @@
 import unittest
+import pytest
 from podcastfy.utils.config import load_config
 from podcastfy.content_parser.content_extractor import ContentExtractor
 from podcastfy.content_parser.youtube_transcriber import YouTubeTranscriber
@@ -11,6 +12,7 @@ class TestContentParser(unittest.TestCase):
         # Add tests for ContentExtractor
         pass
 
+    @pytest.mark.skip(reason="IP getting blocked by YouTube when running from GitHub Actions")
     def test_youtube_transcriber(self):
         """
         Test the YouTubeTranscriber class to ensure it correctly extracts and cleans transcripts from a YouTube video.
@@ -41,19 +43,18 @@ class TestContentParser(unittest.TestCase):
 
         # Initialize WebsiteExtractor
         config = load_config()
-        jina_api_key = config.JINA_API_KEY
-        extractor = WebsiteExtractor(jina_api_key)
+        extractor = WebsiteExtractor()
 
         # Test URL
         test_url = "http://www.souzatharsis.com"
 
         # Extract content
         extracted_content = extractor.extract_content(test_url)
-
+        print(extracted_content.strip())
         # Load expected content from website.md file
         with open("./tests/data/mock/website.md", "r") as f:
             expected_content = f.read()
-
+        print(expected_content.strip())
         # Assert that the extracted content matches the expected content
         self.assertEqual(extracted_content.strip(), expected_content.strip())
 

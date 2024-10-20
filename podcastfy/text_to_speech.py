@@ -2,13 +2,16 @@
 Text-to-Speech Module
 
 This module provides functionality to convert text into speech using various TTS models.
-It supports both ElevenLabs and OpenAI TTS services and handles the conversion process,
+It supports both ElevenLabs, OpenAI and Edge TTS services and handles the conversion process,
 including cleaning of input text and merging of audio files.
 """
 
 import logging
+import asyncio
+import edge_tts
 from elevenlabs import client as elevenlabs_client
 from podcastfy.utils.config import load_config
+from podcastfy.utils.config_conversation import load_conversation_config
 from pydub import AudioSegment
 import os
 import re
@@ -24,13 +27,14 @@ class TextToSpeech:
 
 		Args:
 			model (str): The model to use for text-to-speech conversion. 
-						 Options are 'elevenlabs' or 'openai'. Defaults to 'openai'.
+						 Options are 'elevenlabs', 'openai' or 'edge'. Defaults to 'openai'.
 			api_key (Optional[str]): API key for the selected text-to-speech service.
 						   If not provided, it will be loaded from the config.
 		"""
 		self.model = model.lower()
 		self.config = load_config()
-		self.tts_config = self.config.get('text_to_speech')
+		self.conversation_config = load_conversation_config()
+		self.tts_config = self.conversation_config.get('text_to_speech')
 
 		if self.model == 'elevenlabs':
 			self.api_key = api_key or self.config.ELEVENLABS_API_KEY
@@ -38,8 +42,10 @@ class TextToSpeech:
 		elif self.model == 'openai':
 			self.api_key = api_key or self.config.OPENAI_API_KEY
 			openai.api_key = self.api_key
+		elif self.model == 'edge':
+			pass
 		else:
-			raise ValueError("Invalid model. Choose 'elevenlabs' or 'openai'.")
+			raise ValueError("Invalid model. Choose 'elevenlabs', 'openai' or 'edge'.")
 
 		self.audio_format = self.tts_config['audio_format']
 		self.temp_audio_dir = self.tts_config['temp_audio_dir']
@@ -96,6 +102,8 @@ class TextToSpeech:
 			self.__convert_to_speech_elevenlabs(cleaned_text, output_file)
 		elif self.model == 'openai':
 			self.__convert_to_speech_openai(cleaned_text, output_file)
+		elif self.model == 'edge':
+			self.__convert_to_speech_edge(cleaned_text, output_file)
 
 	def __convert_to_speech_elevenlabs(self, text: str, output_file: str) -> None:
 		try:
@@ -172,6 +180,67 @@ class TextToSpeech:
 		except Exception as e:
 			logger.error(f"Error converting text to speech with OpenAI: {str(e)}")
 			raise
+	
+	def get_or_create_eventloop():
+		try:
+			return asyncio.get_event_loop()
+		except RuntimeError as ex:
+			if "There is no current event loop in thread" in str(ex):
+				loop = asyncio.new_event_loop()
+				asyncio.set_event_loop(loop)
+				return asyncio.get_event_loop()
+
+	import nest_asyncio  # type: ignore
+	get_or_create_eventloop()
+	nest_asyncio.apply()
+
+	def __convert_to_speech_edge(self, text: str, output_file: str) -> None:
+		"""
+		Convert text to speech using Edge TTS.
+
+		Args:
+			text (str): The input text to convert to speech.
+			output_file (str): The path to save the output audio file.
+		"""
+		try:
+			qa_pairs = self.split_qa(text)
+			audio_files = []
+			counter = 0
+
+			async def edge_tts_conversion(text_chunk: str, output_path: str, voice: str):
+				tts = edge_tts.Communicate(text_chunk, voice)
+				await tts.save(output_path)
+				return
+				
+			async def process_qa_pairs(qa_pairs):
+				nonlocal counter
+				tasks = []
+				for question, answer in qa_pairs:
+					for speaker, content in [
+						(self.tts_config['edge']['default_voices']['question'], question),
+						(self.tts_config['edge']['default_voices']['answer'], answer)
+					]:
+						counter += 1
+						file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
+						tasks.append(asyncio.ensure_future(edge_tts_conversion(content, file_name, speaker)))
+						audio_files.append(file_name)
+
+				await asyncio.gather(*tasks)
+
+			asyncio.run(process_qa_pairs(qa_pairs))
+
+			# Merge all audio files
+			self.__merge_audio_files(self.temp_audio_dir, output_file)
+
+			# Clean up individual audio files
+			for file in audio_files:
+				os.remove(file)
+			logger.info(f"Audio saved to {output_file}")		
+
+		except Exception as e:
+			logger.error(f"Error converting text to speech with Edge: {str(e)}")
+			raise
+
 
 	def split_qa(self, input_text: str) -> List[Tuple[str, str]]:
 		"""
@@ -202,6 +271,7 @@ class TextToSpeech:
 		]
 		return processed_matches
 
+	# to be done: Add support for additional tags dynamically given TTS model. Right now it's the intersection of OpenAI/MS Edgeand ElevenLabs supported tags.
 	def clean_tss_markup(self, input_text: str, additional_tags: List[str] = ["Person1", "Person2"]) -> str:
 		"""
 		Remove unsupported TSS markup tags from the input text while preserving supported SSML tags.
@@ -215,7 +285,7 @@ class TextToSpeech:
 		"""
 		# List of SSML tags supported by both OpenAI and ElevenLabs
 		supported_tags = [
-			'speak', 'break', 'lang', 'p', 'phoneme',
+			'speak', 'lang', 'p', 'phoneme',
 			's', 'say-as', 'sub'
 		]
 
@@ -237,6 +307,8 @@ class TextToSpeech:
 								  f'<{tag}>\\1</{tag}>', 
 								  cleaned_text, 
 								  flags=re.DOTALL)
+		# Remove '(scratchpad)' from cleaned_text
+		cleaned_text = cleaned_text.replace('(scratchpad)', '')
 
 		return cleaned_text.strip()
 
@@ -252,7 +324,7 @@ def main(seed: int = 42) -> None:
 		config = load_config()
 
 		# Read input text from file
-		with open('tests/data/response.txt', 'r') as file:
+		with open('tests/data/transcript_336aa9f955cd4019bc1287379a5a2820.txt', 'r') as file:
 			input_text = file.read()
 
 		# Test ElevenLabs
@@ -266,6 +338,12 @@ def main(seed: int = 42) -> None:
 		openai_output_file = 'tests/data/response_openai.mp3'
 		tts_openai.convert_to_speech(input_text, openai_output_file)
 		logger.info(f"OpenAI TTS completed. Output saved to {openai_output_file}")
+
+		# Test OpenAI
+		tts_edge = TextToSpeech(model='edge')
+		edge_output_file = 'tests/data/response_edge.mp3'
+		tts_edge.convert_to_speech(input_text, edge_output_file)
+		logger.info(f"Edge TTS completed. Output saved to {edge_output_file}")
 
 	except Exception as e:
 		logger.error(f"An error occurred during text-to-speech conversion: {str(e)}")
