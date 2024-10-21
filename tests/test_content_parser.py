@@ -1,10 +1,12 @@
 import unittest
 import pytest
+import os
 from podcastfy.utils.config import load_config
 from podcastfy.content_parser.content_extractor import ContentExtractor
 from podcastfy.content_parser.youtube_transcriber import YouTubeTranscriber
 from podcastfy.content_parser.website_extractor import WebsiteExtractor
 from podcastfy.content_parser.pdf_extractor import PDFExtractor
+from podcastfy.content_parser.markdown_extractor import MarkdownExtractor
 
 
 class TestContentParser(unittest.TestCase):
@@ -52,7 +54,8 @@ class TestContentParser(unittest.TestCase):
         extracted_content = extractor.extract_content(test_url)
         print(extracted_content.strip())
         # Load expected content from website.md file
-        with open("./tests/data/mock/website.md", "r") as f:
+        with open("./tests/data/mock/website.md", "r", encoding="utf-8") as f:
+            
             expected_content = f.read()
         print(expected_content.strip())
         # Assert that the extracted content matches the expected content
@@ -72,13 +75,35 @@ class TestContentParser(unittest.TestCase):
         extracted_content = extractor.extract_content(pdf_path)
 
         # Load expected content from file.txt
-        with open("./tests/data/mock/file.txt", "r") as f:
+        with open("./tests/data/mock/file.txt", "r", encoding="utf-8") as f:
             expected_content = f.read()
 
         # Assert that the first 500 characters of the extracted content match the expected content
         self.assertEqual(
             extracted_content[:500].strip(), expected_content[:500].strip()
         )
+
+    def test_markdown_extractor(self):
+        """
+        Test the MarkdownExtractor class to ensure it correctly extracts content from a Markdown file.
+        """
+        # Initialize MarkdownExtractor
+        extractor = MarkdownExtractor()
+
+        # Path to the test Markdown file
+        md_path = "./tests/data/markdown/file.md"
+
+        # Extract content from Markdown
+        extracted_content = extractor.extract_content(md_path)
+
+        # Load expected content from markdown.txt with utf-8 encoding
+        with open("./tests/data/mock/markdown.txt", "r", encoding="utf-8") as f:
+            expected_content = f.read()
+
+        # Instead of comparing exact strings, check for key phrases
+        self.assertIn("Prompt engineering", extracted_content)
+        self.assertIn("This guide shares strategies and tactics", extracted_content)
+        self.assertIn("Six strategies", extracted_content)
 
 
 if __name__ == "__main__":

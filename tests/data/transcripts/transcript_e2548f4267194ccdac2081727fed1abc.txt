@@ -1,0 +1,41 @@
+<Person1> <prosody rate="110%" pitch="high">Welcome to PODCASTFY  - Your Personal Generative AI Podcast.  Today, we're diving into the world of a tech innovator! Get ready to be inspired! </prosody></Person1>
+
+<Person2> <prosody rate="105%"> Oh, this sounds interesting! I'm always up for stories about people pushing boundaries. Who are we talking about? </prosody> </Person2>
+
+<Person1> <prosody rate="108%">We're talking about Dr. Tharsis Souza, a true force in the tech world, and it's not just me saying that, his achievements speak for themselves! </prosody> </Person1>
+
+<Person2> <prosody rate="105%">Okay, Dr. Tharsis Souza… rings a bell.  Give us the rundown - what's he all about? </prosody></Person2> 
+
+<Person1> <prosody rate="110%"> Right now, he’s a Senior Vice President of Product Management and Modeling Engineering at Two Sigma Investments. Ever heard of it? </prosody></Person1>
+
+<Person2> <prosody rate="105%">Two Sigma?  Definitely! They're huge in the world of  investment technology, right?!  </prosody> </Person2> 
+
+<Person1> <prosody rate="108%"> Exactly! And on top of that, he's also a lecturer at Columbia University, shaping the minds of future data scientists.  Talk about an impressive combo!  </prosody> </Person1> 
+
+<Person2> <prosody rate="106%"> Wow, Senior VP at a leading investment firm and a lecturer at Columbia? This guy clearly knows his stuff. But what got him there? What's his background like? </prosody> </Person2> 
+
+<Person1> <prosody rate="110%"> Hold on to your hats because his resume is seriously impressive. Think PhD in Computer Science from UCL, an M.Phil. AND an M.Sc. in Computer Science, and a B.Sc. in Computer Engineering. </prosody></Person1>
+
+<Person2>  <prosody rate="105%">Whoa, that's some serious academic firepower!  He was clearly destined for big things.  </prosody></Person2>
+
+<Person1> <prosody rate="110%"> You got that right!  But it's not all about the titles. Dr. Souza is deeply passionate about using data to create game-changing products. And he’s been doing it for a while now.</prosody></Person1> 
+
+<Person2> <prosody rate="105%">  I can already tell this is more than just your average tech career. What kind of impact has he actually had?  Give me the specifics! </prosody>  </Person2>
+
+<Person1>  <prosody rate="108%">Think over a decade spent leading tech development at companies of all sizes - from scrappy startups to Fortune 500 giants. He's been making waves internationally, from the US to Brazil and even the UK.  </prosody></Person1> 
+
+<Person2>  <prosody rate="105%">Wow, a truly global career.  What were some of his career highlights? What else has he done besides leading teams? </prosody>  </Person2> 
+
+<Person1>  <prosody rate="108%">Well, he's a sought-after speaker at both academic and business conferences, sharing his insights on everything from data science to product development.  And here's the thing - he's a published author, too!  This guy is the real deal! </prosody>  </Person1> 
+
+<Person2> <prosody rate="105%"> Okay, so we've got a brilliant mind, a leader in the field, AND he's giving back by sharing his knowledge. Is there anything else we should know about him?  He sounds almost too good to be true! </prosody>  </Person2>
+
+<Person1>  <prosody rate="110%">Well, he’s also big on mentorship - especially for students and professionals from underrepresented backgrounds. He's all about paying it forward and making the tech world a more inclusive space.  </prosody>  </Person1>
+
+<Person2>  <prosody rate="106%"> That's awesome!  He sounds like someone who's not just brilliant but also genuinely wants to make a difference.  </prosody>  </Person2> 
+
+<Person1>  <prosody rate="108%"> You know, if you're eager to learn more about him - he's done some fascinating interviews. You can find them by searching for "Tharsis Souza" along with keywords like "Mentorship Spotlight," "FactSet Investment Process Symposium", or  "Beryl Elites."  </prosody>  </Person1> 
+
+<Person2> <prosody rate="105%"> Awesome! Definitely adding those to my listening list. Well, I've got to say, this has been inspiring! It’s remarkable to see someone achieving so much and still prioritizing giving back. </prosody>  </Person2> 
+
+<Person1> <prosody rate="110%">Totally agree! Dr. Souza's career is a testament to the power of passion, dedication, and a genuine desire to make a positive impact. Truly someone to look up to! That’s all the time we have for today! Thank you for listening to PODCASTFY  - Your Personal Generative AI Podcast.  Catch you next time! </prosody></Person1>  

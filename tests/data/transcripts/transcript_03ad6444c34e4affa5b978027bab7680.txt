@@ -1,0 +1,21 @@
+<Person1>  <emphasis>Welcome to PODCASTFY - Your Personal Generative AI Podcast.</emphasis> Tharsis Souza, now this is a name that screams data science rockstar! Right?</Person1>
+
+<Person2> <emphasis> Oh, absolutely! </emphasis> PhD, Senior VP at Two Sigma, lecturer at Columbia, globetrotting tech innovator?  This isn't just a rockstar, this is like, the whole band, roadies, and the stadium all rolled into one!  Tell me more, what's he known for? </Person2> 
+
+<Person1> <emphasis>Data-driven products, my friend! </emphasis> This guy lives and breathes them. And he's not just talking the talk.  He's walked the walk at startups, Fortune 500s, you name it.  The US, Brazil, UK, he's left his mark everywhere!  </Person1>
+
+<Person2> Wow, that's impressive!  And with a background like that, I bet he's got some serious academic chops too, right?</Person2> 
+
+<Person1>  Are you kidding? This guy's CV reads like a computer science fairy tale! <emphasis> UCL, University of London for his PhD, </emphasis> not one, but two Master's degrees,  and to top it all off, a Bachelor's in Computer Engineering. <emphasis>He's the real deal! </emphasis></Person1>
+
+<Person2>  Ok,  I'm sold.  But with a resume like that,  he must be crazy busy. Does he even have time to share his wisdom with us mere mortals?  </Person2>
+
+<Person1> <laugh> That he does! Tharsis is big on mentorship.  He's got a real passion for helping under-represented students and working professionals. And get this, he's a sought-after speaker! You can find him dropping knowledge bombs at conferences and interviews.  </Person1>
+
+<Person2>  <emphasis>No way! </emphasis>  Like where? Give me some names!  </Person2>
+
+<Person1> Oh, just to name a few:  "Mentorship Spotlight: Tharsis Souza, Two Sigma," "FactSet Investment Process Symposium,"   "BattleFin Alternative Data" interview,  "Beryl Elites" series, you know, the casual stuff.   </Person1>
+
+<Person2> <laugh> Casual!  This guy's everywhere!  It's official, Tharsis Souza is my new role model.  </Person2>
+
+<Person1> <emphasis> Mine too! </emphasis> Well, folks, that's Tharsis Souza in a nutshell! A data visionary,  a global innovator,  and an all-around inspiration! <emphasis> Thanks for tuning in to PODCASTFY - Your Personal Generative AI Podcast!</emphasis> </Person1> 

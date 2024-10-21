@@ -1,0 +1,37 @@
+<Person1> <prosody rate="105%" pitch="high">Welcome to PODCASTFY  - Your Personal Generative AI Podcast. Today, we're diving into the world of data science and finance with a true innovator! Buckle up as we unpack the impressive career of Dr. Tharsis Souza. </prosody> </Person1>
+
+<Person2> <prosody rate="100%" pitch="medium">Dr. Souza, Senior VP at Two Sigma Investments. Wow, that's a mouthful, and impressive. What exactly does that entail?</prosody></Person2>
+
+<Person1> (scratchpad)
+```
+Tharsis leads Product Management and Modeling Engineering at Two Sigma. Let's unpack that.  He's responsible for building and managing the technology that powers their investment strategies. Think algorithms, data analysis – the really complex stuff that makes a difference in the world of finance. 
+```
+<prosody rate="100%" pitch="medium"> Well, it seems Dr. Souza is leading the charge in building the tech behind Two Sigma's investment strategies. We're talking  <emphasis>algorithms, data analysis</emphasis>, the complex stuff that can make or break it in finance. </prosody></Person1>
+
+<Person2> <prosody rate="102%" pitch="medium"> That's fascinating. It sounds like he's not just an academic but someone who's got his hands dirty in the real world. This isn't just theory for him. </prosody></Person2>
+
+<Person1> (scratchpad)
+```
+He's definitely not an armchair academic! His 10+ years of experience delivering tech products before Two Sigma prove that. He's launched products for startups AND Fortune 500 companies, spanning the US, Brazil, and the UK.
+```
+<prosody rate="103%" pitch="medium"> Absolutely not!  <emphasis> Ten years</emphasis> in the tech trenches before even landing at Two Sigma! Startups, Fortune 500 companies –  he's got the experience, across continents no less. This isn’t just some ivory tower academic.  </prosody></Person1>
+
+<Person2> <prosody rate="100%" pitch="medium">Impressive! And he still finds time to teach at Columbia University? That's dedication. What's his area of expertise there?</prosody></Person2>
+
+<Person1> (scratchpad)
+```
+He's a lecturer for their MSc. in Applied Analytics program. Given his background, I'd imagine he's sharing his real-world experience with the next generation of data scientists. He's also been featured in quite a few interviews – FactSet Investment Process Symposium, BattleFin Alternative Data, Beryl Elites –  just to name a few.
+```
+<prosody rate="104%" pitch="high"> He's a lecturer for their Master's in Applied Analytics program.  Sharing his wisdom with those eager minds. Plus, he's a sought-after speaker!  FactSet, BattleFin, Beryl Elites – they’ve all been clamoring to get insights from this guy! </prosody></Person1>
+
+<Person2> <prosody rate="100%" pitch="medium"> Okay, clearly a busy and brilliant guy. But what else is there to Dr. Souza?  </prosody></Person2>
+
+<Person1> (scratchpad)
+```
+Beyond his professional achievements, he's also passionate about mentorship. He focuses on under-represented students and professionals in the field. He's walked the walk, coming from a Computer Engineering background in Brazil and rising to the top of his field. He earned his PhD in Computer Science from UCL, no small feat! Clearly, Dr. Souza believes in paying it forward.
+```
+<prosody rate="102%" pitch="medium"> This is a man who believes in lifting others as he climbs. He's passionate about mentoring under-represented voices in tech. And let's not forget his journey. From Computer Engineering in Brazil to a PhD from UCL – that’s impressive!</prosody></Person1>
+
+<Person2> <prosody rate="103%" pitch="medium"> Wow. It sounds like Dr. Souza is not just brilliant, but someone who's using his success to make a real difference. It makes you wonder what he'll accomplish next. </prosody></Person2>
+
+<Person1> <prosody rate="102%" pitch="high">From groundbreaking research to shaping the future of data science, Dr. Tharsis Souza is a force to be reckoned with.  And that’s a wrap! Catch you next time on PODCASTFY  - Your Personal Generative AI Podcast. </prosody></Person1> 

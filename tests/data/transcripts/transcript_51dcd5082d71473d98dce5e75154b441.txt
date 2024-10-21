@@ -1,0 +1,25 @@
+<Person1> <emphasis>Welcome to PODCASTFY - Your Personal Generative AI Podcast.</emphasis> Today, we're diving into the world of data science and finance with the brilliant Tharsis Souza!  </Person1>
+
+<Person2> <emphasis>Tharsis Souza?</emphasis> Now that's a name that screams <emphasis>"Data Rockstar!"</emphasis> Tell me more! </Person2>
+
+<Person1>  Well, imagine this: Senior Vice President of Product Management AND Modeling Engineering at Two Sigma Investments. Talk about a mouthful, right? </Person1>
+
+<Person2>  Whoa, Two Sigma!  They're like the rockstars of the quant world! What does that even mean, "Modeling Engineering"? Is that like building robots that play the stock market?</Person2>
+
+<Person1>  Haha! Not quite robots, but close!  It's all about using data and algorithms to understand and predict the markets.  </Person1>
+
+<Person2>  Oh, so super complex math stuff. Got it. But wait, there's more, right?  Didn't you say something about Columbia University? </Person2>
+
+<Person1>  You know it! He's not just a data whiz; he's also a lecturer at Columbia, shaping the minds of future data scientists in their fancy MSc. in Applied Analytics program.   </Person1>
+
+<Person2>  Wow, this guy is the total package!  From start-ups to Fortune 500 companies, he's seen it all! And get this – he's also a published author and a regular speaker at all the big conferences.  Talk about an overachiever! </Person2>
+
+<Person1>  Right?  But it's not all about algorithms and equations with him. He's also passionate about mentoring under-represented students and professionals.  He's all about giving back and making the tech world a more inclusive place! </Person1>
+
+<Person2> I love that!  A brilliant mind with a heart of gold! So, where can our listeners learn more about this data science superstar?   </Person2>
+
+<Person1> Well, he's been featured in some pretty impressive interviews!  "Mentorship Spotlight: Tharsis Souza, Two Sigma," "FactSet Investment Process Symposium - Innovative Data Panel," "BattleFin Alternative Data - Interview," and "Beryl Elites - The Disruptors in Investment Management."  Just search for those, and you'll be blown away! </Person1>
+
+<Person2>  Consider me officially impressed! Thanks for the insights. Tharsis Souza, you're one to watch! </Person2>
+
+<Person1> And that's a wrap!  Thanks for tuning in to PODCASTFY, where we bring you the most fascinating stories from the world of tech and beyond. Until next time! </Person1> 

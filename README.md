@@ -15,7 +15,7 @@ An Open Source alternative to NotebookLM's podcast feature: Transforming Multimo
 
 https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
-Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content include websites, PDFs, youtube videos as well as images.
+Podcastfy is an open-source Python package that transforms multi-modal content (text, images, markdown) into engaging, multi-lingual audio conversations using GenAI. Input content include websites, PDFs, YouTube videos, images, and now Markdown files.
 
 Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources enabling customization and scale.
 
@@ -49,20 +49,21 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Features ✨
 
-- Generate conversational content from multiple-sources and formats (images, websites, YouTube, and PDFs)
+- Generate conversational content from multiple-sources and formats (images, websites, YouTube, PDFs, and Markdown files)
 - Customize transcript and audio generation (e.g. style, language, structure, length)
 - Create podcasts from pre-existing or edited transcripts
 - Support for advanced text-to-speech models (OpenAI, ElevenLabs and Edge)
-- Support for running local llms for transcript generation (increased privacy and control)
+- Support for running local LLMs for transcript generation (increased privacy and control)
 - Seamless CLI and Python package integration for automated workflows
 - Multi-language support for global content creation (experimental!)
+- Markdown extraction for easy integration of documentation and structured text
 
 ## Updates 🚀
 
-### v0.2.3 release
-- Add support for running LLMs locally
-- Enable config for running podcastfy with no API KEYs
-- and [more...](https://github.com/souzatharsis/podcastfy/blob/main/CHANGELOG.md#023---2024-10-15)
+### v0.2.4 release
+- Added support for Markdown file extraction
+- Improved content parsing capabilities
+- and [more...](https://github.com/souzatharsis/podcastfy/blob/main/CHANGELOG.md#024---2024-10-15)
 
 ### v0.2.2 release
 - Podcastfy is now multi-modal! Users can generate audio from images + text inputs!

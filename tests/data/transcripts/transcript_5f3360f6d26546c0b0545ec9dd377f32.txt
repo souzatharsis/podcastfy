@@ -1,0 +1,31 @@
+<Person1> <emphasis>Welcome to PODCASTFY  - Your Personal Generative AI Podcast.</emphasis>  Today, we're diving into the world of data science and finance with the impressive career of Dr. Tharsis Souza. Buckle up, folks, this one’s exciting! </Person1>
+
+<Person2> Oh, I'm ready!  Dr. Souza is quite the name in those circles, right?  What's got you so excited about his story? </Person2>
+
+<Person1> <emphasis>Senior Vice President of Product Management, Modeling Engineering at Two Sigma Investments.</emphasis>  Need I say more?  Two Sigma is at the cutting edge of using data science in finance, and he's leading the charge!  Plus, he's got this incredible academic background. </Person1>
+
+<Person2> Okay, you've got my attention!  Let's break it down.  He's got “PhD” next to his name, that's always impressive.  What did he actually study? </Person2>
+
+<Person1> Computer Science, and not just at any university. We’re talking University College London, UCL for short. Earned his PhD there, plus a Master of Philosophy, another Master of Science in Computer Science, AND a Bachelor’s in Computer Engineering! The guy clearly loves to learn! </Person1>
+
+<Person2> Wow, talk about dedication!  But how does someone go from all that academia to the fast-paced world of finance? </Person2>
+
+<Person1>  That’s where his entrepreneurial spirit kicks in! Before Two Sigma, he spent over a decade in the tech world. Startups, Fortune 500 companies, you name it, he's done it. And across the globe too - the U.S., Brazil, the U.K... talk about a well-rounded experience! </Person1>
+
+<Person2> <emphasis>That's</emphasis>  the kind of experience you can't just learn from a textbook.  So, he’s a tech whiz with a PhD who’s now a high-ranking leader at one of the most data-driven investment firms out there.  That’s quite the resume!  What else makes Dr. Souza stand out? </Person2>
+
+<Person1>  He’s also a lecturer at Columbia University. Part of the faculty for their Master's in Applied Analytics program. That's how he keeps his finger on the pulse of the next generation of data scientists, shaping the future of the field, you know? </Person1>
+
+<Person2>  I see, so he's not just applying his knowledge, he's sharing it too!  Very cool. Now, you mentioned he was a regular speaker.  What kind of stuff does he talk about?  </Person2>
+
+<Person1>  Everything from the nitty-gritty of data-driven products to the bigger picture of how technology is changing the financial landscape. And he doesn't just stick to academic conferences; you can find him at business events too. He’s been interviewed by BattleFin and Beryl Elites, and was even on a panel for the FactSet Investment Process Symposium.  </Person1>
+
+<Person2>  Okay, he’s clearly got a lot to say, and people want to hear it! But with a schedule like that, how does he find time for anything else? </Person2>
+
+<Person1>  Mentoring! It’s something he's really passionate about.  He focuses on helping underrepresented students and working professionals find their footing in these fields. A true leader, inside and outside the boardroom.  </Person1>
+
+<Person2> That’s fantastic. Clearly brilliant and accomplished, but still down-to-earth enough to give back.  Dr. Tharsis Souza - data scientist, entrepreneur, investor, lecturer, mentor...  Is there anything this guy can’t do?!  </Person2>
+
+<Person1> <emphasis>It doesn't seem like it!  </emphasis> And from what I've gathered, he tackles it all with the same energy and enthusiasm. Dr. Souza is truly an inspiration for anyone looking to make their mark in the world of data science and beyond!  </Person1>
+
+<Person1> <emphasis>And that’s a wrap on another episode of PODCASTFY! Until next time, keep exploring, keep learning, and keep pushing the boundaries!</emphasis>  </Person1> 

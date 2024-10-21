@@ -13,7 +13,9 @@ from urllib.parse import urlparse
 from .youtube_transcriber import YouTubeTranscriber
 from .website_extractor import WebsiteExtractor
 from .pdf_extractor import PDFExtractor
+from .markdown_extractor import MarkdownExtractor
 from podcastfy.utils.config import load_config
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -25,12 +27,13 @@ class ContentExtractor:
 		self.youtube_transcriber = YouTubeTranscriber()
 		self.website_extractor = WebsiteExtractor()
 		self.pdf_extractor = PDFExtractor()
+		self.markdown_extractor = MarkdownExtractor()
 		self.config = load_config()
 		self.content_extractor_config = self.config.get('content_extractor', {})
 
 	def is_url(self, source: str) -> bool:
 		"""
-		Check if the given source is a valid URL.
+		Check if the given source is a valid URL or a local file path.
 
 		Args:
 			source (str): The source to check.
@@ -38,6 +41,10 @@ class ContentExtractor:
 		Returns:
 			bool: True if the source is a valid URL, False otherwise.
 		"""
+		# First, check if it's a local file path
+		if os.path.exists(source):
+			return False
+
 		try:
 			# If the source doesn't start with a scheme, add 'https://'
 			if not source.startswith(('http://', 'https://')):
@@ -69,8 +76,10 @@ class ContentExtractor:
 					return self.website_extractor.extract_content(source)
 			elif source.lower().endswith('.pdf'):
 				return self.pdf_extractor.extract_content(source)
+			elif source.lower().endswith(('.md', '.markdown')):
+				return self.markdown_extractor.extract_content(source)
 			else:
-				raise ValueError("Unsupported source type")
+				raise ValueError(f"Unsupported source type: {source}")
 		except Exception as e:
 			logger.error(f"Error extracting content from {source}: {str(e)}")
 			raise
@@ -84,11 +93,16 @@ def main(seed: int = 42) -> None:
 	# Create an instance of ContentExtractor
 	extractor = ContentExtractor()
 
+	# Get the current script's directory
+	current_dir = os.path.dirname(os.path.abspath(__file__))
+
+
 	# Test sources
 	test_sources: List[str] = [
 		"www.souzatharsis.com",
 		"https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-		"path/to/sample.pdf"
+		"path/to/sample.pdf",
+		"path/to/sample.md"
 	]
 
 	for source in test_sources:

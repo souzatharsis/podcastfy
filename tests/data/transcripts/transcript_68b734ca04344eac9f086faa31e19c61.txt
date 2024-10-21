@@ -1,0 +1,33 @@
+<Person1>  <emphasis>Welcome to PODCASTFY  - Your Personal Generative AI Podcast.</emphasis> Let's talk about Tharsis Souza, an accomplished individual in data science and technology. </Person1>
+
+<Person2> Oh, wow! Someone with a PhD in Computer Science, and a Senior VP position?  He sounds like he's  really making waves in the tech world. What's his story? </Person2>
+
+<Person1>  Well, Tharsis is incredibly passionate about data-driven products. He's not just a Senior VP of Product Management and Modeling Engineering at Two Sigma Investments, but also a lecturer at Columbia University. </Person1> 
+
+<Person2>  <emphasis> Columbia University? </emphasis> That's impressive! What does he teach? </Person2>
+
+<Person1> He's a faculty member of their MSc. in Applied Analytics program. <break time="0.1s" />  Clearly a brilliant mind  sharing his knowledge. </Person1>
+
+<Person2> He sounds like he's got a ton of experience. Where else has he worked? </Person2>
+
+<Person1> Before Two Sigma, Tharsis spent over a decade in various companies, from startups to Fortune 500s, in the US, Brazil, and the UK. Talk about a global citizen! </Person1>
+
+<Person2> Wow, he's worked with a diverse range of companies.  What kind of work did he do? </Person2>
+
+<Person1>  He was focused on delivering new technology products. That lines up perfectly with his passion for data-driven solutions. </Person1>
+
+<Person2> Absolutely! And it looks like he's passionate about sharing his knowledge beyond the classroom, too.  What's this about him being a regular speaker? </Person2>
+
+<Person1>  You're right!  He's a sought-after voice in the field, presenting his insights at both academic and business conferences. Tharsis also authors scholarly publications, adding to his impressive list of accomplishments. </Person1>
+
+<Person2>   I see, interesting. He sounds incredibly busy with all of that! But there's more to him than just his career, right? </Person2>
+
+<Person1>  Absolutely! He strongly believes in giving back and is passionate about mentoring under-represented students and working professionals. </Person1>
+
+<Person2>  That's fantastic! It's always inspiring to see someone at the top of their field dedicated to lifting others. </Person2>
+
+<Person1> Definitely.  And just to top it off, he holds an M.Phil. and an M.Sc. in Computer Science, on top of his B.Sc. in Computer Engineering, all before that PhD.  </Person1>
+
+<Person2> Wow! He's clearly a lifelong learner and high achiever. It's amazing to see his dedication to both his field and to helping others succeed.  Thanks for sharing his story! </Person2>
+
+<Person1>  Of course.  Tharsis Souza, everyone! Be sure to check out some of his interviews and talks online.  And from PODCASTFY - Your Personal Generative AI Podcast,  this is goodbye for now. </Person1> 
