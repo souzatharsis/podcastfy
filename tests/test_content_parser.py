@@ -10,6 +10,10 @@ from podcastfy.content_parser.markdown_extractor import MarkdownExtractor
 
 
 class TestContentParser(unittest.TestCase):
+    def setUp(self):
+        self.test_dir = os.path.dirname(os.path.abspath(__file__))
+        self.sample_md_path = os.path.join(self.test_dir, 'data', 'sample.md')
+
     def test_content_extractor(self):
         # Add tests for ContentExtractor
         pass
@@ -105,6 +109,17 @@ class TestContentParser(unittest.TestCase):
         self.assertIn("This guide shares strategies and tactics", extracted_content)
         self.assertIn("Six strategies", extracted_content)
 
+    def tearDown(self):
+        # Clean up created files
+        test_files = [
+            self.sample_md_path,
+            os.path.join(self.test_dir, 'data', 'empty.md'),
+            os.path.join(self.test_dir, 'data', 'audio', 'test_audio.mp3'),
+            os.path.join(self.test_dir, 'data', 'transcripts', 'test_transcript.txt')
+        ]
+        for file_path in test_files:
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
 if __name__ == "__main__":
     unittest.main()
