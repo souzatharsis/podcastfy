@@ -56,7 +56,6 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - Support for running local LLMs for transcript generation (increased privacy and control)
 - Seamless CLI and Python package integration for automated workflows
 - Multi-language support for global content creation (experimental!)
-- Markdown extraction for easy integration of documentation and structured text
 
 ## Updates 🚀
 
