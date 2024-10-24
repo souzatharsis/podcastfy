@@ -9,11 +9,6 @@ on:
       - 'setup.py'               # Package setup
       - '.github/workflows/**'    # Workflow files
       - 'pyproject.toml'         # Python project config
-    paths-ignore:
-      - '**.md'                  # Markdown files
-      - 'docs/**'                # Documentation
-      - 'README*'                # README files
-      - 'LICENSE*'               # License files
   pull_request:
     branches: [ "main" ]
     paths:
@@ -23,11 +18,6 @@ on:
       - 'setup.py'
       - '.github/workflows/**'
       - 'pyproject.toml'
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'README*'
-      - 'LICENSE*'
 
 permissions:
   contents: read
