@@ -170,6 +170,16 @@ def test_generate_transcript_with_local_llm(sample_config):
 		assert isinstance(content, str)
 		assert re.match(r"(<Person1>.*?</Person1>\s*<Person2>.*?</Person2>\s*)+", content)
 
+def test_generate_podcast_from_raw_text():
+    """Test generating a podcast from raw input text using the CLI."""
+    raw_text = "The wonderful world of LLMs."
+    result = runner.invoke(app, ["--text", raw_text, "--tts-model", "edge"])
+    assert result.exit_code == 0
+    assert "Podcast generated successfully using edge TTS model" in result.stdout
+    audio_path = result.stdout.split(": ")[-1].strip()
+    assert os.path.exists(audio_path)
+    assert audio_path.endswith('.mp3')
+
 def test_cli_help():
 	result = runner.invoke(app, ["--help"])
 	assert result.exit_code == 0

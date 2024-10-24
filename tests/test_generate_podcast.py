@@ -149,5 +149,20 @@ def test_generate_podcast_from_images(sample_config):
 	transcript_files = [f for f in os.listdir(transcript_dir) if f.startswith('transcript_') and f.endswith('.txt')]
 	assert len(transcript_files) > 0
 
+def test_generate_podcast_from_raw_text(sample_config):
+	"""Test generating a podcast from raw input text."""
+	raw_text = "The wonderful world of LLMs."
+	
+	audio_file = generate_podcast(
+		text=raw_text,
+		tts_model="edge",
+		config=sample_config
+	)
+
+	assert audio_file is not None
+	assert os.path.exists(audio_file)
+	assert audio_file.endswith('.mp3')
+	assert os.path.dirname(audio_file) == sample_config.get('output_directories', {}).get('audio')
+
 if __name__ == "__main__":
 	pytest.main()
