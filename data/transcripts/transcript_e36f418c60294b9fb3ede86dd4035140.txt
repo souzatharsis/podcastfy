@@ -1,3 +1,0 @@
-<Person1> <prosody rate="105%" pitch="medium">  Welcome to PODCASTFY - Your Personal Generative AI Podcast.  Today, we're diving headfirst into the wonderful world of LLMs! And let me tell you, folks, it is a wild ride. </prosody> </Person1>
-
-<Person2> <prosody rate="100%" pitch="high"> Oh, I am so ready for this!  What exactly makes these LLMs so "wonderful" and "wild?" They sound like something out of a sci-fi movie, but I hear about them *everywhere*. </prosody></Person2> 
