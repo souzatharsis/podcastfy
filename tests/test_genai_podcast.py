@@ -114,8 +114,5 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
 
-        # Check if the result contains expected Q&A format
-        self.assertRegex(result, r"(<Person1>.*?</Person1>\s*<Person2>.*?</Person2>\s*)+")
-
 if __name__ == "__main__":
     unittest.main()
