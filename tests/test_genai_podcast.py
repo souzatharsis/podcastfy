@@ -6,6 +6,7 @@ import os
 from podcastfy.content_generator import ContentGenerator
 from podcastfy.utils.config import Config
 from podcastfy.utils.config_conversation import ConversationConfig
+from podcastfy.content_parser.pdf_extractor import PDFExtractor
 
 
 # TODO: Should be a fixture
@@ -95,6 +96,26 @@ class TestGenAIPodcast(unittest.TestCase):
         # Clean up the temporary file
         os.unlink(temp_file.name)
 
+    def test_generate_qa_content_from_pdf(self):
+        """Test generating Q&A content from a PDF file."""
+        pdf_file = "tests/data/pdf/file.pdf"
+        content_generator = ContentGenerator(self.api_key)
+        pdf_extractor = PDFExtractor()
+
+        # Extract content from the PDF file
+        extracted_content = pdf_extractor.extract_content(pdf_file)
+
+        # Generate Q&A content from the extracted text
+        result = content_generator.generate_qa_content(
+            input_texts=extracted_content
+        )
+
+        self.assertIsNotNone(result)
+        self.assertNotEqual(result, "")
+        self.assertIsInstance(result, str)
+
+        # Check if the result contains expected Q&A format
+        self.assertRegex(result, r"(<Person1>.*?</Person1>\s*<Person2>.*?</Person2>\s*)+")
 
 if __name__ == "__main__":
     unittest.main()
