@@ -69,15 +69,15 @@ class ContentExtractor:
 			ValueError: If the source type is unsupported.
 		"""
 		try:
-			if self.is_url(source):
-				if any(pattern in source for pattern in self.content_extractor_config.get('youtube_url_patterns', [])):
+			if source.lower().endswith('.pdf'):
+				return self.pdf_extractor.extract_content(source)
+      elif source.lower().endswith(('.md', '.markdown')):
+				return self.markdown_extractor.extract_content(source)
+			elif self.is_url(source):
+				if any(pattern in source for pattern in self.content_extractor_config['youtube_url_patterns']):
 					return self.youtube_transcriber.extract_transcript(source)
 				else:
 					return self.website_extractor.extract_content(source)
-			elif source.lower().endswith('.pdf'):
-				return self.pdf_extractor.extract_content(source)
-			elif source.lower().endswith(('.md', '.markdown')):
-				return self.markdown_extractor.extract_content(source)
 			else:
 				raise ValueError(f"Unsupported source type: {source}")
 		except Exception as e:

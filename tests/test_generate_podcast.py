@@ -108,6 +108,18 @@ def test_generate_podcast_with_custom_config(sample_config, sample_conversation_
 	assert os.path.exists(audio_file)
 	assert audio_file.endswith('.mp3')
 	assert os.path.dirname(audio_file) == sample_config.get('output_directories', {}).get('audio')
+
+def test_generate_from_local_pdf(sample_config):
+	"""Test generating a podcast from a local PDF file."""
+	pdf_file = "tests/data/pdf/file.pdf"
+	audio_file = generate_podcast(
+		urls=[pdf_file],
+		config=sample_config
+	)
+	assert audio_file is not None
+	assert os.path.exists(audio_file)
+	assert audio_file.endswith('.mp3')
+	assert os.path.dirname(audio_file) == sample_config.get('output_directories', {}).get('audio')
 	
 def test_generate_podcast_no_urls_or_transcript():
 	"""Test that an error is raised when no URLs or transcript file is provided."""

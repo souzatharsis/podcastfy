@@ -140,11 +140,6 @@ We welcome contributions! See [Guidelines](GUIDELINES.md) for more details.
 
 10. **Conference and Event Recaps**: Professionals can stay updated on important industry events they couldn't attend by listening to audio recaps of conference highlights and key takeaways.
 
-
-## License
-
-This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-
 ## Contributors
 
 <a href="https://github.com/souzatharsis/podcastfy/graphs/contributors">
@@ -160,5 +155,3 @@ This tool is designed for personal or educational use. Please ensure you have th
         ↑ Back to Top ↑
     </a>
 </p>
-
-Copyright (c) 2024. Tharsis T. P. Souza, New York, NY.
