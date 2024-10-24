@@ -44,7 +44,7 @@ custom_config = {
     "word_count": 200,
     "conversation_style": ["casual", "humorous"],
     "podcast_name": "Tech Chuckles",
-    "creativity": 7
+    "creativity": 0.7
 }
 
 generate_podcast(
