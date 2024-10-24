@@ -59,10 +59,10 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Updates 🚀
 
-### v0.2.4 release
-- Added support for Markdown file extraction
-- Improved content parsing capabilities
-- and [more...](https://github.com/souzatharsis/podcastfy/blob/main/CHANGELOG.md#024---2024-10-15)
+### v0.2.3 release
+- Add support for running LLMs locally
+- Enable config for running podcastfy with no API KEYs
+- and [more...](https://github.com/souzatharsis/podcastfy/blob/main/CHANGELOG.md#023---2024-10-15)
 
 ### v0.2.2 release
 - Podcastfy is now multi-modal! Users can generate audio from images + text inputs!
