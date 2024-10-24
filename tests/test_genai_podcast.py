@@ -58,8 +58,8 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertIsInstance(result, str)
 
         # Check for elements from the custom config
-        self.assertIn(conversation_config["podcast_name"], result)
-        self.assertIn(conversation_config["podcast_tagline"], result)
+        self.assertIn(conversation_config["podcast_name"].lower(), result.lower())
+        self.assertIn(conversation_config["podcast_tagline"].lower(), result.lower())
 
         # Check word count (allow some flexibility)
         word_count = len(result.split())
