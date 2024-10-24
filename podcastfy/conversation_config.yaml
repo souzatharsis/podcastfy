@@ -35,6 +35,17 @@ text_to_speech:
     default_voices:
       question: "en-US-JennyNeural"
       answer: "en-US-EricNeural"
+  google:
+    default_voices:
+      # REF: https://cloud.google.com/text-to-speech/docs/voices
+      question:
+        voice: "en-US-Journey-F"
+        #rate: 1.1 # not supported in Journey voices
+        #pitch: -2 # not supported in Journey voices
+      answer:
+        voice: "en-US-Journey-D"
+        #rate: 1.1 # not supported in Journey voices
+        #pitch: 0 # not supported in Journey voices
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
   ending_message: "Bye Bye!"
