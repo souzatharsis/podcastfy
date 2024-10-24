@@ -15,7 +15,7 @@ An Open Source alternative to NotebookLM's podcast feature: Transforming Multimo
 
 https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
-Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content include websites, PDFs, YouTube videos, images, and now Markdown files.
+Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content include websites, PDFs, YouTube videos, images, and Markdown files.
 
 Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources enabling customization and scale.
 
