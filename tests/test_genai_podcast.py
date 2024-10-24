@@ -114,5 +114,19 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
 
+    def test_generate_qa_content_from_raw_text(self):
+        """Test generating Q&A content from raw input text."""
+        raw_text = "The wonderful world of LLMs."
+        content_generator = ContentGenerator(self.api_key)
+
+        result = content_generator.generate_qa_content(
+            input_texts=raw_text
+        )
+
+        self.assertIsNotNone(result)
+        self.assertNotEqual(result, "")
+        self.assertIsInstance(result, str)
+
+
 if __name__ == "__main__":
     unittest.main()
