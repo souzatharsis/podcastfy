@@ -318,7 +318,7 @@ def generate_podcast(
                 conversation_config=conversation_config,
                 image_paths=image_paths,
                 is_local=is_local,
-                text=text,  # Pass the text parameter here
+                text=text
             )
 
     except Exception as e:
