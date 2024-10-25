@@ -47,11 +47,27 @@ Please make sure you follow configuration instructions first - [See Setup](READM
    ```
    python -m podcastfy.client --url https://example.com/article1 --image path/to/image1.jpg
    ```
-   
+
 10. Generate a transcript using a local LLM:
    ```
    python -m podcastfy.client --url https://example.com/article1 --transcript-only --local
    ```
+
+11. Generate a podcast from a Markdown file:
+   ```
+   python -m podcastfy.client --url path/to/your/file.md
+   ```
+
+12. Generate a podcast from multiple Markdown files:
+   ```
+   python -m podcastfy.client --url path/to/file1.md --url path/to/file2.md
+   ```
+
+13. Generate a podcast from a mix of URLs and Markdown files:
+   ```
+   python -m podcastfy.client --url https://example.com/article1 --url path/to/file.md
+   ```
+
 For more information on available options, use:
    ```
    python -m podcastfy.client --help
