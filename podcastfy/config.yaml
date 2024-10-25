@@ -5,7 +5,7 @@ output_directories:
 content_generator:
   gemini_model: "gemini-1.5-pro-latest"
   max_output_tokens: 8192
-  prompt_template: "souzatharsis/podcastfy_multimodal_test"
+  prompt_template: "souzatharsis/podcastfy_multimodal"
 
 content_extractor:
   youtube_url_patterns:
