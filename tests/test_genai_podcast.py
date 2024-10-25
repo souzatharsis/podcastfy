@@ -62,9 +62,6 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertIn(conversation_config["podcast_name"].lower(), result.lower())
         self.assertIn(conversation_config["podcast_tagline"].lower(), result.lower())
 
-        # Check word count (allow some flexibility)
-        word_count = len(result.split())
-
     def test_generate_qa_content_from_images(self):
         """Test generating Q&A content from two input images."""
         image_paths = [

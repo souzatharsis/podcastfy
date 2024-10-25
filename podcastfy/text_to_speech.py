@@ -47,9 +47,9 @@ class TextToSpeech:
 		else:
 			raise ValueError("Invalid model. Choose 'elevenlabs', 'openai' or 'edge'.")
 
-		self.audio_format = self.tts_config['audio_format']
-		self.temp_audio_dir = self.tts_config['temp_audio_dir']
-		self.ending_message = self.tts_config['ending_message']
+		self.audio_format = self.tts_config.audio_format
+		self.temp_audio_dir = self.tts_config.temp_audio_dir 
+		self.ending_message = self.tts_config.ending_message
 
 		# Create temp_audio_dir if it doesn't exist
 		if not os.path.exists(self.temp_audio_dir):
@@ -113,13 +113,13 @@ class TextToSpeech:
 			for question, answer in qa_pairs:
 				question_audio = self.client.generate(
 					text=question,
-					voice=self.tts_config['elevenlabs']['default_voices']['question'],
-					model=self.tts_config['elevenlabs']['model']
+					voice=self.tts_config.elevenlabs.default_voices.question,
+					model=self.tts_config.elevenlabs.model
 				)
 				answer_audio = self.client.generate(
 					text=answer,
-					voice=self.tts_config['elevenlabs']['default_voices']['answer'],
-					model=self.tts_config['elevenlabs']['model']
+					voice=self.tts_config.elevenlabs.default_voices.answer,
+					model=self.tts_config.elevenlabs.model
 				)
 
 				# Save question and answer audio chunks
@@ -153,13 +153,13 @@ class TextToSpeech:
 			counter = 0
 			for question, answer in qa_pairs:
 				for speaker, content in [
-					(self.tts_config['openai']['default_voices']['question'], question),
-					(self.tts_config['openai']['default_voices']['answer'], answer)
+					(self.tts_config.openai.default_voices.question, question),
+					(self.tts_config.openai.default_voices.answer, answer)
 				]:
 					counter += 1
 					file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
 					response = openai.audio.speech.create(
-						model=self.tts_config['openai']['model'],
+						model=self.tts_config.openai.model,
 						voice=speaker,
 						input=content
 					)
@@ -217,8 +217,8 @@ class TextToSpeech:
 				tasks = []
 				for question, answer in qa_pairs:
 					for speaker, content in [
-						(self.tts_config['edge']['default_voices']['question'], question),
-						(self.tts_config['edge']['default_voices']['answer'], answer)
+						(self.tts_config.edge.default_voices.question, question),
+						(self.tts_config.edge.default_voices.answer, answer)
 					]:
 						counter += 1
 						file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
@@ -285,7 +285,7 @@ class TextToSpeech:
 		"""
 		# List of SSML tags supported by both OpenAI and ElevenLabs
 		supported_tags = [
-			'speak', 'lang', 'p', 'phoneme',
+			'lang', 'p', 'phoneme',
 			's', 'say-as', 'sub'
 		]
 

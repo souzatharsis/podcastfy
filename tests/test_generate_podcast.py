@@ -173,7 +173,7 @@ def test_generate_transcript_with_user_instructions(sample_config):
 		"roles_person2": "student",
 		"dialogue_structure": ["Introduction", "Main Points", "Case Studies", "Quiz", "Conclusion"],
 		"podcast_name": "Teachfy",
-		"podcast_tagline": "Learning Through Conversation",
+		"podcast_tagline": "Learning Through Teaching",
 		"output_language": "English",
 		"engagement_techniques": ["examples", "questions"],
 		"creativity": 0,
@@ -197,6 +197,11 @@ def test_generate_transcript_with_user_instructions(sample_config):
 	with open(result, 'r') as f:
 		content = f.read()
 		
+
+	assert conversation_config["podcast_name"].lower() in content.lower(), \
+		f"Expected to find podcast name '{conversation_config['podcast_name']}' in transcript"
+	assert conversation_config["podcast_tagline"].lower() in content.lower(), \
+		f"Expected to find podcast tagline '{conversation_config['podcast_tagline']}' in transcript"
 	assert any(keyword.lower() in content.lower() for keyword in ["kg", "knowledge graph", "knowledge graphs"]), \
 		"Expected to find 'KG', 'Knowledge Graph', or 'Knowledge Graphs' in the transcript due to user instructions"
 
