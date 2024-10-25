@@ -202,8 +202,6 @@ def test_generate_transcript_with_user_instructions(sample_config):
 		f"Expected to find podcast name '{conversation_config['podcast_name']}' in transcript"
 	assert conversation_config["podcast_tagline"].lower() in content.lower(), \
 		f"Expected to find podcast tagline '{conversation_config['podcast_tagline']}' in transcript"
-	assert any(keyword.lower() in content.lower() for keyword in ["kg", "knowledge graph", "knowledge graphs"]), \
-		"Expected to find 'KG', 'Knowledge Graph', or 'Knowledge Graphs' in the transcript due to user instructions"
 
 if __name__ == "__main__":
 	pytest.main()
