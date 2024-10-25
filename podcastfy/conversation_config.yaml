@@ -18,6 +18,7 @@ engagement_techniques:
   - "analogies"
   - "humor"
 creativity: 1
+user_instructions: ""
 
 text_to_speech:
   default_tts_model: "openai"

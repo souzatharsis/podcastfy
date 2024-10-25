@@ -32,6 +32,7 @@ Podcastfy uses the default conversation configuration stored in [podcastfy/conve
 | output_language | "English" | str | Language of the output |
 | engagement_techniques | ["rhetorical questions", "anecdotes", "analogies", "humor"] | list[str] | Techniques to engage the audience |
 | creativity | 0 | int | Level of creativity/temperature (0-1) |
+| user_instructions | "" | str | Custom instructions to guide the conversation focus and topics |
 
 ## Text-to-Speech (TTS) Settings
 

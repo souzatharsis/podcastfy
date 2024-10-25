@@ -34,10 +34,7 @@ def sample_conversation_config():
 		"podcast_tagline": "Learning Through Conversation",
 		"output_language": "English",
 		"engagement_techniques": ["examples", "questions"],
-		"creativity": 0,
-		"text_to_speech": {
-			"model": "edge"
-		}
+		"creativity": 0
 	}
 	return conversation_config
 
@@ -163,6 +160,45 @@ def test_generate_podcast_from_raw_text(sample_config):
 	assert os.path.exists(audio_file)
 	assert audio_file.endswith('.mp3')
 	assert os.path.dirname(audio_file) == sample_config.get('output_directories', {}).get('audio')
+
+def test_generate_transcript_with_user_instructions(sample_config):
+	"""Test generating a transcript with specific user instructions in the conversation config."""
+	url = "https://en.wikipedia.org/wiki/Artificial_intelligence"
+	
+	# Create a custom conversation config with user instructions
+	conversation_config = {
+		"word_count": 300,
+		"conversation_style": ["formal", "educational"],
+		"roles_person1": "professor",
+		"roles_person2": "student",
+		"dialogue_structure": ["Introduction", "Main Points", "Case Studies", "Quiz", "Conclusion"],
+		"podcast_name": "Teachfy",
+		"podcast_tagline": "Learning Through Conversation",
+		"output_language": "English",
+		"engagement_techniques": ["examples", "questions"],
+		"creativity": 0,
+		"user_instructions": "Make a connection with a related topic: Knowledge Graphs."
+	}
+	
+	# Generate transcript with the custom config
+	result = generate_podcast(
+		urls=[url],
+		transcript_only=True,
+		config=sample_config,
+		conversation_config=conversation_config
+	)
+	
+	assert result is not None
+	assert os.path.exists(result)
+	assert result.endswith('.txt')
+	assert os.path.dirname(result) == sample_config.get('output_directories', {}).get('transcripts')
+	
+	# Read the generated transcript
+	with open(result, 'r') as f:
+		content = f.read()
+		
+	assert any(keyword.lower() in content.lower() for keyword in ["kg", "knowledge graph", "knowledge graphs"]), \
+		"Expected to find 'KG', 'Knowledge Graph', or 'Knowledge Graphs' in the transcript due to user instructions"
 
 if __name__ == "__main__":
 	pytest.main()
