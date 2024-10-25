@@ -167,7 +167,7 @@ def test_generate_transcript_with_user_instructions(sample_config):
 	
 	# Create a custom conversation config with user instructions
 	conversation_config = {
-		"word_count": 300,
+		"word_count": 2000,
 		"conversation_style": ["formal", "educational"],
 		"roles_person1": "professor",
 		"roles_person2": "student",

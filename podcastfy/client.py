@@ -27,6 +27,8 @@ logger = setup_logger(__name__)
 
 app = typer.Typer()
 
+os.environ["LANGCHAIN_TRACING_V2"] = "false"
+
 
 def process_content(
     urls=None,
