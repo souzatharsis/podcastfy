@@ -16,12 +16,12 @@ from pydub import AudioSegment
 import os
 import re
 import openai
-from typing import List, Tuple, Optional, Union
+from typing import List, Tuple, Optional, Union, Dict, Any
 
 logger = logging.getLogger(__name__)
 
 class TextToSpeech:
-	def __init__(self, model: str = 'openai', api_key: Optional[str] = None):
+	def __init__(self, model: str = 'openai', api_key: Optional[str] = None, conversation_config: Optional[Dict[str, Any]] = None):
 		"""
 		Initialize the TextToSpeech class.
 
@@ -33,7 +33,7 @@ class TextToSpeech:
 		"""
 		self.model = model.lower()
 		self.config = load_config()
-		self.conversation_config = load_conversation_config()
+		self.conversation_config = load_conversation_config(conversation_config)
 		self.tts_config = self.conversation_config.get('text_to_speech')
 
 		if self.model == 'elevenlabs':
