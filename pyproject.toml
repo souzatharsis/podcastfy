@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.2.7"
-description = "Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
+version = "0.2.8"
+description = "An Open Source alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"
 readme = "README.md"
