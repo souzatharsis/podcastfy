@@ -113,6 +113,10 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
 - Set [System Settings](usage/config_custom.md) (e.g. output directory settings)
 
+## License
+
+This software is licensed under [Apache 2.0](LICENSE). [Here](usage/license-guide.md) are a few instructions if you would like to use podcastfy in your software.
+
 ## Contributing 🤝
 
 We welcome contributions! See [Guidelines](GUIDELINES.md) for more details.
