@@ -80,7 +80,9 @@ class ContentGenerator:
         prompt_template = hub.pull(
             self.config.get("content_generator", {}).get(
                 "prompt_template", "souzatharsis/podcastfy_multimodal"
-            )+":c67bea9c"
+            ) + ":" + self.config.get("content_generator", {}).get(
+                "prompt_commit", "c67bea9c"
+            )
         )
 
         image_path_keys = []
