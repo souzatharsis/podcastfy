@@ -37,7 +37,7 @@ class TestAudio(unittest.TestCase):
         os.remove(output_file)
 
     def test_text_to_speech_edge(self):
-        tts = TextToSpeech(model="edge", conversation_config=load_conversation_config().to_dict())
+        tts = TextToSpeech(model="edge")
         output_file = os.path.join(self.output_dir, "test_edge.mp3")
         tts.convert_to_speech(self.test_text, output_file)
 

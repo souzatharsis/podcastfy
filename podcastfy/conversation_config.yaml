@@ -21,7 +21,7 @@ creativity: 1
 user_instructions: ""
 
 text_to_speech:
-  default_tts_model: "openai"
+  default_tts_model: "edge"
   elevenlabs:
     default_voices:
       question: "Chris"

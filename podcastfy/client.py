@@ -33,7 +33,7 @@ os.environ["LANGCHAIN_TRACING_V2"] = "false"
 def process_content(
     urls=None,
     transcript_file=None,
-    tts_model="openai",
+    tts_model="edge",
     generate_audio=True,
     config=None,
     conversation_config: Optional[Dict[str, Any]] = None,
@@ -47,7 +47,7 @@ def process_content(
     Args:
         urls (Optional[List[str]]): A list of URLs to process.
         transcript_file (Optional[str]): Path to a transcript file.
-        tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'openai'.
+        tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'edge'.
         generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
         config (Config): Configuration object to use. If None, default config will be loaded.
         conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
@@ -282,6 +282,8 @@ def generate_podcast(
                 raise ValueError(
                     "Config must be either a dictionary or a Config object"
                 )
+        if not conversation_config:
+            conversation_config = load_conversation_config().to_dict()
 
         main_config = default_config.config.get("main", {})
 

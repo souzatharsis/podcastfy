@@ -45,7 +45,91 @@ def get_conversation_config_path(config_file: str = 'conversation_config.yaml'):
 		print(f"Error locating {config_file}: {str(e)}")
 		return None
 
-class ConversationConfig:
+class NestedConfig:
+	"""
+	A class to handle nested configuration objects with proper method inheritance.
+	"""
+	def __init__(self, config_dict: Dict[str, Any]):
+		"""
+		Initialize a nested configuration object.
+
+		Args:
+			config_dict (Dict[str, Any]): Dictionary containing the nested configuration
+		"""
+		for key, value in config_dict.items():
+			if isinstance(value, dict):
+				setattr(self, key, NestedConfig(value))
+			else:
+				setattr(self, key, value)
+	
+	def to_dict(self) -> Dict[str, Any]:
+		"""
+		Convert the NestedConfig object to a dictionary, preserving nested structure.
+
+		Returns:
+			Dict[str, Any]: A dictionary representation of the configuration
+		"""
+		result = {}
+		for key, value in self.__dict__.items():
+			if not key.startswith('_'):
+				if isinstance(value, NestedConfig):
+					result[key] = value.to_dict()
+				else:
+					result[key] = value
+		return result
+	
+	def get(self, key: str, default: Optional[Any] = None) -> Any:
+		"""
+		Get a configuration value by key, supporting nested keys with dot notation.
+
+		Args:
+			key (str): The configuration key to retrieve (e.g., 'child.value')
+			default (Optional[Any]): The default value if the key is not found.
+
+		Returns:
+			Any: The value associated with the key, or the default value if not found.
+		"""
+		current = self
+		try:
+			for part in key.split('.'):
+				if isinstance(current, dict):
+					current = current[part]
+				else:
+					current = getattr(current, part)
+			return current
+		except (AttributeError, KeyError):
+			return default
+
+	def get_list(self, key: str, default: Optional[List[str]] = None) -> List[str]:
+		"""
+		Get a list configuration value by key, supporting nested keys with dot notation.
+
+		Args:
+			key (str): The configuration key to retrieve (e.g., 'child.list')
+			default (Optional[List[str]]): The default value if the key is not found.
+
+		Returns:
+			List[str]: The list associated with the key, or the default value if not found.
+		"""
+		value = self.get(key, default)
+		if isinstance(value, str):
+			return [item.strip() for item in value.split(',')]
+		return value if isinstance(value, list) else default or []
+
+	def configure(self, config: Dict[str, Any]) -> None:
+		"""
+		Configure the settings with the provided dictionary.
+
+		Args:
+			config (Dict[str, Any]): Configuration dictionary to update the settings.
+		"""
+		for key, value in config.items():
+			if isinstance(value, dict) and hasattr(self, key) and isinstance(getattr(self, key), NestedConfig):
+				getattr(self, key).configure(value)
+			else:
+				setattr(self, key, value)
+
+class ConversationConfig(NestedConfig):
 	def __init__(self, config_conversation: Optional[Dict[str, Any]] = None):
 		"""
 		Initialize the ConversationConfig class with a dictionary configuration.
@@ -67,8 +151,8 @@ class ConversationConfig:
 			else:
 				print("Warning: config_conversation should be a dictionary.")
 		
-		# Set attributes based on the final configuration
-		self._set_attributes()
+		# Initialize the NestedConfig with the configuration
+		super().__init__(self.config_conversation)
 
 	def _load_default_config(self) -> Dict[str, Any]:
 		"""Load the default configuration from conversation_config.yaml."""
@@ -78,22 +162,6 @@ class ConversationConfig:
 				return yaml.safe_load(file)
 		else:
 			raise FileNotFoundError("conversation_config.yaml not found")
-
-	def _set_attributes(self):
-		"""
-		Set attributes based on the current configuration, creating proper nested objects.
-		"""
-		def _set_nested_attributes(obj, config_dict):
-			for key, value in config_dict.items():
-				if isinstance(value, dict):
-					# Create a new class instance for nested dictionaries
-					nested_obj = type('NestedConfig', (), value)
-					setattr(obj, key, nested_obj)
-					_set_nested_attributes(nested_obj, value)
-				else:
-					setattr(obj, key, value)
-
-		_set_nested_attributes(self, self.config_conversation)
 
 	def _deep_update(self, target: Dict[str, Any], source: Dict[str, Any]) -> None:
 		"""
@@ -111,55 +179,6 @@ class ConversationConfig:
 			else:
 				target[key] = value
 
-	def configure(self, config_conversation: Dict[str, Any]):
-		"""
-		Configure the conversation settings with the provided dictionary.
-
-		Args:
-			config_conversation (Dict[str, Any]): Configuration dictionary to update the settings.
-			"""
-		# Implementation of the configure method
-		for key, value in config_conversation.items():
-			if hasattr(self, key):
-				setattr(self, key, value)
-			else:
-				raise ValueError(f"Invalid configuration key: {key}")
-
-	def get(self, key: str, default: Optional[Any] = None) -> Any:
-		"""
-		Get a configuration value by key, supporting nested keys with dot notation.
-
-		Args:
-			key (str): The configuration key to retrieve (e.g., 'parent.child.value')
-			default (Optional[Any]): The default value if the key is not found.
-
-		Returns:
-			Any: The value associated with the key, or the default value if not found.
-		"""
-		try:
-			value = self.config_conversation
-			for k in key.split('.'):
-				value = value[k]
-			return value
-		except (KeyError, TypeError):
-			return default
-
-	def get_list(self, key: str, default: Optional[List[str]] = None) -> List[str]:
-		"""
-		Get a list configuration value by key, supporting nested keys with dot notation.
-
-		Args:
-			key (str): The configuration key to retrieve (e.g., 'parent.child.list')
-			default (Optional[List[str]]): The default value if the key is not found.
-
-		Returns:
-			List[str]: The list associated with the key, or the default value if not found.
-		"""
-		value = self.get(key, default)
-		if isinstance(value, str):
-			return [item.strip() for item in value.split(',')]
-		return value if isinstance(value, list) else default or []
-
 	def to_dict(self) -> Dict[str, Any]:
 		"""
 		Convert the ConversationConfig object to a dictionary, preserving nested structure.
@@ -167,19 +186,14 @@ class ConversationConfig:
 		Returns:
 			Dict[str, Any]: A dictionary representation of the configuration
 		"""
-		def _to_dict(obj):
-			if not hasattr(obj, '__dict__'):
-				return obj
-			result = {}
-			for key, value in obj.__dict__.items():
-				if not key.startswith('_'):
-					if isinstance(value, type('NestedConfig', (), {})):
-						result[key] = _to_dict(value)
-					else:
-						result[key] = value
-			return result
-		
-		return _to_dict(self)
+		result = {}
+		for key, value in self.__dict__.items():
+			if not key.startswith('_'):
+				if isinstance(value, (ConversationConfig, NestedConfig)):
+					result[key] = value.to_dict()
+				else:
+					result[key] = value
+		return result
 
 def load_conversation_config(config_conversation: Optional[Dict[str, Any]] = None) -> ConversationConfig:
 	"""

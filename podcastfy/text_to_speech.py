@@ -21,13 +21,13 @@ from typing import List, Tuple, Optional, Union, Dict, Any
 logger = logging.getLogger(__name__)
 
 class TextToSpeech:
-	def __init__(self, model: str = 'openai', api_key: Optional[str] = None, conversation_config: Optional[Dict[str, Any]] = None):
+	def __init__(self, model: str = 'edge', api_key: Optional[str] = None, conversation_config: Optional[Dict[str, Any]] = None):
 		"""
 		Initialize the TextToSpeech class.
 
 		Args:
 			model (str): The model to use for text-to-speech conversion. 
-						 Options are 'elevenlabs', 'openai' or 'edge'. Defaults to 'openai'.
+						 Options are 'elevenlabs', 'openai' or 'edge'. Defaults to 'edge'.
 			api_key (Optional[str]): API key for the selected text-to-speech service.
 						   If not provided, it will be loaded from the config.
 		"""
@@ -47,9 +47,9 @@ class TextToSpeech:
 		else:
 			raise ValueError("Invalid model. Choose 'elevenlabs', 'openai' or 'edge'.")
 
-		self.audio_format = self.tts_config.audio_format
-		self.temp_audio_dir = self.tts_config.temp_audio_dir 
-		self.ending_message = self.tts_config.ending_message
+		self.audio_format = self.tts_config.get('audio_format')
+		self.temp_audio_dir = self.tts_config.get('temp_audio_dir')
+		self.ending_message = self.tts_config.get('ending_message')
 
 		# Create temp_audio_dir if it doesn't exist
 		if not os.path.exists(self.temp_audio_dir):
@@ -113,13 +113,13 @@ class TextToSpeech:
 			for question, answer in qa_pairs:
 				question_audio = self.client.generate(
 					text=question,
-					voice=self.tts_config.elevenlabs.default_voices.question,
-					model=self.tts_config.elevenlabs.model
+					voice=self.tts_config.get("elevenlabs").get("default_voices").get("question"),
+					model=self.tts_config.get("elevenlabs").get("model")
 				)
 				answer_audio = self.client.generate(
 					text=answer,
-					voice=self.tts_config.elevenlabs.default_voices.answer,
-					model=self.tts_config.elevenlabs.model
+					voice=self.tts_config.get("elevenlabs").get("default_voices").get("answer"),
+					model=self.tts_config.get("elevenlabs").get("model")
 				)
 
 				# Save question and answer audio chunks
@@ -153,13 +153,13 @@ class TextToSpeech:
 			counter = 0
 			for question, answer in qa_pairs:
 				for speaker, content in [
-					(self.tts_config.openai.default_voices.question, question),
-					(self.tts_config.openai.default_voices.answer, answer)
+					(self.tts_config.get("openai").get("default_voices").get("question"), question),
+					(self.tts_config.get("openai").get("default_voices").get("answer"), answer)
 				]:
 					counter += 1
 					file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
 					response = openai.audio.speech.create(
-						model=self.tts_config.openai.model,
+						model=self.tts_config.get("openai").get("model"),
 						voice=speaker,
 						input=content
 					)
@@ -217,8 +217,8 @@ class TextToSpeech:
 				tasks = []
 				for question, answer in qa_pairs:
 					for speaker, content in [
-						(self.tts_config.edge.default_voices.question, question),
-						(self.tts_config.edge.default_voices.answer, answer)
+						(self.tts_config.get("edge").get("default_voices").get("question"), question),
+						(self.tts_config.get("edge").get("default_voices").get("answer"), answer)
 					]:
 						counter += 1
 						file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
