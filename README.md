@@ -15,9 +15,9 @@ An Open Source alternative to NotebookLM's podcast feature: Transforming Multimo
 
 https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
-Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content include websites, PDFs, youtube videos as well as images.
+Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content includes websites, PDFs, YouTube videos, as well as images.
 
-Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources enabling customization and scale.
+Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources, enabling customization and scale.
 
 [![Star History Chart](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)
 
@@ -49,7 +49,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Features ✨
 
-- Generate conversational content from multiple-sources and formats (images, websites, YouTube, and PDFs)
+- Generate conversational content from multiple sources and formats (images, websites, YouTube, and PDFs)
 - Customize transcript and audio generation (e.g. style, language, structure, length)
 - Create podcasts from pre-existing or edited transcripts
 - Support for advanced text-to-speech models (OpenAI, ElevenLabs and Edge)
@@ -109,7 +109,7 @@ Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatup
 ## Customization 🔧
 
 Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
-- Customize podcast [Conversation](usage/conversation_custom.md) (e.g. format, style, voices)
+- Customize podcast [conversation](usage/conversation_custom.md) (e.g. format, style, voices)
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
 - Set [System Settings](usage/config_custom.md) (e.g. output directory settings)
 
