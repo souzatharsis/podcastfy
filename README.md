@@ -102,6 +102,8 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [CLI](usage/cli.md)
 
+- [Docker Image](usage/docker.md)
+
 - [How to](usage/how-to.md)
 
 Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested and capable than the Python package.)

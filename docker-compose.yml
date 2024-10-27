@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  podcastfy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import podcastfy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  podcastfy-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /opt/venv:/opt/venv
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PYTHONPATH=/app
+      - DEBIAN_FRONTEND=noninteractive
+    ports:
+      - "8001:8000"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import podcastfy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /opt/venv:/opt/venv
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PYTHONPATH=/app
+    command: pytest -n auto --dist loadfile
