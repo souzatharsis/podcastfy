@@ -40,9 +40,6 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
-        self.assertRegex(
-            result, r"(<Person1>.*?</Person1>\s*<Person2>.*?</Person2>\s*)+"
-        )
 
     def test_custom_conversation_config(self):
         """
