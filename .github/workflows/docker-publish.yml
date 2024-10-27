@@ -87,4 +87,4 @@ jobs:
           
           # Test development version
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
-          docker-compose run --rm test
+          docker compose run --rm test  # Changed from docker-compose to docker compose
