@@ -68,11 +68,18 @@ Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_c
 
 ### General TTS Settings
 
+- `default_tts_model`: "edge"
+  - Default text-to-speech model to use.
+- `output_directories`:
+  - `transcripts`: "./data/transcripts"
+    - Directory for storing generated transcripts.
+  - `audio`: "./data/audio"
+    - Directory for storing generated audio files.
 - `audio_format`: "mp3"
   - Format of the generated audio files.
 - `temp_audio_dir`: "data/audio/tmp/"
   - Temporary directory for audio processing.
-- `ending_message`: "Tchau!"
+- `ending_message`: "Bye Bye!"
   - Message to be appended at the end of the podcast.
 
 ## Customization Examples
