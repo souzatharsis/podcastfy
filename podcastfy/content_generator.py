@@ -72,7 +72,7 @@ class ContentGenerator:
         self.content_generator_config = self.config.get("content_generator", {})
 
         self.config_conversation = load_conversation_config(conversation_config)
-        self.tts_config = self.conversation_config.get('text_to_speech', {})
+        self.tts_config = self.config_conversation.get('text_to_speech', {})
         
         # Get output directories from conversation config
         self.output_directories = self.tts_config.get('output_directories', {})
