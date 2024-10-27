@@ -44,6 +44,7 @@ types-pyyaml = "^6.0.12.20240917"
 nest-asyncio = "^1.6.0"
 ffmpeg = "^1.4"
 pytest = "^8.3.3"
+pytest-xdist = "^3.6.1"
 
 
 [tool.poetry.group.dev.dependencies]

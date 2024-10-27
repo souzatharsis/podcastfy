@@ -7,7 +7,6 @@ import pytest
 import re
 from typer.testing import CliRunner
 from podcastfy.client import app
-from podcastfy.utils.config import load_config
 
 runner = CliRunner()
 
@@ -66,14 +65,24 @@ def mock_files(tmp_path):
 
 @pytest.fixture
 def sample_config():
-	config = load_config()
-	config.configure(
-		output_directories={
-			'audio': 'tests/data/audio',
-			'transcripts': 'tests/data/transcripts'
+	"""
+	Fixture to provide a sample conversation configuration for testing.
+
+	Returns:
+		dict: A dictionary containing sample conversation configuration parameters.
+	"""
+	conversation_config = {
+		"word_count": 300,
+		"text_to_speech": {
+			"output_directories": {
+				"transcripts": "tests/data/transcripts",
+				"audio": "tests/data/audio"
+			},
+			"temp_audio_dir": "tests/data/audio/tmp",
+			"ending_message": "Bye Bye!"
 		}
-	)
-	return config
+	}
+	return conversation_config
 
 def test_generate_podcast_from_urls(sample_config):
 	result = runner.invoke(app, ["--url", MOCK_URLS[0], "--url", MOCK_URLS[1], "--tts-model", "edge"])
