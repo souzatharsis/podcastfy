@@ -1,7 +1,3 @@
-output_directories:
-  transcripts: "./data/transcripts"
-  audio: "./data/audio"
-
 content_generator:
   gemini_model: "gemini-1.5-pro-latest"
   max_output_tokens: 8192

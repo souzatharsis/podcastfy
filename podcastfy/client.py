@@ -43,20 +43,6 @@ def process_content(
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
-
-    Args:
-        urls (Optional[List[str]]): A list of URLs to process.
-        transcript_file (Optional[str]): Path to a transcript file.
-        tts_model (str): The TTS model to use ('openai', 'elevenlabs' or 'edge'). Defaults to 'edge'.
-        generate_audio (bool): Whether to generate audio or just a transcript. Defaults to True.
-        config (Config): Configuration object to use. If None, default config will be loaded.
-        conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
-        image_paths (Optional[List[str]]): List of image file paths to process.
-        is_local (bool): Whether to use a local LLM. Defaults to False.
-        text (Optional[str]): Raw text input to be processed.
-
-    Returns:
-        Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
     """
     try:
         if config is None:
@@ -69,13 +55,18 @@ def process_content(
         if conversation_config:
             conv_config.configure(conversation_config)
 
+        # Get output directories from conversation config
+        tts_config = conv_config.get('text_to_speech', {})
+        output_directories = tts_config.get('output_directories', {})
+
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
             with open(transcript_file, "r") as file:
                 qa_content = file.read()
         else:
             content_generator = ContentGenerator(
-                api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
+                api_key=config.GEMINI_API_KEY, 
+                conversation_config=conv_config.to_dict()
             )
 
             combined_content = ""
@@ -83,18 +74,17 @@ def process_content(
             if urls:
                 logger.info(f"Processing {len(urls)} links")
                 content_extractor = ContentExtractor()
-                # Extract content from links
                 contents = [content_extractor.extract_content(link) for link in urls]
-                # Combine all extracted content
                 combined_content += "\n\n".join(contents)
 
             if text:
                 combined_content += f"\n\n{text}"
 
-            # Generate Q&A content
+            # Generate Q&A content using output directory from conversation config
             random_filename = f"transcript_{uuid.uuid4().hex}.txt"
             transcript_filepath = os.path.join(
-                config.get("output_directories")["transcripts"], random_filename
+                output_directories.get("transcripts", "data/transcripts"), 
+                random_filename
             )
             qa_content = content_generator.generate_qa_content(
                 combined_content,
@@ -105,15 +95,19 @@ def process_content(
 
         if generate_audio:
             api_key = None
-            # edge does not require an API key
             if tts_model != "edge":
                 api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
 
-            text_to_speech = TextToSpeech(model=tts_model, api_key=api_key, conversation_config=conv_config.to_dict())
-            # Convert text to speech using the specified model
+            text_to_speech = TextToSpeech(
+                model=tts_model, 
+                api_key=api_key, 
+                conversation_config=conv_config.to_dict()
+            )
+            
             random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
             audio_file = os.path.join(
-                config.get("output_directories")["audio"], random_filename
+                output_directories.get("audio", "data/audio"), 
+                random_filename
             )
             text_to_speech.convert_to_speech(qa_content, audio_file)
             logger.info(f"Podcast generated successfully using {tts_model} TTS model")

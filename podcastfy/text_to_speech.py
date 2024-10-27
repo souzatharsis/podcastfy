@@ -16,6 +16,7 @@ from pydub import AudioSegment
 import os
 import re
 import openai
+import tempfile
 from typing import List, Tuple, Optional, Union, Dict, Any
 
 logger = logging.getLogger(__name__)
@@ -34,7 +35,10 @@ class TextToSpeech:
 		self.model = model.lower()
 		self.config = load_config()
 		self.conversation_config = load_conversation_config(conversation_config)
-		self.tts_config = self.conversation_config.get('text_to_speech')
+		self.tts_config = self.conversation_config.get('text_to_speech', {})
+		
+		# Get output directories from conversation config
+		self.output_directories = self.tts_config.get('output_directories', {})
 
 		if self.model == 'elevenlabs':
 			self.api_key = api_key or self.config.ELEVENLABS_API_KEY
@@ -51,8 +55,17 @@ class TextToSpeech:
 		self.temp_audio_dir = self.tts_config.get('temp_audio_dir')
 		self.ending_message = self.tts_config.get('ending_message')
 
-		# Create temp_audio_dir if it doesn't exist
-		if not os.path.exists(self.temp_audio_dir):
+		# Create output directories if they don't exist
+		transcripts_dir = self.output_directories.get('transcripts')
+		audio_dir = self.output_directories.get('audio')
+		
+		if transcripts_dir and not os.path.exists(transcripts_dir):
+			os.makedirs(transcripts_dir)
+		if audio_dir and not os.path.exists(audio_dir):
+			os.makedirs(audio_dir)
+
+		# Create temp_audio_dir if it doesn't exist 
+		if self.temp_audio_dir and not os.path.exists(self.temp_audio_dir):
 			os.makedirs(self.temp_audio_dir)
 
 	def __merge_audio_files(self, input_dir: str, output_file: str) -> None:
@@ -78,6 +91,8 @@ class TextToSpeech:
 					file_path = os.path.join(input_dir, file)
 					combined += AudioSegment.from_file(file_path, format=self.audio_format)
 			
+			# Ensure the output directory exists
+			os.makedirs(os.path.dirname(output_file), exist_ok=True)
 			combined.export(output_file, format=self.audio_format)
 			logger.info(f"Merged audio saved to {output_file}")
 		except Exception as e:
@@ -106,136 +121,102 @@ class TextToSpeech:
 			self.__convert_to_speech_edge(cleaned_text, output_file)
 
 	def __convert_to_speech_elevenlabs(self, text: str, output_file: str) -> None:
+		"""Convert text to speech using ElevenLabs."""
 		try:
-			qa_pairs = self.split_qa(text)
-			audio_files = []
-			counter = 0
-			for question, answer in qa_pairs:
-				question_audio = self.client.generate(
-					text=question,
-					voice=self.tts_config.get("elevenlabs").get("default_voices").get("question"),
-					model=self.tts_config.get("elevenlabs").get("model")
-				)
-				answer_audio = self.client.generate(
-					text=answer,
-					voice=self.tts_config.get("elevenlabs").get("default_voices").get("answer"),
-					model=self.tts_config.get("elevenlabs").get("model")
-				)
+			with tempfile.TemporaryDirectory(dir=self.temp_audio_dir) as temp_dir:
+				qa_pairs = self.split_qa(text)
+				audio_files = []
+				counter = 0
+				
+				for question, answer in qa_pairs:
+					question_audio = self.client.generate(
+						text=question,
+						voice=self.tts_config.get("elevenlabs", {}).get("default_voices", {}).get("question"),
+						model=self.tts_config.get("elevenlabs", {}).get("model")
+					)
+					answer_audio = self.client.generate(
+						text=answer,
+						voice=self.tts_config.get("elevenlabs", {}).get("default_voices", {}).get("answer"),
+						model=self.tts_config.get("elevenlabs", {}).get("model")
+					)
 
-				# Save question and answer audio chunks
-				for audio in [question_audio, answer_audio]:
-					counter += 1
-					file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
-					with open(file_name, "wb") as out:
-						for chunk in audio:
-							if chunk:
-								out.write(chunk)
-					audio_files.append(file_name)
+					for audio in [question_audio, answer_audio]:
+						counter += 1
+						temp_file = os.path.join(temp_dir, f"{counter}.{self.audio_format}")
+						with open(temp_file, "wb") as out:
+							for chunk in audio:
+								if chunk:
+									out.write(chunk)
+						audio_files.append(temp_file)
 
-			# Merge all audio files and save the result
-			self.__merge_audio_files(self.temp_audio_dir, output_file)
-
-			# Clean up individual audio files
-			for file in audio_files:
-				os.remove(file)
-			
-			logger.info(f"Audio saved to {output_file}")
+				self.__merge_audio_files(temp_dir, output_file)
+				logger.info(f"Audio saved to {output_file}")
 
 		except Exception as e:
 			logger.error(f"Error converting text to speech with ElevenLabs: {str(e)}")
 			raise
 
 	def __convert_to_speech_openai(self, text: str, output_file: str) -> None:
+		"""Convert text to speech using OpenAI."""
 		try:
-			qa_pairs = self.split_qa(text)
-			print(qa_pairs)
-			audio_files = []
-			counter = 0
-			for question, answer in qa_pairs:
-				for speaker, content in [
-					(self.tts_config.get("openai").get("default_voices").get("question"), question),
-					(self.tts_config.get("openai").get("default_voices").get("answer"), answer)
-				]:
-					counter += 1
-					file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
-					response = openai.audio.speech.create(
-						model=self.tts_config.get("openai").get("model"),
-						voice=speaker,
-						input=content
-					)
-					with open(file_name, "wb") as file:
-						file.write(response.content)
+			with tempfile.TemporaryDirectory(dir=self.temp_audio_dir) as temp_dir:
+				qa_pairs = self.split_qa(text)
+				audio_files = []
+				counter = 0
+				
+				for question, answer in qa_pairs:
+					for speaker, content in [
+						(self.tts_config.get("openai", {}).get("default_voices", {}).get("question"), question),
+						(self.tts_config.get("openai", {}).get("default_voices", {}).get("answer"), answer)
+					]:
+						counter += 1
+						temp_file = os.path.join(temp_dir, f"{counter}.{self.audio_format}")
+						response = openai.audio.speech.create(
+							model=self.tts_config.get("openai", {}).get("model"),
+							voice=speaker,
+							input=content
+						)
+						with open(temp_file, "wb") as f:
+							f.write(response.content)
+						audio_files.append(temp_file)
 
-					audio_files.append(file_name)
-
-			# Merge all audio files and save the result
-			self.__merge_audio_files(self.temp_audio_dir, output_file)
-
-			# Clean up individual audio files
-			for file in audio_files:
-				os.remove(file)
-			
-			logger.info(f"Audio saved to {output_file}")
+				self.__merge_audio_files(temp_dir, output_file)
+				logger.info(f"Audio saved to {output_file}")
 
 		except Exception as e:
 			logger.error(f"Error converting text to speech with OpenAI: {str(e)}")
 			raise
-	
-	def get_or_create_eventloop():
-		try:
-			return asyncio.get_event_loop()
-		except RuntimeError as ex:
-			if "There is no current event loop in thread" in str(ex):
-				loop = asyncio.new_event_loop()
-				asyncio.set_event_loop(loop)
-				return asyncio.get_event_loop()
-
-	import nest_asyncio  # type: ignore
-	get_or_create_eventloop()
-	nest_asyncio.apply()
 
 	def __convert_to_speech_edge(self, text: str, output_file: str) -> None:
-		"""
-		Convert text to speech using Edge TTS.
-
-		Args:
-			text (str): The input text to convert to speech.
-			output_file (str): The path to save the output audio file.
-		"""
+		"""Convert text to speech using Edge TTS."""
 		try:
-			qa_pairs = self.split_qa(text)
-			audio_files = []
-			counter = 0
+			with tempfile.TemporaryDirectory(dir=self.temp_audio_dir) as temp_dir:
+				qa_pairs = self.split_qa(text)
+				audio_files = []
+				counter = 0
 
-			async def edge_tts_conversion(text_chunk: str, output_path: str, voice: str):
-				tts = edge_tts.Communicate(text_chunk, voice)
-				await tts.save(output_path)
-				return
-				
-			async def process_qa_pairs(qa_pairs):
-				nonlocal counter
-				tasks = []
-				for question, answer in qa_pairs:
-					for speaker, content in [
-						(self.tts_config.get("edge").get("default_voices").get("question"), question),
-						(self.tts_config.get("edge").get("default_voices").get("answer"), answer)
-					]:
-						counter += 1
-						file_name = f"{self.temp_audio_dir}{counter}.{self.audio_format}"
-						tasks.append(asyncio.ensure_future(edge_tts_conversion(content, file_name, speaker)))
-						audio_files.append(file_name)
+				async def edge_tts_conversion(text_chunk: str, output_path: str, voice: str):
+					tts = edge_tts.Communicate(text_chunk, voice)
+					await tts.save(output_path)
 
-				await asyncio.gather(*tasks)
+				async def process_qa_pairs(qa_pairs):
+					nonlocal counter
+					tasks = []
+					for question, answer in qa_pairs:
+						for speaker, content in [
+							(self.tts_config.get("edge", {}).get("default_voices", {}).get("question"), question),
+							(self.tts_config.get("edge", {}).get("default_voices", {}).get("answer"), answer)
+						]:
+							counter += 1
+							temp_file = os.path.join(temp_dir, f"{counter}.{self.audio_format}")
+							tasks.append(asyncio.ensure_future(edge_tts_conversion(content, temp_file, speaker)))
+							audio_files.append(temp_file)
 
-			asyncio.run(process_qa_pairs(qa_pairs))
+					await asyncio.gather(*tasks)
 
-			# Merge all audio files
-			self.__merge_audio_files(self.temp_audio_dir, output_file)
-
-			# Clean up individual audio files
-			for file in audio_files:
-				os.remove(file)
-			logger.info(f"Audio saved to {output_file}")		
+				asyncio.run(process_qa_pairs(qa_pairs))
+				self.__merge_audio_files(temp_dir, output_file)
+				logger.info(f"Audio saved to {output_file}")
 
 		except Exception as e:
 			logger.error(f"Error converting text to speech with Edge: {str(e)}")
@@ -351,3 +332,4 @@ def main(seed: int = 42) -> None:
 
 if __name__ == "__main__":
 	main(seed=42)
+
