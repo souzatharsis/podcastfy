@@ -4,8 +4,22 @@ on:
   push:
     branches: [ "main" ]
     tags: [ 'v*.*.*' ]
+    paths:
+      - 'podcastfy/**'
+      - 'setup.py'
+      - 'requirements.txt'
+      - 'Dockerfile'
+      - 'Dockerfile.dev'
+      - '.github/workflows/docker-publish.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'podcastfy/**'
+      - 'setup.py'
+      - 'requirements.txt'
+      - 'Dockerfile'
+      - 'Dockerfile.dev'
+      - '.github/workflows/docker-publish.yml'
 
 env:
   REGISTRY: ghcr.io
@@ -39,38 +53,4 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       # Build and push PyPI version with caching
-      - name: Build and push PyPI Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=prod
-          cache-to: type=gha,scope=prod,mode=max
-
-      # Build and push development version with caching
-      - name: Build and push development Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile.dev
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=dev
-          cache-to: type=gha,scope=dev,mode=max
-          
-      - name: Test Docker images
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          # Test PyPI version
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest python3 -c "import podcastfy; print(podcastfy.__version__)"
-          
-          # Test development version
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
-          docker-compose run --rm test
+      - name: Build and push PyPI Dock
