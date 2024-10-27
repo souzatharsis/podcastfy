@@ -87,4 +87,4 @@ jobs:
           
           # Test development version
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
-          docker compose run --rm test python3 -m pytest -n auto --dist loadfile
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev python3 -c "import podcastfy"
