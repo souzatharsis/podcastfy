@@ -83,7 +83,7 @@ jobs:
         run: |
           # Test PyPI version
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest python3 -c "import podcastfy; print(podcastfy.__version__)"
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest python3 -c "import podcastfy"
           
           # Test development version
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
