@@ -72,6 +72,16 @@ class ContentGenerator:
         self.content_generator_config = self.config.get("content_generator", {})
 
         self.config_conversation = load_conversation_config(conversation_config)
+        self.tts_config = self.conversation_config.get('text_to_speech', {})
+        
+        # Get output directories from conversation config
+        self.output_directories = self.tts_config.get('output_directories', {})
+
+        # Create output directories if they don't exist
+        transcripts_dir = self.output_directories.get('transcripts')
+        
+        if transcripts_dir and not os.path.exists(transcripts_dir):
+            os.makedirs(transcripts_dir)
 
     def __compose_prompt(self, num_images: int):
         """
