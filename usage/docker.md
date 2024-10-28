@@ -23,17 +23,55 @@ Podcastfy provides pre-built Docker images through GitHub Container Registry (gh
    - Includes development tools and dependencies
    - Used for contributing and development
 
-## Quick Start (Using Pre-built Images)
+## Deployment
 
-1. Create a `.env` file with your API keys. See [config.md](https://github.com/souzatharsis/podcastfy/blob/main/usage/config.md) for more details.
+### Quick Deployment Steps
 
-2. Pull and run the latest production image:
+1. Create a new directory and navigate to it:
+```bash
+mkdir -p /path/to/podcastfy
+cd /path/to/podcastfy
+```
+
+2. Create a `.env` file with your API keys (see [config.md](https://github.com/souzatharsis/podcastfy/blob/main/usage/config.md) for more details):
+```plaintext
+GEMINI_API_KEY=your_gemini_api_key
+OPENAI_API_KEY=your_openai_api_key  # Optional: only needed for OpenAI TTS
+```
+
+3. Create a `docker-compose.yml`:
+```yaml
+version: '3.8'
+
+services:
+  podcastfy:
+    image: ghcr.io/souzatharsis/podcastfy:latest
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import podcastfy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+```
+
+4. Pull and start the container:
 ```bash
 docker pull ghcr.io/souzatharsis/podcastfy:latest
 docker-compose up podcastfy
 ```
 
 The service will be available at `http://localhost:8000`
+
+### Directory Structure
+```
+/path/to/podcastfy/
+├── .env                  # Environment variables
+└── docker-compose.yml    # Docker Compose configuration
+```
 
 ## Development Setup
 
@@ -75,7 +113,7 @@ This will run tests in parallel using pytest-xdist.
 
 Required environment variables:
 - `GEMINI_API_KEY` - Your Google Gemini API key
-- `OPENAI_API_KEY` - Your OpenAI API key
+- `OPENAI_API_KEY` - Your OpenAI API key (optional: only needed for OpenAI TTS)
 
 ## Container Details
 
@@ -155,18 +193,18 @@ docker-compose down
 
 4. **Image Pull Issues**
    - Ensure you have access to the GitHub Container Registry
-   - Check your Docker credentials
+   - If you see "unauthorized" errors, the image might be private
+   - Try authenticating with GitHub: `docker login ghcr.io -u YOUR_GITHUB_USERNAME`
 
 ### Verifying Installation
 
-You can verify your installation by checking the versions of installed components:
+You can verify your installation by checking if the package can be imported:
 ```bash
 # Check production version
-docker run --rm ghcr.io/souzatharsis/podcastfy:latest python3 -c "import podcastfy; print(podcastfy.__version__)"
+docker run --rm ghcr.io/souzatharsis/podcastfy:latest python3 -c "import podcastfy"
 
 # Check development setup
-docker-compose exec podcastfy-dev python3 --version
-docker-compose exec podcastfy-dev pip list | grep podcastfy
+docker-compose exec podcastfy-dev python3 -c "import podcastfy"
 ```
 
 ## System Requirements
