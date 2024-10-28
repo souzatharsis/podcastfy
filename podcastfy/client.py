@@ -227,6 +227,56 @@ if __name__ == "__main__":
     app()
 
 
+def load_default_configuration(config=None) -> Config:
+    """Load the default configuration and update it with user-provided configuration, if available."""
+    default_config = load_config()
+    if config:
+        if isinstance(config, dict):
+            updated_config = copy.deepcopy(default_config)
+            updated_config.configure(**config)
+            return updated_config
+        elif isinstance(config, Config):
+            return config
+        else:
+            raise ValueError("Config must be either a dictionary or a Config object.")
+    return default_config
+
+
+def get_conversation_config(conversation_config=None) -> Dict[str, Any]:
+    """Get the conversation configuration or load the default one if none is provided."""
+    return conversation_config if conversation_config else load_conversation_config().to_dict()
+
+
+def generate_content_from_sources(urls, url_file, image_paths, text):
+    """Combine content from various sources like URLs, files, images, and raw text."""
+    urls_list = urls or []
+    if url_file:
+        with open(url_file, "r") as file:
+            urls_list.extend([line.strip() for line in file if line.strip()])
+
+    if not urls_list and not image_paths and not text:
+        raise ValueError("No input provided. Provide at least one of 'urls', 'url_file', 'image_paths', or 'text'.")
+    
+    return urls_list, image_paths, text
+
+
+def handle_transcript_generation(
+    transcript_file, tts_model, transcript_only, config, conversation_config, is_local, text
+):
+    """Generate and process transcript files."""
+    if image_paths:
+        logger.warning("Image paths are ignored when using a transcript file.")
+    return process_content(
+        transcript_file=transcript_file,
+        tts_model=tts_model,
+        generate_audio=not transcript_only,
+        config=config,
+        conversation_config=conversation_config,
+        is_local=is_local,
+        text=text,
+    )
+
+
 def generate_podcast(
     urls: Optional[List[str]] = None,
     url_file: Optional[str] = None,
@@ -237,88 +287,40 @@ def generate_podcast(
     conversation_config: Optional[Dict[str, Any]] = None,
     image_paths: Optional[List[str]] = None,
     is_local: bool = False,
-    text: Optional[str] = None,  # Add the text parameter here
+    text: Optional[str] = None,
 ) -> Optional[str]:
     """
-    Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
+    Generate a podcast or transcript from provided sources.
 
     Args:
-        urls (Optional[List[str]]): List of URLs to process.
-        url_file (Optional[str]): Path to a file containing URLs, one per line.
-        transcript_file (Optional[str]): Path to a transcript file.
-        tts_model (Optional[str]): TTS model to use ('openai', 'elevenlabs' or 'edge').
-        transcript_only (bool): Generate only a transcript without audio. Defaults to False.
-        config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
-        conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.
-        image_paths (Optional[List[str]]): List of image file paths to process.
-        is_local (bool): Whether to use a local LLM. Defaults to False.
-        text (Optional[str]): Raw text input to be processed.
+        urls, url_file, transcript_file, etc.
 
     Returns:
-        Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
+        Optional[str]: Path to the final podcast or transcript.
     """
     try:
-        # Load default config
-        default_config = load_config()
-
-        # Update config if provided
-        if config:
-            if isinstance(config, dict):
-                # Create a deep copy of the default config
-                updated_config = copy.deepcopy(default_config)
-                # Update the copy with user-provided values
-                updated_config.configure(**config)
-                default_config = updated_config
-            elif isinstance(config, Config):
-                # If it's already a Config object, use it directly
-                default_config = config
-            else:
-                raise ValueError(
-                    "Config must be either a dictionary or a Config object"
-                )
-        if not conversation_config:
-            conversation_config = load_conversation_config().to_dict()
-
-        main_config = default_config.config.get("main", {})
-
-        # Use provided tts_model if specified, otherwise use the one from config
-        if tts_model is None:
-            tts_model = main_config.get("default_tts_model", "openai")
+        config = load_default_configuration(config)
+        conversation_config = get_conversation_config(conversation_config)
+        tts_model = tts_model or config.get("main", {}).get("default_tts_model", "openai")
 
         if transcript_file:
-            if image_paths:
-                logger.warning("Image paths are ignored when using a transcript file.")
-            return process_content(
-                transcript_file=transcript_file,
-                tts_model=tts_model,
-                generate_audio=not transcript_only,
-                config=default_config,
-                conversation_config=conversation_config,
-                is_local=is_local,
-                text=text,  # Pass the text parameter here
+            return handle_transcript_generation(
+                transcript_file, tts_model, transcript_only, config, conversation_config, is_local, text
             )
-        else:
-            urls_list = urls or []
-            if url_file:
-                with open(url_file, "r") as file:
-                    urls_list.extend([line.strip() for line in file if line.strip()])
-
-            if not urls_list and not image_paths and not text:
-                raise ValueError(
-                    "No input provided. Please provide either 'urls', 'url_file', 'transcript_file', 'image_paths', or 'text'."
-                )
-
-            return process_content(
-                urls=urls_list,
-                tts_model=tts_model,
-                generate_audio=not transcript_only,
-                config=default_config,
-                conversation_config=conversation_config,
-                image_paths=image_paths,
-                is_local=is_local,
-                text=text
-            )
+        
+        urls_list, image_paths, text = generate_content_from_sources(urls, url_file, image_paths, text)
+        
+        return process_content(
+            urls=urls_list,
+            tts_model=tts_model,
+            generate_audio=not transcript_only,
+            config=config,
+            conversation_config=conversation_config,
+            image_paths=image_paths,
+            is_local=is_local,
+            text=text
+        )
 
     except Exception as e:
-        logger.error(f"An error occurred: {str(e)}")
+        logger.error(f"An error occurred in generate_podcast: {str(e)}")
         raise
