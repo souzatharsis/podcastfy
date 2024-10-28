@@ -51,6 +51,7 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     ports:
       - "8000:8000"
+    command: python3 -m podcastfy.server
     healthcheck:
       test: ["CMD", "python3", "-c", "import podcastfy"]
       interval: 30s
