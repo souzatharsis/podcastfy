@@ -71,7 +71,7 @@ class ContentExtractor:
 		try:
 			if source.lower().endswith('.pdf'):
 				return self.pdf_extractor.extract_content(source)
-      			elif source.lower().endswith(('.md', '.markdown')):
+			elif source.lower().endswith(('.md', '.markdown')):
 				return self.markdown_extractor.extract_content(source)
 			elif self.is_url(source):
 				if any(pattern in source for pattern in self.content_extractor_config['youtube_url_patterns']):
