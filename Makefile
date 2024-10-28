@@ -4,7 +4,7 @@ lint:
 	mypy podcastfy/*.py
 
 test:
-	python3 -m pytest tests
+	poetry run pytest -n auto
     
 doc-gen:
 	sphinx-apidoc -f -o ./docs/source ./podcastfy

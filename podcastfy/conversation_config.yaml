@@ -18,9 +18,13 @@ engagement_techniques:
   - "analogies"
   - "humor"
 creativity: 1
+user_instructions: ""
 
 text_to_speech:
-  default_tts_model: "openai"
+  default_tts_model: "edge"
+  output_directories:
+    transcripts: "./data/transcripts"
+    audio: "./data/audio"
   elevenlabs:
     default_voices:
       question: "Chris"

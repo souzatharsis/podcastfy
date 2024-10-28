@@ -6,8 +6,9 @@
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
 [![Issues](https://img.shields.io/github/issues-raw/souzatharsis/podcastfy)](https://github.com/souzatharsis/podcastfy/issues)
 [![Pytest](https://github.com/souzatharsis/podcastfy/actions/workflows/python-app.yml/badge.svg)](https://github.com/souzatharsis/podcastfy/actions/workflows/python-app.yml)
+[![Docker](https://github.com/souzatharsis/podcastfy/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/souzatharsis/podcastfy/actions/workflows/docker-publish.yml)
 [![Documentation Status](https://readthedocs.org/projects/podcastfy/badge/?version=latest)](https://podcastfy.readthedocs.io/en/latest/?badge=latest)
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
 
 
@@ -17,7 +18,7 @@ https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
 Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content include websites, PDFs, YouTube videos, images, and Markdown files.
 
-Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources enabling customization and scale.
+Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources, enabling customization and scale.
 
 [![Star History Chart](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)
 
@@ -102,6 +103,8 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [CLI](usage/cli.md)
 
+- [Docker Image](usage/docker.md)
+
 - [How to](usage/how-to.md)
 
 Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app for a simple URL-to-Audio demo. (Note: This UI app is less extensively tested and capable than the Python package.)
@@ -109,9 +112,13 @@ Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatup
 ## Customization 🔧
 
 Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
-- Customize podcast [Conversation](usage/conversation_custom.md) (e.g. format, style, voices)
+- Customize podcast [conversation](usage/conversation_custom.md) (e.g. format, style, voices)
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
 - Set [System Settings](usage/config_custom.md) (e.g. output directory settings)
+
+## License
+
+This software is licensed under [Apache 2.0](LICENSE). [Here](usage/license-guide.md) are a few instructions if you would like to use podcastfy in your software.
 
 ## Contributing 🤝
 

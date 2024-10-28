@@ -2,16 +2,6 @@
 
 Podcastfy uses a `config.yaml` file to manage various settings and parameters. This guide explains each configuration option available in the file.
 
-## Customizing the Conversation
-
-See [conversation_custom.md](conversation_custom.md) for more details.
-
-## Output Directories
-
-- `transcripts`: "./data/transcripts"
-  - Directory where generated transcripts are saved.
-- `audio`: "./data/audio"
-  - Directory where generated audio files are saved.
 
 
 ## Content Generator
@@ -50,12 +40,6 @@ See [conversation_custom.md](conversation_custom.md) for more details.
   - Default logging level.
 - `format`: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   - Format string for log messages.
-
-## Main Settings
-
-- `default_tts_model`: "openai"
-  - Default Text-to-Speech model to use when not specified.
-
 
 
 ## Website Extractor

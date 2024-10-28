@@ -1,12 +1,8 @@
-output_directories:
-  transcripts: "./data/transcripts"
-  audio: "./data/audio"
-
 content_generator:
   gemini_model: "gemini-1.5-pro-latest"
   max_output_tokens: 8192
   prompt_template: "souzatharsis/podcastfy_multimodal"
-
+  prompt_commit: "c67bea9c"
 content_extractor:
   youtube_url_patterns:
     - "youtube.com"

@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.2.6"
-description = "Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
+version = "0.2.14"
+description = "An Open Source alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
-license = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License"
+license = "Apache-2.0"
 readme = "README.md"
 include = [
     "podcastfy/config.yaml",
@@ -44,6 +44,7 @@ types-pyyaml = "^6.0.12.20240917"
 nest-asyncio = "^1.6.0"
 ffmpeg = "^1.4"
 pytest = "^8.3.3"
+pytest-xdist = "^3.6.1"
 
 
 [tool.poetry.group.dev.dependencies]

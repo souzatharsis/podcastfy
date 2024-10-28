@@ -11,13 +11,14 @@ from typing import Optional, Dict, Any, List
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.llms.llamafile import Llamafile
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
-from langchain.prompts import HumanMessagePromptTemplate
+from langchain.prompts import HumanMessagePromptTemplate, SystemMessagePromptTemplate
+from langchain.schema import SystemMessage
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,7 @@ class LLMBackend:
         is_local: bool,
         temperature: float,
         max_output_tokens: int,
-        model_name: str,
+        model_name: str
     ):
         """
         Initialize the LLMBackend.
@@ -71,6 +72,16 @@ class ContentGenerator:
         self.content_generator_config = self.config.get("content_generator", {})
 
         self.config_conversation = load_conversation_config(conversation_config)
+        self.tts_config = self.config_conversation.get('text_to_speech', {})
+        
+        # Get output directories from conversation config
+        self.output_directories = self.tts_config.get('output_directories', {})
+
+        # Create output directories if they don't exist
+        transcripts_dir = self.output_directories.get('transcripts')
+        
+        if transcripts_dir and not os.path.exists(transcripts_dir):
+            os.makedirs(transcripts_dir)
 
     def __compose_prompt(self, num_images: int):
         """
@@ -79,13 +90,18 @@ class ContentGenerator:
         prompt_template = hub.pull(
             self.config.get("content_generator", {}).get(
                 "prompt_template", "souzatharsis/podcastfy_multimodal"
+            ) + ":" + self.config.get("content_generator", {}).get(
+                "prompt_commit", "c67bea9c"
             )
         )
 
         image_path_keys = []
         messages = []
-        text_content = {"type": "text", "text": "{input_text}"}
+        
+        # Only add text content if input_text is not empty
+        text_content = {"type": "text", "text": "Please analyze this input and generate a conversation. {input_text}"}
         messages.append(text_content)
+        
         for i in range(num_images):
             key = f"image_path_{i}"
             image_content = {
@@ -98,9 +114,20 @@ class ContentGenerator:
         user_prompt_template = ChatPromptTemplate.from_messages(
             messages=[HumanMessagePromptTemplate.from_template(messages)]
         )
+        user_instructions = self.config_conversation.get("user_instructions", "")
+        
+        user_instructions = "[[MAKE SURE TO FOLLOW THESE INSTRUCTIONS OVERRIDING THE PROMPT TEMPLATE IN CASE OF CONFLICT: " + user_instructions  + "]]"
+        
+        new_system_message = prompt_template.messages[0].prompt.template + "\n" + user_instructions
+
+        # Create new prompt with updated system message
+        #prompt_template = ChatPromptTemplate.from_messages([
+        #    SystemMessagePromptTemplate.from_template(new_system_message),
+        #    HumanMessagePromptTemplate.from_template(messages)
+        #])
 
         # Compose messages from podcastfy_prompt_template and user_prompt_template
-        combined_messages = prompt_template.messages + user_prompt_template.messages
+        combined_messages = ChatPromptTemplate.from_messages([new_system_message]).messages + user_prompt_template.messages
 
         # Create a new ChatPromptTemplate object with the combined messages
         composed_prompt_template = ChatPromptTemplate.from_messages(combined_messages)
@@ -170,7 +197,7 @@ class ContentGenerator:
                     )
                     if not is_local
                     else "User provided model"
-                ),
+                )
             )
 
             num_images = 0 if is_local else len(image_file_paths)

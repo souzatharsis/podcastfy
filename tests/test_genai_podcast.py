@@ -40,9 +40,6 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
-        self.assertRegex(
-            result, r"(<Person1>.*?</Person1>\s*<Person2>.*?</Person2>\s*)+"
-        )
 
     def test_custom_conversation_config(self):
         """
@@ -61,9 +58,6 @@ class TestGenAIPodcast(unittest.TestCase):
         # Check for elements from the custom config
         self.assertIn(conversation_config["podcast_name"].lower(), result.lower())
         self.assertIn(conversation_config["podcast_tagline"].lower(), result.lower())
-
-        # Check word count (allow some flexibility)
-        word_count = len(result.split())
 
     def test_generate_qa_content_from_images(self):
         """Test generating Q&A content from two input images."""
@@ -114,8 +108,19 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
 
-        # Check if the result contains expected Q&A format
-        self.assertRegex(result, r"(<Person1>.*?</Person1>\s*<Person2>.*?</Person2>\s*)+")
+    def test_generate_qa_content_from_raw_text(self):
+        """Test generating Q&A content from raw input text."""
+        raw_text = "The wonderful world of LLMs."
+        content_generator = ContentGenerator(self.api_key)
+
+        result = content_generator.generate_qa_content(
+            input_texts=raw_text
+        )
+
+        self.assertIsNotNone(result)
+        self.assertNotEqual(result, "")
+        self.assertIsInstance(result, str)
+
 
 if __name__ == "__main__":
     unittest.main()

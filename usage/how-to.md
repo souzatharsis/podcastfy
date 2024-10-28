@@ -7,6 +7,8 @@ All assume you have podcastfy installed and running.
 - [How to use your own voice in audio podcasts](#how-to-use-your-own-voice-in-audio-podcasts)
 - [How to customize the conversation](#how-to-customize-the-conversation)
 - [How to generate multilingual content](#how-to-generate-multilingual-content)
+- [How to steer the conversation](#how-to-steer-the-conversation)
+
 
 
 ## How to use your own voice in audio podcasts
@@ -44,7 +46,7 @@ custom_config = {
     "word_count": 200,
     "conversation_style": ["casual", "humorous"],
     "podcast_name": "Tech Chuckles",
-    "creativity": 7
+    "creativity": 0.7
 }
 
 generate_podcast(
@@ -65,6 +67,25 @@ Sample audio:
 - [Portugue-BR](https://github.com/souzatharsis/podcastfy/blob/main/data/audio/podcast_thatupiso_BR.mp3)
 
 The PT-BR audio actually uses my own cloned voice as AI Host 2.
+
+
+## How to steer the conversation
+
+You can guide the conversation focus and topics by setting the `user_instructions` parameter in your custom configuration. This allows you to provide specific instructions to the AI hosts about what aspects they should emphasize or explore.
+
+Things to try:
+- Focus on a specific topic (e.g. "Focus the discussion on key capabilities and limitations of modern AI models")
+- Target a specific audience (e.g. "Explain concepts in a way that's accessible to someone new to Computer Science")
+
+For example, using the CLI with a custom YAML:
+
+```yaml
+user_instructions: "Make connections with quantum computing"
+```
+
+```
+python -m podcastfy.client --url https://en.wikipedia.org/wiki/Artificial_intelligence --conversation-config path/to/custom_config.yaml
+```
 
 
 

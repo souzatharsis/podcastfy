@@ -45,7 +45,91 @@ def get_conversation_config_path(config_file: str = 'conversation_config.yaml'):
 		print(f"Error locating {config_file}: {str(e)}")
 		return None
 
-class ConversationConfig:
+class NestedConfig:
+	"""
+	A class to handle nested configuration objects with proper method inheritance.
+	"""
+	def __init__(self, config_dict: Dict[str, Any]):
+		"""
+		Initialize a nested configuration object.
+
+		Args:
+			config_dict (Dict[str, Any]): Dictionary containing the nested configuration
+		"""
+		for key, value in config_dict.items():
+			if isinstance(value, dict):
+				setattr(self, key, NestedConfig(value))
+			else:
+				setattr(self, key, value)
+	
+	def to_dict(self) -> Dict[str, Any]:
+		"""
+		Convert the NestedConfig object to a dictionary, preserving nested structure.
+
+		Returns:
+			Dict[str, Any]: A dictionary representation of the configuration
+		"""
+		result = {}
+		for key, value in self.__dict__.items():
+			if not key.startswith('_'):
+				if isinstance(value, NestedConfig):
+					result[key] = value.to_dict()
+				else:
+					result[key] = value
+		return result
+	
+	def get(self, key: str, default: Optional[Any] = None) -> Any:
+		"""
+		Get a configuration value by key, supporting nested keys with dot notation.
+
+		Args:
+			key (str): The configuration key to retrieve (e.g., 'child.value')
+			default (Optional[Any]): The default value if the key is not found.
+
+		Returns:
+			Any: The value associated with the key, or the default value if not found.
+		"""
+		current = self
+		try:
+			for part in key.split('.'):
+				if isinstance(current, dict):
+					current = current[part]
+				else:
+					current = getattr(current, part)
+			return current
+		except (AttributeError, KeyError):
+			return default
+
+	def get_list(self, key: str, default: Optional[List[str]] = None) -> List[str]:
+		"""
+		Get a list configuration value by key, supporting nested keys with dot notation.
+
+		Args:
+			key (str): The configuration key to retrieve (e.g., 'child.list')
+			default (Optional[List[str]]): The default value if the key is not found.
+
+		Returns:
+			List[str]: The list associated with the key, or the default value if not found.
+		"""
+		value = self.get(key, default)
+		if isinstance(value, str):
+			return [item.strip() for item in value.split(',')]
+		return value if isinstance(value, list) else default or []
+
+	def configure(self, config: Dict[str, Any]) -> None:
+		"""
+		Configure the settings with the provided dictionary.
+
+		Args:
+			config (Dict[str, Any]): Configuration dictionary to update the settings.
+		"""
+		for key, value in config.items():
+			if isinstance(value, dict) and hasattr(self, key) and isinstance(getattr(self, key), NestedConfig):
+				getattr(self, key).configure(value)
+			else:
+				setattr(self, key, value)
+
+class ConversationConfig(NestedConfig):
 	def __init__(self, config_conversation: Optional[Dict[str, Any]] = None):
 		"""
 		Initialize the ConversationConfig class with a dictionary configuration.
@@ -63,20 +147,12 @@ class ConversationConfig:
 			
 			# Update the configuration with provided values
 			if isinstance(config_conversation, dict):
-				for key, value in config_conversation.items():
-					if key == 'config_conversation':
-						# If 'config_conversation' key is present, update with its contents
-						self.config_conversation.update(value)
-					elif key in self.config_conversation:
-						self.config_conversation[key] = value
-					else:
-						print(f"Warning: Unknown configuration key '{key}' will be ignored.")
+				self._deep_update(self.config_conversation, config_conversation)
 			else:
 				print("Warning: config_conversation should be a dictionary.")
 		
-		# Set attributes based on the final configuration
-		self._set_attributes()
-
+		# Initialize the NestedConfig with the configuration
+		super().__init__(self.config_conversation)
 
 	def _load_default_config(self) -> Dict[str, Any]:
 		"""Load the default configuration from conversation_config.yaml."""
@@ -87,62 +163,37 @@ class ConversationConfig:
 		else:
 			raise FileNotFoundError("conversation_config.yaml not found")
 
-	def _set_attributes(self):
-		"""Set attributes based on the current configuration."""
-		for key, value in self.config_conversation.items():
-			setattr(self, key, value)
-
-	def configure(self, config_conversation: Dict[str, Any]):
+	def _deep_update(self, target: Dict[str, Any], source: Dict[str, Any]) -> None:
 		"""
-		Configure the conversation settings with the provided dictionary.
+		Recursively update a nested dictionary.
 
 		Args:
-			config_conversation (Dict[str, Any]): Configuration dictionary to update the settings.
+			target (Dict[str, Any]): The dictionary to update
+			source (Dict[str, Any]): The dictionary containing updates
 		"""
-		# Implementation of the configure method
-		for key, value in config_conversation.items():
-			if hasattr(self, key):
-				setattr(self, key, value)
+		for key, value in source.items():
+			if key == 'config_conversation':
+				self._deep_update(target, value)
+			elif isinstance(value, dict) and key in target and isinstance(target[key], dict):
+				self._deep_update(target[key], value)
 			else:
-				raise ValueError(f"Invalid configuration key: {key}")
+				target[key] = value
 
-	def get(self, key: str, default: Optional[Any] = None) -> Any:
+	def to_dict(self) -> Dict[str, Any]:
 		"""
-		Get a configuration value by key.
-
-		Args:
-			key (str): The configuration key to retrieve.
-			default (Optional[Any]): The default value if the key is not found.
+		Convert the ConversationConfig object to a dictionary, preserving nested structure.
 
 		Returns:
-			Any: The value associated with the key, or the default value if not found.
+			Dict[str, Any]: A dictionary representation of the configuration
 		"""
-		return self.config_conversation.get(key, default)
-
-	def get_list(self, key: str, default: Optional[List[str]] = None) -> List[str]:
-		"""
-		Get a list configuration value by key.
-
-		Args:
-			key (str): The configuration key to retrieve.
-			default (Optional[List[str]]): The default value if the key is not found.
-
-		Returns:
-			List[str]: The list associated with the key, or the default value if not found.
-		"""
-		value = self.config_conversation.get(key, default)
-		if isinstance(value, str):
-			return [item.strip() for item in value.split(',')]
-		return value if isinstance(value, list) else default or []
-
-	def to_dict(self):
-		"""
-		Convert the ConversationConfig object to a dictionary.
-		"""
-		return {
-			key: value for key, value in self.__dict__.items()
-			if not key.startswith('_')
-		}
+		result = {}
+		for key, value in self.__dict__.items():
+			if not key.startswith('_'):
+				if isinstance(value, (ConversationConfig, NestedConfig)):
+					result[key] = value.to_dict()
+				else:
+					result[key] = value
+		return result
 
 def load_conversation_config(config_conversation: Optional[Dict[str, Any]] = None) -> ConversationConfig:
 	"""

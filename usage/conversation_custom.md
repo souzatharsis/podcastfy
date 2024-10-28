@@ -1,6 +1,6 @@
 # Podcastfy Conversation Configuration
 
-Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs. See [System Config](https://github.com/souzatharsis/podcastfy/blob/main/usage/config_custom.md) for additional settings. See [Notes of Caution](#notes-of-caution) to avoid unexpected results.
+Podcastfy offers a range of customization options to tailor your AI-generated podcasts. This document outlines how you can adjust parameters such as conversation style, word count, and dialogue structure to suit your specific needs.
 
 
 ## Table of Contents
@@ -12,7 +12,6 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 3. [Customization Scenarios](#customization-scenarios)
    1. [Using the Python Package](#using-the-python-package)
    2. [Using the CLI](#using-the-cli)
-   3. [Dev Config](#dev-config)
 4. [Notes of Caution](#notes-of-caution)
 
 
@@ -32,6 +31,7 @@ Podcastfy uses the default conversation configuration stored in [podcastfy/conve
 | output_language | "English" | str | Language of the output |
 | engagement_techniques | ["rhetorical questions", "anecdotes", "analogies", "humor"] | list[str] | Techniques to engage the audience |
 | creativity | 0 | int | Level of creativity/temperature (0-1) |
+| user_instructions | "" | str | Custom instructions to guide the conversation focus and topics |
 
 ## Text-to-Speech (TTS) Settings
 
@@ -67,11 +67,18 @@ Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_c
 
 ### General TTS Settings
 
+- `default_tts_model`: "edge"
+  - Default text-to-speech model to use.
+- `output_directories`:
+  - `transcripts`: "./data/transcripts"
+    - Directory for storing generated transcripts.
+  - `audio`: "./data/audio"
+    - Directory for storing generated audio files.
 - `audio_format`: "mp3"
   - Format of the generated audio files.
 - `temp_audio_dir`: "data/audio/tmp/"
   - Temporary directory for audio processing.
-- `ending_message`: "Tchau!"
+- `ending_message`: "Bye Bye!"
   - Message to be appended at the end of the podcast.
 
 ## Customization Examples
@@ -171,20 +178,8 @@ conversation_style:
   - casual
   - humorous
 podcast_name: Tech Chuckles
-creativity: 7
+creativity: 0.7
 ```
-
-### 3. Dev Config
-
-For contributors to the Podcastfy package, the default configuration is stored in [podcastfy/conversation_config.yaml](https://github.com/souzatharsis/podcastfy/blob/main/podcastfy/conversation_config.yaml). This file serves as the baseline configuration for all generated podcasts.
-
-To modify the default configuration:
-
-1. Locate the `conversation_config.yaml` file in the project root.
-2. Edit the file using your preferred text editor.
-3. Commit and push your changes, justifying proposed changes.
-
-Remember that changes to this file will affect the default behavior of Podcastfy for all users. Consider the impact of your changes and discuss significant modifications with the project maintainers before implementing them.
 
 
 ## Notes of Caution

@@ -7,7 +7,6 @@ import pytest
 import re
 from typer.testing import CliRunner
 from podcastfy.client import app
-from podcastfy.utils.config import load_config
 
 runner = CliRunner()
 
@@ -66,14 +65,24 @@ def mock_files(tmp_path):
 
 @pytest.fixture
 def sample_config():
-	config = load_config()
-	config.configure(
-		output_directories={
-			'audio': 'tests/data/audio',
-			'transcripts': 'tests/data/transcripts'
+	"""
+	Fixture to provide a sample conversation configuration for testing.
+
+	Returns:
+		dict: A dictionary containing sample conversation configuration parameters.
+	"""
+	conversation_config = {
+		"word_count": 300,
+		"text_to_speech": {
+			"output_directories": {
+				"transcripts": "tests/data/transcripts",
+				"audio": "tests/data/audio"
+			},
+			"temp_audio_dir": "tests/data/audio/tmp",
+			"ending_message": "Bye Bye!"
 		}
-	)
-	return config
+	}
+	return conversation_config
 
 def test_generate_podcast_from_urls(sample_config):
 	result = runner.invoke(app, ["--url", MOCK_URLS[0], "--url", MOCK_URLS[1], "--tts-model", "edge"])
@@ -169,6 +178,16 @@ def test_generate_transcript_with_local_llm(sample_config):
 		assert content != ""
 		assert isinstance(content, str)
 		assert re.match(r"(<Person1>.*?</Person1>\s*<Person2>.*?</Person2>\s*)+", content)
+
+def test_generate_podcast_from_raw_text():
+    """Test generating a podcast from raw input text using the CLI."""
+    raw_text = "The wonderful world of LLMs."
+    result = runner.invoke(app, ["--text", raw_text, "--tts-model", "edge"])
+    assert result.exit_code == 0
+    assert "Podcast generated successfully using edge TTS model" in result.stdout
+    audio_path = result.stdout.split(": ")[-1].strip()
+    assert os.path.exists(audio_path)
+    assert audio_path.endswith('.mp3')
 
 def test_cli_help():
 	result = runner.invoke(app, ["--help"])

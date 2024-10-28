@@ -77,4 +77,4 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-Licensed under Attribution-NonCommercial-ShareAlike 4.0 International.
+Licensed under Apache 2.0

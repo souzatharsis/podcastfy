@@ -2,6 +2,8 @@ import unittest
 import pytest
 import os
 from podcastfy.text_to_speech import TextToSpeech
+from podcastfy.utils.config_conversation import load_conversation_config
+
 
 
 class TestAudio(unittest.TestCase):
