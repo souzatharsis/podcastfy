@@ -149,8 +149,25 @@ We welcome contributions! See [Guidelines](GUIDELINES.md) for more details.
 
 This tool is designed for personal or educational use. Please ensure you have the necessary rights or permissions before using content from external sources for podcast creation. All audio content is AI-generated and it is not intended to clone real-life humans!
 
+## Testing 💻
+
+1. **Run All Tests**    ```bash
+    poetry run pytest    ```
+
+2. **Run Specific Test File with Verbose Output**    ```bash
+    poetry run pytest tests/test_content_parser.py -v    ```
+
+3. **Run Specific Test Function**    ```bash
+    poetry run pytest tests/test_content_parser.py::TestContentParser::test_markdown_extractor -v    ```
+
+4. **Troubleshooting**
+    - If a test fails, use the `-s` flag to see print statements:      ```bash
+      poetry run pytest tests/test_content_parser.py -v -s      ```
+    - Ensure all mock files are correctly placed in the `tests/data/mock/` directory.
+
 <p align="right" style="font-size: 14px; color: #555; margin-top: 20px;">
     <a href="#readme-top" style="text-decoration: none; color: #007bff; font-weight: bold;">
         ↑ Back to Top ↑
     </a>
 </p>
+

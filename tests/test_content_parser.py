@@ -1,12 +1,15 @@
 import unittest
 import pytest
 import os
+import re
 from podcastfy.utils.config import load_config
 from podcastfy.content_parser.content_extractor import ContentExtractor
 from podcastfy.content_parser.youtube_transcriber import YouTubeTranscriber
 from podcastfy.content_parser.website_extractor import WebsiteExtractor
 from podcastfy.content_parser.pdf_extractor import PDFExtractor
 from podcastfy.content_parser.markdown_extractor import MarkdownExtractor
+import logging
+logger = logging.getLogger(__name__)
 
 
 class TestContentParser(unittest.TestCase):
@@ -94,32 +97,76 @@ class TestContentParser(unittest.TestCase):
         # Initialize MarkdownExtractor
         extractor = MarkdownExtractor()
 
-        # Path to the test Markdown file
-        md_path = "./tests/data/markdown/file.md"
-
-        # Extract content from Markdown
+        # Test Case 1: Using markdown.md
+        # {{ Change the path to be absolute based on self.test_dir }}
+        md_path = os.path.join(self.test_dir, 'data', 'markdown', 'markdown.md')
         extracted_content = extractor.extract_content(md_path)
 
-        # Load expected content from markdown.txt with utf-8 encoding
-        with open("./tests/data/mock/markdown.txt", "r", encoding="utf-8") as f:
+        # Load expected content from file.md
+        # {{ Change the path to be absolute based on self.test_dir }}
+        with open(os.path.join(self.test_dir, 'data', 'mock', 'file.md'), "r", encoding="utf-8") as f:
             expected_content = f.read()
 
-        # Instead of comparing exact strings, check for key phrases
-        self.assertIn("Prompt engineering", extracted_content)
-        self.assertIn("This guide shares strategies and tactics", extracted_content)
-        self.assertIn("Six strategies", extracted_content)
+        # Normalize strings by removing extra whitespace and normalizing line endings
+        def normalize_text(text):
+            # Replace multiple newlines with single newline
+            text = re.sub(r'\n+', '\n', text)
+            # Remove any trailing/leading whitespace
+            text = text.strip()
+            return text
+
+        normalized_extracted = normalize_text(extracted_content[:500])
+        normalized_expected = normalize_text(expected_content[:500])
+
+        # Print debug info
+        print("\nExtracted content (normalized):")
+        print(normalized_extracted)
+        print("\nExpected content (normalized):")
+        print(normalized_expected)
+
+        # Assert that the normalized contents match
+        self.assertEqual(
+            normalized_extracted,
+            normalized_expected,
+            "Content from markdown.md does not match expected content from file.md"
+        )
 
     def tearDown(self):
-        # Clean up created files
+        """
+        Clean up only generated test files while preserving test data and directories.
+        """
+        # Clean up only generated files
         test_files = [
-            self.sample_md_path,
-            os.path.join(self.test_dir, 'data', 'empty.md'),
-            os.path.join(self.test_dir, 'data', 'audio', 'test_audio.mp3'),
-            os.path.join(self.test_dir, 'data', 'transcripts', 'test_transcript.txt')
+            self.sample_md_path,  # temporary sample file
+            os.path.join(self.test_dir, 'data', 'empty.md'),  # temporary empty file
         ]
+
+        # Remove only generated files if they exist
         for file_path in test_files:
-            if os.path.exists(file_path):
-                os.remove(file_path)
+            try:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                    logger.info(f"Cleaned up generated file: {file_path}")
+            except Exception as e:
+                logger.warning(f"Failed to clean up {file_path}: {str(e)}")
+
+        # Clean up generated files in audio and transcripts directories
+        generated_dirs = [
+            os.path.join(self.test_dir, 'data', 'audio'),
+            os.path.join(self.test_dir, 'data', 'transcripts')
+        ]
+
+        for dir_path in generated_dirs:
+            if os.path.exists(dir_path):
+                try:
+                    # Remove only generated files, keep the directory
+                    for file_name in os.listdir(dir_path):
+                        file_path = os.path.join(dir_path, file_name)
+                        if os.path.isfile(file_path):
+                            os.remove(file_path)
+                            logger.info(f"Cleaned up generated file: {file_path}")
+                except Exception as e:
+                    logger.warning(f"Failed to clean up files in {dir_path}: {str(e)}")
 
 if __name__ == "__main__":
     unittest.main()
