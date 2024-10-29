@@ -58,16 +58,28 @@ data: [{"path": "/tmp/gradio/bcb143f492b1c9a6dbde512557541e62f090bca083356be0f82
 
 ```
 
-You can download the file by extending the URL prefix "https://thatupiso-podcastfy-ai-demo.hf.space/gradio_a/gradio_api/file=" with the path to the file in variable `path`, which in the above example is "/tmp/gradio/bcb143f492b1c9a6dbde512557541e62f090bca083356be0f82c2e12b59af100/podcast_81106b4ca62542f1b209889832a421df.mp3". (Note: The variable "url" above has a bug introduced by Gradio, so please ignore it.)
+You can download the file by extending the URL prefix "https://thatupiso-podcastfy-ai-demo.hf.space/gradio_a/gradio_api/file=" with the path to the file in variable `path`. (Note: The variable "url" above has a bug introduced by Gradio, so please ignore it.)
 
 ### Parameter Details
 | Index | Parameter | Type | Description |
 |-------|-----------|------|-------------|
-| 0 | text_input | string | Direct text input |
-| 1 | urls_input | string | URLs to process |
-| 2 | pdf_files | array | PDF file uploads |
-| 3 | image_files | array | Image file uploads |
-| 4 | gemini_key | string | Gemini API key
+| 0 | text_input | string | Direct text input for podcast generation |
+| 1 | urls_input | string | URLs to process (include http:// or https://) |
+| 2 | pdf_files | array | List of PDF files to process |
+| 3 | image_files | array | List of image files to process |
+| 4 | gemini_key | string | Google Gemini API key |
+| 5 | openai_key | string | OpenAI API key |
+| 6 | elevenlabs_key | string | ElevenLabs API key |
+| 7 | word_count | number | Target word count for podcast |
+| 8 | conversation_style | string | Conversation style descriptors (e.g. "engaging,fast-paced") |
+| 9 | roles_person1 | string | Role of first speaker |
+| 10 | roles_person2 | string | Role of second speaker |
+| 11 | dialogue_structure | string | Structure of dialogue (e.g. "Introduction,Content,Conclusion") |
+| 12 | podcast_name | string | Name of the podcast |
+| 13 | podcast_tagline | string | Podcast tagline |
+| 14 | tts_model | string | Text-to-speech model ("openai", "elevenlabs", or "edge") |
+| 15 | creativity_level | number | Level of creativity (0-1) |
+| 16 | user_instructions | string | Custom instructions for generation |
 
 
 ## Using Python
