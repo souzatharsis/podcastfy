@@ -261,7 +261,7 @@ def generate_content_from_sources(urls, url_file, image_paths, text):
 
 
 def handle_transcript_generation(
-    transcript_file, tts_model, transcript_only, config, conversation_config, is_local, text
+    transcript_file, tts_model, transcript_only, config, conversation_config, is_local, text, image_paths
 ):
     """Generate and process transcript files."""
     if image_paths:
@@ -305,7 +305,7 @@ def generate_podcast(
 
         if transcript_file:
             return handle_transcript_generation(
-                transcript_file, tts_model, transcript_only, config, conversation_config, is_local, text
+                transcript_file, tts_model, transcript_only, config, conversation_config, is_local, text, image_paths
             )
         
         urls_list, image_paths, text = generate_content_from_sources(urls, url_file, image_paths, text)
