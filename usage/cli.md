@@ -52,13 +52,13 @@ Please make sure you follow configuration instructions first - [See Setup](READM
    ```
    python -m podcastfy.client --url https://example.com/article1 --transcript-only --local
    ```
+
 For more information on available options, use:
    ```
    python -m podcastfy.client --help
+   ```
 
 11. Generate a podcast from raw text input:
    ```
    python -m podcastfy.client --text "Your raw text content here that you want to convert into a podcast"
-   ```
-
    ```
