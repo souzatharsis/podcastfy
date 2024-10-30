@@ -1,12 +1,5 @@
-"""
-Content Generator Module
-
-This module is responsible for generating Q&A content based on input texts using
-LangChain and various LLM backends. It handles the interaction with the AI model and
-provides methods to generate and save the generated content.
-"""
-
 import os
+import logging
 from typing import Optional, Dict, Any, List
 
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -16,12 +9,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
-import logging
-from langchain.prompts import HumanMessagePromptTemplate, SystemMessagePromptTemplate
-from langchain.schema import SystemMessage
 
 logger = logging.getLogger(__name__)
-
 
 class LLMBackend:
     def __init__(
@@ -54,7 +43,6 @@ class LLMBackend:
                 temperature=temperature,
                 max_output_tokens=max_output_tokens,
             )
-
 
 class ContentGenerator:
     def __init__(
@@ -223,7 +211,6 @@ class ContentGenerator:
             logger.error(f"Error generating content: {str(e)}")
             raise
 
-
 def main(seed: int = 42, is_local: bool = False) -> None:
     """
     Generate Q&A content based on input text from input_text.txt using the specified LLM backend.
@@ -265,7 +252,6 @@ def main(seed: int = 42, is_local: bool = False) -> None:
     except Exception as e:
         logger.error(f"An error occurred while generating Q&A content: {str(e)}")
         raise
-
 
 if __name__ == "__main__":
     main()
