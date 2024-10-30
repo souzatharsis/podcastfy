@@ -120,7 +120,6 @@ def process_content(
         logger.error(f"An error occurred in the process_content function: {str(e)}")
         raise
 
-
 @app.command()
 def main(
     urls: list[str] = typer.Option(None, "--url", "-u", help="URLs to process"),
@@ -131,7 +130,7 @@ def main(
         None, "--transcript", "-t", help="Path to a transcript file"
     ),
     tts_model: str = typer.Option(
-        None,
+        "openai",
         "--tts-model",
         "-tts",
         help="TTS model to use (openai, elevenlabs or edge)",
@@ -231,13 +230,13 @@ def generate_podcast(
     urls: Optional[List[str]] = None,
     url_file: Optional[str] = None,
     transcript_file: Optional[str] = None,
-    tts_model: Optional[str] = None,
+    tts_model: Optional[str] = 'openai',
     transcript_only: bool = False,
     config: Optional[Dict[str, Any]] = None,
     conversation_config: Optional[Dict[str, Any]] = None,
     image_paths: Optional[List[str]] = None,
     is_local: bool = False,
-    text: Optional[str] = None,  # Add the text parameter here
+    text: Optional[str] = None,
 ) -> Optional[str]:
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -246,7 +245,7 @@ def generate_podcast(
         urls (Optional[List[str]]): List of URLs to process.
         url_file (Optional[str]): Path to a file containing URLs, one per line.
         transcript_file (Optional[str]): Path to a transcript file.
-        tts_model (Optional[str]): TTS model to use ('openai', 'elevenlabs' or 'edge').
+        tts_model (Optional[str]): TTS model to use ('openai' [default], 'elevenlabs' or 'edge').
         transcript_only (bool): Generate only a transcript without audio. Defaults to False.
         config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
         conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.
@@ -295,7 +294,7 @@ def generate_podcast(
                 config=default_config,
                 conversation_config=conversation_config,
                 is_local=is_local,
-                text=text,  # Pass the text parameter here
+                text=text,
             )
         else:
             urls_list = urls or []

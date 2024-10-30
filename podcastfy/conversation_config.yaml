@@ -21,7 +21,7 @@ creativity: 1
 user_instructions: ""
 
 text_to_speech:
-  default_tts_model: "edge"
+  default_tts_model: "openai"
   output_directories:
     transcripts: "./data/transcripts"
     audio: "./data/audio"

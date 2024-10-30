@@ -5,6 +5,8 @@ from podcastfy.client import generate_podcast
 from podcastfy.utils.config import load_config
 from podcastfy.utils.config_conversation import load_conversation_config
 
+
+
 @pytest.fixture
 def sample_config():
 	config = load_config()
@@ -114,7 +116,8 @@ def test_generate_podcast_with_custom_config(sample_config, sample_conversation_
 	audio_file = generate_podcast(
 		urls=urls,
 		config=sample_config,
-		conversation_config=sample_conversation_config
+		conversation_config=sample_conversation_config,
+		tts_model="edge"
 	)
 	
 	assert audio_file is not None
@@ -127,7 +130,8 @@ def test_generate_from_local_pdf(sample_config):
 	pdf_file = "tests/data/pdf/file.pdf"
 	audio_file = generate_podcast(
 		urls=[pdf_file],
-		config=sample_config
+		config=sample_config,
+		tts_model="edge"
 	)
 	assert audio_file is not None
 	assert os.path.exists(audio_file)
@@ -199,7 +203,8 @@ def test_generate_transcript_with_user_instructions(sample_config, default_conve
 		urls=[url],
 		transcript_only=True,
 		config=sample_config,
-		conversation_config=conversation_config
+		conversation_config=conversation_config,
+		tts_model="edge"
 	)
 	
 	assert result is not None

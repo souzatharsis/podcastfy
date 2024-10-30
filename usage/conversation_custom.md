@@ -67,7 +67,7 @@ Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_c
 
 ### General TTS Settings
 
-- `default_tts_model`: "edge"
+- `default_tts_model`: "openai"
   - Default text-to-speech model to use.
 - `output_directories`:
   - `transcripts`: "./data/transcripts"

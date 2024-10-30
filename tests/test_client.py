@@ -10,6 +10,7 @@ from podcastfy.client import app
 
 runner = CliRunner()
 
+
 # Mock data
 MOCK_URLS = [
 	"https://en.wikipedia.org/wiki/Podcast",

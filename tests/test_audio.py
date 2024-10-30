@@ -4,8 +4,6 @@ import os
 from podcastfy.text_to_speech import TextToSpeech
 from podcastfy.utils.config_conversation import load_conversation_config
 
-
-
 class TestAudio(unittest.TestCase):
     def setUp(self):
         self.test_text = "<Person1>Hello, how are you?</Person1><Person2>I'm doing great, thanks for asking!</Person2>"

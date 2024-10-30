@@ -22,13 +22,13 @@ from typing import List, Tuple, Optional, Union, Dict, Any
 logger = logging.getLogger(__name__)
 
 class TextToSpeech:
-	def __init__(self, model: str = 'edge', api_key: Optional[str] = None, conversation_config: Optional[Dict[str, Any]] = None):
+	def __init__(self, model: str = 'openai', api_key: Optional[str] = None, conversation_config: Optional[Dict[str, Any]] = None):
 		"""
 		Initialize the TextToSpeech class.
 
 		Args:
 			model (str): The model to use for text-to-speech conversion. 
-						 Options are 'elevenlabs', 'openai' or 'edge'. Defaults to 'edge'.
+						 Options are 'elevenlabs', 'openai' or 'edge'. Defaults to 'openai'.
 			api_key (Optional[str]): API key for the selected text-to-speech service.
 						   If not provided, it will be loaded from the config.
 		"""
@@ -303,6 +303,13 @@ def main(seed: int = 42) -> None:
 	try:
 		# Load configuration
 		config = load_config()
+		
+		# Override default TTS model to use edge for tests
+		test_config = {
+			"text_to_speech": {
+				"default_tts_model": "edge"
+			}
+		}
 
 		# Read input text from file
 		with open('tests/data/transcript_336aa9f955cd4019bc1287379a5a2820.txt', 'r') as file:
@@ -320,7 +327,7 @@ def main(seed: int = 42) -> None:
 		tts_openai.convert_to_speech(input_text, openai_output_file)
 		logger.info(f"OpenAI TTS completed. Output saved to {openai_output_file}")
 
-		# Test OpenAI
+		# Test Edge
 		tts_edge = TextToSpeech(model='edge')
 		edge_output_file = 'tests/data/response_edge.mp3'
 		tts_edge.convert_to_speech(input_text, edge_output_file)
