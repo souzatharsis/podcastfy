@@ -1,0 +1,18 @@
+The error you're seeing indicates that the system is unable to find a C compiler, which is necessary to install the package. 
+
+Here’s how to resolve this issue:
+
+1. Install Required Build Tools: Make sure you have essential build tools installed, which include compilers like gcc and make.
+
+Run the following command:
+
+sudo apt update
+sudo apt install build-essential
+
+2.Install Python Development Headers: Some Python packages require the Python headers. You can install them with:
+
+sudo apt install python3-dev
+
+3. Try Installing the Package Again: After installing the necessary compilers and headers, try running:
+
+pip install podcastfy
