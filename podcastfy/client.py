@@ -279,7 +279,7 @@ def generate_podcast(
 
         # Use provided tts_model if specified, otherwise use the one from config
         if tts_model is None:
-            tts_model = main_config.get("default_tts_model", "openai")
+            tts_model = conversation_config.get("default_tts_model", "openai")
 
         if transcript_file:
             if image_paths:
