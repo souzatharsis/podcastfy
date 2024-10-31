@@ -8,17 +8,17 @@ provides methods to generate and save the generated content.
 
 import os
 from typing import Optional, Dict, Any, List
+import re
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.llms.llamafile import Llamafile
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
-from langchain.prompts import HumanMessagePromptTemplate, SystemMessagePromptTemplate
-from langchain.schema import SystemMessage
+from langchain.prompts import HumanMessagePromptTemplate
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ class LLMBackend:
         is_local: bool,
         temperature: float,
         max_output_tokens: int,
-        model_name: str
+        model_name: str,
     ):
         """
         Initialize the LLMBackend.
@@ -72,14 +72,14 @@ class ContentGenerator:
         self.content_generator_config = self.config.get("content_generator", {})
 
         self.config_conversation = load_conversation_config(conversation_config)
-        self.tts_config = self.config_conversation.get('text_to_speech', {})
-        
+        self.tts_config = self.config_conversation.get("text_to_speech", {})
+
         # Get output directories from conversation config
-        self.output_directories = self.tts_config.get('output_directories', {})
+        self.output_directories = self.tts_config.get("output_directories", {})
 
         # Create output directories if they don't exist
-        transcripts_dir = self.output_directories.get('transcripts')
-        
+        transcripts_dir = self.output_directories.get("transcripts")
+
         if transcripts_dir and not os.path.exists(transcripts_dir):
             os.makedirs(transcripts_dir)
 
@@ -90,18 +90,21 @@ class ContentGenerator:
         prompt_template = hub.pull(
             self.config.get("content_generator", {}).get(
                 "prompt_template", "souzatharsis/podcastfy_multimodal"
-            ) + ":" + self.config.get("content_generator", {}).get(
-                "prompt_commit", "c67bea9c"
             )
+            + ":"
+            + self.config.get("content_generator", {}).get("prompt_commit", "3d5b42fc")
         )
 
         image_path_keys = []
         messages = []
-        
+
         # Only add text content if input_text is not empty
-        text_content = {"type": "text", "text": "Please analyze this input and generate a conversation. {input_text}"}
+        text_content = {
+            "type": "text",
+            "text": "Please analyze this input and generate a conversation. {input_text}",
+        }
         messages.append(text_content)
-        
+
         for i in range(num_images):
             key = f"image_path_{i}"
             image_content = {
@@ -115,19 +118,28 @@ class ContentGenerator:
             messages=[HumanMessagePromptTemplate.from_template(messages)]
         )
         user_instructions = self.config_conversation.get("user_instructions", "")
-        
-        user_instructions = "[[MAKE SURE TO FOLLOW THESE INSTRUCTIONS OVERRIDING THE PROMPT TEMPLATE IN CASE OF CONFLICT: " + user_instructions  + "]]"
-        
-        new_system_message = prompt_template.messages[0].prompt.template + "\n" + user_instructions
+
+        user_instructions = (
+            "[[MAKE SURE TO FOLLOW THESE INSTRUCTIONS OVERRIDING THE PROMPT TEMPLATE IN CASE OF CONFLICT: "
+            + user_instructions
+            + "]]"
+        )
+
+        new_system_message = (
+            prompt_template.messages[0].prompt.template + "\n" + user_instructions
+        )
 
         # Create new prompt with updated system message
-        #prompt_template = ChatPromptTemplate.from_messages([
+        # prompt_template = ChatPromptTemplate.from_messages([
         #    SystemMessagePromptTemplate.from_template(new_system_message),
         #    HumanMessagePromptTemplate.from_template(messages)
-        #])
+        # ])
 
         # Compose messages from podcastfy_prompt_template and user_prompt_template
-        combined_messages = ChatPromptTemplate.from_messages([new_system_message]).messages + user_prompt_template.messages
+        combined_messages = (
+            ChatPromptTemplate.from_messages([new_system_message]).messages
+            + user_prompt_template.messages
+        )
 
         # Create a new ChatPromptTemplate object with the combined messages
         composed_prompt_template = ChatPromptTemplate.from_messages(combined_messages)
@@ -162,6 +174,43 @@ class ContentGenerator:
 
         return prompt_params
 
+    def __clean_scratchpad(self, text: str) -> str:
+        """
+        Remove scratchpad blocks from the text.
+
+        Args:
+            text (str): Input text that may contain scratchpad blocks
+
+        Returns:
+            str: Text with scratchpad blocks removed
+
+        Example:
+            Input: '<Person1> (scratchpad)\n```\nSome notes\n```\nActual content</Person1>'
+            Output: '<Person1>Actual content</Person1>'
+        """
+        try:
+            # Pattern to match scratchpad blocks:
+            # 1. Optional whitespace
+            # 2. (scratchpad) marker
+            # 3. Optional whitespace
+            # 4. Code block with any content
+            # 5. Optional whitespace before next content
+            pattern = r"\s*\(scratchpad\)\s*```.*?```\s*"
+
+            # Remove scratchpad blocks using regex
+            cleaned_text = re.sub(pattern, "", text, flags=re.DOTALL)
+
+            # Remove any resulting double newlines
+            cleaned_text = re.sub(r"\n\s*\n", "\n", cleaned_text)
+
+            # Remove any standalone (scratchpad) markers that might remain
+            cleaned_text = cleaned_text.replace("(scratchpad)", "")
+
+            return cleaned_text.strip()
+        except Exception as e:
+            logger.error(f"Error cleaning scratchpad content: {str(e)}")
+            return text  # Return original text if cleaning fails
+
     def generate_qa_content(
         self,
         input_texts: str = "",
@@ -175,11 +224,11 @@ class ContentGenerator:
         Args:
                 input_texts (str): Input texts to generate content from.
                 image_file_paths (List[str]): List of image file paths.
-                output_filepath (Optional[str]): Filepath to save the response content. Defaults to None.
-                is_local (bool): Whether to use a local LLM or not. Defaults to False.
+                output_filepath (Optional[str]): Filepath to save the response content.
+                is_local (bool): Whether to use a local LLM or not.
 
         Returns:
-                str: Formatted Q&A content.
+                str: Formatted Q&A content with scratchpad blocks removed.
 
         Raises:
                 Exception: If there's an error in generating content.
@@ -197,7 +246,7 @@ class ContentGenerator:
                     )
                     if not is_local
                     else "User provided model"
-                )
+                ),
             )
 
             num_images = 0 if is_local else len(image_file_paths)
@@ -209,7 +258,12 @@ class ContentGenerator:
                 image_file_paths, image_path_keys, input_texts
             )
 
-            self.response = self.chain.invoke(prompt_params)
+            response_raw = self.chain.invoke(
+                prompt_params
+            )  # in the future, make sure we have structured output
+
+            # Clean up scratchpad blocks from response
+            self.response = self.__clean_scratchpad(response_raw)
 
             logger.info(f"Content generated successfully")
 

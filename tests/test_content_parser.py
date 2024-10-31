@@ -7,13 +7,14 @@ from podcastfy.content_parser.website_extractor import WebsiteExtractor
 from podcastfy.content_parser.pdf_extractor import PDFExtractor
 
 
-
 class TestContentParser(unittest.TestCase):
     def test_content_extractor(self):
         # Add tests for ContentExtractor
         pass
 
-    @pytest.mark.skip(reason="IP getting blocked by YouTube when running from GitHub Actions")
+    @pytest.mark.skip(
+        reason="IP getting blocked by YouTube when running from GitHub Actions"
+    )
     def test_youtube_transcriber(self):
         """
         Test the YouTubeTranscriber class to ensure it correctly extracts and cleans transcripts from a YouTube video.

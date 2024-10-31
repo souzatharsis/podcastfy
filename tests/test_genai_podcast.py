@@ -9,7 +9,6 @@ from podcastfy.utils.config_conversation import ConversationConfig
 from podcastfy.content_parser.pdf_extractor import PDFExtractor
 
 
-
 # TODO: Should be a fixture
 def sample_conversation_config():
     conversation_config = {
@@ -17,7 +16,7 @@ def sample_conversation_config():
         "roles_person1": "professor",
         "roles_person2": "student",
         "podcast_name": "Teachfy",
-        "podcast_tagline": "Learning Through Conversation"
+        "podcast_tagline": "Learning Through Conversation",
     }
     return conversation_config
 
@@ -101,9 +100,7 @@ class TestGenAIPodcast(unittest.TestCase):
         extracted_content = pdf_extractor.extract_content(pdf_file)
 
         # Generate Q&A content from the extracted text
-        result = content_generator.generate_qa_content(
-            input_texts=extracted_content
-        )
+        result = content_generator.generate_qa_content(input_texts=extracted_content)
 
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
@@ -114,9 +111,7 @@ class TestGenAIPodcast(unittest.TestCase):
         raw_text = "The wonderful world of LLMs."
         content_generator = ContentGenerator(self.api_key)
 
-        result = content_generator.generate_qa_content(
-            input_texts=raw_text
-        )
+        result = content_generator.generate_qa_content(input_texts=raw_text)
 
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")

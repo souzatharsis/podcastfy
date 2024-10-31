@@ -4,6 +4,7 @@ import os
 from podcastfy.text_to_speech import TextToSpeech
 from podcastfy.utils.config_conversation import load_conversation_config
 
+
 class TestAudio(unittest.TestCase):
     def setUp(self):
         self.test_text = "<Person1>Hello, how are you?</Person1><Person2>I'm doing great, thanks for asking!</Person2>"
@@ -17,7 +18,7 @@ class TestAudio(unittest.TestCase):
         tts.convert_to_speech(self.test_text, output_file)
 
         self.assertTrue(os.path.exists(output_file))
-        self.assertGreater(os.path.getsize(output_file), 0)
+        self.assertGreater(os.path.getsize(output_file), 1024)
 
         # Clean up
         os.remove(output_file)
@@ -29,7 +30,7 @@ class TestAudio(unittest.TestCase):
         tts.convert_to_speech(self.test_text, output_file)
 
         self.assertTrue(os.path.exists(output_file))
-        self.assertGreater(os.path.getsize(output_file), 0)
+        self.assertGreater(os.path.getsize(output_file), 1024)
 
         # Clean up
         os.remove(output_file)
@@ -40,7 +41,7 @@ class TestAudio(unittest.TestCase):
         tts.convert_to_speech(self.test_text, output_file)
 
         self.assertTrue(os.path.exists(output_file))
-        self.assertGreater(os.path.getsize(output_file), 0)
+        self.assertGreater(os.path.getsize(output_file), 1024)
 
         # Clean up
         os.remove(output_file)

@@ -47,17 +47,17 @@ def process_content(
     try:
         if config is None:
             config = load_config()
-        
+
         # Load default conversation config
         conv_config = load_conversation_config()
-        
+
         # Update with provided config if any
         if conversation_config:
             conv_config.configure(conversation_config)
 
         # Get output directories from conversation config
-        tts_config = conv_config.get('text_to_speech', {})
-        output_directories = tts_config.get('output_directories', {})
+        tts_config = conv_config.get("text_to_speech", {})
+        output_directories = tts_config.get("output_directories", {})
 
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
@@ -65,8 +65,7 @@ def process_content(
                 qa_content = file.read()
         else:
             content_generator = ContentGenerator(
-                api_key=config.GEMINI_API_KEY, 
-                conversation_config=conv_config.to_dict()
+                api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
             )
 
             combined_content = ""
@@ -83,8 +82,8 @@ def process_content(
             # Generate Q&A content using output directory from conversation config
             random_filename = f"transcript_{uuid.uuid4().hex}.txt"
             transcript_filepath = os.path.join(
-                output_directories.get("transcripts", "data/transcripts"), 
-                random_filename
+                output_directories.get("transcripts", "data/transcripts"),
+                random_filename,
             )
             qa_content = content_generator.generate_qa_content(
                 combined_content,
@@ -99,15 +98,14 @@ def process_content(
                 api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
 
             text_to_speech = TextToSpeech(
-                model=tts_model, 
-                api_key=api_key, 
-                conversation_config=conv_config.to_dict()
+                model=tts_model,
+                api_key=api_key,
+                conversation_config=conv_config.to_dict(),
             )
-            
+
             random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
             audio_file = os.path.join(
-                output_directories.get("audio", "data/audio"), 
-                random_filename
+                output_directories.get("audio", "data/audio"), random_filename
             )
             text_to_speech.convert_to_speech(qa_content, audio_file)
             logger.info(f"Podcast generated successfully using {tts_model} TTS model")
@@ -120,6 +118,7 @@ def process_content(
         logger.error(f"An error occurred in the process_content function: {str(e)}")
         raise
 
+
 @app.command()
 def main(
     urls: list[str] = typer.Option(None, "--url", "-u", help="URLs to process"),
@@ -130,7 +129,7 @@ def main(
         None, "--transcript", "-t", help="Path to a transcript file"
     ),
     tts_model: str = typer.Option(
-        "openai",
+        None,
         "--tts-model",
         "-tts",
         help="TTS model to use (openai, elevenlabs or edge)",
@@ -169,14 +168,12 @@ def main(
         if conversation_config_path:
             with open(conversation_config_path, "r") as f:
                 conversation_config: Dict[str, Any] | None = yaml.safe_load(f)
-            
-                
-                
+
         # Use default TTS model from conversation config if not specified
         if tts_model is None:
-            tts_config = load_conversation_config().get('text_to_speech', {})
-            tts_model = tts_config.get('default_tts_model', 'openai')
-            
+            tts_config = load_conversation_config().get("text_to_speech", {})
+            tts_model = tts_config.get("default_tts_model", "openai")
+
         if transcript:
             if image_paths:
                 logger.warning("Image paths are ignored when using a transcript file.")
@@ -230,7 +227,7 @@ def generate_podcast(
     urls: Optional[List[str]] = None,
     url_file: Optional[str] = None,
     transcript_file: Optional[str] = None,
-    tts_model: Optional[str] = 'openai',
+    tts_model: Optional[str] = None,
     transcript_only: bool = False,
     config: Optional[Dict[str, Any]] = None,
     conversation_config: Optional[Dict[str, Any]] = None,
@@ -315,7 +312,7 @@ def generate_podcast(
                 conversation_config=conversation_config,
                 image_paths=image_paths,
                 is_local=is_local,
-                text=text
+                text=text,
             )
 
     except Exception as e:
