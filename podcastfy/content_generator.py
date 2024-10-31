@@ -258,12 +258,12 @@ class ContentGenerator:
                 image_file_paths, image_path_keys, input_texts
             )
 
-            response_raw = self.chain.invoke(
+            self.response = self.chain.invoke(
                 prompt_params
             )  # in the future, make sure we have structured output
 
             # Clean up scratchpad blocks from response
-            self.response = self.__clean_scratchpad(response_raw)
+            self.response = self.__clean_tss_markup(self.response)
 
             logger.info(f"Content generated successfully")
 
@@ -276,6 +276,49 @@ class ContentGenerator:
         except Exception as e:
             logger.error(f"Error generating content: {str(e)}")
             raise
+
+
+    def __clean_tss_markup(self, input_text: str, additional_tags: List[str] = ["Person1", "Person2"]) -> str:
+        """
+        Remove unsupported TSS markup tags from the input text while preserving supported SSML tags.
+
+        Args:
+            input_text (str): The input text containing TSS markup tags.
+			additional_tags (List[str]): Optional list of additional tags to preserve. Defaults to ["Person1", "Person2"].
+
+		Returns:
+			str: Cleaned text with unsupported TSS markup tags removed.
+		"""
+        # List of SSML tags supported by both OpenAI and ElevenLabs
+        supported_tags = [
+            "speak", "lang", "p", "phoneme",
+            "s", "sub"
+        ]
+
+        # Append additional tags to the supported tags list
+        supported_tags.extend(additional_tags)
+
+        # Create a pattern that matches any tag not in the supported list
+        pattern = r'</?(?!(?:' + '|'.join(supported_tags) + r')\b)[^>]+>'
+
+        # Remove unsupported tags
+        cleaned_text = re.sub(pattern, '', input_text)
+
+        # Remove any leftover empty lines
+        cleaned_text = re.sub(r'\n\s*\n', '\n', cleaned_text)
+
+        # Ensure closing tags for additional tags are preserved
+        for tag in additional_tags:
+            cleaned_text = re.sub(
+                f'<{tag}>(.*?)(?=<(?:{"|".join(additional_tags)})>|$)',
+                f'<{tag}>\\1</{tag}>',
+                cleaned_text,
+                flags=re.DOTALL
+            )
+
+        return cleaned_text.replace('(scratchpad)', '').strip()
+
+
 
 
 def main(seed: int = 42, is_local: bool = False) -> None:

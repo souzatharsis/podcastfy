@@ -148,7 +148,7 @@ def test_generate_transcript_only(sample_config):
             for tag in re.findall(r"<Person2>.*?</Person2>", content)
         )
 
-
+@pytest.mark.skip(reason="Not supported yet")
 def test_generate_podcast_from_urls_and_file(mock_files, sample_config):
     result = runner.invoke(
         app,

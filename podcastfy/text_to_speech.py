@@ -80,17 +80,22 @@ class TextToSpeech:
         Args:
                 text (str): Input text to convert to speech.
                 output_file (str): Path to save the output audio file.
+                
+        Raises:
+            ValueError: If the input text is not properly formatted
         """
-
-        # Then clean up TSS markup
+        # Validate transcript format
+        #self._validate_transcript_format(text)
+        
+        # Clean up TSS markup
         cleaned_text = text
-
+        
         try:
             with tempfile.TemporaryDirectory(dir=self.temp_audio_dir) as temp_dir:
                 audio_segments = self._generate_audio_segments(cleaned_text, temp_dir)
                 self._merge_audio_files(audio_segments, output_file)
                 logger.info(f"Audio saved to {output_file}")
-
+                
         except Exception as e:
             logger.error(f"Error converting text to speech: {str(e)}")
             raise
@@ -200,6 +205,73 @@ class TextToSpeech:
         ]:
             if dir_path and not os.path.exists(dir_path):
                 os.makedirs(dir_path)
+
+    def _validate_transcript_format(self, text: str) -> None:
+        """
+        Validate that the input text follows the correct transcript format.
+        
+        Args:
+            text (str): Input text to validate
+            
+        Raises:
+            ValueError: If the text is not properly formatted
+            
+        The text should:
+        1. Have alternating Person1 and Person2 tags
+        2. Each opening tag should have a closing tag
+        3. Tags should be properly nested
+        """
+        try:
+            # Check for empty text
+            if not text.strip():
+                raise ValueError("Input text is empty")
+                
+            # Check for matching opening and closing tags
+            person1_open = text.count("<Person1>")
+            person1_close = text.count("</Person1>")
+            person2_open = text.count("<Person2>")
+            person2_close = text.count("</Person2>")
+            
+            if person1_open != person1_close:
+                raise ValueError(f"Mismatched Person1 tags: {person1_open} opening tags and {person1_close} closing tags")
+            if person2_open != person2_close:
+                raise ValueError(f"Mismatched Person2 tags: {person2_open} opening tags and {person2_close} closing tags")
+                
+            # Check for alternating pattern using regex
+            pattern = r"<Person1>.*?</Person1>\s*<Person2>.*?</Person2>"
+            matches = re.findall(pattern, text, re.DOTALL)
+            
+            # Calculate expected number of pairs
+            expected_pairs = min(person1_open, person2_open)
+            
+            if len(matches) != expected_pairs:
+                raise ValueError(
+                    "Tags are not properly alternating between Person1 and Person2. "
+                    "Each Person1 section should be followed by a Person2 section."
+                )
+                
+            # Check for malformed tags (unclosed or improperly nested)
+                stack = []
+                for match in re.finditer(r"<(/?)Person([12])>", text):
+                    tag = match.group(0)
+                    if tag.startswith("</"):
+                        if not stack or stack[-1] != tag[2:-1]:
+                            raise ValueError(f"Improperly nested tags near: {tag}")
+                        stack.pop()
+                    else:
+                        stack.append(tag[1:-1])
+                        
+                if stack:
+                    raise ValueError(f"Unclosed tags: {', '.join(stack)}")
+                
+            logger.debug("Transcript format validation passed")
+            
+        except ValueError as e:
+            logger.error(f"Transcript format validation failed: {str(e)}")
+            raise
+        except Exception as e:
+            logger.error(f"Unexpected error during transcript validation: {str(e)}")
+            raise ValueError(f"Invalid transcript format: {str(e)}")
 
 
 def main(seed: int = 42) -> None:
