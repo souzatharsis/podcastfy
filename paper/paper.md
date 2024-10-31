@@ -12,33 +12,68 @@ authors:
     orcid: 0000-0003-3260-9526
     affiliation: 1
 affiliations:
-  - name: Columbia University
+  - name: Columbia University in the City of New York
     index: 1
-date: [Submission Date]
+  - name: Instituto Federal de Educacao, Ciencia e Tecnologia do Sul de Minas (IFSULDEMINAS)
+    index: 2
+date: 11/01/2024
 bibliography: paper.bib
 ---
 
 # Abstract
 
-Podcastfy is an open-source Python framework that enables programmatic generation of natural-sounding conversational content from multimodal content (text/images) using generative AI. It provides a complete pipeline for multimodal content transformation, allowing users to convert multi-sourced information into a conversational format, thus improving accessibility and engagement.
+Podcastfy is an open-source Python framework that enables programmatic generation of summarized multilingual natural-sounding conversational content from multisourced multimodal sources (text/images) using generative AI. It provides an end-to-end customizable pipeline for multimodal content transformation, allowing users to convert multi-sourced information into a conversational format, thus improving accessibility and engagement.
 
 ## 1. Statement of Need
 
-The rapid growth of digital content across various formats has created an urgent need for tools that can transform written and visual information into accessible and digestible formats [@chen2020making]. According to the World Health Organization (WHO), over 2.2 billion people globally have some form of visual impairment, and many could benefit from auditory content formats as an alternative to written text (World Health Organization, 2021). Additionally, studies have shown that audio-based content can improve information retention for auditory learners and make content more accessible to individuals with dyslexia (Sharma et al., 2019). Existing solutions often fall short due to their proprietary nature, lack of comprehensive multimodal support, or limited accessibility features, as highlighted in recent reviews on digital accessibility tools (Smith et al., 2020).
+The rapid growth of digital content across various formats has created an urgent need for tools that can transform written and visual information from myriad of sources into accessible and digestible formats [@chen2020making]. Existing solutions often fall short due to their proprietary nature, lack of comprehensive multimodal support, or limited accessibility features, as highlighted in recent reviews on digital accessibility tools (Smith et al., 2020).
+
+
+<!-- According to the World Health Organization (WHO), over 2.2 billion people globally have some form of visual impairment, and many could benefit from auditory content formats as an alternative to written text (World Health Organization, 2021). Additionally, studies have shown that audio-based content can improve information retention for auditory learners and make content more accessible to individuals with dyslexia (Sharma et al., 2019). -->
 
 Podcastfy addresses this gap by providing an open-source solution that supports multimodal input processing and generates natural-sounding summarized textual and audio content. Leveraging advances in large language models (LLMs) and text-to-speech (TTS) synthesis, Podcastfy aims to benefit a diverse group of users, including content creators, educators, researchers, and accessibility advocates, by providing an effective solution to transform digital content into multilingual textual and auditory formats that enhance accessibility and engagement.
 
 ## 2. Implementation and Architecture
 
-Podcastfy implements a modular architecture designed for flexibility and extensibility:
+Podcastfy implements a modular architecture designed for flexibility and extensibility through three main processing layers and supporting modules:
 
-1. **Content Extractor**: This module is responsible for extracting content from various sources, such as websites, PDFs, and YouTube videos. It serves as the entry point for all input types, providing text that is passed to the content generator.
-2. **Content Generator**: This module uses large language models to generate natural-sounding conversations based on the extracted content. It allows customization of the conversation style, roles, and dialogue structure.
-3. **Text-to-Speech (TTS) Converter**: This module takes the generated text and converts it into audio using TTS models, such as ElevenLabs or OpenAI's TTS.
-4. **Configuration Management**: This module provides extensive customization options
+![Podcastfy's architecture and workflow diagram showing the main components and their interactions.](podcastfy.png)
+
+1. **Client Interface**
+   - Provides both CLI and API interfaces through a unified `Client` class
+   - Implements the main `generate_podcast()` method
+   - Coordinates workflow between layers
+
+2. **Configuration Management**
+   - Provides extensive customization options through a dedicated module
    - Manages system settings and preferences
    - Handles API key management and security
-5. **Client**: Module CLI, API
+   - Controls behavior of all processing layers
+
+3. **Content Extraction Layer**
+   - Responsible for extracting content from various sources (websites, PDFs, YouTube videos)
+   - The `ContentExtractor` class serves as a facade pattern, coordinating three specialized extractors:
+     - `PDFExtractor`: Handles PDF document processing
+     - `WebsiteExtractor`: Manages website content extraction
+     - `YouTubeTranscriber`: Processes YouTube video content
+   - Serves as the entry point for all input types, providing standardized text output to the content generator
+
+4. **LLM-based Transcript Generation Layer**
+   - Uses large language models to generate natural-sounding conversations from extracted content
+   - The `ContentGenerator` class manages conversation generation using different LLM backends:
+     - Supports both local (`Llamafile`) and cloud-based models
+     - Integrates with LangChain through `BaseChatModel` interface
+     - Uses `ChatGoogleGenerativeAI` for cloud-based processing
+   - Allows customization of conversation style, roles, and dialogue structure
+   - Outputs structured conversations in `transcript.txt` format
+
+5. **Text-to-Speech (TTS) Layer**
+   - Converts generated text into audio using various TTS models
+   - The `TextToSpeech` class implements a factory pattern:
+     - `TTSFactory` creates appropriate providers based on configuration
+     - Supports multiple backends (OpenAI, ElevenLabs) through `TTSProvider` interface
+   - Produces the final `podcast.mp3` output
+
 
 The components are designed to work independently, allowing flexibility in updating or extending each module. The data flows from the Content Extractor to the Content Generator and finally to the TTS Converter, ensuring a seamless transformation of multimodal content into audio.
 
@@ -207,11 +242,7 @@ Podcastfy is implemented in Python and leverages popular machine learning librar
 The core pipeline of Podcastfy consists of the following stages:
 
 
-## 5. Implementation and Availability
 
-Podcastfy is distributed under an open-source license (MIT License) to ensure that it is freely available to the community. The source code, along with detailed documentation, installation instructions, and usage examples, can be found in our GitHub repository: [GitHub Repository Link]. The repository includes comprehensive guidelines on how to set up the framework, as well as a collection of tutorials to help users get started with transforming multimodal content into audio conversations.
-
-Podcastfy's documentation covers various aspects of the framework, including the installation process, system requirements, and detailed explanations of each module. Users are encouraged to contribute to the project by reporting issues, suggesting new features, or submitting pull requests to enhance the functionality of the framework.
 
 ## 6. Use Cases
 
@@ -398,6 +429,11 @@ generate_podcast(
 ```
 
 This example demonstrates how Podcastfy can generate a detailed and structured podcast to guide listeners through setting up a local LLM, using roles such as "instructor" and "learner."
+## 5. Implementation and Availability
+
+Podcastfy is distributed under an open-source license (MIT License) to ensure that it is freely available to the community. The source code, along with detailed documentation, installation instructions, and usage examples, can be found in our GitHub repository: [GitHub Repository Link]. The repository includes comprehensive guidelines on how to set up the framework, as well as a collection of tutorials to help users get started with transforming multimodal content into audio conversations.
+
+Podcastfy's documentation covers various aspects of the framework, including the installation process, system requirements, and detailed explanations of each module. Users are encouraged to contribute to the project by reporting issues, suggesting new features, or submitting pull requests to enhance the functionality of the framework.
 
 ### 6.1.5 Audio Example Links
 
@@ -488,105 +524,4 @@ We invite contributions from the community to further enhance the capabilities o
 
 We acknowledge the open-source community and the developers of the various libraries and tools that make Podcastfy possible. Special thanks to the developers of LangChain, OpenAI, ElevenLabs, and Microsoft Edge TTS for their excellent tools and documentation.
 
-## References
-
 # References
-
-@article{brown2020language,
-  title={Language models are few-shot learners},
-  author={Brown, Tom and others},
-  journal={Advances in Neural Information Processing Systems},
-  year={2020}
-}
-
-@article{wang2017tacotron,
-  title={Tacotron: Towards end-to-end speech synthesis},
-  author={Wang, Yuxuan and others},
-  journal={arXiv preprint arXiv:1703.10135},
-  year={2017}
-}
-
-@article{chen2020making,
-  title={Making content more accessible with multimodal transformations},
-  author={Chen, Howard and others},
-  journal={ACM Transactions on Accessible Computing},
-  year={2020}
-}
-
-@article{yang2021multimodal,
-  title={Multimodal learning meets content transformation},
-  author={Yang, Sarah and others},
-  journal={Conference on Human Factors in Computing Systems},
-  year={2021}
-}
-
-@article{wu2023survey,
-  title={A survey of AI-powered content transformation tools},
-  author={Wu, Jennifer and others},
-  journal={Digital Scholarship in the Humanities},
-  year={2023}
-}
-
-@article{liu2023survey,
-  title={A survey on multimodal large language models},
-  author={Liu, Shukang and others},
-  journal={arXiv preprint arXiv:2306.13549},
-  year={2023}
-}
-
-@article{touvron2023llama,
-  title={Llama 2: Open foundation language models},
-  author={Touvron, Hugo and others},
-  journal={arXiv preprint arXiv:2307.09288},
-  year={2023}
-}
-
-@article{shen2018natural,
-  title={Natural TTS synthesis by conditioning WaveNet on mel spectrogram predictions},
-  author={Shen, Jonathan and others},
-  journal={IEEE International Conference on Acoustics, Speech and Signal Processing},
-  year={2018}
-}
-
-@article{johnson2017google,
-  title={Google's multilingual neural machine translation system},
-  author={Johnson, Melvin and others},
-  journal={Transactions of the Association for Computational Linguistics},
-  year={2017}
-}
-
-@article{wu2023privacy,
-  title={Privacy-preserving language models: A survey},
-  author={Wu, Michael and others},
-  journal={arXiv preprint arXiv:2309.00035},
-  year={2023}
-}
-
-@article{zhao2023automated,
-  title={Automated content transformation in the era of large language models},
-  author={Zhao, Linda and others},
-  journal={Computer},
-  year={2023}
-}
-
-@article{bano2022systematic,
-  title={A systematic review of AI in education},
-  author={Bano, Muneera and others},
-  journal={IEEE Access},
-  year={2022}
-}
-
-@article{park2022content,
-  title={Content creation and distribution in the AI era},
-  author={Park, David and others},
-  journal={Digital Journalism},
-  year={2022}
-}
-
-@article{zhang2023survey,
-  title={A survey of AI-powered accessibility tools},
-  author={Zhang, Kevin and others},
-  journal={ACM Computing Surveys},
-  year={2023}
-}
-
