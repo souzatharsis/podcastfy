@@ -1,7 +1,7 @@
 content_generator:
   gemini_model: "gemini-1.5-pro-latest"
   max_output_tokens: 8192
-  prompt_template: "podcastfy_multimodal_cleanmarkup"
+  prompt_template: "souzatharsis/podcastfy_multimodal_cleanmarkup"
   prompt_commit: "3d5b42fc"
 content_extractor:
   youtube_url_patterns:

@@ -89,7 +89,7 @@ class ContentGenerator:
         """
         prompt_template = hub.pull(
             self.config.get("content_generator", {}).get(
-                "prompt_template", "souzatharsis/podcastfy_multimodal"
+                "prompt_template", "souzatharsis/podcastfy_multimodal_cleanmarkup"
             )
             + ":"
             + self.config.get("content_generator", {}).get("prompt_commit", "3d5b42fc")
