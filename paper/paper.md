@@ -22,21 +22,21 @@ bibliography: paper.bib
 
 # Abstract
 
-Podcastfy is an open-source Python framework that enables programmatic summarization of multisourced multimodal content into multilingual natural-sounding conversational text and audio using generative AI. By enabling the transformation of various types of digital content into conversational audio, Podcastfy improves accessibility, engagement, and usability for a wide range of users. The open-source nature of the project ensures that it can be continuously improved and adapted to meet the evolving needs of its users.
+Podcastfy is an open-source Python framework that enables programmatic summarization of multisourced multimodal content into multilingual natural-sounding conversations using generative AI. By enabling the transformation of various types of digital content into conversational content, Podcastfy improves accessibility, engagement, and usability for a wide range of users. The open-source nature of the project allows it to be continuously improved and adapted to meet the evolving needs of its users.
 
 # Statement of Need
 
-The rapid expansion of digital content across various formats has intensified the need for tools capable of converting diverse information into accessible and digestible formats \citep{johnson2023adaptive, chen2023digital, mccune2023accessibility}. Existing solutions often fall short due to their proprietary nature, limited multimodal support, or inadequate accessibility features, as highlighted in recent reviews on adaptive user interfaces and digital accessibility tools \citep{marcus2019design, peterson2023web, gupta2023advances}.
+The rapid expansion of digital content across various formats has intensified the need for tools capable of converting diverse information into accessible and digestible formats \citep{johnson2023adaptive, chen2023digital, mccune2023accessibility}. Existing solutions often fall short due to their proprietary nature, limited multimodal support, or inadequate accessibility features \citep{marcus2019design, peterson2023web, gupta2023advances}.
 
-Podcastfy addresses this gap by providing an open-source solution that supports multimodal input processing and generates natural-sounding summarized textual and audio content. Leveraging advances in large language models (LLMs) and text-to-speech (TTS) synthesis, Podcastfy aims to benefit a diverse group of users, including content creators, educators, researchers, and accessibility advocates, by providing a customizable solution to transform digital content into multilingual textual and auditory formats that enhance accessibility and engagement.
+Podcastfy addresses this gap by providing an open-source solution that supports multimodal input processing and generates natural-sounding summarized conversational content. Leveraging advances in large language models (LLMs) and text-to-speech (TTS) synthesis, Podcastfy aims to benefit a diverse group of users, including content creators, educators, researchers, and accessibility advocates, by providing a customizable solution to transform digital content into multilingual textual and auditory formats that enhance accessibility and engagement.
 
 # Features
 
 - Generate conversational content from multiple sources and formats (images, websites, YouTube, and PDFs)
 - Customize transcript and audio generation (e.g. style, language, structure, length)
 - Create podcasts from pre-existing or edited transcripts
-- Support for advanced text-to-speech models (OpenAI, ElevenLabs and Edge)
-- Support for running local llms for transcript generation (increased privacy and control)
+- Support for cloud-based and local LLMs for transcript generation (increased privacy and control)
+- Support for advanced text-to-speech models (OpenAI, ElevenLabs and MicrosoftEdge)
 - Multi-language support for global content creation
 - Seamless CLI and Python package integration for automated workflows
 
@@ -54,24 +54,20 @@ Podcastfy is designed to serve a wide range of applications, including:
 
 - **Accessibility Advocates**: Podcastfy promotes digital accessibility by providing a tool that can convert multimodal content into auditory formats. This can help individuals with visual impairments, dyslexia, or other disabilities that make it challenging to consume written or visual content.
 
-- **Media Organizations**: Media organizations can use Podcastfy to convert news articles, reports, and multimedia content into audio format, offering audio versions of their content to users who prefer listening, thereby increasing user engagement and reach.
-
 # Implementation and Architecture
 
 Podcastfy implements a modular architecture designed for flexibility and extensibility through 5 main components:
 
 <img src="podcastfy.png" alt="Podcastfy's architecture and workflow diagram showing the main components and their interactions." width="75%"/>
 
-
-
 1. **Client Interface**
    - Provides both CLI and API interfaces
-   - Implements the main `generate_podcast()` method
    - Coordinates workflow between processing layers
+   - Implements unified interface for podcast generation through the `generate_podcast()` method
 
 2. **Configuration Management**
    - Provides extensive customization options through a dedicated module
-   - Manages system settings and user preferences
+   - Manages system settings and user preferences such as podcast name, language, style, and structure
    - Controls behavior of all processing layers
 
 3. **Content Extraction Layer**
@@ -80,7 +76,7 @@ Podcastfy implements a modular architecture designed for flexibility and extensi
      - `PDFExtractor`: Handles PDF document processing
      - `WebsiteExtractor`: Manages website content extraction
      - `YouTubeTranscriber`: Processes YouTube video content
-   - Serves as the entry point for all input types, providing standardized text output to the content generator
+   - Serves as the entry point for all input types, providing standardized text output to the transcript generator
 
 4. **LLM-based Transcript Generation Layer**
    - Uses large language models to generate natural-sounding conversations from extracted content
@@ -104,33 +100,33 @@ The framework is offered as a Python Package, with a command-line interface as w
 
 # Quick Start
 
-### Prerequisites
+## Prerequisites
 - Python 3.11 or higher
 - `$ pip install ffmpeg` (for audio processing)
 
-### Setup
+## Setup
 1. Install from PyPI
   `$ pip install podcastfy`
 
 2. Set up [API keys](usage/config.md)
 
-### Python
+## Python
 ```python
 from podcastfy.client import generate_podcast
 
 audio_file = generate_podcast(urls=["<url1>", "<url2>"])
 ```
-### CLI
+## CLI
 ```
 python -m podcastfy.client --url <url1> --url <url2>
 ```
 
 
-## Customization Examples
+# Customization Examples
 
 Podcastfy offers various customization options that make it versatile for different types of content transformation. Below are some examples that demonstrate its capabilities.
 
-### 6.1.1 Academic Debate
+## Academic Debate
 
 The following Python code demonstrates how to configure Podcastfy for an academic debate:
 
@@ -139,20 +135,17 @@ from podcastfy import generate_podcast
 
 # Example: Generate an academic debate podcast
 generate_podcast(
-    urls=["https://example.com/academic-article"],
+    urls=["PATH/TO/academic-article"],
     conversation_style=["formal", "debate"],
     roles_person1="main presenter",
     roles_person2="opposing viewpoint",
-    dialogue_structure=["Introduction", "Argument Presentation", "Counterarguments", "Conclusion"],
-    output_language="English"
+    dialogue_structure=["Introduction", "Argument Presentation", "Counterarguments", "Conclusion"]
 )
 ```
 
-In this example, the roles are set to "main presenter" and "opposing viewpoint," simulating a debate between two individuals.
+In this example, the roles are set to "main presenter" and "opposing viewpoint" to simulate an academic debate between two speakers on a chosen topic. This approach is especially useful for educational content that aims to present multiple perspectives on a topic. The output is structured with clear sections such as introduction, argument presentation, counterarguments, and conclusion, allowing listeners to follow complex ideas easily.
 
-Podcastfy can be configured to simulate an academic debate between two speakers on a chosen topic. For instance, by setting the conversation roles as "main presenter" and "opposing viewpoint," Podcastfy can generate a balanced discussion. This approach is especially useful for educational content that aims to present multiple perspectives on a topic. The output is structured with clear sections such as introduction, argument presentation, counterarguments, and conclusion, allowing listeners to follow complex ideas easily.
-
-### 6.1.2 Storytelling Adventure
+## Storytelling Adventure
 
 The following Python code demonstrates how to generate a storytelling podcast:
 
@@ -165,17 +158,15 @@ generate_podcast(
     creativity=1.0,
     roles_person1="narrator",
     roles_person2="character",
-    dialogue_structure=["Introduction", "Adventure Begins", "Challenges", "Resolution"],
-    output_language="English"
+    dialogue_structure=["Introduction", "Adventure Begins", "Challenges", "Resolution"]
 )
 ```
 
-Here, Podcastfy creates an engaging story by assigning roles like "narrator" and "character" and adjusting the creativity parameter for richer descriptions.
+Here, Podcastfy creates an engaging story by assigning roles like "narrator" and "character" and adjusting the creativity parameter for richer descriptions. Using this configuration, Podcastfy can generate engaging narrative content. By adjusting the creativity parameter, Podcastfy can create a story involving multiple characters, unexpected plot twists, and rich descriptions.
 
-Using this configuration, Podcastfy can generate engaging narrative content. By adjusting the creativity parameter, Podcastfy can create a story involving multiple characters, unexpected plot twists, and rich descriptions.
+## Additional Examples
 
-
-### 2. Daily News Briefing
+### Daily News Briefing
 ```python
 news_config = {
     "word_count": 1500,
@@ -201,7 +192,7 @@ generate_podcast(
 )
 ```
 
-### 3. Language Learning Content
+### Language Learning Content
 ```python
 language_config = {
     "output_language": "Spanish",
@@ -223,7 +214,7 @@ generate_podcast(
 )
 ```
 
-### 4. Technical Tutorial
+### Technical Tutorial
 ```python
 tutorial_config = {
     "word_count": 2500,
@@ -251,11 +242,11 @@ generate_podcast(
 )
 ```
 
-### 6. Working with Podcastfy Modules
+## Working with Podcastfy Modules
 
 Podcastfy's components are designed to work independently, allowing flexibility in updating or extending each module. The data flows from the Content Extractor to the Content Generator and finally to the TTS Converter, ensuring a seamless transformation of multimodal content into audio. Here are some examples of how to use each module.
 
-#### 6.1 Content Extraction
+## Content Extraction
 Podcastfy's `content_extractor.py` module allows users to extract content from a given URL, which can be processed further to generate a podcast. Below is an example of how to use the content extraction component:
 
 ```python
@@ -274,15 +265,15 @@ print(extracted_content)
 
 This example demonstrates how to extract text from a given URL. The extracted content is then passed to the next stages of processing.
 
-### 4.1.2 Content Generation
+## Content Generation
 
-The `content_generator.py` module is responsible for generating conversational content based on the extracted input. Below is an example of how to use the content generation component:
+The `content_generator.py` module is responsible for generating conversational content based on textual input. Below is an example of how to use the content generation component:
 
 ```python
 from podcastfy.content_generator import ContentGenerator
 
 # Initialize the content generator
-generator = ContentGenerator()
+generator = ContentGenerator(api_key="<GEMINI_API_KEY>")
 
 # Generate conversational content
 input_text = "This is a sample input text about artificial intelligence."
@@ -292,9 +283,9 @@ print("Generated Conversation:")
 print(generated_conversation)
 ```
 
-In this example, the `ContentGenerator` class is used to create a conversation based on an input text. This generated conversation can be customized by setting different parameters, such as conversation style and roles.
+In this example, the `ContentGenerator` class is used to create a conversation based on an input text. This generated conversation can be customized by setting different parameters, such as conversation style and roles. Users can opt to run a clouse-based LLM (Gemini) or run a local (potentially Open Source) LLM model by setting the `is_local` parameter to `True` ([see local llm configuration](https://github.com/souzatharsis/podcastfy/blob/main/usage/local_llm.md)).
 
-### 4.1.3 Text-to-Speech Conversion
+## Text-to-Speech Conversion
 
 The `text_to_speech.py` module allows the generated text to be converted into audio. Below is an example of how to use the text-to-speech component:
 
@@ -302,7 +293,7 @@ The `text_to_speech.py` module allows the generated text to be converted into au
 from podcastfy.text_to_speech import TextToSpeech
 
 # Initialize the text-to-speech converter
-tts = TextToSpeech(model='elevenlabs')
+tts = TextToSpeech(model='elevenlabs', api_key="<ELEVENLABS_API_KEY>")
 
 # Convert the generated conversation to speech
 input_text = "<Person1>This is a sample conversation generated by Podcastfy.</Person1><Person2>That's great!</Person2>"
@@ -312,9 +303,9 @@ tts.convert_to_speech(input_text, output_audio_file)
 print(f"Audio saved to {output_audio_file}")
 ```
 
-This example demonstrates how to use the `TextToSpeech` class to convert generated text into an audio file. Users can specify different models for TTS, such as `elevenlabs`, `openai`, or `edge`.
+This example demonstrates how to use the `TextToSpeech` class to convert generated text into an audio file. Users can specify different models for TTS, such as `elevenlabs`, `openai`, or `edge` (free to use).
 
-### 4.1.4 Full Pipeline Example
+## Full Pipeline Example
 
 To demonstrate the complete usage of Podcastfy, here is an example that combines content extraction, content generation, and text-to-speech conversion:
 
@@ -342,7 +333,7 @@ print(f"Podcast saved to {output_audio_file}")
 
 This full pipeline example shows how Podcastfy can be used end-to-end to transform content from a web page into an audio podcast. Each step uses different modules of Podcastfy, providing a complete solution for multimodal content transformation. The `generate_podcast()` method from `client.py` encapsulates this end-to-end workflow in a simple to use unified interface.
 
-### 5 Community and Development
+# Community and Development
 
 Podcastfy is actively maintained and welcomes community contributions. The project follows best practices for open-source development:
 - Comprehensive documentation
@@ -354,16 +345,38 @@ Podcastfy is actively maintained and welcomes community contributions. The proje
 
 Podcastfy is distributed under an open-source license (Apache 2.0) to ensure that it is freely available to the community. The source code, along with detailed documentation, installation instructions, and usage examples, can be found in our [GitHub repository](https://www.podcastfy.ai). The repository includes comprehensive guidelines on how to set up the framework, as well as a collection of tutorials to help users get started with transforming multimodal content into audio conversations.
 
-# Future Directions
+# Limitations
 
-Planned developments include:
-- Enhanced multilingual support
-- Additional TTS engine integrations
-- Improved conversation generation
-- Extended customization options
-- Advanced audio processing features
+Podcastfy has several limitations, including:
 
-## 8. Conclusion
+## Content Accuracy and Quality
+- The accuracy of generated conversations depends heavily on the underlying LLM's capabilities
+- Complex technical or domain-specific content may not always be accurately interpreted or summarized
+- The framework cannot guarantee the factual correctness of generated content, requiring human verification for critical applications
+
+## Language Support Constraints
+- While multilingual support is available, performance may vary significantly across different languages
+- Less common languages may have limited TTS voice options and lower quality speech synthesis
+- Nuanced cultural context and idioms may not translate effectively across languages
+
+## Technical Dependencies
+- Reliance on third-party APIs (OpenAI, ElevenLabs, Google) introduces potential service availability risks
+- Local LLM options, while providing independence, require significant computational resources
+- Network connectivity is required for cloud-based services, limiting offline usage
+
+## Content Extraction Challenges
+- Complex webpage layouts or dynamic content may not be accurately extracted
+- PDF extraction quality depends on document formatting and structure
+- YouTube video processing depends on availability of transcripts
+
+## Accessibility Considerations
+- Generated audio may not fully meet all accessibility standards
+- Limited support for real-time content processing
+- May require additional processing for users with specific accessibility needs
+
+These limitations highlight areas for future development and improvement of the framework. Users should carefully consider these constraints when implementing Podcastfy for their specific use cases and requirements.
+
+# Conclusion
 
 Podcastfy contributes to multimodal content accessibility by enabling programmatic transformation of digital content into conversational audio. The framework addresses accessibility needs through automated content summarization and natural-sounding speech synthesis. The modular design and configurable options allow for flexible content processing and audio generation workflows that can be adapted for different use cases and requirements.
 
@@ -372,6 +385,8 @@ As an open-source project, Podcastfy benefits from continuous community-driven i
 We invite contributions from the community to further enhance the capabilities of Podcastfy. Whether it is by adding support for new input modalities, improving the quality of conversation generation, or optimizing the TTS synthesis, we welcome collaboration to make Podcastfy more powerful and versatile.
 
 # Acknowledgements
+
+Add acknowledgements for contributors as well as eventual reviewers.
 
 We acknowledge the open-source community and the developers of the various libraries and tools that make Podcastfy possible. Special thanks to the developers of LangChain, Llamafile, Gemini, OpenAI, ElevenLabs, and Microsoft Edge for their tools and documentation.
 
