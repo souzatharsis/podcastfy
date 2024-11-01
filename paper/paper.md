@@ -60,7 +60,9 @@ Podcastfy is designed to serve a wide range of applications, including:
 
 Podcastfy implements a modular architecture designed for flexibility and extensibility through 5 main components:
 
-![Podcastfy's architecture and workflow diagram showing the main components and their interactions.](podcastfy.png)
+<img src="podcastfy.png" alt="Podcastfy's architecture and workflow diagram showing the main components and their interactions." width="75%"/>
+
+
 
 1. **Client Interface**
    - Provides both CLI and API interfaces
