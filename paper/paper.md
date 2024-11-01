@@ -22,7 +22,7 @@ bibliography: paper.bib
 
 # Abstract
 
-Podcastfy is an open-source Python framework that enables programmatic generation of summarized multilingual natural-sounding conversational content from multisourced multimodal sources (text/images) using generative AI. It provides an end-to-end customizable pipeline for multimodal content transformation, allowing users to convert multi-sourced information into a conversational format, thus improving accessibility and engagement.
+Podcastfy is an open-source Python framework that enables programmatic summarization of multisourced multimodal content into multilingual natural-sounding conversational text and audio using generative AI. It provides an end-to-end modular and extensible pipeline that builds on modern LLMs and text-to-speech models to deliver a customizable framework.
 
 ## 1. Statement of Need
 
@@ -35,24 +35,23 @@ Podcastfy addresses this gap by providing an open-source solution that supports 
 
 ## 2. Implementation and Architecture
 
-Podcastfy implements a modular architecture designed for flexibility and extensibility through three main processing layers and supporting modules:
+Podcastfy implements a modular architecture designed for flexibility and extensibility through 5 main components:
 
 ![Podcastfy's architecture and workflow diagram showing the main components and their interactions.](podcastfy.png)
 
 1. **Client Interface**
-   - Provides both CLI and API interfaces through a unified `Client` class
+   - Provides both CLI and API interfaces
    - Implements the main `generate_podcast()` method
-   - Coordinates workflow between layers
+   - Coordinates workflow between processing layers
 
 2. **Configuration Management**
    - Provides extensive customization options through a dedicated module
-   - Manages system settings and preferences
-   - Handles API key management and security
+   - Manages system settings and user preferences
    - Controls behavior of all processing layers
 
 3. **Content Extraction Layer**
    - Responsible for extracting content from various sources (websites, PDFs, YouTube videos)
-   - The `ContentExtractor` class serves as a facade pattern, coordinating three specialized extractors:
+   - The `ContentExtractor` coordinates three specialized extractors:
      - `PDFExtractor`: Handles PDF document processing
      - `WebsiteExtractor`: Manages website content extraction
      - `YouTubeTranscriber`: Processes YouTube video content
@@ -61,23 +60,23 @@ Podcastfy implements a modular architecture designed for flexibility and extensi
 4. **LLM-based Transcript Generation Layer**
    - Uses large language models to generate natural-sounding conversations from extracted content
    - The `ContentGenerator` class manages conversation generation using different LLM backends:
+     - Integrates with LangChain to implement prompt management and common LLM access through `BaseChatModel` interface
      - Supports both local (`Llamafile`) and cloud-based models
-     - Integrates with LangChain through `BaseChatModel` interface
-     - Uses `ChatGoogleGenerativeAI` for cloud-based processing
+     - Uses `ChatGoogleGenerativeAI` for cloud-based LLM services
    - Allows customization of conversation style, roles, and dialogue structure
-   - Outputs structured conversations in `transcript.txt` format
+   - Outputs structured conversations in text format
 
 5. **Text-to-Speech (TTS) Layer**
-   - Converts generated text into audio using various TTS models
+   - Converts input transcript into audio using various TTS models
    - The `TextToSpeech` class implements a factory pattern:
      - `TTSFactory` creates appropriate providers based on configuration
      - Supports multiple backends (OpenAI, ElevenLabs) through `TTSProvider` interface
-   - Produces the final `podcast.mp3` output
+   - Produces the final podcast audio output
 
 
 The components are designed to work independently, allowing flexibility in updating or extending each module. The data flows from the Content Extractor to the Content Generator and finally to the TTS Converter, ensuring a seamless transformation of multimodal content into audio.
 
-The framework offers a Python API, command-line interface as well as a REST API making it accessible to users with different technical backgrounds and requirements.
+The framework is offered as a Python Package, with a command-line interface as well as a REST API making it accessible to users with different technical backgrounds and requirements.
 
 ## 4.1 Code Examples: Utilizing Podcastfy
 
