@@ -22,7 +22,7 @@ bibliography: paper.bib
 
 # Abstract
 
-Podcastfy is an open-source Python framework that enables programmatic summarization of multisourced multimodal content into multilingual natural-sounding conversations using generative AI. By enabling the transformation of various types of digital content into conversational content, Podcastfy improves accessibility, engagement, and usability for a wide range of users. The open-source nature of the project allows it to be continuously improved and adapted to meet the evolving needs of its users.
+Podcastfy is an open-source Python framework that programmatically transforms multisourced, multimodal content into multilingual, natural-sounding audio conversations using generative AI. By converting various types of digital content - including images, websites, YouTube videos, and PDFs - into conversational audio formats, Podcastfy enhances accessibility, engagement, and usability for a wide range of users. As an open-source project, Podcastfy benefits from continuous community-driven improvements, enhancing its adaptability to evolving user requirements and accessibility standards.
 
 # Statement of Need
 
