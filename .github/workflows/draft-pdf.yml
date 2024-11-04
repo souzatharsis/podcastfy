@@ -26,9 +26,16 @@ jobs:
           # PDF. Note, this should be the same directory as the input
           # paper.md
           path: paper/paper.pdf
-      - name: Commit PDF to repository
-        uses: EndBug/add-and-commit@v9
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
         with:
-          message: '(auto) Paper PDF Draft'
-          # This should be the path to the paper within your repo.
-          add: 'paper/paper.pdf' # 'paper/*.pdf' to commit all PDFs in the paper directory
+          commit-message: '(auto) Paper PDF Draft'
+          title: 'Auto-generated Paper PDF Draft'
+          body: |
+            Automated PDF generation from paper.md
+            - Updated paper.pdf based on latest changes
+          branch: auto-pdf-updates
+          delete-branch: true
+          base: main
+          add-paths: |
+            paper/paper.pdf
