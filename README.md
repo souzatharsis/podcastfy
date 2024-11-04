@@ -1,6 +1,20 @@
+<div align="center">
 <a name="readme-top"></a>
 
 # Podcastfy.ai 🎙️🤖
+An Open Source API alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
+
+https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
+
+[Paper](https://github.com/souzatharsis/podcastfy/blob/main/paper/paper.pdf) |
+[Python Package](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/podcastfy.ipynb) |
+[CLI](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/usage/cli.md) |
+[REST API](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/usage/api.md) |
+[Web App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) |
+[Feedback](https://github.com/souzatharsis/podcastfy/issues)
+
+[![Static Badge](https://img.shields.io/badge/paper-draft-blue)
+](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/paper/paper.pdf)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/souzatharsis/podcastfy/blob/main/podcastfy.ipynb)
 [![PyPi Status](https://img.shields.io/pypi/v/podcastfy)](https://pypi.org/project/podcastfy/)
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
@@ -10,11 +24,9 @@
 [![Documentation Status](https://readthedocs.org/projects/podcastfy/badge/?version=latest)](https://podcastfy.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
+</div>
 
 
-An Open Source alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
-
-https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 
 Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content includes websites, PDFs, YouTube videos, as well as images.
 
