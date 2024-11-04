@@ -10,25 +10,25 @@ tags:
 authors:
   - name: Tharsis T. P. Souza
     orcid: 0000-0003-3260-9526
-    affiliation: 1
+    affiliation: "1, 2"
 affiliations:
   - name: Columbia University in the City of New York
     index: 1
   - name: Instituto Federal de Educacao, Ciencia e Tecnologia do Sul de Minas (IFSULDEMINAS)
     index: 2
-date: 11/01/2024
+date: 11/03/2024
 bibliography: paper.bib
 ---
 
 # Abstract
 
-Podcastfy is an open-source Python framework that programmatically transforms multisourced, multimodal content into multilingual, natural-sounding audio conversations using generative AI. By converting various types of digital content - including images, websites, YouTube videos, and PDFs - into conversational audio formats, Podcastfy enhances accessibility, engagement, and usability for a wide range of users. As an open-source project, Podcastfy benefits from continuous community-driven improvements, enhancing its adaptability to evolving user requirements and accessibility standards.
+`Podcastfy` is an open-source Python framework that programmatically transforms multisourced, multimodal content into multilingual, natural-sounding audio conversations using generative AI. By converting various types of digital content - including images, websites, YouTube videos, and PDFs - into conversational audio formats, `Podcastfy` enhances accessibility, engagement, and usability for a wide range of users. As an open-source project, `Podcastfy` benefits from continuous community-driven improvements, enhancing its adaptability to evolving user requirements and accessibility standards.
 
 # Statement of Need
 
-The rapid expansion of digital content across various formats has intensified the need for tools capable of converting diverse information into accessible and digestible forms \citep{johnson2023adaptive, chen2023digital, mccune2023accessibility}. Existing solutions often fall short due to their proprietary nature, limited multimodal support, or inadequate accessibility features \citep{marcus2019design, peterson2023web, gupta2023advances}.
+The rapid expansion of digital content across various formats has intensified the need for tools capable of converting diverse information into accessible and digestible forms [@johnson2023adaptive; @chen2023digital; @mccune2023accessibility]. Existing solutions often fall short due to their proprietary nature, limited multimodal support, or inadequate accessibility features [@marcus2019design; @peterson2023web; @gupta2023advances].
 
-Podcastfy addresses this gap with an open-source solution that supports multimodal input processing and generates natural-sounding, summarized conversational content. Leveraging advances in large language models (LLMs) and text-to-speech (TTS) synthesis, Podcastfy aims to benefit a diverse group of users — including content creators, educators, researchers, and accessibility advocates — by providing a customizable solution that transforms digital content into multilingual textual and auditory formats, enhancing accessibility and engagement.
+`Podcastfy` addresses this gap with an open-source solution that supports multimodal input processing and generates natural-sounding, summarized conversational content. Leveraging advances in large language models (LLMs) and text-to-speech (TTS) synthesis, `Podcastfy` aims to benefit a diverse group of users — including content creators, educators, researchers, and accessibility advocates — by providing a customizable solution that transforms digital content into multilingual textual and auditory formats, enhancing accessibility and engagement.
 
 # Features
 
@@ -37,31 +37,29 @@ Podcastfy addresses this gap with an open-source solution that supports multimod
 - Create podcasts from pre-existing or edited transcripts.
 - Leverage cloud-based and local LLMs for transcript generation (increased privacy and control).
 - Integrate with advanced text-to-speech models (OpenAI, ElevenLabs, and Microsoft Edge).
-- Provide multi-language support for global content creation and enhanced
+- Provide multi-language support for global content creation and enhanced accessibility.
 - Integrate seamlessly with CLI and Python packages for automated workflows.
 
 See the [Appendix](#appendix) section for audio samples.
 
 # Use Cases
 
-Podcastfy is designed to serve a wide range of applications, including:
+`Podcastfy` is designed to serve a wide range of applications, including:
 
-- **Content Creators** can use Podcastfy to convert blog posts, articles, or multimedia content into podcast-style audio, enabling them to reach broader audiences. By transforming content into an audio format, creators can cater to users who prefer listening over reading.
+- **Content Creators** can use `Podcastfy` to convert blog posts, articles, or multimedia content into podcast-style audio, enabling them to reach broader audiences. By transforming content into an audio format, creators can cater to users who prefer listening over reading.
 
 - **Educators** can transform lecture notes, presentations, and visual materials into audio conversations, making educational content more accessible to students with different learning preferences. This is particularly beneficial for students with visual impairments or those who have difficulty processing written information.
 
 - **Researchers** can convert research papers, visual data, and technical content into conversational audio. This makes it easier for a wider audience, including those with disabilities, to consume and understand complex scientific information. Researchers can also create audio summaries of their work to enhance accessibility.
 
-- **Accessibility Advocates** can use Podcastfy to promote digital accessibility by providing a tool that converts multimodal content into auditory formats. This helps individuals with visual impairments, dyslexia, or other disabilities that make it challenging to consume written or visual content.
+- **Accessibility Advocates** can use `Podcastfy` to promote digital accessibility by providing a tool that converts multimodal content into auditory formats. This helps individuals with visual impairments, dyslexia, or other disabilities that make it challenging to consume written or visual content.
 
 
 # Implementation and Architecture
 
-Podcastfy implements a modular architecture designed for flexibility and extensibility through five main components, as shown in Figure 1.
+`Podcastfy` implements a modular architecture designed for flexibility and extensibility through five main components, as shown in Figure 1.
 
-![Podcastfy's architecture and workflow diagram showing the main components and their interactions.](podcastfy.png)
-
-*Figure 1: Podcastfy's architecture and workflow diagram showing the main components and their interactions.*
+![Podcastfy's architecture and workflow diagram showing the main components and their interactions.](podcastfy.png){width=80%}
 
 1. **Client Interface**
    - Provides both CLI (Command-Line Interface) and API interfaces.
@@ -128,11 +126,11 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 # Customization Examples
 
-Podcastfy offers various customization options that make it versatile for different types of content transformation. To accomplish that, we leverage LangChain's [@langchain2024] prompt management capabilities to dynamically construct prompts for the LLM, adjusting conversation characteristics such as style, roles, and dialogue structure. Below are some examples that demonstrate its capabilities.
+`Podcastfy` offers various customization options that make it versatile for different types of content transformation. To accomplish that, we leverage LangChain's [@langchain2024] prompt management capabilities to dynamically construct prompts for the LLM, adjusting conversation characteristics such as style, roles, and dialogue structure. Below are some examples that demonstrate its capabilities.
 
 ## Academic Debate
 
-The following Python code demonstrates how to configure Podcastfy for an academic debate:
+The following Python code demonstrates how to configure `Podcastfy` for an academic debate:
 
 ```python
 from podcastfy import generate_podcast
@@ -173,7 +171,7 @@ generate_podcast(
 )
 ```
 
-In this example, Podcastfy creates an engaging story by assigning roles like "narrator" and "character" and adjusting the creativity parameter for richer descriptions. Using this configuration, Podcastfy can generate engaging narrative content. By adjusting the creativity parameter, Podcastfy can create a story involving multiple characters, unexpected plot twists, and rich descriptions.
+In this example, `Podcastfy` creates an engaging story by assigning roles like "narrator" and "character" and adjusting the creativity parameter for richer descriptions. Using this configuration, `Podcastfy` can generate engaging narrative content. By adjusting the creativity parameter, `Podcastfy` can create a story involving multiple characters, unexpected plot twists, and rich descriptions.
 
 ## Additional Examples
 
@@ -255,7 +253,7 @@ generate_podcast(
 
 ## Working with Podcastfy Modules
 
-Podcastfy's components are designed to work independently, allowing flexibility in updating or extending each module. The data flows from the `ContentExtractor` module to `ContentGenerator` and finally to the `TexttoSpeech` converter, ensuring a seamless transformation of multimodal content into audio. In this section, we provide some examples of how to use each module.
+`Podcastfy`'s components are designed to work independently, allowing flexibility in updating or extending each module. The data flows from the `ContentExtractor` module to `ContentGenerator` and finally to the `TexttoSpeech` converter, ensuring a seamless transformation of multimodal content into audio. In this section, we provide some examples of how to use each module.
 
 ## Content Extraction
 Podcastfy's `content_extractor.py` module allows users to extract content from a given URL, which can be processed further to generate a podcast. Below is an example of how to use the content extraction component:
@@ -318,7 +316,7 @@ This example demonstrates how to use the `TextToSpeech` class to convert generat
 
 # Limitations
 
-Podcastfy has several limitations, including:
+`Podcastfy` has several limitations, including:
 
 - **Content Accuracy and Quality**
   - The accuracy of generated conversations depends heavily on the capabilities of the underlying LLMs.
@@ -345,20 +343,20 @@ Podcastfy has several limitations, including:
   - Limited support for real-time content processing.
   - May require additional processing for users with specific accessibility needs.
 
-These limitations highlight areas for future development and improvement of the framework. Users should carefully consider these constraints when implementing Podcastfy for their specific use cases and requirements.
+These limitations highlight areas for future development and improvement of the framework. Users should carefully consider these constraints when implementing `Podcastfy` for their specific use cases and requirements.
 
 
 # Conclusion
 
-Podcastfy contributes to multimodal content accessibility by enabling the programmatic transformation of digital content into conversational audio. The framework addresses accessibility needs through automated content summarization and natural-sounding speech synthesis. Its modular design and configurable options allow for flexible content processing and audio generation workflows that can be adapted for different use cases and requirements.
+`Podcastfy` contributes to multimodal content accessibility by enabling the programmatic transformation of digital content into conversational audio. The framework addresses accessibility needs through automated content summarization and natural-sounding speech synthesis. Its modular design and configurable options allow for flexible content processing and audio generation workflows that can be adapted for different use cases and requirements.
 
-As an open-source project, Podcastfy benefits from continuous community-driven improvements and adaptations, helping support its long-term value and relevance in meeting evolving user requirements and accessibility standards.
+As an open-source project, `Podcastfy` benefits from continuous community-driven improvements and adaptations, helping support its long-term value and relevance in meeting evolving user requirements and accessibility standards.
 
-We invite contributions from the community to further enhance the capabilities of Podcastfy. Whether it's by adding support for new input modalities, improving the quality of conversation generation, or optimizing the TTS synthesis, we welcome collaboration to make Podcastfy more powerful and versatile.
+We invite contributions from the community to further enhance the capabilities of `Podcastfy`. Whether it's by adding support for new input modalities, improving the quality of conversation generation, or optimizing the TTS synthesis, we welcome collaboration to make `Podcastfy` more powerful and versatile.
 
 # Acknowledgements
 
-We acknowledge the open-source community and the developers of the various libraries and tools that make Podcastfy possible. Special thanks to the developers of LangChain, Llamafile and HuggingFace. We are particularly grateful to all our [contributors](https://github.com/souzatharsis/podcastfy/graphs/contributors) who have helped improve this project.
+We acknowledge the open-source community and the developers of the various libraries and tools that make `Podcastfy` possible. Special thanks to the developers of LangChain, Llamafile and HuggingFace. We are particularly grateful to all our [contributors](https://github.com/souzatharsis/podcastfy/graphs/contributors) who have helped improve this project.
 
 
 # Appendix
