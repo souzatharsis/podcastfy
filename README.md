@@ -13,7 +13,6 @@ https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 [Web App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) |
 [Feedback](https://github.com/souzatharsis/podcastfy/issues)
 
-[![Static Badge](https://img.shields.io/badge/paper-draft-blue)](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/paper/paper.pdf)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/souzatharsis/podcastfy/blob/main/podcastfy.ipynb)
 [![PyPi Status](https://img.shields.io/pypi/v/podcastfy)](https://pypi.org/project/podcastfy/)
 [![Downloads](https://pepy.tech/badge/podcastfy)](https://pepy.tech/project/podcastfy)
