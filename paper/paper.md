@@ -3,6 +3,7 @@ title: 'When Content Speaks Volumes: Podcastfy — An Open Source Python Package
 tags:
   - Python
   - generative AI
+  - GenAI
   - text-to-speech
   - large language models
   - content transformation
