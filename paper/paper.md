@@ -369,9 +369,9 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 | Image Set | Description | Audio |
 |:--|:--|:--|
-| <img src="../data/images/Senecio.jpeg" alt="Senecio, 1922 (Paul Klee)" width="20%" height="auto"> <img src="../data/images/connection.jpg" alt="Connection of Civilizations (2017) by Gheorghe Virtosu " width="21.5%" height="auto"> | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu  | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-abstract-art) |
-| <img src="../data/images/japan_1.jpg" alt="The Great Wave off Kanagawa, 1831 (Hokusai)" width="20%" height="auto"> <img src="../data/images/japan2.jpg" alt="Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)" width="21.5%" height="auto"> | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-japan) |
-| <img src="../data/images/taylor.png" alt="Taylor Swift" width="28%" height="auto"> <img src="../data/images/monalisa.jpeg" alt="Mona Lisa" width="10.5%" height="auto"> | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/taylor-monalisa) |
+| ![Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu](../data/images/Senecio.jpeg){width=20%} ![Connection of Civilizations (2017) by Gheorghe Virtosu](../data/images/connection.jpg){width=21.5%} | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-abstract-art) |
+| ![The Great Wave off Kanagawa, 1831 (Hokusai)](../data/images/japan_1.jpg){width=20%} ![Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)](../data/images/japan2.jpg){width=21.5%} | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-japan) |
+| ![Taylor Swift](../data/images/taylor.png){width=28%} ![Mona Lisa](../data/images/monalisa.jpeg){width=10.5%} | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/taylor-monalisa) |
 
 ### Text
 | Content Type | Description | Audio | Source |
