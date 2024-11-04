@@ -1,10 +1,10 @@
 ---
-title: 'Podcastfy: An Open-Source Framework for Transforming Multimodal Content into AI-Generated Audio Conversations'
+title: 'When Content Speaks Volumes: Podcastfy — An Open Source Python Package Bridging Multimodal Data and Conversational Audio with GenAI'
 tags:
   - Python
-  - artificial intelligence
+  - generative AI
   - text-to-speech
-  - multimodal
+  - large language models
   - content transformation
   - accessibility
 authors:
