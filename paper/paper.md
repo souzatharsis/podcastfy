@@ -41,7 +41,7 @@ The rapid expansion of digital content across various formats has intensified th
 - Provide multi-language support for global content creation and enhanced accessibility.
 - Integrate seamlessly with CLI and Python packages for automated workflows.
 
-See the [Appendix](#appendix) section for audio samples.
+See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file#audio-examples-).
 
 # Use Cases
 
@@ -359,33 +359,5 @@ We invite contributions from the community to further enhance the capabilities o
 
 We acknowledge the open-source community and the developers of the various libraries and tools that make `Podcastfy` possible. Special thanks to the developers of LangChain, Llamafile and HuggingFace. We are particularly grateful to all our [contributors](https://github.com/souzatharsis/podcastfy/graphs/contributors) who have helped improve this project.
 
-
-# Appendix
-
-## Audio Examples
-This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy).
-
-### Images
-
-| Image Set | Description | Audio |
-|:--|:--|:--|
-| ![Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu](../data/images/Senecio.jpeg){width=20%} ![Connection of Civilizations (2017) by Gheorghe Virtosu](../data/images/connection.jpg){width=21.5%} | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-abstract-art) |
-| ![The Great Wave off Kanagawa, 1831 (Hokusai)](../data/images/japan_1.jpg){width=20%} ![Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)](../data/images/japan2.jpg){width=21.5%} | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-japan) |
-| ![Taylor Swift](../data/images/taylor.png){width=28%} ![Mona Lisa](../data/images/monalisa.jpeg){width=10.5%} | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/taylor-monalisa) |
-
-### Text
-| Content Type | Description | Audio | Source |
-|--------------|-------------|-------|--------|
-| Youtube Video | YCombinator on LLMs | [Audio](https://audio.com/thatupiso/audio/ycombinator-llms) | [YouTube](https://www.youtube.com/watch?v=eBVi_sLaYsc) |
-| PDF | Book: Networks, Crowds, and Markets | [Audio](https://audio.com/thatupiso/audio/networks) | book pdf |
-| Research Paper | Climate Change in France | [Audio](https://audio.com/thatupiso/audio/agro-paper) | [PDF](./data/pdf/s41598-024-58826-w.pdf) |
-| Website | My Personal Website | [Audio](https://audio.com/thatupiso/audio/tharsis) | [Website](https://www.souzatharsis.com) |
-| Website + YouTube | My Personal Website + YouTube Video on AI | [Audio](https://audio.com/thatupiso/audio/tharsis-ai) | [Website](https://www.souzatharsis.com), [YouTube](https://www.youtube.com/watch?v=sJE1dE2dulg) |
-
-### Multi-Lingual Text
-| Language | Content Type | Description | Audio | Source |
-|----------|--------------|-------------|-------|--------|
-| French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
-| Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
 # References
