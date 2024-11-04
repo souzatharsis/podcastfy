@@ -60,7 +60,7 @@ See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file
 
 `Podcastfy` implements a modular architecture designed for flexibility and extensibility through five main components, as shown in Figure 1.
 
-![Podcastfy's architecture and workflow diagram showing the main components and their interactions.](podcastfy.png){width=80%}
+![Podcastfy's simplified architecture and workflow diagram showing the main components and their interactions.](podcastfy.png){width=80%}
 
 1. **Client Interface**
    - Provides both CLI (Command-Line Interface) and API interfaces.

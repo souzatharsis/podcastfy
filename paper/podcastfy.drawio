@@ -155,13 +155,13 @@
             <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="o9hW8QB3ydjtU5aNEMkl-94" value="+youtube_transcriber&#xa;+website_extractor&#xa;+pdf_extractor" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=none;fontColor=#393C56;rounded=1;" vertex="1" parent="o9hW8QB3ydjtU5aNEMkl-93">
+        <mxCell id="o9hW8QB3ydjtU5aNEMkl-94" value="+TTSProvider&#xa;..." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=none;fontColor=#393C56;rounded=1;" vertex="1" parent="o9hW8QB3ydjtU5aNEMkl-93">
           <mxGeometry y="26" width="200" height="54" as="geometry" />
         </mxCell>
         <mxCell id="o9hW8QB3ydjtU5aNEMkl-95" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;rounded=1;" vertex="1" parent="o9hW8QB3ydjtU5aNEMkl-93">
           <mxGeometry y="80" width="200" height="10" as="geometry" />
         </mxCell>
-        <mxCell id="o9hW8QB3ydjtU5aNEMkl-96" value="+extract_content()" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=none;fontColor=#393C56;rounded=1;" vertex="1" parent="o9hW8QB3ydjtU5aNEMkl-93">
+        <mxCell id="o9hW8QB3ydjtU5aNEMkl-96" value="+text_to_speech()" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;labelBackgroundColor=none;fontColor=#393C56;rounded=1;" vertex="1" parent="o9hW8QB3ydjtU5aNEMkl-93">
           <mxGeometry y="90" width="200" height="26" as="geometry" />
         </mxCell>
         <mxCell id="o9hW8QB3ydjtU5aNEMkl-97" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E07A5F;fontColor=#393C56;fillColor=#F2CC8F;endArrow=diamond;endFill=0;endSize=15;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
