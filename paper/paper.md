@@ -62,7 +62,6 @@ See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file
 
 `Podcastfy` implements a modular architecture designed for flexibility and extensibility through five main components, as shown in Figure 1.
 
-![Podcastfy's simplified architecture and workflow diagram showing the main components and their interactions.](podcastfy.png){width=80%}
 
 1. **Client Interface**
    - Provides both CLI (Command-Line Interface) and API interfaces.
@@ -97,6 +96,8 @@ See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file
      - The `TTSFactory` creates appropriate providers based on configuration.
      - Supports multiple backends (OpenAI, ElevenLabs, and Microsoft Edge) through the `TTSProvider` interface.
    - Produces the final podcast audio output.
+
+![Podcastfy's simplified architecture and workflow diagram showing the main components and their interactions.](podcastfy.png){width=80%}
 
 The modular architecture enables independent development and maintenance of each component. This pipeline design ensures a clean separation of concerns while maintaining seamless data transformation between stages. This modular approach also facilitates easy updates and extensions to individual components without affecting the rest of the system.
 
