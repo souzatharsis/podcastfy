@@ -43,6 +43,7 @@ The rapid expansion of digital content across various formats has intensified th
 
 See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file#audio-examples-).
 
+<!--
 # Use Cases
 
 `Podcastfy` is designed to serve a wide range of applications, including:
@@ -54,6 +55,7 @@ See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file
 - **Researchers** can convert research papers, visual data, and technical content into conversational audio. This makes it easier for a wider audience, including those with disabilities, to consume and understand complex scientific information. Researchers can also create audio summaries of their work to enhance accessibility.
 
 - **Accessibility Advocates** can use `Podcastfy` to promote digital accessibility by providing a tool that converts multimodal content into auditory formats. This helps individuals with visual impairments, dyslexia, or other disabilities that make it challenging to consume written or visual content.
+-->
 
 
 # Implementation and Architecture
@@ -151,6 +153,43 @@ generate_podcast(
 
 In this example, the roles are set to "main presenter" and "opposing viewpoint" to simulate an academic debate between two speakers on a chosen topic. This approach is especially useful for educational content that aims to present multiple perspectives on a topic. The output is structured with clear sections such as introduction, argument presentation, counterarguments, and conclusion, allowing listeners to follow complex ideas easily.
 
+
+## Technical Tutorial
+
+In this example, the configuration is optimized for creating technical tutorial content. 
+
+```python
+tutorial_config = {
+    "word_count": 2500,
+    "conversation_style": ["instructional", "step-by-step"],
+    "roles_person1": "expert developer",
+    "roles_person2": "learning developer",
+    "dialogue_structure": [
+        "Concept Introduction",
+        "Technical Background",
+        "Implementation Steps",
+        "Common Pitfalls",
+        "Best Practices"
+    ],
+    "engagement_techniques": [
+        "code examples",
+        "real-world applications",
+        "troubleshooting tips"
+    ],
+    "creativity": 0.4
+}
+
+generate_podcast(
+    urls=["https://tech-blog.com/tutorial"],
+    conversation_config=tutorial_config
+)
+```
+
+
+The roles are set to "expert developer" and "learning developer" to create a natural teaching dynamic. The dialogue structure follows a logical progression from concept introduction through implementation and best practices. The engagement_techniques parameter ensures the content remains practical and applicable by incorporating code examples, real-world applications, and troubleshooting guidance. A moderate creativity setting (0.4) maintains technical accuracy while allowing for engaging explanations and examples.
+
+
+<!--
 ## Storytelling Adventure
 
 The following Python code demonstrates how to generate a storytelling podcast:
@@ -224,33 +263,6 @@ generate_podcast(
 )
 ```
 
-### Technical Tutorial
-```python
-tutorial_config = {
-    "word_count": 2500,
-    "conversation_style": ["instructional", "step-by-step"],
-    "roles_person1": "expert developer",
-    "roles_person2": "learning developer",
-    "dialogue_structure": [
-        "Concept Introduction",
-        "Technical Background",
-        "Implementation Steps",
-        "Common Pitfalls",
-        "Best Practices"
-    ],
-    "engagement_techniques": [
-        "code examples",
-        "real-world applications",
-        "troubleshooting tips"
-    ],
-    "creativity": 0.4
-}
-
-generate_podcast(
-    urls=["https://tech-blog.com/tutorial"],
-    conversation_config=tutorial_config
-)
-```
 
 ## Working with Podcastfy Modules
 
@@ -315,6 +327,7 @@ print(f"Audio saved to {output_audio_file}")
 
 This example demonstrates how to use the `TextToSpeech` class to convert generated text into an audio file. Users can specify different models for TTS, such as `elevenlabs`, `openai`, or `edge` (free to use).
 
+
 # Limitations
 
 `Podcastfy` has several limitations, including:
@@ -345,15 +358,24 @@ This example demonstrates how to use the `TextToSpeech` class to convert generat
   - May require additional processing for users with specific accessibility needs.
 
 These limitations highlight areas for future development and improvement of the framework. Users should carefully consider these constraints when implementing `Podcastfy` for their specific use cases and requirements.
+-->
+
+# Limitations
+
+`Podcastfy` faces several key limitations in its current implementation. The accuracy and quality of generated content heavily depends on the underlying LLMs, with complex technical content potentially being misinterpreted. Additionally, while multilingual support is available, performance varies across languages, with less common languages having limited TTS voice options. The framework also relies on third-party APIs which introduces service availability risks, and local LLM options require significant computational resources.
+
+These limitations highlight areas for future development and improvement of the framework. Users should carefully consider these constraints when implementing `Podcastfy` for their specific use cases and requirements.
 
 
 # Conclusion
 
 `Podcastfy` contributes to multimodal content accessibility by enabling the programmatic transformation of digital content into conversational audio. The framework addresses accessibility needs through automated content summarization and natural-sounding speech synthesis. Its modular design and configurable options allow for flexible content processing and audio generation workflows that can be adapted for different use cases and requirements.
 
+<!--
 As an open-source project, `Podcastfy` benefits from continuous community-driven improvements and adaptations, helping support its long-term value and relevance in meeting evolving user requirements and accessibility standards.
 
 We invite contributions from the community to further enhance the capabilities of `Podcastfy`. Whether it's by adding support for new input modalities, improving the quality of conversation generation, or optimizing the TTS synthesis, we welcome collaboration to make `Podcastfy` more powerful and versatile.
+-->
 
 # Acknowledgements
 
