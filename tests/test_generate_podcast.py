@@ -57,6 +57,7 @@ def sample_conversation_config():
     return conversation_config
 
 
+
 @pytest.fixture(autouse=True)
 def setup_test_directories(sample_conversation_config):
     """Create test directories if they don't exist."""
@@ -317,6 +318,61 @@ def test_generate_transcript_with_user_instructions(
         conversation_config["podcast_tagline"].lower() in content.lower()
     ), f"Expected to find podcast tagline '{conversation_config['podcast_tagline']}' in transcript"
 
+@pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
+def test_generate_podcast_with_custom_llm(sample_config, default_conversation_config):
+    """Test generating a podcast with a custom LLM model."""
+    urls = ["https://en.wikipedia.org/wiki/Artificial_intelligence"]
+    
+    audio_file = generate_podcast(
+        urls=urls,
+        tts_model="edge",
+        config=sample_config,
+        llm_model_name="gpt-4-turbo",
+        api_key_label="OPENAI_API_KEY"
+    )
+    
+    assert audio_file is not None
+    assert os.path.exists(audio_file)
+    assert audio_file.endswith(".mp3")
+    assert os.path.getsize(audio_file) > 1024
+    assert os.path.dirname(audio_file) == default_conversation_config.get(
+        "text_to_speech", {}
+    ).get("output_directories", {}).get("audio")
+
+@pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
+def test_generate_transcript_only_with_custom_llm(sample_config, default_conversation_config):
+    """Test generating only a transcript with a custom LLM model."""
+    urls = ["https://en.wikipedia.org/wiki/Artificial_intelligence"]
+    
+    # Generate transcript with custom LLM settings
+    result = generate_podcast(
+        urls=urls,
+        transcript_only=True,
+        config=sample_config,
+        llm_model_name="gpt-4-turbo",
+        api_key_label="OPENAI_API_KEY"
+    )
+    
+    assert result is not None
+    assert os.path.exists(result)
+    assert result.endswith(".txt")
+    assert os.path.dirname(result) == default_conversation_config.get(
+        "text_to_speech", {}
+    ).get("output_directories", {}).get("transcripts")
+    
+    # Read and verify the content
+    with open(result, "r") as f:
+        content = f.read()
+        
+    # Verify the content follows the Person1/Person2 format
+    assert "<Person1>" in content
+    assert "<Person2>" in content
+    assert len(content.split("<Person1>")) > 1  # At least one question
+    assert len(content.split("<Person2>")) > 1  # At least one answer
+    
+    # Verify the content is substantial
+    min_length = 500  # Minimum expected length in characters
+    assert len(content) > min_length, f"Content length ({len(content)}) is less than minimum expected ({min_length})"
 
 if __name__ == "__main__":
     pytest.main()

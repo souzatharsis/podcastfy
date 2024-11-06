@@ -117,6 +117,25 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
 
+    def test_generate_qa_content_with_custom_model(self):
+        """Test generating Q&A content with a custom model and API key."""
+        content_generator = ContentGenerator(
+            self.api_key,
+            conversation_config=sample_conversation_config()
+        )
+        input_text = "United States of America"
+        
+        # Test with OpenAI model
+        result = content_generator.generate_qa_content(
+            input_text,
+            model_name="gpt-4-turbo",
+            api_key_label="OPENAI_API_KEY"
+        )
+        
+        self.assertIsNotNone(result)
+        self.assertNotEqual(result, "")
+        self.assertIsInstance(result, str)
+
 
 if __name__ == "__main__":
     unittest.main()
