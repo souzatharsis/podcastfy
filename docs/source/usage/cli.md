@@ -3,7 +3,7 @@
 Podcastfy can be used as a command-line interface (CLI) tool. See below some usage examples.
 Please make sure you follow configuration instructions first - [See Setup](README.md#setup).
 
-1. Generate a podcast from URLs using OpenAI TTS (default):
+1. Generate a podcast from URLs (using OpenAI TTS by default):
    ```
    python -m podcastfy.client --url https://example.com/article1 --url https://example.com/article2
    ```
@@ -47,8 +47,18 @@ Please make sure you follow configuration instructions first - [See Setup](READM
    ```
    python -m podcastfy.client --url https://example.com/article1 --image path/to/image1.jpg
    ```
+   
+10. Generate a transcript using a local LLM:
+   ```
+   python -m podcastfy.client --url https://example.com/article1 --transcript-only --local
+   ```
 
 For more information on available options, use:
    ```
    python -m podcastfy.client --help
+   ```
+
+11. Generate a podcast from raw text input:
+   ```
+   python -m podcastfy.client --text "Your raw text content here that you want to convert into a podcast"
    ```
