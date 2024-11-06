@@ -12,11 +12,17 @@ The project uses a combination of a `.env` file for managing API keys and sensit
    ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
    OPENAI_API_KEY=your_openai_api_key_here
    ```
-API Key Requirements:
-- `GEMINI_API_KEY`: Required for transcript generation if not using a [local llm](local_llm.md). (get your [free API key](aistudio.google.com/app/apikey))
-- `OPENAI_API_KEY` or `ELEVENLABS_API_KEY`: Required for audio generation if not using Microsoft Edge TTS `tts_model=edge`.
+## API Key Requirements
 
-Ensure you have the necessary API keys based on your intended usage of Podcastfy.
+The API Keys required depend on the model you are using for transcript generation and audio generation.
+
+- Transcript generation (LLMs):
+   - By default, Podcastfy uses Google's `gemini-1.5-pro-latest` model. Hence, you need to set `GEMINI_API_KEY`.
+   - See how to configure other LLMs [here](how-to.md#custom-llm-support).
+
+- Audio generation (TTS):
+   - By default, Podcastfy uses OpenAI TTS. Hence, you need to set `OPENAI_API_KEY`.
+   - Additional supported models are ElevenLabs ('elevenlabs'), Microsoft Edge ('edge') and Google TTS ('gemini'). All but Edge require an API key.
 
 > [!Note]
 > Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.
