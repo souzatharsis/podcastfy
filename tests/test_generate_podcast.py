@@ -318,7 +318,6 @@ def test_generate_transcript_with_user_instructions(
         conversation_config["podcast_tagline"].lower() in content.lower()
     ), f"Expected to find podcast tagline '{conversation_config['podcast_tagline']}' in transcript"
 
-@pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
 def test_generate_podcast_with_custom_llm(sample_config, default_conversation_config):
     """Test generating a podcast with a custom LLM model."""
     urls = ["https://en.wikipedia.org/wiki/Artificial_intelligence"]
@@ -327,8 +326,8 @@ def test_generate_podcast_with_custom_llm(sample_config, default_conversation_co
         urls=urls,
         tts_model="edge",
         config=sample_config,
-        llm_model_name="gpt-4-turbo",
-        api_key_label="OPENAI_API_KEY"
+        llm_model_name="gemini-1.5-pro-latest",
+        api_key_label="GEMINI_API_KEY"
     )
     
     assert audio_file is not None
@@ -339,7 +338,6 @@ def test_generate_podcast_with_custom_llm(sample_config, default_conversation_co
         "text_to_speech", {}
     ).get("output_directories", {}).get("audio")
 
-@pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
 def test_generate_transcript_only_with_custom_llm(sample_config, default_conversation_config):
     """Test generating only a transcript with a custom LLM model."""
     urls = ["https://en.wikipedia.org/wiki/Artificial_intelligence"]
@@ -349,8 +347,8 @@ def test_generate_transcript_only_with_custom_llm(sample_config, default_convers
         urls=urls,
         transcript_only=True,
         config=sample_config,
-        llm_model_name="gpt-4-turbo",
-        api_key_label="OPENAI_API_KEY"
+        llm_model_name="gemini-1.5-pro-latest",
+        api_key_label="GEMINI_API_KEY"
     )
     
     assert result is not None

@@ -268,8 +268,8 @@ def test_generate_podcast_with_custom_llm():
         [
             "--url", MOCK_URLS[0],
             "--tts-model", "edge",
-            "--llm-model-name", "gpt-4-turbo",
-            "--api-key-label", "OPENAI_API_KEY"
+            "--llm-model-name", "gemini-1.5-pro-latest",
+            "--api-key-label", "GEMINI_API_KEY"
         ]
     )
     
@@ -292,8 +292,8 @@ def test_generate_transcript_only_with_custom_llm():
         [
             "--url", MOCK_URLS[0],
             "--transcript-only",
-            "--llm-model-name", "gpt-4-turbo",
-            "--api-key-label", "OPENAI_API_KEY"
+            "--llm-model-name", "gemini-1.5-pro-latest",
+            "--api-key-label", "GEMINI_API_KEY"
         ]
     )
     

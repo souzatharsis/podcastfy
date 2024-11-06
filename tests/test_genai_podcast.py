@@ -128,8 +128,8 @@ class TestGenAIPodcast(unittest.TestCase):
         # Test with OpenAI model
         result = content_generator.generate_qa_content(
             input_text,
-            model_name="gpt-4-turbo",
-            api_key_label="OPENAI_API_KEY"
+            model_name="gemini-1.5-pro-latest",
+            api_key_label="GEMINI_API_KEY"
         )
         
         self.assertIsNotNone(result)
