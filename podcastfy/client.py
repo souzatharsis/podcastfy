@@ -14,10 +14,7 @@ from podcastfy.content_parser.content_extractor import ContentExtractor
 from podcastfy.content_generator import ContentGenerator
 from podcastfy.text_to_speech import TextToSpeech
 from podcastfy.utils.config import Config, load_config
-from podcastfy.utils.config_conversation import (
-    ConversationConfig,
-    load_conversation_config,
-)
+from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.logger import setup_logger
 from typing import List, Optional, Dict, Any
 import copy
@@ -40,6 +37,8 @@ def process_content(
     image_paths: Optional[List[str]] = None,
     is_local: bool = False,
     text: Optional[str] = None,
+    model_name: Optional[str] = None,
+    api_key_label: Optional[str] = None,
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
@@ -90,6 +89,8 @@ def process_content(
                 image_file_paths=image_paths or [],
                 output_filepath=transcript_filepath,
                 is_local=is_local,
+                model_name=model_name,
+                api_key_label=api_key_label,
             )
 
         if generate_audio:
@@ -98,8 +99,8 @@ def process_content(
                 api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
 
             text_to_speech = TextToSpeech(
-                api_key=api_key,
                 model=tts_model,
+                api_key=api_key,
                 conversation_config=conv_config.to_dict(),
             )
 
@@ -155,6 +156,12 @@ def main(
     text: str = typer.Option(
         None, "--text", "-txt", help="Raw text input to be processed"
     ),
+    llm_model_name: str = typer.Option(
+        None, "--llm-model-name", "-m", help="LLM model name for transcript generation"
+    ),
+    api_key_label: str = typer.Option(
+        None, "--api-key-label", "-k", help="Environment variable name for LLMAPI key"
+    ),
 ):
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, image files, or raw text.
@@ -185,6 +192,8 @@ def main(
                 config=config,
                 is_local=is_local,
                 text=text,
+                model_name=llm_model_name,
+                api_key_label=api_key_label,
             )
         else:
             urls_list = urls or []
@@ -205,6 +214,8 @@ def main(
                 image_paths=image_paths,
                 is_local=is_local,
                 text=text,
+                model_name=llm_model_name,
+                api_key_label=api_key_label,
             )
 
         if transcript_only:
@@ -234,6 +245,8 @@ def generate_podcast(
     image_paths: Optional[List[str]] = None,
     is_local: bool = False,
     text: Optional[str] = None,
+    llm_model_name: Optional[str] = None,
+    api_key_label: Optional[str] = None,
 ) -> Optional[str]:
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -242,13 +255,15 @@ def generate_podcast(
         urls (Optional[List[str]]): List of URLs to process.
         url_file (Optional[str]): Path to a file containing URLs, one per line.
         transcript_file (Optional[str]): Path to a transcript file.
-        tts_model (Optional[str]): TTS model to use ('openai' [default], 'elevenlabs' or 'edge').
+        tts_model (Optional[str]): TTS model to use ('openai' [default], 'elevenlabs', 'edge', or 'gemini').
         transcript_only (bool): Generate only a transcript without audio. Defaults to False.
         config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
         conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.
         image_paths (Optional[List[str]]): List of image file paths to process.
         is_local (bool): Whether to use a local LLM. Defaults to False.
         text (Optional[str]): Raw text input to be processed.
+        llm_model_name (Optional[str]): LLM model name for content generation.
+        api_key_label (Optional[str]): Environment variable name for LLM API key.
 
     Returns:
         Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
@@ -272,6 +287,7 @@ def generate_podcast(
                 raise ValueError(
                     "Config must be either a dictionary or a Config object"
                 )
+
         if not conversation_config:
             conversation_config = load_conversation_config().to_dict()
 
@@ -292,6 +308,8 @@ def generate_podcast(
                 conversation_config=conversation_config,
                 is_local=is_local,
                 text=text,
+                model_name=llm_model_name,
+                api_key_label=api_key_label,
             )
         else:
             urls_list = urls or []
@@ -313,6 +331,8 @@ def generate_podcast(
                 image_paths=image_paths,
                 is_local=is_local,
                 text=text,
+                model_name=llm_model_name,
+                api_key_label=api_key_label,
             )
 
     except Exception as e:

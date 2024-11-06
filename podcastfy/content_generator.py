@@ -10,6 +10,7 @@ import os
 from typing import Optional, Dict, Any, List
 import re
 
+from langchain_community.chat_models import ChatLiteLLM
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.llms.llamafile import Llamafile
 from langchain_core.prompts import ChatPromptTemplate
@@ -30,6 +31,7 @@ class LLMBackend:
         temperature: float,
         max_output_tokens: int,
         model_name: str,
+        api_key_label: str = "OPENAI_API_KEY",
     ):
         """
         Initialize the LLMBackend.
@@ -48,12 +50,16 @@ class LLMBackend:
 
         if is_local:
             self.llm = Llamafile()
-        else:
+        elif "gemini" in self.model_name.lower(): #keeping original gemini as a special case while we build confidence on LiteLLM
             self.llm = ChatGoogleGenerativeAI(
                 model=model_name,
                 temperature=temperature,
                 max_output_tokens=max_output_tokens,
             )
+        else: # user should set api_key_label from input
+            self.llm = ChatLiteLLM(model=self.model_name,
+                                   temperature=temperature,
+                                   api_key=os.environ[api_key_label])
 
 
 class ContentGenerator:
@@ -217,6 +223,8 @@ class ContentGenerator:
         image_file_paths: List[str] = [],
         output_filepath: Optional[str] = None,
         is_local: bool = False,
+        model_name: str = None,
+        api_key_label: str = "OPENAI_API_KEY"
     ) -> str:
         """
         Generate Q&A content based on input texts.
@@ -234,19 +242,21 @@ class ContentGenerator:
                 Exception: If there's an error in generating content.
         """
         try:
+            if not model_name:
+                model_name = self.content_generator_config.get(
+                    "gemini_model", "gemini-1.5-pro-latest"
+                )
+            if is_local:
+                model_name = "User provided local model"
+                
             llmbackend = LLMBackend(
                 is_local=is_local,
                 temperature=self.config_conversation.get("creativity", 0),
                 max_output_tokens=self.content_generator_config.get(
                     "max_output_tokens", 8192
                 ),
-                model_name=(
-                    self.content_generator_config.get(
-                        "gemini_model", "gemini-1.5-pro-latest"
-                    )
-                    if not is_local
-                    else "User provided model"
-                ),
+                model_name=model_name,
+                api_key_label=api_key_label
             )
 
             num_images = 0 if is_local else len(image_file_paths)

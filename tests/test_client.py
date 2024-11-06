@@ -261,5 +261,67 @@ def test_no_input_provided():
     assert "No input provided" in result.stdout
 
 
+def test_generate_podcast_with_custom_llm():
+    """Test generating a podcast with a custom LLM model using CLI."""
+    result = runner.invoke(
+        app,
+        [
+            "--url", MOCK_URLS[0],
+            "--tts-model", "edge",
+            "--llm-model-name", "gemini-1.5-pro-latest",
+            "--api-key-label", "GEMINI_API_KEY"
+        ]
+    )
+    
+    assert result.exit_code == 0
+    assert "Podcast generated successfully using edge TTS model" in result.stdout
+    
+    # Extract and verify the audio file
+    audio_path = result.stdout.split(": ")[-1].strip()
+    assert os.path.exists(audio_path)
+    assert audio_path.endswith(".mp3")
+    assert os.path.getsize(audio_path) > 1024  # Check if larger than 1KB
+    
+    # Clean up
+    os.remove(audio_path)
+
+def test_generate_transcript_only_with_custom_llm():
+    """Test generating only a transcript with a custom LLM model using CLI."""
+    result = runner.invoke(
+        app,
+        [
+            "--url", MOCK_URLS[0],
+            "--transcript-only",
+            "--llm-model-name", "gemini-1.5-pro-latest",
+            "--api-key-label", "GEMINI_API_KEY"
+        ]
+    )
+    
+    assert result.exit_code == 0
+    assert "Transcript generated successfully" in result.stdout
+    
+    # Extract and verify the transcript file
+    transcript_path = result.stdout.split(": ")[-1].strip()
+    assert os.path.exists(transcript_path)
+    assert transcript_path.endswith(".txt")
+    
+    # Verify transcript content
+    with open(transcript_path, "r") as f:
+        content = f.read()
+        assert content != ""
+        assert isinstance(content, str)
+        assert "<Person1>" in content
+        assert "<Person2>" in content
+        assert len(content.split("<Person1>")) > 1  # At least one question
+        assert len(content.split("<Person2>")) > 1  # At least one answer
+        
+        # Verify content is substantial
+        min_length = 500  # Minimum expected length in characters
+        assert len(content) > min_length, \
+            f"Content length ({len(content)}) is less than minimum expected ({min_length})"
+    
+    # Clean up
+    os.remove(transcript_path)
+
 if __name__ == "__main__":
     pytest.main()

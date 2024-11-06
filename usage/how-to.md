@@ -4,12 +4,37 @@ All assume you have podcastfy installed and running.
 
 ## Table of Contents
 
+- [Custom LLM Support](#custom-llm-support)
+- [Running Local LLMs](#running-local-llms)
 - [How to use your own voice in audio podcasts](#how-to-use-your-own-voice-in-audio-podcasts)
 - [How to customize the conversation](#how-to-customize-the-conversation)
 - [How to generate multilingual content](#how-to-generate-multilingual-content)
 - [How to steer the conversation](#how-to-steer-the-conversation)
 
 
+## Custom LLM Support
+
+Podcastfy offers a range of LLM models for generating transcripts including OpenAI, Anthropic, Google as well as local LLM models.
+
+### Cloud-based LLMs
+
+By default, Podcastfy uses Google's `gemini-1.5-pro-latest` model. To select a particular cloud-based LLM model, users can pass the `llm_model_name` and `api_key_label` parameters to the `generate_podcast` function.
+
+For example, to use OpenAI's `gpt-4-turbo` model, users can pass `llm_model_name="gpt-4-turbo"` and `api_key_label="OPENAI_API_KEY"`.
+
+```python
+audio_file = generate_podcast(
+    urls=["https://en.wikipedia.org/wiki/Artificial_intelligence"],
+    llm_model_name="gpt-4-turbo",
+    api_key_label="OPENAI_API_KEY"
+)
+```
+
+Remember to have the correct API key label and value in your environment variables (`.env` file).
+
+### Running Local LLMs
+
+See [local_llm.md](local_llm.md) for more details.
 
 ## How to use your own voice in audio podcasts
 

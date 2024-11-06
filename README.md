@@ -63,25 +63,17 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 - Generate conversational content from multiple sources and formats (images, websites, YouTube, and PDFs).
 - Customize transcript and audio generation (e.g., style, language, structure, length).
-- Create podcasts from pre-existing or edited transcripts.
-- Leverage cloud-based and local LLMs for transcript generation (increased privacy and control).
-- Integrate with advanced text-to-speech models (OpenAI, Google,ElevenLabs, and Microsoft Edge).
+- Generate transcripts using 100+ LLM models (OpenAI, Anthropic, Google etc).
+- Leverage local LLMs for transcript generation for increased privacy and control.
+- Integrate with advanced text-to-speech models (OpenAI, Google, ElevenLabs, and Microsoft Edge).
 - Provide multi-language support for global content creation.
 - Integrate seamlessly with CLI and Python packages for automated workflows.
 
 ## Updates 🚀
 
-### v0.2.3 release
-- Add support for running LLMs locally
-- Enable config for running podcastfy with no API KEYs
-- and [more...](https://github.com/souzatharsis/podcastfy/blob/main/CHANGELOG.md#023---2024-10-15)
-
-### v0.2.2 release
-- Podcastfy is now multi-modal! Users can generate audio from images + text inputs!
-
-### v0.2.0 release
-- Users can now customize podcast style, structure, and content
-- Integration with LangChain for better LLM management
+### v0.3.0+ release
+- Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
+- Integrate with Google's Multispeaker TTS model for high-quality audio generation
 
 ## Quickstart 💻
 
