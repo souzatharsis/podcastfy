@@ -98,8 +98,8 @@ def process_content(
                 api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
 
             text_to_speech = TextToSpeech(
-                model=tts_model,
                 api_key=api_key,
+                model=tts_model,
                 conversation_config=conv_config.to_dict(),
             )
 
@@ -132,7 +132,7 @@ def main(
         None,
         "--tts-model",
         "-tts",
-        help="TTS model to use (openai, elevenlabs or edge)",
+        help="TTS model to use (openai, elevenlabs, edge, or gemini)",
     ),
     transcript_only: bool = typer.Option(
         False, "--transcript-only", help="Generate only a transcript without audio"

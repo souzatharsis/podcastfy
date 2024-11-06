@@ -2,7 +2,7 @@ content_generator:
   gemini_model: "gemini-1.5-pro-latest"
   max_output_tokens: 8192
   prompt_template: "souzatharsis/podcastfy_multimodal_cleanmarkup"
-  prompt_commit: "23094489"
+  prompt_commit: "6c74ab51"
 content_extractor:
   youtube_url_patterns:
     - "youtube.com"

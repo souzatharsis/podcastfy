@@ -3,11 +3,21 @@
 import edge_tts
 import os
 import tempfile
-from typing import Set
+from typing import List
 from ..base import TTSProvider
 
 class EdgeTTS(TTSProvider):
-    def generate_audio(self, text: str, voice: str, model: str) -> bytes:
+    def __init__(self, api_key: str = None, model: str = None):
+        """
+        Initialize Edge TTS provider.
+        
+        Args:
+            api_key (str): Not used for Edge TTS
+            model (str): Model name to use
+        """
+        self.model = model or "default"  # Edge TTS doesn't use models, but we set it for consistency
+
+    def generate_audio(self, text: str, voice: str, model: str, voice2: str = None) -> bytes:
         """Generate audio using Edge TTS."""
         import nest_asyncio
         import asyncio
@@ -36,6 +46,6 @@ class EdgeTTS(TTSProvider):
         loop = asyncio.get_event_loop()
         return loop.run_until_complete(_generate())
         
-    def get_supported_tags(self) -> Set[str]:
+    def get_supported_tags(self) -> List[str]:
         """Get supported SSML tags."""
         return self.COMMON_SSML_TAGS

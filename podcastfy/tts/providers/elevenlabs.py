@@ -5,16 +5,18 @@ from ..base import TTSProvider
 from typing import List
 
 class ElevenLabsTTS(TTSProvider):
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, model: str = "eleven_multilingual_v2"):
         """
         Initialize ElevenLabs TTS provider.
         
         Args:
             api_key (str): ElevenLabs API key
+            model (str): Model name to use. Defaults to "eleven_multilingual_v2"
         """
         self.client = elevenlabs_client.ElevenLabs(api_key=api_key)
+        self.model = model
         
-    def generate_audio(self, text: str, voice: str, model: str) -> bytes:
+    def generate_audio(self, text: str, voice: str, model: str, voice2: str = None) -> bytes:
         """Generate audio using ElevenLabs API."""
         audio = self.client.generate(
             text=text,
@@ -25,4 +27,4 @@ class ElevenLabsTTS(TTSProvider):
         
     def get_supported_tags(self) -> List[str]:
         """Get supported SSML tags."""
-        return ['lang', 'p', 'phoneme', 's', 'say-as', 'sub'] 
+        return ['lang', 'p', 'phoneme', 's', 'sub'] 

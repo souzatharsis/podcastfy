@@ -188,6 +188,7 @@ creativity: 0.7
 - The `output_language` defines both the language of the transcript and the language of the audio. Here's some relevant information:
   - Bottom-line: non-English transcripts are good enough but non-English audio is work-in-progress.
   - Transcripts are generated using Google's Gemini 1.5 Pro, which supports 100+ languages by default.
-  - Audio is generated using `openai` (default), `elevenlabs`, or `edge` TTS models. 
+  - Audio is generated using `openai` (default), `elevenlabs`, `gemini`,or `edge` TTS models. 
+    - The `gemini`(Google) TTS model is English only.
     - The `openai` TTS model supports multiple languages automatically, however non-English voices still present sub-par quality in my experience.
     - The `elevenlabs` TTS model has English voices by default, in order to use a non-English voice you would need to download a custom voice for the target language in your `elevenlabs` account settings and then set the `text_to_speech.elevenlabs.default_voices` parameters to the voice you want to use in the [config.yaml file](https://github.com/pedroslopez/podcastfy/blob/main/podcastfy/config.yaml) (this config file is only available in the source code of the project, not in the pip package, hence if you are using the pip package you will not be able to change the ElevenLabs voice). For more information on ElevenLabs voices, visit [ElevenLabs Voice Library](https://elevenlabs.io/voice-library)

@@ -5,6 +5,7 @@ from .base import TTSProvider
 from .providers.elevenlabs import ElevenLabsTTS
 from .providers.openai import OpenAITTS
 from .providers.edge import EdgeTTS
+from .providers.gemini import GoogleMultispeakerTTS
 
 class TTSProviderFactory:
     """Factory class for creating TTS providers."""
@@ -12,17 +13,19 @@ class TTSProviderFactory:
     _providers: Dict[str, Type[TTSProvider]] = {
         'elevenlabs': ElevenLabsTTS,
         'openai': OpenAITTS,
-        'edge': EdgeTTS
+        'edge': EdgeTTS,
+        'gemini': GoogleMultispeakerTTS
     }
     
     @classmethod
-    def create(cls, provider_name: str, api_key: Optional[str] = None) -> TTSProvider:
+    def create(cls, provider_name: str, api_key: Optional[str] = None, model: Optional[str] = None) -> TTSProvider:
         """
         Create a TTS provider instance.
         
         Args:
             provider_name: Name of the provider to create
             api_key: Optional API key for the provider
+            model: Optional model name for the provider
             
         Returns:
             TTSProvider instance
@@ -35,7 +38,7 @@ class TTSProviderFactory:
             raise ValueError(f"Unsupported provider: {provider_name}. "
                            f"Choose from: {', '.join(cls._providers.keys())}")
                            
-        return provider_class(api_key) if api_key else provider_class()
+        return provider_class(api_key, model) if api_key else provider_class(model=model)
     
     @classmethod
     def register_provider(cls, name: str, provider_class: Type[TTSProvider]) -> None:

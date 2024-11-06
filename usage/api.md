@@ -77,7 +77,7 @@ You can download the file by extending the URL prefix "https://thatupiso-podcast
 | 11 | dialogue_structure | string | Structure of dialogue (e.g. "Introduction,Content,Conclusion") |
 | 12 | podcast_name | string | Name of the podcast |
 | 13 | podcast_tagline | string | Podcast tagline |
-| 14 | tts_model | string | Text-to-speech model ("openai", "elevenlabs", or "edge") |
+| 14 | tts_model | string | Text-to-speech model ("gemini", "openai", "elevenlabs", or "edge") |
 | 15 | creativity_level | number | Level of creativity (0-1) |
 | 16 | user_instructions | string | Custom instructions for generation |
 
