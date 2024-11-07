@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.1] - 2024-11-07
+
+### Breaking Changes
+- Loading images from 'path' has been removed for security reasons. Please specify images by passing an 'url'.
+
+### Added
+- Add podcast generation from topic "Latest News in U.S. Politics"
+- Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
+- Integrate with Google's Multispeaker TTS model for high-quality audio generation
+- Deploy [REST API](https://github.com/souzatharsis/podcastfy/blob/main/usage/api.md) with FastAPI
+- Support for raw text as input
+- Add PRIVACY_POLICY.md
+- Start TESTIMONIALS.md
+- Add apps using Podcastfy to README.md
+
 ## [0.2.3] - 2024-10-15
 
 ### Added

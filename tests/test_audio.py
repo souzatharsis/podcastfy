@@ -45,6 +45,7 @@ class TestAudio(unittest.TestCase):
 
         # Clean up
         os.remove(output_file)
+
     @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
     def test_text_to_speech_google(self):
         tts = TextToSpeech(model="google")

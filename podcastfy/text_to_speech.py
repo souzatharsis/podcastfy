@@ -45,7 +45,9 @@ class TextToSpeech:
             api_key = getattr(self.config, f"{model.upper()}_API_KEY", None)
 
         # Initialize provider using factory
-        self.provider = TTSProviderFactory.create(provider_name=model, api_key=api_key, model=model)
+        self.provider = TTSProviderFactory.create(
+            provider_name=model, api_key=api_key, model=model
+        )
 
         # Setup directories and config
         self._setup_directories()
@@ -80,44 +82,51 @@ class TextToSpeech:
         Args:
                 text (str): Input text to convert to speech.
                 output_file (str): Path to save the output audio file.
-                
+
         Raises:
             ValueError: If the input text is not properly formatted
         """
         # Validate transcript format
-        #self._validate_transcript_format(text)
-        
+        # self._validate_transcript_format(text)
+
         cleaned_text = text
-            
 
         try:
 
-            if self.provider.model.lower() == "gemini": # refactor this ugly if statement. We should have multispeaker and single speaker classes
-                #provider_config = self._get_provider_config()
-                #voice = provider_config.get("default_voices", {}).get("question")
-                #voice2 = provider_config.get("default_voices", {}).get("answer") 
-                #model = provider_config.get("model")
-                audio_data = self.provider.generate_audio(cleaned_text, 
-                                                          voice="S", 
-                                                          model="en-US-Studio-MultiSpeaker", 
-                                                          voice2="R",
-                                                          ending_message=self.ending_message)
+            if (
+                self.provider.model.lower() == "gemini"
+            ):  # refactor this ugly if statement. We should have multispeaker and single speaker classes
+                # provider_config = self._get_provider_config()
+                # voice = provider_config.get("default_voices", {}).get("question")
+                # voice2 = provider_config.get("default_voices", {}).get("answer")
+                # model = provider_config.get("model")
+                audio_data = self.provider.generate_audio(
+                    cleaned_text,
+                    voice="S",
+                    model="en-US-Studio-MultiSpeaker",
+                    voice2="R",
+                    ending_message=self.ending_message,
+                )
                 with open(output_file, "wb") as f:
                     f.write(audio_data)
                 logger.info(f"Audio saved to {output_file}")
             else:
                 with tempfile.TemporaryDirectory(dir=self.temp_audio_dir) as temp_dir:
-                    audio_segments = self._generate_audio_segments(cleaned_text, temp_dir)
+                    audio_segments = self._generate_audio_segments(
+                        cleaned_text, temp_dir
+                    )
                     self._merge_audio_files(audio_segments, output_file)
                     logger.info(f"Audio saved to {output_file}")
-                
+
         except Exception as e:
             logger.error(f"Error converting text to speech: {str(e)}")
             raise
 
     def _generate_audio_segments(self, text: str, temp_dir: str) -> List[str]:
         """Generate audio segments for each Q&A pair."""
-        qa_pairs = self.provider.split_qa(text, self.ending_message, self.provider.get_supported_tags())
+        qa_pairs = self.provider.split_qa(
+            text, self.ending_message, self.provider.get_supported_tags()
+        )
         audio_files = []
         provider_config = self._get_provider_config()
 
@@ -181,8 +190,6 @@ class TextToSpeech:
             logger.error(f"Error merging audio files: {str(e)}")
             raise
 
-
-
     def _setup_directories(self) -> None:
         """Setup required directories for audio processing."""
         self.output_directories = self.tts_config.get("output_directories", {})
@@ -200,13 +207,13 @@ class TextToSpeech:
     def _validate_transcript_format(self, text: str) -> None:
         """
         Validate that the input text follows the correct transcript format.
-        
+
         Args:
             text (str): Input text to validate
-            
+
         Raises:
             ValueError: If the text is not properly formatted
-            
+
         The text should:
         1. Have alternating Person1 and Person2 tags
         2. Each opening tag should have a closing tag
@@ -216,32 +223,36 @@ class TextToSpeech:
             # Check for empty text
             if not text.strip():
                 raise ValueError("Input text is empty")
-                
+
             # Check for matching opening and closing tags
             person1_open = text.count("<Person1>")
             person1_close = text.count("</Person1>")
             person2_open = text.count("<Person2>")
             person2_close = text.count("</Person2>")
-            
+
             if person1_open != person1_close:
-                raise ValueError(f"Mismatched Person1 tags: {person1_open} opening tags and {person1_close} closing tags")
+                raise ValueError(
+                    f"Mismatched Person1 tags: {person1_open} opening tags and {person1_close} closing tags"
+                )
             if person2_open != person2_close:
-                raise ValueError(f"Mismatched Person2 tags: {person2_open} opening tags and {person2_close} closing tags")
-                
+                raise ValueError(
+                    f"Mismatched Person2 tags: {person2_open} opening tags and {person2_close} closing tags"
+                )
+
             # Check for alternating pattern using regex
             pattern = r"<Person1>.*?</Person1>\s*<Person2>.*?</Person2>"
             matches = re.findall(pattern, text, re.DOTALL)
-            
+
             # Calculate expected number of pairs
             expected_pairs = min(person1_open, person2_open)
-            
+
             if len(matches) != expected_pairs:
                 raise ValueError(
                     "Tags are not properly alternating between Person1 and Person2. "
                     "Each Person1 section should be followed by a Person2 section."
                 )
-                
-            # Check for malformed tags (unclosed or improperly nested)
+
+                # Check for malformed tags (unclosed or improperly nested)
                 stack = []
                 for match in re.finditer(r"<(/?)Person([12])>", text):
                     tag = match.group(0)
@@ -251,12 +262,12 @@ class TextToSpeech:
                         stack.pop()
                     else:
                         stack.append(tag[1:-1])
-                        
+
                 if stack:
                     raise ValueError(f"Unclosed tags: {', '.join(stack)}")
-                
+
             logger.debug("Transcript format validation passed")
-            
+
         except ValueError as e:
             logger.error(f"Transcript format validation failed: {str(e)}")
             raise
