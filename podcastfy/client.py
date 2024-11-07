@@ -28,17 +28,18 @@ os.environ["LANGCHAIN_TRACING_V2"] = "false"
 
 
 def process_content(
-    urls=None,
-    transcript_file=None,
-    tts_model="edge",
-    generate_audio=True,
-    config=None,
+    urls: Optional[List[str]] = None,
+    transcript_file: Optional[str] = None,
+    tts_model: Optional[str] = None,
+    generate_audio: bool = True,
+    config: Optional[Dict[str, Any]] = None,
     conversation_config: Optional[Dict[str, Any]] = None,
     image_paths: Optional[List[str]] = None,
     is_local: bool = False,
     text: Optional[str] = None,
     model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
+    topic: Optional[str] = None,
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
@@ -68,15 +69,20 @@ def process_content(
             )
 
             combined_content = ""
+            if urls or topic:
+                content_extractor = ContentExtractor()
 
             if urls:
                 logger.info(f"Processing {len(urls)} links")
-                content_extractor = ContentExtractor()
                 contents = [content_extractor.extract_content(link) for link in urls]
                 combined_content += "\n\n".join(contents)
 
             if text:
                 combined_content += f"\n\n{text}"
+
+            if topic:
+                topic_content = content_extractor.generate_topic_content(topic)
+                combined_content += f"\n\n{topic_content}"
 
             # Generate Q&A content using output directory from conversation config
             random_filename = f"transcript_{uuid.uuid4().hex}.txt"
@@ -162,6 +168,9 @@ def main(
     api_key_label: str = typer.Option(
         None, "--api-key-label", "-k", help="Environment variable name for LLMAPI key"
     ),
+    topic: str = typer.Option(
+        None, "--topic", "-tp", help="Topic to generate podcast about"
+    ),
 ):
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, image files, or raw text.
@@ -194,15 +203,16 @@ def main(
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
+                topic=topic,
             )
         else:
             urls_list = urls or []
             if file:
                 urls_list.extend([line.strip() for line in file if line.strip()])
 
-            if not urls_list and not image_paths and not text:
+            if not urls_list and not image_paths and not text and not topic:
                 raise typer.BadParameter(
-                    "No input provided. Use --url to specify URLs, --file to specify a file containing URLs, --transcript for a transcript file, --image for image files, or --text for raw text input."
+                    "No input provided. Use --url, --file, --transcript, --image, --text, or --topic."
                 )
 
             final_output = process_content(
@@ -216,6 +226,7 @@ def main(
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
+                topic=topic,
             )
 
         if transcript_only:
@@ -247,6 +258,7 @@ def generate_podcast(
     text: Optional[str] = None,
     llm_model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
+    topic: Optional[str] = None,
 ) -> Optional[str]:
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -264,6 +276,7 @@ def generate_podcast(
         text (Optional[str]): Raw text input to be processed.
         llm_model_name (Optional[str]): LLM model name for content generation.
         api_key_label (Optional[str]): Environment variable name for LLM API key.
+        topic (Optional[str]): Topic to generate podcast about.
 
     Returns:
         Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
@@ -310,6 +323,7 @@ def generate_podcast(
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
+                topic=topic,
             )
         else:
             urls_list = urls or []
@@ -317,9 +331,10 @@ def generate_podcast(
                 with open(url_file, "r") as file:
                     urls_list.extend([line.strip() for line in file if line.strip()])
 
-            if not urls_list and not image_paths and not text:
+            if not urls_list and not image_paths and not text and not topic:
                 raise ValueError(
-                    "No input provided. Please provide either 'urls', 'url_file', 'transcript_file', 'image_paths', or 'text'."
+                    "No input provided. Please provide either 'urls', 'url_file', "
+                    "'transcript_file', 'image_paths', 'text', or 'topic'."
                 )
 
             return process_content(
@@ -333,6 +348,7 @@ def generate_podcast(
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
+                topic=topic,
             )
 
     except Exception as e:

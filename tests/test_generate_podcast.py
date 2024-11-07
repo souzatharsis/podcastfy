@@ -7,6 +7,11 @@ from podcastfy.utils.config_conversation import load_conversation_config
 
 
 TEST_URL = "https://en.wikipedia.org/wiki/Friends"
+MOCK_IMAGE_PATHS = [
+    "https://raw.githubusercontent.com/souzatharsis/podcastfy/refs/heads/main/data/images/Senecio.jpeg",
+    "https://raw.githubusercontent.com/souzatharsis/podcastfy/refs/heads/main/data/images/connection.jpg",
+]
+
 
 @pytest.fixture
 def sample_config():
@@ -57,7 +62,6 @@ def sample_conversation_config():
     return conversation_config
 
 
-
 @pytest.fixture(autouse=True)
 def setup_test_directories(sample_conversation_config):
     """Create test directories if they don't exist."""
@@ -72,12 +76,11 @@ def setup_test_directories(sample_conversation_config):
     if temp_dir:
         os.makedirs(temp_dir, exist_ok=True)
 
+
 @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
 def test_generate_podcast_from_urls_11labs(default_conversation_config):
     """Test generating a podcast from a list of URLs."""
-    urls = [
-        TEST_URL
-    ]
+    urls = [TEST_URL]
 
     audio_file = generate_podcast(urls=urls, tts_model="elevenlabs")
     print(f"Audio file generated using ElevenLabs model: {audio_file}")
@@ -88,6 +91,7 @@ def test_generate_podcast_from_urls_11labs(default_conversation_config):
     assert os.path.dirname(audio_file) == default_conversation_config.get(
         "text_to_speech", {}
     ).get("output_directories", {}).get("audio")
+
 
 @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
 def test_generate_podcast_from_urls_openai(default_conversation_config):
@@ -129,9 +133,7 @@ def test_generate_podcast_from_urls_gemini(default_conversation_config):
 
 def test_generate_podcast_from_urls_edge(default_conversation_config):
     """Test generating a podcast from a list of URLs."""
-    urls = [
-        TEST_URL
-    ]
+    urls = [TEST_URL]
 
     audio_file = generate_podcast(urls=urls, tts_model="edge")
     print(f"Audio file generated using Edge model: {audio_file}")
@@ -143,11 +145,10 @@ def test_generate_podcast_from_urls_edge(default_conversation_config):
         "text_to_speech", {}
     ).get("output_directories", {}).get("audio")
 
+
 def test_generate_transcript_only(default_conversation_config):
     """Test generating only a transcript without audio."""
-    urls = [
-        TEST_URL
-    ]
+    urls = [TEST_URL]
 
     result = generate_podcast(urls=urls, transcript_only=True)
     print(f"Transcript file generated: {result}")
@@ -158,6 +159,7 @@ def test_generate_transcript_only(default_conversation_config):
     assert os.path.dirname(result) == default_conversation_config.get(
         "text_to_speech", {}
     ).get("output_directories", {}).get("transcripts")
+
 
 def test_generate_podcast_from_transcript_file(sample_conversation_config):
     """Test generating a podcast from an existing transcript file."""
@@ -188,6 +190,7 @@ def test_generate_podcast_from_transcript_file(sample_conversation_config):
         "text_to_speech", {}
     ).get("output_directories", {}).get("audio")
 
+
 def test_generate_podcast_with_custom_config(sample_config, sample_conversation_config):
     """Test generating a podcast with a custom conversation config."""
     urls = ["https://en.wikipedia.org/wiki/Artificial_intelligence"]
@@ -208,6 +211,7 @@ def test_generate_podcast_with_custom_config(sample_config, sample_conversation_
         == sample_conversation_config["text_to_speech"]["output_directories"]["audio"]
     )
 
+
 def test_generate_from_local_pdf(sample_config):
     """Test generating a podcast from a local PDF file."""
     pdf_file = "tests/data/pdf/file.pdf"
@@ -219,14 +223,16 @@ def test_generate_from_local_pdf(sample_config):
     assert audio_file.endswith(".mp3")
     assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
 
+
 def test_generate_podcast_no_urls_or_transcript():
     """Test that an error is raised when no URLs or transcript file is provided."""
     with pytest.raises(ValueError):
         generate_podcast()
 
+
 def test_generate_podcast_from_images(sample_config, default_conversation_config):
     """Test generating a podcast from two input images."""
-    image_paths = ["tests/data/images/Senecio.jpeg", "tests/data/images/connection.jpg"]
+    image_paths = MOCK_IMAGE_PATHS
 
     audio_file = generate_podcast(
         image_paths=image_paths, tts_model="edge", config=sample_config
@@ -250,6 +256,7 @@ def test_generate_podcast_from_images(sample_config, default_conversation_config
     ]
     assert len(transcript_files) > 0
 
+
 def test_generate_podcast_from_raw_text(sample_config, default_conversation_config):
     """Test generating a podcast from raw input text."""
     raw_text = "The wonderful world of LLMs."
@@ -263,6 +270,7 @@ def test_generate_podcast_from_raw_text(sample_config, default_conversation_conf
     assert os.path.dirname(audio_file) == default_conversation_config.get(
         "text_to_speech", {}
     ).get("output_directories", {}).get("audio")
+
 
 def test_generate_transcript_with_user_instructions(
     sample_config, default_conversation_config
@@ -318,18 +326,19 @@ def test_generate_transcript_with_user_instructions(
         conversation_config["podcast_tagline"].lower() in content.lower()
     ), f"Expected to find podcast tagline '{conversation_config['podcast_tagline']}' in transcript"
 
+
 def test_generate_podcast_with_custom_llm(sample_config, default_conversation_config):
     """Test generating a podcast with a custom LLM model."""
     urls = ["https://en.wikipedia.org/wiki/Artificial_intelligence"]
-    
+
     audio_file = generate_podcast(
         urls=urls,
         tts_model="edge",
         config=sample_config,
         llm_model_name="gemini-1.5-pro-latest",
-        api_key_label="GEMINI_API_KEY"
+        api_key_label="GEMINI_API_KEY",
     )
-    
+
     assert audio_file is not None
     assert os.path.exists(audio_file)
     assert audio_file.endswith(".mp3")
@@ -338,39 +347,45 @@ def test_generate_podcast_with_custom_llm(sample_config, default_conversation_co
         "text_to_speech", {}
     ).get("output_directories", {}).get("audio")
 
-def test_generate_transcript_only_with_custom_llm(sample_config, default_conversation_config):
+
+def test_generate_transcript_only_with_custom_llm(
+    sample_config, default_conversation_config
+):
     """Test generating only a transcript with a custom LLM model."""
     urls = ["https://en.wikipedia.org/wiki/Artificial_intelligence"]
-    
+
     # Generate transcript with custom LLM settings
     result = generate_podcast(
         urls=urls,
         transcript_only=True,
         config=sample_config,
         llm_model_name="gemini-1.5-pro-latest",
-        api_key_label="GEMINI_API_KEY"
+        api_key_label="GEMINI_API_KEY",
     )
-    
+
     assert result is not None
     assert os.path.exists(result)
     assert result.endswith(".txt")
     assert os.path.dirname(result) == default_conversation_config.get(
         "text_to_speech", {}
     ).get("output_directories", {}).get("transcripts")
-    
+
     # Read and verify the content
     with open(result, "r") as f:
         content = f.read()
-        
+
     # Verify the content follows the Person1/Person2 format
     assert "<Person1>" in content
     assert "<Person2>" in content
     assert len(content.split("<Person1>")) > 1  # At least one question
     assert len(content.split("<Person2>")) > 1  # At least one answer
-    
+
     # Verify the content is substantial
     min_length = 500  # Minimum expected length in characters
-    assert len(content) > min_length, f"Content length ({len(content)}) is less than minimum expected ({min_length})"
+    assert (
+        len(content) > min_length
+    ), f"Content length ({len(content)}) is less than minimum expected ({min_length})"
+
 
 if __name__ == "__main__":
     pytest.main()

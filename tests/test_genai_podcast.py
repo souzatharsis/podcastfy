@@ -7,6 +7,13 @@ from podcastfy.content_generator import ContentGenerator
 from podcastfy.utils.config import Config
 from podcastfy.utils.config_conversation import ConversationConfig
 from podcastfy.content_parser.pdf_extractor import PDFExtractor
+from podcastfy.content_parser.content_extractor import ContentExtractor
+
+
+MOCK_IMAGE_PATHS = [
+    "https://raw.githubusercontent.com/souzatharsis/podcastfy/refs/heads/main/data/images/Senecio.jpeg",
+    "https://raw.githubusercontent.com/souzatharsis/podcastfy/refs/heads/main/data/images/connection.jpg",
+]
 
 
 # TODO: Should be a fixture
@@ -61,10 +68,7 @@ class TestGenAIPodcast(unittest.TestCase):
 
     def test_generate_qa_content_from_images(self):
         """Test generating Q&A content from two input images."""
-        image_paths = [
-            "tests/data/images/Senecio.jpeg",
-            "tests/data/images/connection.jpg",
-        ]
+        image_paths = MOCK_IMAGE_PATHS
 
         content_generator = ContentGenerator(self.api_key)
 
@@ -120,21 +124,48 @@ class TestGenAIPodcast(unittest.TestCase):
     def test_generate_qa_content_with_custom_model(self):
         """Test generating Q&A content with a custom model and API key."""
         content_generator = ContentGenerator(
-            self.api_key,
-            conversation_config=sample_conversation_config()
+            self.api_key, conversation_config=sample_conversation_config()
         )
         input_text = "United States of America"
-        
+
         # Test with OpenAI model
         result = content_generator.generate_qa_content(
             input_text,
             model_name="gemini-1.5-pro-latest",
-            api_key_label="GEMINI_API_KEY"
+            api_key_label="GEMINI_API_KEY",
         )
-        
+
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
         self.assertIsInstance(result, str)
+
+    @pytest.mark.skip(reason="Too expensive to be auto tested on Github Actions")
+    def test_generate_qa_content_from_topic(self):
+        """Test generating Q&A content from a specific topic."""
+        topic = "Latest news about OpenAI"
+        content_generator = ContentGenerator(self.api_key)
+        extractor = ContentExtractor()
+        topic = "Latest news about OpenAI"
+
+        # Generate content for the topic
+        content = extractor.generate_topic_content(topic)
+
+        result = content_generator.generate_qa_content(input_texts=content)
+
+        self.assertIsNotNone(result)
+        self.assertNotEqual(result, "")
+        self.assertIsInstance(result, str)
+
+        # Verify Q&A format
+        self.assertIn("<Person1>", result)
+        self.assertIn("<Person2>", result)
+
+        # Verify content relevance
+        lower_result = result.lower()
+        self.assertTrue(
+            any(term in lower_result for term in ["openai"]),
+            "Generated content should be relevant to the topic",
+        )
 
 
 if __name__ == "__main__":

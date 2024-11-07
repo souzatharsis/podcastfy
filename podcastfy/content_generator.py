@@ -50,16 +50,20 @@ class LLMBackend:
 
         if is_local:
             self.llm = Llamafile()
-        elif "gemini" in self.model_name.lower(): #keeping original gemini as a special case while we build confidence on LiteLLM
+        elif (
+            "gemini" in self.model_name.lower()
+        ):  # keeping original gemini as a special case while we build confidence on LiteLLM
             self.llm = ChatGoogleGenerativeAI(
                 model=model_name,
                 temperature=temperature,
                 max_output_tokens=max_output_tokens,
             )
-        else: # user should set api_key_label from input
-            self.llm = ChatLiteLLM(model=self.model_name,
-                                   temperature=temperature,
-                                   api_key=os.environ[api_key_label])
+        else:  # user should set api_key_label from input
+            self.llm = ChatLiteLLM(
+                model=self.model_name,
+                temperature=temperature,
+                api_key=os.environ[api_key_label],
+            )
 
 
 class ContentGenerator:
@@ -114,7 +118,7 @@ class ContentGenerator:
         for i in range(num_images):
             key = f"image_path_{i}"
             image_content = {
-                "image_url": {"path": f"{{{key}}}", "detail": "high"},
+                "image_url": {"url": f"{{{key}}}", "detail": "high"},
                 "type": "image_url",
             }
             image_path_keys.append(key)
@@ -224,7 +228,7 @@ class ContentGenerator:
         output_filepath: Optional[str] = None,
         is_local: bool = False,
         model_name: str = None,
-        api_key_label: str = "OPENAI_API_KEY"
+        api_key_label: str = "OPENAI_API_KEY",
     ) -> str:
         """
         Generate Q&A content based on input texts.
@@ -248,7 +252,7 @@ class ContentGenerator:
                 )
             if is_local:
                 model_name = "User provided local model"
-                
+
             llmbackend = LLMBackend(
                 is_local=is_local,
                 temperature=self.config_conversation.get("creativity", 0),
@@ -256,7 +260,7 @@ class ContentGenerator:
                     "max_output_tokens", 8192
                 ),
                 model_name=model_name,
-                api_key_label=api_key_label
+                api_key_label=api_key_label,
             )
 
             num_images = 0 if is_local else len(image_file_paths)
@@ -287,48 +291,44 @@ class ContentGenerator:
             logger.error(f"Error generating content: {str(e)}")
             raise
 
-
-    def __clean_tss_markup(self, input_text: str, additional_tags: List[str] = ["Person1", "Person2"]) -> str:
+    def __clean_tss_markup(
+        self, input_text: str, additional_tags: List[str] = ["Person1", "Person2"]
+    ) -> str:
         """
         Remove unsupported TSS markup tags from the input text while preserving supported SSML tags.
 
         Args:
             input_text (str): The input text containing TSS markup tags.
-			additional_tags (List[str]): Optional list of additional tags to preserve. Defaults to ["Person1", "Person2"].
+                        additional_tags (List[str]): Optional list of additional tags to preserve. Defaults to ["Person1", "Person2"].
 
-		Returns:
-			str: Cleaned text with unsupported TSS markup tags removed.
-		"""
+                Returns:
+                        str: Cleaned text with unsupported TSS markup tags removed.
+        """
         # List of SSML tags supported by both OpenAI and ElevenLabs
-        supported_tags = [
-            "speak", "lang", "p", "phoneme",
-            "s", "sub"
-        ]
+        supported_tags = ["speak", "lang", "p", "phoneme", "s", "sub"]
 
         # Append additional tags to the supported tags list
         supported_tags.extend(additional_tags)
 
         # Create a pattern that matches any tag not in the supported list
-        pattern = r'</?(?!(?:' + '|'.join(supported_tags) + r')\b)[^>]+>'
+        pattern = r"</?(?!(?:" + "|".join(supported_tags) + r")\b)[^>]+>"
 
         # Remove unsupported tags
-        cleaned_text = re.sub(pattern, '', input_text)
+        cleaned_text = re.sub(pattern, "", input_text)
 
         # Remove any leftover empty lines
-        cleaned_text = re.sub(r'\n\s*\n', '\n', cleaned_text)
+        cleaned_text = re.sub(r"\n\s*\n", "\n", cleaned_text)
 
         # Ensure closing tags for additional tags are preserved
         for tag in additional_tags:
             cleaned_text = re.sub(
                 f'<{tag}>(.*?)(?=<(?:{"|".join(additional_tags)})>|$)',
-                f'<{tag}>\\1</{tag}>',
+                f"<{tag}>\\1</{tag}>",
                 cleaned_text,
-                flags=re.DOTALL
+                flags=re.DOTALL,
             )
 
-        return cleaned_text.replace('(scratchpad)', '').strip()
-
-
+        return cleaned_text.replace("(scratchpad)", "").strip()
 
 
 def main(seed: int = 42, is_local: bool = False) -> None:

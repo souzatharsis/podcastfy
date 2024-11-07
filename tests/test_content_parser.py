@@ -82,6 +82,27 @@ class TestContentParser(unittest.TestCase):
             extracted_content[:500].strip(), expected_content[:500].strip()
         )
 
+    @pytest.mark.skip(reason="Too expensive to be auto tested on Github Actions")
+    def test_generate_topic_content(self):
+        """Test generating content for a specific topic."""
+        extractor = ContentExtractor()
+        topic = "Latest news about OpenAI"
+
+        # Generate content for the topic
+        content = extractor.generate_topic_content(topic)
+
+        # Verify the content
+        self.assertIsNotNone(content)
+        self.assertIsInstance(content, str)
+        self.assertGreater(len(content), 100)  # Content should be substantial
+
+        # Check if content is relevant to the topic
+        lower_content = content.lower()
+        self.assertTrue(
+            any(term in lower_content for term in ["openai"]),
+            "Generated content should be relevant to the topic",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
