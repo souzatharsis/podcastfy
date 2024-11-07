@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 class TextToSpeech:
     def __init__(
         self,
-        model: str = "openai",
+        model: str = None,
         api_key: Optional[str] = None,
         conversation_config: Optional[Dict[str, Any]] = None,
     ):
