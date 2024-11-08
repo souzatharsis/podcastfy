@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.3.3"
+version = "0.3.4"
 description = "An Open Source alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Apache-2.0"
@@ -39,7 +39,6 @@ sphinx-rtd-theme = "^3.0.1"
 sphinx-autodoc-typehints = "^2.5.0"
 nbsphinx = "^0.9.5"
 edge-tts = "^6.1.12"
-langchain-community = "^0.3.2"
 types-pyyaml = "^6.0.12.20240917"
 nest-asyncio = "^1.6.0"
 ffmpeg = "^1.4"
@@ -47,6 +46,7 @@ pytest = "^8.3.3"
 pytest-xdist = "^3.6.1"
 google-cloud-texttospeech = "^2.21.0"
 litellm = "^1.52.0"
+langchain-community = "^0.3.5"
 
 
 [tool.poetry.group.dev.dependencies]

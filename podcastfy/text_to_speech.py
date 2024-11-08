@@ -134,7 +134,7 @@ class TextToSpeech:
             for speaker_type, content in [("question", question), ("answer", answer)]:
                 temp_file = os.path.join(
                     temp_dir, f"{idx}_{speaker_type}.{self.audio_format}"
-                ).replace('\\', '/')  # Normalize path separators for cross-platform compatibility
+                )
                 voice = provider_config.get("default_voices", {}).get(speaker_type)
                 model = provider_config.get("model")
 
@@ -193,7 +193,9 @@ class TextToSpeech:
     def _setup_directories(self) -> None:
         """Setup required directories for audio processing."""
         self.output_directories = self.tts_config.get("output_directories", {})
-        self.temp_audio_dir = self.tts_config.get("temp_audio_dir")
+        temp_dir = self.tts_config.get("temp_audio_dir", "data/audio/tmp/").rstrip("/").split("/")
+        self.temp_audio_dir = os.path.join(*temp_dir)
+        os.makedirs(self.temp_audio_dir, exist_ok=True)
 
         # Create directories if they don't exist
         for dir_path in [
