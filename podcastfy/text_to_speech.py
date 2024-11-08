@@ -134,7 +134,7 @@ class TextToSpeech:
             for speaker_type, content in [("question", question), ("answer", answer)]:
                 temp_file = os.path.join(
                     temp_dir, f"{idx}_{speaker_type}.{self.audio_format}"
-                )
+                ).replace('\\', '/')  # Normalize path separators for cross-platform compatibility
                 voice = provider_config.get("default_voices", {}).get(speaker_type)
                 model = provider_config.get("model")
 

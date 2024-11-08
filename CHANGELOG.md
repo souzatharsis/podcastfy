@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.1] - 2024-11-07
+## [0.3.3] - 2024-11-08
 
 ### Breaking Changes
 - Loading images from 'path' has been removed for security reasons. Please specify images by passing an 'url'.
@@ -14,6 +14,9 @@
 - Add PRIVACY_POLICY.md
 - Start TESTIMONIALS.md
 - Add apps using Podcastfy to README.md
+
+### Fixed
+- #165 Fixed audio generation in Windows OS issue: Normalize path separators for cross-platform compatibility
 
 ## [0.2.3] - 2024-10-15
 

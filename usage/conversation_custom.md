@@ -187,7 +187,7 @@ creativity: 0.7
 - The `word_count` is a target, and the AI may generate more or less than the specified word count. Low word counts are more likely to generate high-level discussions, while high word counts are more likely to generate detailed discussions.
 - The `output_language` defines both the language of the transcript and the language of the audio. Here's some relevant information:
   - Bottom-line: non-English transcripts are good enough but non-English audio is work-in-progress.
-  - Transcripts are generated using Google's Gemini 1.5 Pro, which supports 100+ languages by default.
+  - Transcripts are generated using Google's Gemini 1.5 Pro by default, which supports 100+ languages. Other user-defined models may or may not support non-English languages.
   - Audio is generated using `openai` (default), `elevenlabs`, `gemini`,or `edge` TTS models. 
     - The `gemini`(Google) TTS model is English only.
     - The `openai` TTS model supports multiple languages automatically, however non-English voices still present sub-par quality in my experience.

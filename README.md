@@ -72,8 +72,11 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 ## Updates 🚀
 
 ### v0.3.0+ release
+- Generate podcasts from input topic using real-time internet search
 - Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
 - Integrate with Google's Multispeaker TTS model for high-quality audio generation
+
+See [CHANGELOG](CHANGELOG.md) for more details.
 
 ## Quickstart 💻
 
@@ -107,8 +110,6 @@ python -m podcastfy.client --url <url1> --url <url2>
 - [REST API Reference Manual](usage/api.md)
 
 - [CLI](usage/cli.md)
-
-- [Docker Image](usage/docker.md)
 
 - [How to](usage/how-to.md)
 
