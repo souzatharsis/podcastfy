@@ -10,6 +10,7 @@ All assume you have podcastfy installed and running.
 - [How to customize the conversation](#how-to-customize-the-conversation)
 - [How to generate multilingual content](#how-to-generate-multilingual-content)
 - [How to steer the conversation](#how-to-steer-the-conversation)
+- [How to generate longform podcasts](#how-to-generate-longform-podcasts)
 
 
 ## Custom LLM Support
@@ -113,5 +114,31 @@ python -m podcastfy.client --url https://en.wikipedia.org/wiki/Artificial_intell
 ```
 
 
+## How to generate longform podcasts
 
+By default, Podcastfy generates shortform podcasts. However, users can generate longform podcasts by setting the `longform` parameter to `True`.
+
+```python
+audio_file = generate_podcast(
+    urls=["https://example.com/article1", "https://example.com/article2"],
+    longform=True
+)
+```
+
+LLMs have a limited ability to output long text responses. Most LLMs have a `max_output_tokens` of around 4096 and 8192 tokens. Hence, long-form podcast transcript generation is challeging. We have implemented a technique I call "Content Chunking with Contextual Linking" to enable long-form podcast generation by breaking down the input content into smaller chunks and generating a conversation for each chunk while ensuring the combined transcript is coherent and linked to the original input.
+
+By default, shortform podcasts (default configuration) generate audio of about 2-5 minutes while longform podcasts may reach 20-30 minutes.
+
+Users may adjust lonform podcast length by setting the following parameters in your customization params (see later section "Conversation Customization"):
+- `max_num_chunks` (default: 7): Sets maximum number of rounds of discussions.
+- `min_chunk_size` (default: 600): Sets minimum number of characters to generate a round of discussion.
+
+A "round of discussion" is the output transcript obtained from a single LLM call. The higher the `max_num_chunks` and the lower the `min_chunk_size`, the longer the generated podcast will be.
+Today, this technique allows the user to generate long-form podcasts of any length if input content is long enough. However, the conversation quality may decrease and its length may converge to a maximum if `max_num_chunks`/`min_chunk_size` is to high/low particularly if input content length is limited.
+
+Current implementation limitations:
+- Images are not yet supported for longform podcast generation.
+- Base LLM model is fixed to Gemini
+
+Above limitations are somewhat easily fixable however we chose to make updates in smaller but quick iterations rather than making all-in changes.
 

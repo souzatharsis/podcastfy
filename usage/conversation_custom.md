@@ -21,17 +21,18 @@ Podcastfy uses the default conversation configuration stored in [podcastfy/conve
 
 | Parameter | Default Value | Type | Description |
 |-----------|---------------|------|-------------|
-| word_count | 2000 | int | Target word count for the generated content |
 | conversation_style | ["engaging", "fast-paced", "enthusiastic"] | list[str] | Styles to apply to the conversation |
 | roles_person1 | "main summarizer" | str | Role of the first speaker |
 | roles_person2 | "questioner/clarifier" | str | Role of the second speaker |
 | dialogue_structure | ["Introduction", "Main Content Summary", "Conclusion"] | list[str] | Structure of the dialogue |
-| podcast_name | "PODCASTFY" | str | Name of the podcast |
-| podcast_tagline | "YOUR PERSONAL GenAI PODCAST" | str | Tagline for the podcast |
+| podcast_name | "PODCASTIFY" | str | Name of the podcast |
+| podcast_tagline | "Your Personal Generative AI Podcast" | str | Tagline for the podcast |
 | output_language | "English" | str | Language of the output |
 | engagement_techniques | ["rhetorical questions", "anecdotes", "analogies", "humor"] | list[str] | Techniques to engage the audience |
-| creativity | 0 | int | Level of creativity/temperature (0-1) |
+| creativity | 1 | float | Level of creativity/temperature (0-1) |
 | user_instructions | "" | str | Custom instructions to guide the conversation focus and topics |
+| max_num_chunks | 7 | int | Maximum number of rounds of discussions in longform |
+| min_chunk_size | 600 | int | Minimum number of characters to generate a round of discussion in longform |
 
 ## Text-to-Speech (TTS) Settings
 

@@ -1,4 +1,3 @@
-word_count: 2000
 conversation_style: 
   - "engaging"
   - "fast-paced"
@@ -9,7 +8,7 @@ dialogue_structure:
   - "Introduction"
   - "Main Content Summary"
   - "Conclusion"
-podcast_name: "PODCASTFY"
+podcast_name: "PODCASTIFY"
 podcast_tagline: "Your Personal Generative AI Podcast"
 output_language: "English"
 engagement_techniques: 
@@ -19,6 +18,8 @@ engagement_techniques:
   - "humor"
 creativity: 1
 user_instructions: ""
+max_num_chunks: 7 # maximum number of rounds of discussions in longform
+min_chunk_size: 600 # minimum number of characters to generate a round of discussion in longform
 
 text_to_speech:
   default_tts_model: "openai"
