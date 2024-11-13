@@ -387,5 +387,37 @@ def test_generate_transcript_only_with_custom_llm(
     ), f"Content length ({len(content)}) is less than minimum expected ({min_length})"
 
 
+def test_generate_longform_transcript(sample_config, default_conversation_config):
+    """Test generating a longform podcast transcript from a PDF file."""
+    pdf_file = "tests/data/pdf/file.pdf"
+    
+    # Generate transcript with longform=True
+    result = generate_podcast(
+        urls=[pdf_file],
+        config=sample_config,
+        transcript_only=True,
+        longform=True
+    )
+
+    assert result is not None
+    assert os.path.exists(result)
+    assert result.endswith(".txt")
+    
+    # Read and verify the content
+    with open(result, "r") as f:
+        content = f.read()
+    
+    # Verify the content follows the Person1/Person2 format
+    assert "<Person1>" in content
+    assert "<Person2>" in content
+    
+    # Verify it's a long-form transcript (>1000 characters)
+    assert len(content) > 1000, f"Content length ({len(content)}) is less than minimum expected for longform (1000)"
+    
+    # Verify multiple discussion rounds exist (characteristic of longform)
+    person1_segments = content.count("<Person1>")
+    assert person1_segments > 3, f"Expected more than 3 discussion rounds, got {person1_segments}"
+
+
 if __name__ == "__main__":
     pytest.main()

@@ -67,7 +67,8 @@ class TTSProvider(ABC):
         """
         input_text = self.clean_tss_markup(input_text, supported_tags=supported_tags)
         # Add ending message to the end of input_text
-        input_text += f"<Person2>{ending_message}</Person2>"
+        if input_text.strip().endswith("</Person1>"):
+            input_text += f"<Person2>{ending_message}</Person2>"
 
         # Regular expression pattern to match Person1 and Person2 dialogues
         pattern = r"<Person1>(.*?)</Person1>\s*<Person2>(.*?)</Person2>"

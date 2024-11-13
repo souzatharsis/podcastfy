@@ -49,16 +49,21 @@ Please make sure you follow configuration instructions first - [See Setup](READM
    ```
    
 10. Generate a transcript using a local LLM:
-   ```
-   python -m podcastfy.client --url https://example.com/article1 --transcript-only --local
-   ```
+    ```
+    python -m podcastfy.client --url https://example.com/article1 --transcript-only --local
+    ```
+
+11. Generate a podcast from raw text input:
+    ```
+    python -m podcastfy.client --text "Your raw text content here that you want to convert into a podcast"
+    ```
+
+12. Generate a longform podcast from URLs:
+    ```
+    python -m podcastfy.client --url https://example.com/article1 --url https://example.com/article2 --longform
+    ```
 
 For more information on available options, use:
    ```
    python -m podcastfy.client --help
-   ```
-
-11. Generate a podcast from raw text input:
-   ```
-   python -m podcastfy.client --text "Your raw text content here that you want to convert into a podcast"
    ```

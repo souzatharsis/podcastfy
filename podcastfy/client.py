@@ -40,6 +40,7 @@ def process_content(
     model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
     topic: Optional[str] = None,
+    longform: bool = False
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
@@ -54,7 +55,6 @@ def process_content(
         # Update with provided config if any
         if conversation_config:
             conv_config.configure(conversation_config)
-
         # Get output directories from conversation config
         tts_config = conv_config.get("text_to_speech", {})
         output_directories = tts_config.get("output_directories", {})
@@ -64,21 +64,29 @@ def process_content(
             with open(transcript_file, "r") as file:
                 qa_content = file.read()
         else:
+            # Initialize content_extractor if needed
+            content_extractor = None
+            if urls or topic or (text and longform and len(text.strip()) < 100):
+                content_extractor = ContentExtractor()
+
             content_generator = ContentGenerator(
                 api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
             )
 
             combined_content = ""
-            if urls or topic:
-                content_extractor = ContentExtractor()
-
+            
             if urls:
                 logger.info(f"Processing {len(urls)} links")
                 contents = [content_extractor.extract_content(link) for link in urls]
                 combined_content += "\n\n".join(contents)
 
             if text:
-                combined_content += f"\n\n{text}"
+                if longform and len(text.strip()) < 100:
+                    logger.info("Text too short for direct long-form generation. Extracting context...")
+                    expanded_content = content_extractor.generate_topic_content(text)
+                    combined_content += f"\n\n{expanded_content}"
+                else:
+                    combined_content += f"\n\n{text}"
 
             if topic:
                 topic_content = content_extractor.generate_topic_content(topic)
@@ -97,6 +105,7 @@ def process_content(
                 is_local=is_local,
                 model_name=model_name,
                 api_key_label=api_key_label,
+                longform=longform
             )
 
         if generate_audio:
@@ -171,6 +180,12 @@ def main(
     topic: str = typer.Option(
         None, "--topic", "-tp", help="Topic to generate podcast about"
     ),
+    longform: bool = typer.Option(
+        False, 
+        "--longform", 
+        "-lf", 
+        help="Generate long-form content (only available for text input without images)"
+    ),
 ):
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, image files, or raw text.
@@ -204,6 +219,7 @@ def main(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
+                longform=longform
             )
         else:
             urls_list = urls or []
@@ -227,6 +243,7 @@ def main(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
+                longform=longform
             )
 
         if transcript_only:
@@ -259,6 +276,7 @@ def generate_podcast(
     llm_model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
     topic: Optional[str] = None,
+    longform: bool = False,
 ) -> Optional[str]:
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -324,6 +342,7 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
+                longform=longform
             )
         else:
             urls_list = urls or []
@@ -349,6 +368,7 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
+                longform=longform
             )
 
     except Exception as e:

@@ -24,11 +24,9 @@ https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
 </div>
 
+Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content includes websites, PDFs, images, YouTube videos, as well as user provided topics.
 
-
-Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content includes websites, PDFs, YouTube videos, as well as images.
-
-Unlike UI-based tools focused primarily on note-taking or research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on the programmatic and bespoke generation of engaging, conversational transcripts and audio from a multitude of multi-modal sources, enabling customization and scale.
+Unlike closed-source UI-based tools focused primarily on research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on open source, programmatic and bespoke generation of engaging, conversational content from a multitude of multi-modal sources, enabling customization and scale.
 
 [![Star History Chart](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)
 
@@ -61,16 +59,26 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 ## Features ✨
 
 - Generate conversational content from multiple sources and formats (images, websites, YouTube, and PDFs).
-- Customize transcript and audio generation (e.g., style, language, structure, length).
+- Generate shorts (2-5 minutes) or longform (30+ minutes) podcasts.
+- Customize transcript and audio generation (e.g., style, language, structure).
 - Generate transcripts using 100+ LLM models (OpenAI, Anthropic, Google etc).
 - Leverage local LLMs for transcript generation for increased privacy and control.
 - Integrate with advanced text-to-speech models (OpenAI, Google, ElevenLabs, and Microsoft Edge).
 - Provide multi-language support for global content creation.
 - Integrate seamlessly with CLI and Python packages for automated workflows.
 
+## Built with Podcastfy 🚀
+
+- [OpenNotebook](https://www.open-notebook.ai/)
+- [SurfSense](https://www.surfsense.net/)
+- [Podcast-llm](https://github.com/evandempsey/podcast-llm)
+- [Podcastfy-HuggingFace App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
+- [Podcastfy-UI](https://github.com/giulioco/podcastfy-ui)
+
 ## Updates 🚀
 
 ### v0.3.0+ release
+- Generate longform podcasts
 - Generate podcasts from input topic using real-time internet search
 - Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
 - Integrate with Google's Multispeaker TTS model for high-quality audio generation
@@ -121,11 +129,6 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
 - Set [System Settings](usage/config_custom.md) (e.g. output directory settings)
 
-## Built with Podcastfy 🛠️
-
-- [OpenNotebook](www.open-notebook.ai)
-- [Podcastfy-UI](https://github.com/giulioco/podcastfy-ui)
-- [Podcastfy-Gradio App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
 
 ## License
 

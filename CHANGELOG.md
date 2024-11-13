@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.6] - 2024-11-13
+
+### Added
+- Add longform podcast generation support
+  - Users can now generate longer podcasts (20-30+ minutes) using the `--longform` flag in CLI or `longform=True` in Python API
+  - Implements "Content Chunking with Contextual Linking" technique for coherent long-form content
+  - Configurable via `max_num_chunks` and `min_chunk_size` parameters in conversation config
+  - `word_count` parameter removed from conversation config as it's no longer used
+
 ## [0.3.3] - 2024-11-08
 
 ### Breaking Changes
