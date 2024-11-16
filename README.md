@@ -39,19 +39,31 @@ This sample collection was generated using this [Python Notebook](usage/examples
 
 ### Images
 
+
+
+
+
+
+
+
+
+
+
+
 | Audio | Description | Image Set |
 |:--|:--|:--|
-| <video src="usage/video/senecio.mp4"></video> | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu | <img src="data/images/Senecio.jpeg" alt="Senecio, 1922 (Paul Klee)" width="20%" height="auto"> <img src="data/images/connection.jpg" alt="Connection of Civilizations (2017) by Gheorghe Virtosu " width="21.5%" height="auto"> |
-| <video src="usage/video/japan.mp4"></video> | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | <img src="data/images/japan_1.jpg" alt="The Great Wave off Kanagawa, 1831 (Hokusai)" width="20%" height="auto"> <img src="data/images/japan2.jpg" alt="Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)" width="21.5%" height="auto"> |
-| <video src="usage/video/taylor.mp4"></video> | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | <img src="data/images/taylor.png" alt="Taylor Swift" width="28%" height="auto"> <img src="data/images/monalisa.jpeg" alt="Mona Lisa" width="10.5%" height="auto"> |
+| <video src="https://github.com/user-attachments/assets/a4134a0d-138c-4ab4-bc70-0f53b3507e6b"></video> | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu | <img src="data/images/Senecio.jpeg" alt="Senecio, 1922 (Paul Klee)" width="20%" height="auto"> <img src="data/images/connection.jpg" alt="Connection of Civilizations (2017) by Gheorghe Virtosu " width="21.5%" height="auto"> |
+| <video src="https://github.com/user-attachments/assets/f6aaaeeb-39d2-4dde-afaf-e2cd212e9fed"></video> | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | <img src="data/images/japan_1.jpg" alt="The Great Wave off Kanagawa, 1831 (Hokusai)" width="20%" height="auto"> <img src="data/images/japan2.jpg" alt="Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)" width="21.5%" height="auto"> |
+| <video src="https://github.com/user-attachments/assets/3b6f7075-159b-4540-946f-3f3907dffbca"></video> | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | <img src="data/images/taylor.png" alt="Taylor Swift" width="28%" height="auto"> <img src="data/images/monalisa.jpeg" alt="Mona Lisa" width="10.5%" height="auto"> |
+
 
 
 ### Text
 | Audio | Description | Content Type | Source |
 |-------|-------------|--------------|--------|
-| <video src="usage/video/taylor.mp4"></video>  | Person Website | Website | [Website](www.souzatharsis.com) |
-| [Audio](https://soundcloud.com/high-lander123/amodei?in=high-lander123/sets/podcastfy-sample-audio-longform&si=b8dfaf4e3ddc4651835e277500384156) | Lex Fridman Podcast: Dario Amodei Anthropic's CEO | Youtube | [Youtube](https://www.youtube.com/watch?v=ugvHCXCOmm4) |
-| [Audio](https://soundcloud.com/high-lander123/benjamin?in=high-lander123/sets/podcastfy-sample-audio-longform&si=dca7e2eec1c94252be18b8794499959a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing) | Benjamin Franklin's Autobiography | Youtube | [Book](https://www.youtube.com/watch?v=ugvHCXCOmm4) |
+| <video src="https://github.com/user-attachments/assets/ef41a207-a204-4b60-a11e-06d66a0fbf06"></video>  | Person Website | Website | [Website](www.souzatharsis.com) |
+| [Audio](https://soundcloud.com/high-lander123/amodei?in=high-lander123/sets/podcastfy-sample-audio-longform&si=b8dfaf4e3ddc4651835e277500384156) (`longform=True`) | Lex Fridman Podcast: Dario Amodei Anthropic's CEO | Youtube | [Youtube](https://www.youtube.com/watch?v=ugvHCXCOmm4) |
+| [Audio](https://soundcloud.com/high-lander123/benjamin?in=high-lander123/sets/podcastfy-sample-audio-longform&si=dca7e2eec1c94252be18b8794499959a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing) (`longform=True`)| Benjamin Franklin's Autobiography | Youtube | [Book](https://www.youtube.com/watch?v=ugvHCXCOmm4) |
 
 ### Multi-Lingual Text
 | Language | Content Type | Description | Audio | Source |
