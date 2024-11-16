@@ -6,6 +6,7 @@ It supports ElevenLabs, Google, OpenAI and Edge TTS services and handles the con
 including cleaning of input text and merging of audio files.
 """
 
+import io
 import logging
 import os
 import re
@@ -32,7 +33,7 @@ class TextToSpeech:
 
         Args:
                         model (str): The model to use for text-to-speech conversion.
-                                                Options are 'elevenlabs', 'gemini', 'openai', 'edge' or 'gemini'. Defaults to 'openai'.
+                                                Options are 'elevenlabs', 'gemini', 'openai', 'edge' or 'geminimulti'. Defaults to 'openai'.
                         api_key (Optional[str]): API key for the selected text-to-speech service.
                         conversation_config (Optional[Dict]): Configuration for conversation settings.
         """
@@ -42,7 +43,7 @@ class TextToSpeech:
 
         # Get API key from config if not provided
         if not api_key:
-            api_key = getattr(self.config, f"{model.upper()}_API_KEY", None)
+            api_key = getattr(self.config, f"{model.upper().replace('MULTI', '')}_API_KEY", None)
 
         # Initialize provider using factory
         self.provider = TTSProviderFactory.create(
@@ -94,22 +95,51 @@ class TextToSpeech:
         try:
 
             if (
-                self.provider.model.lower() == "gemini"
-            ):  # refactor this ugly if statement. We should have multispeaker and single speaker classes
-                # provider_config = self._get_provider_config()
-                # voice = provider_config.get("default_voices", {}).get("question")
-                # voice2 = provider_config.get("default_voices", {}).get("answer")
-                # model = provider_config.get("model")
-                audio_data = self.provider.generate_audio(
+                "multi" in self.provider.model.lower()
+            ):  # refactor: We should have instead MultiSpeakerTTS and SingleSpeakerTTS classes
+                provider_config = self._get_provider_config()
+                voice = provider_config.get("default_voices", {}).get("question")
+                voice2 = provider_config.get("default_voices", {}).get("answer")
+                model = provider_config.get("model")
+                audio_data_list = self.provider.generate_audio(
                     cleaned_text,
                     voice="S",
                     model="en-US-Studio-MultiSpeaker",
                     voice2="R",
                     ending_message=self.ending_message,
                 )
-                with open(output_file, "wb") as f:
-                    f.write(audio_data)
-                logger.info(f"Audio saved to {output_file}")
+
+                try:
+                    # First verify we have data
+                    if not audio_data_list:
+                        raise ValueError("No audio data chunks provided")
+
+                    logger.info(f"Starting audio processing with {len(audio_data_list)} chunks")
+                    combined = AudioSegment.empty()
+                    
+                    for i, chunk in enumerate(audio_data_list):
+                        # Save chunk to temporary file
+                        #temp_file = "./tmp.mp3"
+                        #with open(temp_file, "wb") as f:
+                        #    f.write(chunk)
+                        
+                        segment = AudioSegment.from_file(io.BytesIO(chunk))
+                        logger.info(f"################### Loaded chunk {i}, duration: {len(segment)}ms")
+                        
+                        combined += segment
+                    
+                    # Export with high quality settings
+                    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+                    combined.export(
+                        output_file, 
+                        format=self.audio_format,
+                        codec="libmp3lame",
+                        bitrate="320k"
+                    )
+                    
+                except Exception as e:
+                    logger.error(f"Error during audio processing: {str(e)}")
+                    raise
             else:
                 with tempfile.TemporaryDirectory(dir=self.temp_audio_dir) as temp_dir:
                     audio_segments = self._generate_audio_segments(

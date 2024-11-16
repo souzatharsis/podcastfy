@@ -18,7 +18,7 @@ engagement_techniques:
   - "humor"
 creativity: 1
 user_instructions: ""
-max_num_chunks: 7 # maximum number of rounds of discussions in longform
+max_num_chunks: 8 # maximum number of rounds of discussions in longform
 min_chunk_size: 600 # minimum number of characters to generate a round of discussion in longform
 
 text_to_speech:
@@ -42,9 +42,13 @@ text_to_speech:
       answer: "en-US-EricNeural"
   gemini:
     default_voices:
-      question: "R"  
-      answer: "S"  
-    model: "en-US-Studio-MultiSpeaker"
+      question: "en-US-Journey-D"
+      answer: "en-US-Journey-O"
+  geminimulti:
+    default_voices:
+      question: "R"
+      answer: "S"
+      model: "en-US-Studio-MultiSpeaker"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
   ending_message: "Bye Bye!"

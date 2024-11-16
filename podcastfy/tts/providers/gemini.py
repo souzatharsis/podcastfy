@@ -1,42 +1,41 @@
-"""Google Cloud Text-to-Speech provider implementation."""
+"""Google Cloud Text-to-Speech provider implementation for single speaker."""
 
 from google.cloud import texttospeech_v1beta1
 from typing import List
 from ..base import TTSProvider
-import re
 import logging
 
 logger = logging.getLogger(__name__)
 
-class GoogleMultispeakerTTS(TTSProvider):
-    """Google Cloud Text-to-Speech provider with multi-speaker support."""
+class GeminiTTS(TTSProvider):
+    """Google Cloud Text-to-Speech provider for single speaker."""
     
-    def __init__(self, api_key: str = None, model: str = "en-US-Studio-MultiSpeaker"):
+    def __init__(self, api_key: str = None, model: str = "en-US-Journey-F"):
         """
         Initialize Google Cloud TTS provider.
         
         Args:
             api_key (str): Google Cloud API key
+            model (str): Default voice model to use
         """
         self.model = model
         try:
             self.client = texttospeech_v1beta1.TextToSpeechClient(
                 client_options={'api_key': api_key} if api_key else None
             )
-            self.ending_message = ""  # Required for split_qa method
         except Exception as e:
             logger.error(f"Failed to initialize Google TTS client: {str(e)}")
             raise
-            
-    def generate_audio(self, text: str, voice: str = "R", model: str = "en-US-Studio-MultiSpeaker", 
-                       voice2: str = "S", ending_message: str = "") -> bytes:
+
+    def generate_audio(self, text: str, voice: str = "en-US-Journey-F", 
+                      model: str = None, **kwargs) -> bytes:
         """
-        Generate audio using Google Cloud TTS API with multi-speaker support.
+        Generate audio using Google Cloud TTS API.
         
         Args:
-            text (str): Text to convert to speech (in Person1/Person2 format)
-            voice (str): Voice ID for the current segment (R or S)
-            model (str): Model name (must be 'en-US-Studio-MultiSpeaker')
+            text (str): Text to convert to speech
+            voice (str): Voice ID/name to use
+            model (str): Optional model override
             
         Returns:
             bytes: Audio data
@@ -45,41 +44,19 @@ class GoogleMultispeakerTTS(TTSProvider):
             ValueError: If parameters are invalid
             RuntimeError: If audio generation fails
         """
-        print(f"Generating audio with voice: {voice}, voice2: {voice2}, model: {model}")
-        self.validate_parameters(text, voice, model)
-          # Update model if different from default
+        self.validate_parameters(text, voice, model or self.model)
         
         try:
-            # Create multi-speaker markup
-            multi_speaker_markup = texttospeech_v1beta1.MultiSpeakerMarkup()
-            
-            # Get Q&A pairs using the base class method
-            qa_pairs = self.split_qa(text, ending_message, self.get_supported_tags())
-            
-            # Add turns for each Q&A pair
-            for idx, (question, answer) in enumerate(qa_pairs, 1):
-                print(f"question: {question}, answer: {answer}")
-                # Add question turn
-                q_turn = texttospeech_v1beta1.MultiSpeakerMarkup.Turn()
-                q_turn.text = question.strip()
-                q_turn.speaker = voice  # First speaker
-                multi_speaker_markup.turns.append(q_turn)
-                
-                # Add answer turn
-                a_turn = texttospeech_v1beta1.MultiSpeakerMarkup.Turn()
-                a_turn.text = answer.strip()
-                a_turn.speaker = voice2  # Second speaker
-                multi_speaker_markup.turns.append(a_turn)
-            
-            # Create synthesis input with multi-speaker markup
+            # Create synthesis input
             synthesis_input = texttospeech_v1beta1.SynthesisInput(
-                multi_speaker_markup=multi_speaker_markup
+                text=text
             )
             
-            # Set voice parameters - must use the multi-speaker model
+            # Set voice parameters
             voice_params = texttospeech_v1beta1.VoiceSelectionParams(
                 language_code="en-US",
-                name=model  # Use the model attribute
+                name=voice,
+                ssml_gender=texttospeech_v1beta1.SsmlVoiceGender.FEMALE
             )
             
             # Set audio config
@@ -102,7 +79,6 @@ class GoogleMultispeakerTTS(TTSProvider):
     
     def get_supported_tags(self) -> List[str]:
         """Get supported SSML tags."""
-        # Add any Google-specific SSML tags to the common ones
         return self.COMMON_SSML_TAGS
         
     def validate_parameters(self, text: str, voice: str, model: str) -> None:
@@ -111,7 +87,7 @@ class GoogleMultispeakerTTS(TTSProvider):
         
         Args:
             text (str): Input text
-            voice (str): Voice ID
+            voice (str): Voice ID/name
             model (str): Model name
             
         Raises:
@@ -119,8 +95,8 @@ class GoogleMultispeakerTTS(TTSProvider):
         """
         super().validate_parameters(text, voice, model)
         
-        # Additional validation for multi-speaker model
-        if model != "en-US-Studio-MultiSpeaker":
-            raise ValueError(
-                "Google Multi-speaker TTS requires model='en-US-Studio-MultiSpeaker'"
-            )
+        if not text:
+            raise ValueError("Text cannot be empty")
+        
+        if not voice:
+            raise ValueError("Voice must be specified")

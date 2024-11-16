@@ -1,0 +1,16 @@
+<Person1> "WELCOME TO Japan Arts Podcast  - Because Art is Everywhere.  Hello, everyone, and welcome!"
+</Person1><Person2> "Hey, everyone!  So excited to dive into some powerful Japanese art today." 
+</Person2><Person1> "Absolutely! We've got two incredibly evocative pieces to discuss. That iconic Great Wave, right? Hokusai's masterpiece."
+</Person1><Person2> "Oh, The Great Wave.  It just grabs you. It's so dynamic. The way those boats are almost swallowed by the wave...  It reminds me of uh... those overwhelming moments in life, you know? Like when everything feels a bit out of control.”
+</Person2><Person1> " I see, interesting. Yes, that sense of power and the smallness of humanity against nature. It's...it's really something. And the use of color, that Prussian blue—just stunning.”
+</Person1><Person2> "Totally. And then, the almost serene, tiny Mount Fuji in the background. That juxtaposition. It's brilliant!”
+</Person2><Person1> “It's a beautiful chaos, isn't it? It's like life, one minute you're riding high and the next, BAM... A giant wave.”
+</Person1><Person2> "Exactly!  Now, that skeleton piece, the Mitsunobu Takiyasha the Witch and the Skeleton Spectre,  gives me the chills.  A bit different vibe, wouldn't you say?”
+</Person2><Person1> "Oh, absolutely! Talk about macabre. That enormous skeleton looming over those figures... It's unsettling, yet strangely captivating, almost like the other image.”
+</Person1><Person2> “It's the drama, you know? It reminds me of confronting my own fears. I had a terrible fear of snakes, and for a long time, it felt just as massive and paralyzing as that skeleton.”
+</Person2><Person1> "Got it, Got it. It's that exploration of the grotesque, that fascination with the darker side of existence. So characteristic of certain periods in Japanese art.”
+</Person1><Person2>  “And so relevant today, right? We're still fascinated by spooky things! Look at all those creepy AI arts that are trending.”
+</Person2><Person1>  “ True, true. We still grapple with these big themes—life, death, fear, nature's power.”
+</Person1><Person2>  “And these Japanese artists tackled them head-on, centuries ago.  It's pretty inspiring.”
+</Person2><Person1> "Truly. It just shows how art can connect us across time and cultures, eh?  Well, on that note, it's time to wrap up. Thanks for joining us today on Japan Arts Podcast—Because Art is Everywhere.”
+</Person1><Person2> “Bye, everyone!”</Person2>

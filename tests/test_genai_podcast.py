@@ -15,6 +15,9 @@ MOCK_IMAGE_PATHS = [
     "https://raw.githubusercontent.com/souzatharsis/podcastfy/refs/heads/main/data/images/connection.jpg",
 ]
 
+MODEL_NAME = "gemini-1.5-pro-latest"
+API_KEY_LABEL = "GEMINI_API_KEY"
+
 
 # TODO: Should be a fixture
 def sample_conversation_config():
@@ -41,7 +44,7 @@ class TestGenAIPodcast(unittest.TestCase):
         """
         Test the generate_qa_content method of ContentGenerator.
         """
-        content_generator = ContentGenerator(self.api_key)
+        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
         input_text = "United States of America"
         result = content_generator.generate_qa_content(input_text)
         self.assertIsNotNone(result)
@@ -53,7 +56,7 @@ class TestGenAIPodcast(unittest.TestCase):
         Test the generation of content using a custom conversation configuration file.
         """
         conversation_config = sample_conversation_config()
-        content_generator = ContentGenerator(self.api_key, conversation_config)
+        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL, conversation_config=conversation_config)
         input_text = "United States of America"
 
         result = content_generator.generate_qa_content(input_text)
@@ -70,7 +73,7 @@ class TestGenAIPodcast(unittest.TestCase):
         """Test generating Q&A content from two input images."""
         image_paths = MOCK_IMAGE_PATHS
 
-        content_generator = ContentGenerator(self.api_key)
+        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
 
         with tempfile.NamedTemporaryFile(
             mode="w+", suffix=".txt", delete=False
@@ -97,7 +100,7 @@ class TestGenAIPodcast(unittest.TestCase):
     def test_generate_qa_content_from_pdf(self):
         """Test generating Q&A content from a PDF file."""
         pdf_file = "tests/data/pdf/file.pdf"
-        content_generator = ContentGenerator(self.api_key)
+        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
         pdf_extractor = PDFExtractor()
 
         # Extract content from the PDF file
@@ -113,27 +116,9 @@ class TestGenAIPodcast(unittest.TestCase):
     def test_generate_qa_content_from_raw_text(self):
         """Test generating Q&A content from raw input text."""
         raw_text = "The wonderful world of LLMs."
-        content_generator = ContentGenerator(self.api_key)
+        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
 
         result = content_generator.generate_qa_content(input_texts=raw_text)
-
-        self.assertIsNotNone(result)
-        self.assertNotEqual(result, "")
-        self.assertIsInstance(result, str)
-
-    def test_generate_qa_content_with_custom_model(self):
-        """Test generating Q&A content with a custom model and API key."""
-        content_generator = ContentGenerator(
-            self.api_key, conversation_config=sample_conversation_config()
-        )
-        input_text = "United States of America"
-
-        # Test with OpenAI model
-        result = content_generator.generate_qa_content(
-            input_text,
-            model_name="gemini-1.5-pro-latest",
-            api_key_label="GEMINI_API_KEY",
-        )
 
         self.assertIsNotNone(result)
         self.assertNotEqual(result, "")
@@ -143,7 +128,7 @@ class TestGenAIPodcast(unittest.TestCase):
     def test_generate_qa_content_from_topic(self):
         """Test generating Q&A content from a specific topic."""
         topic = "Latest news about OpenAI"
-        content_generator = ContentGenerator(self.api_key)
+        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
         extractor = ContentExtractor()
         topic = "Latest news about OpenAI"
 

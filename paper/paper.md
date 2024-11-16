@@ -43,7 +43,6 @@ The rapid expansion of digital content across various formats has intensified th
 
 See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file#audio-examples-).
 
-<!--
 # Use Cases
 
 `Podcastfy` is designed to serve a wide range of applications, including:
@@ -55,7 +54,6 @@ See [audio samples](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file
 - **Researchers** can convert research papers, visual data, and technical content into conversational audio. This makes it easier for a wider audience, including those with disabilities, to consume and understand complex scientific information. Researchers can also create audio summaries of their work to enhance accessibility.
 
 - **Accessibility Advocates** can use `Podcastfy` to promote digital accessibility by providing a tool that converts multimodal content into auditory formats. This helps individuals with visual impairments, dyslexia, or other disabilities that make it challenging to consume written or visual content.
--->
 
 
 # Implementation and Architecture
@@ -190,7 +188,6 @@ generate_podcast(
 The roles are set to "expert developer" and "learning developer" to create a natural teaching dynamic. The dialogue structure follows a logical progression from concept introduction through implementation and best practices. The engagement_techniques parameter ensures the content remains practical and applicable by incorporating code examples, real-world applications, and troubleshooting guidance. A moderate creativity setting (0.4) maintains technical accuracy while allowing for engaging explanations and examples.
 
 
-<!--
 ## Storytelling Adventure
 
 The following Python code demonstrates how to generate a storytelling podcast:
@@ -359,7 +356,6 @@ This example demonstrates how to use the `TextToSpeech` class to convert generat
   - May require additional processing for users with specific accessibility needs.
 
 These limitations highlight areas for future development and improvement of the framework. Users should carefully consider these constraints when implementing `Podcastfy` for their specific use cases and requirements.
--->
 
 # Limitations
 
@@ -372,11 +368,8 @@ These limitations highlight areas for future development and improvement of the 
 
 `Podcastfy` contributes to multimodal content accessibility by enabling the programmatic transformation of digital content into conversational audio. The framework addresses accessibility needs through automated content summarization and natural-sounding speech synthesis. Its modular design and configurable options allow for flexible content processing and audio generation workflows that can be adapted for different use cases and requirements.
 
-<!--
-As an open-source project, `Podcastfy` benefits from continuous community-driven improvements and adaptations, helping support its long-term value and relevance in meeting evolving user requirements and accessibility standards.
-
 We invite contributions from the community to further enhance the capabilities of `Podcastfy`. Whether it's by adding support for new input modalities, improving the quality of conversation generation, or optimizing the TTS synthesis, we welcome collaboration to make `Podcastfy` more powerful and versatile.
--->
+
 
 # Acknowledgements
 
