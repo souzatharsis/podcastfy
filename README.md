@@ -4,7 +4,11 @@
 # Podcastfy.ai 🎙️🤖
 An Open Source API alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
 
-https://github.com/user-attachments/assets/f1559e70-9cf9-4576-b48b-87e7dad1dd0b
+
+
+https://github.com/user-attachments/assets/5d42c106-aabe-44c1-8498-e9c53545ba40
+
+
 
 [Paper](https://github.com/souzatharsis/podcastfy/blob/main/paper/paper.pdf) |
 [Python Package](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/podcastfy.ipynb) |
