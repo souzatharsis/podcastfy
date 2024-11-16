@@ -14,7 +14,7 @@ https://github.com/user-attachments/assets/5d42c106-aabe-44c1-8498-e9c53545ba40
 [Python Package](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/podcastfy.ipynb) |
 [CLI](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/usage/cli.md) |
 [REST API](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/usage/api.md) |
-[Web App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) |
+[Web App](https://openpod.fly.dev/) |
 [Feedback](https://github.com/souzatharsis/podcastfy/issues)
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/souzatharsis/podcastfy/blob/main/podcastfy.ipynb)
