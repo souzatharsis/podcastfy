@@ -53,7 +53,6 @@ class Config:
 			print("Warning: .env file not found. Using environment variables if available.")
 		
 		# Load API keys from environment variables
-		self.JINA_API_KEY: str = os.getenv("JINA_API_KEY", "")
 		self.GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 		self.OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 		self.ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")

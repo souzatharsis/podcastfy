@@ -35,15 +35,15 @@ Here's a table showing example configurations:
 |---------------|----------|-----------|-------------------|
 | Default | Gemini | OpenAI | GEMINI_API_KEY and OPENAI_API_KEY |
 | No API Keys Required | Local LLM | Edge | None |
-| Recommended | Gemini | 'gemini' (Google) | GEMINI_API_KEY |
+| Recommended | Gemini | 'geminimulti' (Google) | GEMINI_API_KEY |
 
-In our experience, ElevenLabs and Google TTS model are the best models in terms quality of audio generation with the latter having an edge over the former due to its multispeaker capability. ElevenLabs is the most expensive but it's easy to setup and offers great customization (voice options and multilingual capability). Google TTS model is cheaper but is limited to English only and requires some extra steps to set up.
+In our experience, Google's Multispeaker TTS model ('geminimulti') is the best model in terms of quality followed by ElevenLabs which offers great customization (voice options and multilingual capability). Google's multispeaker TTS model is limited to English only and requires an additional set up step.
 
 ## Setting up Google TTS Model
 
-You can use Google TTS model by setting the `tts_model` parameter to `gemini` in `Podcastfy`.
+You can use Google's Multispeaker TTS model by setting the `tts_model` parameter to `geminimulti` in `Podcastfy`.
 
-Google TTS model requires a Google Cloud API key, you can use the same API key you are already using for Gemini or create a new one. After you have secured your API Key there are two additional steps in order to use Google Multispeaker TTS model:
+Google's Multispeaker TTS model requires a Google Cloud API key, you can use the same API key you are already using for Gemini or create a new one. After you have secured your API Key there are two additional steps in order to use Google Multispeaker TTS model:
 
 - Step 1: You will need to enable the Cloud Text-to-Speech API on the API key.
    - Go to "https://console.cloud.google.com/apis/dashboard"

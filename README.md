@@ -31,24 +31,23 @@ Unlike closed-source UI-based tools focused primarily on research synthesis (e.g
 [![Star History Chart](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)
 
 ## Audio Examples 🔊
-This sample collection is also [available at audio.com](https://audio.com/thatupiso/collections/podcastfy).
+This sample collection was generated using this [Python Notebook](usage/examples.ipynb).
 
 ### Images
 
-| Image Set | Description | Audio |
+| Audio | Description | Image Set |
 |:--|:--|:--|
-| <img src="data/images/Senecio.jpeg" alt="Senecio, 1922 (Paul Klee)" width="20%" height="auto"> <img src="data/images/connection.jpg" alt="Connection of Civilizations (2017) by Gheorghe Virtosu " width="21.5%" height="auto"> | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu  | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-abstract-art) |
-| <img src="data/images/japan_1.jpg" alt="The Great Wave off Kanagawa, 1831 (Hokusai)" width="20%" height="auto"> <img src="data/images/japan2.jpg" alt="Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)" width="21.5%" height="auto"> | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/output-file-japan) |
-| <img src="data/images/taylor.png" alt="Taylor Swift" width="28%" height="auto"> <img src="data/images/monalisa.jpeg" alt="Mona Lisa" width="10.5%" height="auto"> | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | [<span style="font-size: 25px;">🔊</span>](https://audio.com/thatupiso/audio/taylor-monalisa) |
+| <video src="usage/video/senecio.mp4"></video> | Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu | <img src="data/images/Senecio.jpeg" alt="Senecio, 1922 (Paul Klee)" width="20%" height="auto"> <img src="data/images/connection.jpg" alt="Connection of Civilizations (2017) by Gheorghe Virtosu " width="21.5%" height="auto"> |
+| <video src="usage/video/japan.mp4"></video> | The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi) | <img src="data/images/japan_1.jpg" alt="The Great Wave off Kanagawa, 1831 (Hokusai)" width="20%" height="auto"> <img src="data/images/japan2.jpg" alt="Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)" width="21.5%" height="auto"> |
+| <video src="usage/video/taylor.mp4"></video> | Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci) | <img src="data/images/taylor.png" alt="Taylor Swift" width="28%" height="auto"> <img src="data/images/monalisa.jpeg" alt="Mona Lisa" width="10.5%" height="auto"> |
+
 
 ### Text
-| Content Type | Description | Audio | Source |
-|--------------|-------------|-------|--------|
-| Youtube Video | YCombinator on LLMs | [Audio](https://audio.com/thatupiso/audio/ycombinator-llms) | [YouTube](https://www.youtube.com/watch?v=eBVi_sLaYsc) |
-| PDF | Book: Networks, Crowds, and Markets | [Audio](https://audio.com/thatupiso/audio/networks) | book pdf |
-| Research Paper | Climate Change in France | [Audio](https://audio.com/thatupiso/audio/agro-paper) | [PDF](./data/pdf/s41598-024-58826-w.pdf) |
-| Website | My Personal Website | [Audio](https://audio.com/thatupiso/audio/tharsis) | [Website](https://www.souzatharsis.com) |
-| Website + YouTube | My Personal Website + YouTube Video on AI | [Audio](https://audio.com/thatupiso/audio/tharsis-ai) | [Website](https://www.souzatharsis.com), [YouTube](https://www.youtube.com/watch?v=sJE1dE2dulg) |
+| Audio | Description | Content Type | Source |
+|-------|-------------|--------------|--------|
+| <video src="usage/video/taylor.mp4"></video>  | Person Website | Website | [Website](www.souzatharsis.com) |
+| [Audio](https://soundcloud.com/high-lander123/amodei?in=high-lander123/sets/podcastfy-sample-audio-longform&si=b8dfaf4e3ddc4651835e277500384156) | Lex Fridman Podcast: Dario Amodei Anthropic's CEO | Youtube | [Youtube](https://www.youtube.com/watch?v=ugvHCXCOmm4) |
+| [Audio](https://soundcloud.com/high-lander123/benjamin?in=high-lander123/sets/podcastfy-sample-audio-longform&si=dca7e2eec1c94252be18b8794499959a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing) | Benjamin Franklin's Autobiography | Youtube | [Book](https://www.youtube.com/watch?v=ugvHCXCOmm4) |
 
 ### Multi-Lingual Text
 | Language | Content Type | Description | Audio | Source |
@@ -58,7 +57,7 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 
 ## Features ✨
 
-- Generate conversational content from multiple sources and formats (images, websites, YouTube, and PDFs).
+- Generate conversational content from multiple sources and formats (images, text, websites, YouTube, and PDFs).
 - Generate shorts (2-5 minutes) or longform (30+ minutes) podcasts.
 - Customize transcript and audio generation (e.g., style, language, structure).
 - Generate transcripts using 100+ LLM models (OpenAI, Anthropic, Google etc).
@@ -75,13 +74,13 @@ This sample collection is also [available at audio.com](https://audio.com/thatup
 - [Podcastfy-HuggingFace App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
 - [Podcastfy-UI](https://github.com/giulioco/podcastfy-ui)
 
-## Updates 🚀
+## Updates 🚀🚀
 
-### v0.3.6+ release
-- Generate shorts or longform podcasts!
-- Generate podcasts from input topic using real-time internet search
+### v0.4.0+ release
+- Released new Multi-Speaker TTS model (is it the one NotebookLM uses?!?)
+- Generate short or longform podcasts
+- Generate podcasts from input topic using grounded real-time web search
 - Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
-- Integrate with Google's Multispeaker TTS model for high-quality audio generation
 
 See [CHANGELOG](CHANGELOG.md) for more details.
 
@@ -112,13 +111,14 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [Python Package Quickstart](podcastfy.ipynb)
 
+- [How to](usage/how-to.md)
+
 - [Python Package Reference Manual](https://podcastfy.readthedocs.io/en/latest/podcastfy.html)
 
 - [REST API Reference Manual](usage/api.md)
 
 - [CLI](usage/cli.md)
 
-- [How to](usage/how-to.md)
 
 Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app. (Note: This UI app is less extensively tested than the Python package.)
 
@@ -132,7 +132,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 
 ## License
 
-This software is licensed under [Apache 2.0](LICENSE). [Here](usage/license-guide.md) are a few instructions if you would like to use podcastfy in your software.
+This software is licensed under [Apache 2.0](LICENSE). See [instructions](usage/license-guide.md) if you would like to use podcastfy in your software.
 
 ## Contributing 🤝
 

@@ -19,12 +19,24 @@ from podcastfy.utils.logger import setup_logger
 from typing import List, Optional, Dict, Any
 import copy
 
+import logging
+
+# Configure logging to show all levels and write to both file and console
+""" logging.basicConfig(
+    level=logging.DEBUG,  # Show all levels of logs
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('podcastfy.log'),  # Save to file
+        logging.StreamHandler()  # Print to console
+    ]
+) """
+
 
 logger = setup_logger(__name__)
 
 app = typer.Typer()
 
-os.environ["LANGCHAIN_TRACING_V2"] = "false"
+os.environ["LANGCHAIN_TRACING_V2"] = "False"
 
 
 def process_content(
@@ -70,7 +82,10 @@ def process_content(
                 content_extractor = ContentExtractor()
 
             content_generator = ContentGenerator(
-                api_key=config.GEMINI_API_KEY, conversation_config=conv_config.to_dict()
+                is_local=is_local,
+                model_name=model_name,
+                api_key_label=api_key_label,
+                conversation_config=conv_config.to_dict()
             )
 
             combined_content = ""
@@ -102,16 +117,13 @@ def process_content(
                 combined_content,
                 image_file_paths=image_paths or [],
                 output_filepath=transcript_filepath,
-                is_local=is_local,
-                model_name=model_name,
-                api_key_label=api_key_label,
                 longform=longform
             )
 
         if generate_audio:
             api_key = None
             if tts_model != "edge":
-                api_key = getattr(config, f"{tts_model.upper()}_API_KEY")
+                api_key = getattr(config, f"{tts_model.upper().replace('MULTI', '')}_API_KEY")
 
             text_to_speech = TextToSpeech(
                 model=tts_model,
@@ -300,6 +312,7 @@ def generate_podcast(
         Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
     """
     try:
+        print("Generating podcast...")
         # Load default config
         default_config = load_config()
 

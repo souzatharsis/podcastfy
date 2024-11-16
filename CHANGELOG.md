@@ -1,5 +1,13 @@
 # Changelog
 
+
+## [0.4.0] - 2024-11-16
+
+### Added
+- Add Google Singlespeaker (Journey) and Multispeaker TTS models 
+- Fixed limitations of Google Multispeaker TTS model: 5000 bytes input limite and 500 bytes per turn limit.
+- Updated tests and docs accordingly
+
 ## [0.3.6] - 2024-11-13
 
 ### Added

@@ -223,6 +223,29 @@ def test_generate_from_local_pdf(sample_config):
     assert audio_file.endswith(".mp3")
     assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
 
+@pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
+def test_generate_from_local_pdf_multispeaker(sample_config):
+    """Test generating a podcast from a local PDF file."""
+    pdf_file = "tests/data/pdf/file.pdf"
+    audio_file = generate_podcast(
+        urls=[pdf_file], config=sample_config, tts_model="geminimulti"
+    )
+    assert audio_file is not None
+    assert os.path.exists(audio_file)
+    assert audio_file.endswith(".mp3")
+    assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
+
+@pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
+def test_generate_from_local_pdf_multispeaker_longform(sample_config):
+    """Test generating a podcast from a local PDF file."""
+    pdf_file = "tests/data/pdf/file.pdf"
+    audio_file = generate_podcast(
+        urls=[pdf_file], config=sample_config, tts_model="geminimulti", longform=True
+    )
+    assert audio_file is not None
+    assert os.path.exists(audio_file)
+    assert audio_file.endswith(".mp3")
+    assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
 
 def test_generate_podcast_no_urls_or_transcript():
     """Test that an error is raised when no URLs or transcript file is provided."""

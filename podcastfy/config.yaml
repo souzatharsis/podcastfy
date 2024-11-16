@@ -1,15 +1,15 @@
 content_generator:
   llm_model: "gemini-1.5-pro-latest"
-  meta_llm_model: "gemini-1.5-flash"
+  meta_llm_model: "gemini-1.5-pro-latest"
   max_output_tokens: 8192
   prompt_template: "souzatharsis/podcastfy_multimodal_cleanmarkup"
   prompt_commit: "b2365f11"
   longform_prompt_template: "souzatharsis/podcastfy_longform"
-  longform_prompt_commit: "d6ac4601"
+  longform_prompt_commit: "acfdbc91" #"ff865019"
   cleaner_prompt_template: "souzatharsis/podcastfy_longform_clean"
   cleaner_prompt_commit: "8c110a0b"
   rewriter_prompt_template: "souzatharsis/podcast_rewriter"
-  rewriter_prompt_commit: "6789eeca"
+  rewriter_prompt_commit: "8ee296fb"
 content_extractor:
   youtube_url_patterns:
     - "youtube.com"

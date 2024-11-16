@@ -48,8 +48,20 @@ class TestAudio(unittest.TestCase):
 
     @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
     def test_text_to_speech_google(self):
-        tts = TextToSpeech(model="google")
+        tts = TextToSpeech(model="gemini")
         output_file = os.path.join(self.output_dir, "test_google.mp3")
+        tts.convert_to_speech(self.test_text, output_file)
+
+        self.assertTrue(os.path.exists(output_file))
+        self.assertGreater(os.path.getsize(output_file), 1024)
+
+        # Clean up
+        os.remove(output_file)
+
+    @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
+    def test_text_to_speech_google_multi(self):
+        tts = TextToSpeech(model="gemini_multi")
+        output_file = os.path.join(self.output_dir, "test_google_multi.mp3")
         tts.convert_to_speech(self.test_text, output_file)
 
         self.assertTrue(os.path.exists(output_file))

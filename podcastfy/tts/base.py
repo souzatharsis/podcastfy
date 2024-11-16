@@ -66,6 +66,11 @@ class TTSProvider(ABC):
                 List[Tuple[str, str]]: A list of tuples containing (Person1, Person2) dialogues.
         """
         input_text = self.clean_tss_markup(input_text, supported_tags=supported_tags)
+        
+        # Add placeholder if input_text starts with <Person2>
+        if input_text.strip().startswith("<Person2>"):
+            input_text = "<Person1> Humm... </Person1>" + input_text
+
         # Add ending message to the end of input_text
         if input_text.strip().endswith("</Person1>"):
             input_text += f"<Person2>{ending_message}</Person2>"
@@ -82,7 +87,6 @@ class TTSProvider(ABC):
             for person1, person2 in matches
         ]
         return processed_matches
-    
 
     def clean_tss_markup(self, input_text: str, additional_tags: List[str] = ["Person1", "Person2"], supported_tags: List[str] = None) -> str:
         """

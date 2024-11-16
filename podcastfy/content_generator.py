@@ -10,6 +10,7 @@ import os
 from typing import Optional, Dict, Any, List
 import re
 
+
 from langchain_community.chat_models import ChatLiteLLM
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.llms.llamafile import Llamafile
@@ -32,7 +33,7 @@ class LLMBackend:
         temperature: float,
         max_output_tokens: int,
         model_name: str,
-        api_key_label: str = "OPENAI_API_KEY",
+        api_key_label: str = "GEMINI_API_KEY",
     ):
         """
         Initialize the LLMBackend.
@@ -56,14 +57,16 @@ class LLMBackend:
         }
 
         if is_local:
-            self.llm = Llamafile()
+            self.llm = Llamafile() # replace with ollama
         elif (
             "gemini" in self.model_name.lower()
         ):  # keeping original gemini as a special case while we build confidence on LiteLLM
+
             self.llm = ChatGoogleGenerativeAI(
+                api_key=os.environ["GEMINI_API_KEY"],
                 model=model_name,
                 max_output_tokens=max_output_tokens,
-                **common_params
+                **common_params,
             )
         else:  # user should set api_key_label from input
             self.llm = ChatLiteLLM(
@@ -96,7 +99,7 @@ class LongFormContentGenerator:
         7. Generate a long conversation - output max_output_tokens tokens
     """
     
-    def __init__(self, llm_chain, config_conversation: Dict[str, Any]):
+    def __init__(self, chain, llm, config_conversation: Dict[str, Any], ):
         """
         Initialize ConversationGenerator.
         
@@ -104,7 +107,8 @@ class LongFormContentGenerator:
             llm_chain: The LangChain chain to use for generation
             config_conversation: Conversation configuration dictionary
         """
-        self.llm_chain = llm_chain
+        self.llm_chain = chain
+        self.llm = llm
         self.max_num_chunks = config_conversation.get("max_num_chunks", 10)  # Default if not in config
         self.min_chunk_size = config_conversation.get("min_chunk_size", 200)  # Default if not in config
 
@@ -196,8 +200,7 @@ class LongFormContentGenerator:
         if part_idx == 0:
             enhanced_params["instruction"] = f"""
             ALWAYS START THE CONVERSATION GREETING THE AUDIENCE: Welcome to {enhanced_params["podcast_name"]} - {enhanced_params["podcast_tagline"]}.
-            You are generating the Introduction part of a a long podcast conversation.
-            This conversation is about CONTEXT.
+            You are generating the Introduction part of a long podcast conversation.
             Don't cover any topics yet, just introduce yourself and the topic. Leave the rest for later parts, following these guidelines:
             """
         elif part_idx == total_parts - 1:
@@ -255,7 +258,7 @@ class LongFormContentGenerator:
                 chat_context = response
             else:
                 chat_context = chat_context + response
-            print(f"Generated part {i+1} size {len(chunk)}")
+            print(f"Generated part {i+1}/{num_parts}: Size {len(chunk)} characters.")
             #print(f"[LLM-START] Step: {i+1} ##############################")
             #print(response)
             #print(f"[LLM-END] Step: {i+1} ##############################")
@@ -290,12 +293,16 @@ class ContentCleanerMixin:
     @staticmethod
     def _clean_scratchpad(text: str) -> str:
         """
-        Remove scratchpad blocks from the text.
+        Remove scratchpad blocks, plaintext blocks, standalone triple backticks, any string enclosed in brackets, and underscores around words.
         """
         try:
             import re
-            pattern = r'```scratchpad\n.*?```\n?'
+            pattern = r'```scratchpad\n.*?```\n?|```plaintext\n.*?```\n?|```\n?|\[.*?\]'
             cleaned_text = re.sub(pattern, '', text, flags=re.DOTALL)
+            # Remove "xml" if followed by </Person1> or </Person2>
+            cleaned_text = re.sub(r"xml(?=\s*</Person[12]>)", "", cleaned_text)
+            # Remove underscores around words
+            cleaned_text = re.sub(r'_(.*?)_', r'\1', cleaned_text)
             return cleaned_text.strip()
         except Exception as e:
             logger.error(f"Error cleaning scratchpad content: {str(e)}")
@@ -310,6 +317,7 @@ class ContentCleanerMixin:
         Remove unsupported TSS markup tags while preserving supported ones.
         """
         try:
+            input_text = ContentCleanerMixin._clean_scratchpad(input_text)
             supported_tags = ["speak", "lang", "p", "phoneme", "s", "sub"]
             supported_tags.extend(additional_tags)
 
@@ -325,6 +333,9 @@ class ContentCleanerMixin:
                     cleaned_text,
                     flags=re.DOTALL,
                 )
+            
+
+
             return cleaned_text.strip()
             
         except Exception as e:
@@ -379,7 +390,7 @@ class StandardContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
     Uses common cleaning operations from ContentCleanerMixin.
     """
     
-    def __init__(self, content_generator_config: Dict[str, Any], config_conversation: Dict[str, Any]):
+    def __init__(self, llm, content_generator_config: Dict[str, Any], config_conversation: Dict[str, Any]):
         """
         Initialize StandardContentStrategy.
         
@@ -387,6 +398,7 @@ class StandardContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
             content_generator_config (Dict[str, Any]): Configuration for content generation
             config_conversation (Dict[str, Any]): Conversation configuration
         """
+        self.llm = llm
         self.content_generator_config = content_generator_config
         self.config_conversation = config_conversation
     
@@ -451,7 +463,7 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
         - Requires non-empty input text
     """
     
-    def __init__(self, content_generator_config: Dict[str, Any], config_conversation: Dict[str, Any]):
+    def __init__(self, llm, content_generator_config: Dict[str, Any], config_conversation: Dict[str, Any]):
         """
         Initialize LongFormContentStrategy.
         
@@ -459,6 +471,7 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
             content_generator_config (Dict[str, Any]): Configuration for content generation
             config_conversation (Dict[str, Any]): Conversation configuration
         """
+        self.llm = llm
         self.content_generator_config = content_generator_config
         self.config_conversation = config_conversation
     
@@ -475,7 +488,7 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
                 prompt_params: Dict[str, Any],
                 **kwargs) -> str:
         """Generate long-form content."""
-        generator = LongFormContentGenerator(chain, self.config_conversation)
+        generator = LongFormContentGenerator(chain, self.llm, self.config_conversation)
         return generator.generate_long_form(
             input_texts,
             prompt_params
@@ -489,7 +502,7 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
         standard_clean = self._clean_tss_markup(response)
         # Then apply additional long-form specific cleaning
         return self._clean_transcript_response(standard_clean, config)
-        
+    
     def _clean_transcript_response(self, transcript: str, config: Dict[str, Any]) -> str:
         """
         Clean transcript using a two-step process with LLM-based cleaning.
@@ -507,49 +520,88 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
         Note:
             Falls back to original or partially cleaned transcript if any cleaning step fails
         """
-        try:
+        logger.debug("Starting transcript cleaning process")
 
+        final_transcript = self._fix_alternating_tags(transcript)
+        
+        logger.debug("Completed transcript cleaning process")
+        
+        return final_transcript
+
+         
+    def _clean_transcript_response_DEPRECATED(self, transcript: str, config: Dict[str, Any]) -> str:
+        """
+        Clean transcript using a two-step process with LLM-based cleaning.
+        
+        First cleans the markup using a specialized prompt template, then rewrites
+        for better flow and consistency using a second prompt template.
+        
+        Args:
+            transcript (str): Raw transcript text that may contain scratchpad blocks
+            config (Dict[str, Any]): Configuration dictionary containing LLM and prompt settings
+            
+        Returns:
+            str: Cleaned and rewritten transcript with proper tags and improved flow
+            
+        Note:
+            Falls back to original or partially cleaned transcript if any cleaning step fails
+        """
+        logger.debug("Starting transcript cleaning process")
+        try:
+            logger.debug("Initializing LLM model for cleaning")
             # Initialize model with config values for consistent cleaning
-            llm = ChatGoogleGenerativeAI(
-                model=self.content_generator_config["meta_llm_model"],
-                temperature=0,
-                presence_penalty=0.75,  # Encourage diverse content
-                frequency_penalty=0.75  # Avoid repetition
-            )
+            #llm = ChatGoogleGenerativeAI(
+            #    model=self.content_generator_config["meta_llm_model"],
+            #    temperature=0,
+            #    presence_penalty=0.75,  # Encourage diverse content
+            #    frequency_penalty=0.75  # Avoid repetition
+            #)
+            llm = self.llm
+            logger.debug("LLM model initialized successfully")
+
             # Get prompt templates from hub
+            logger.debug("Pulling prompt templates from hub")
             try:
                 clean_transcript_prompt = hub.pull(f"{self.content_generator_config['cleaner_prompt_template']}:{self.content_generator_config['cleaner_prompt_commit']}")
                 rewrite_prompt = hub.pull(f"{self.content_generator_config['rewriter_prompt_template']}:{self.content_generator_config['rewriter_prompt_commit']}")
+                logger.debug("Successfully pulled prompt templates")
             except Exception as e:
                 logger.error(f"Error pulling prompt templates: {str(e)}")
                 return transcript
             
+            logger.debug("Creating cleaning and rewriting chains")
             # Create chains
             clean_chain = clean_transcript_prompt | llm | StrOutputParser()
             rewrite_chain = rewrite_prompt | llm | StrOutputParser()
             
             # Run cleaning chain
+            logger.debug("Executing cleaning chain")
             try:
                 cleaned_response = clean_chain.invoke({"transcript": transcript})
                 if not cleaned_response:
                     logger.warning("Cleaning chain returned empty response")
                     return transcript
+                logger.debug("Successfully cleaned transcript")
             except Exception as e:
                 logger.error(f"Error in cleaning chain: {str(e)}")
                 return transcript
             
             # Run rewriting chain
+            logger.debug("Executing rewriting chain")
             try:
                 rewritten_response = rewrite_chain.invoke({"transcript": cleaned_response})
                 if not rewritten_response:
                     logger.warning("Rewriting chain returned empty response")
                     return cleaned_response  # Fall back to cleaned version
+                logger.debug("Successfully rewrote transcript")
             except Exception as e:
                 logger.error(f"Error in rewriting chain: {str(e)}")
                 return cleaned_response  # Fall back to cleaned version
                 
             # Fix alternating tags in the final response
+            logger.debug("Fixing alternating tags")
             final_transcript = self._fix_alternating_tags(rewritten_response)
+            logger.debug("Completed transcript cleaning process")
             
             return final_transcript
             
@@ -652,7 +704,11 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
 
 class ContentGenerator:
     def __init__(
-        self, api_key: str, conversation_config: Optional[Dict[str, Any]] = None
+        self, 
+        is_local: bool=False, 
+        model_name: str="gemini-1.5-pro-latest", 
+        api_key_label: str="GEMINI_API_KEY",
+        conversation_config: Optional[Dict[str, Any]] = None
     ):
         """
         Initialize the ContentGenerator.
@@ -661,7 +717,7 @@ class ContentGenerator:
                 api_key (str): API key for Google's Generative AI.
                 conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
         """
-        os.environ["GOOGLE_API_KEY"] = api_key
+        #os.environ["GOOGLE_API_KEY"] = api_key
         self.config = load_config()
         self.content_generator_config = self.config.get("content_generator", {})
 
@@ -676,14 +732,38 @@ class ContentGenerator:
 
         if transcripts_dir and not os.path.exists(transcripts_dir):
             os.makedirs(transcripts_dir)
+        
+        self.is_local = is_local
+
+                # Initialize LLM backend
+        if not model_name:
+            model_name = self.content_generator_config.get("llm_model")
+        if is_local:
+            model_name = "User provided local model"
+
+        llm_backend = LLMBackend(
+            is_local=is_local,
+            temperature=self.config_conversation.get("creativity", 1),
+            max_output_tokens=self.content_generator_config.get(
+                "max_output_tokens", 8192
+            ),
+            model_name=model_name,
+            api_key_label=api_key_label,
+        )
+
+        self.llm = llm_backend.llm
+
+
 
         # Initialize strategies with configs
         self.strategies = {
             True: LongFormContentStrategy(
+                self.llm,
                 self.content_generator_config,
                 self.config_conversation
             ),
             False: StandardContentStrategy(
+                self.llm,
                 self.content_generator_config,
                 self.config_conversation
             )
@@ -759,9 +839,6 @@ class ContentGenerator:
         input_texts: str = "",
         image_file_paths: List[str] = [],
         output_filepath: Optional[str] = None,
-        is_local: bool = False,
-        model_name: str = None,
-        api_key_label: str = "OPENAI_API_KEY",
         longform: bool = False
     ) -> str:
         """
@@ -790,27 +867,12 @@ class ContentGenerator:
             # Validate inputs for chosen strategy
             strategy.validate(input_texts, image_file_paths)
 
-            # Initialize LLM backend
-            if not model_name:
-                model_name = self.content_generator_config.get("llm_model")
-            if is_local:
-                model_name = "User provided local model"
-
-            llmbackend = LLMBackend(
-                is_local=is_local,
-                temperature=self.config_conversation.get("creativity", 0),
-                max_output_tokens=self.content_generator_config.get(
-                    "max_output_tokens", 8192
-                ),
-                model_name=model_name,
-                api_key_label=api_key_label,
-            )
-
             # Setup chain
-            num_images = 0 if is_local else len(image_file_paths)
+            num_images = 0 if self.is_local else len(image_file_paths)
             self.prompt_template, image_path_keys = self.__compose_prompt(num_images, longform)
             self.parser = StrOutputParser()
-            self.chain = self.prompt_template | llmbackend.llm | self.parser
+            self.chain = self.prompt_template | self.llm | self.parser
+
 
             # Prepare parameters using strategy
             prompt_params = strategy.compose_prompt_params(

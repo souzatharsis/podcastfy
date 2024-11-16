@@ -5,8 +5,8 @@ from .base import TTSProvider
 from .providers.elevenlabs import ElevenLabsTTS
 from .providers.openai import OpenAITTS
 from .providers.edge import EdgeTTS
-from .providers.gemini import GoogleMultispeakerTTS
-
+from .providers.gemini import GeminiTTS
+from .providers.geminimulti import GeminiMultiTTS
 class TTSProviderFactory:
     """Factory class for creating TTS providers."""
     
@@ -14,7 +14,8 @@ class TTSProviderFactory:
         'elevenlabs': ElevenLabsTTS,
         'openai': OpenAITTS,
         'edge': EdgeTTS,
-        'gemini': GoogleMultispeakerTTS
+        'gemini': GeminiTTS,
+        'geminimulti': GeminiMultiTTS
     }
     
     @classmethod
