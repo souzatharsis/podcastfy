@@ -82,9 +82,10 @@ Sample 3: Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci)
 
 - [OpenNotebook](https://www.open-notebook.ai/)
 - [SurfSense](https://www.surfsense.net/)
+- [OpenPod](https://openpod.fly.dev/)
 - [Podcast-llm](https://github.com/evandempsey/podcast-llm)
 - [Podcastfy-HuggingFace App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
-- [Podcastfy-UI](https://github.com/giulioco/podcastfy-ui)
+
 
 ## Updates 🚀🚀
 
