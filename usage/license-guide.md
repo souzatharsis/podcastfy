@@ -1,6 +1,7 @@
 ## Attribution
 
-If you use `Podcastfy` in your software, we kindly ask you to add attribution. "Powered by Podcastfy.ai" would suffice. Please reach out, we would love to learn more how you are using `Podcastfy` and how we can better enable your use case.
+1. If you use `Podcastfy` in your software, we kindly ask you to add attribution. "Powered by Podcastfy.ai" would suffice. Please reach out, we would love to learn more how you are using `Podcastfy` and how we can better enable your use case.
+2. Feel free to add your product to the the "[Built with Podcastfy](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file#built-with-podcastfy-)" list by submitting a PR to our README.
 
 ## License
 
