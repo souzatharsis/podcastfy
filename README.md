@@ -67,35 +67,6 @@ Sample 3: Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci)
 | French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
 | Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
-## Features ✨
-
-- Generate conversational content from multiple sources and formats (images, text, websites, YouTube, and PDFs).
-- Generate shorts (2-5 minutes) or longform (30+ minutes) podcasts.
-- Customize transcript and audio generation (e.g., style, language, structure).
-- Generate transcripts using 100+ LLM models (OpenAI, Anthropic, Google etc).
-- Leverage local LLMs for transcript generation for increased privacy and control.
-- Integrate with advanced text-to-speech models (OpenAI, Google, ElevenLabs, and Microsoft Edge).
-- Provide multi-language support for global content creation.
-- Integrate seamlessly with CLI and Python packages for automated workflows.
-
-## Built with Podcastfy 🚀
-
-- [OpenNotebook](https://www.open-notebook.ai/)
-- [SurfSense](https://www.surfsense.net/)
-- [OpenPod](https://openpod.fly.dev/)
-- [Podcast-llm](https://github.com/evandempsey/podcast-llm)
-- [Podcastfy-HuggingFace App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
-
-
-## Updates 🚀🚀
-
-### v0.4.0+ release
-- Released new Multi-Speaker TTS model (is it the one NotebookLM uses?!?)
-- Generate short or longform podcasts
-- Generate podcasts from input topic using grounded real-time web search
-- Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
-
-See [CHANGELOG](CHANGELOG.md) for more details.
 
 ## Quickstart 💻
 
@@ -132,15 +103,52 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [CLI](usage/cli.md)
 
-
-Experience Podcastfy with our [HuggingFace](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo) 🤗 Spaces app. (Note: This UI app is less extensively tested than the Python package.)
-
 ## Customization 🔧
 
 Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
 - Customize podcast [conversation](usage/conversation_custom.md) (e.g. format, style, voices)
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
 - Set [System Settings](usage/config_custom.md) (e.g. output directory settings)
+
+## Features ✨
+
+- Generate conversational content from multiple sources and formats (images, text, websites, YouTube, and PDFs).
+- Generate shorts (2-5 minutes) or longform (30+ minutes) podcasts.
+- Customize transcript and audio generation (e.g., style, language, structure).
+- Generate transcripts using 100+ LLM models (OpenAI, Anthropic, Google etc).
+- Leverage local LLMs for transcript generation for increased privacy and control.
+- Integrate with advanced text-to-speech models (OpenAI, Google, ElevenLabs, and Microsoft Edge).
+- Provide multi-language support for global content creation.
+- Integrate seamlessly with CLI and Python packages for automated workflows.
+
+## Testimonials 💬
+
+> "Loving this initiative and the best I have seen so far especially for a 'non-techie' user."
+
+> "Love that you casually built an open source version of the most popular product Google built in the last decade"
+
+> "Your library was very straightforward to work with. You did Amazing work brother 🙏"
+
+> "I think it's awesome that you were inspired/recognize how hard it is to beat NotebookLM's quality, but you did an *incredible* job with this! It sounds incredible, and it's open-source! Thank you for being amazing!"
+
+## Built with Podcastfy 🚀
+
+- [OpenNotebook](https://www.open-notebook.ai/)
+- [SurfSense](https://www.surfsense.net/)
+- [OpenPod](https://openpod.fly.dev/)
+- [Podcast-llm](https://github.com/evandempsey/podcast-llm)
+- [Podcastfy-HuggingFace App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
+
+
+## Updates 🚀🚀
+
+### v0.4.0+ release
+- Released new Multi-Speaker TTS model (is it the one NotebookLM uses?!?)
+- Generate short or longform podcasts
+- Generate podcasts from input topic using grounded real-time web search
+- Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
+
+See [CHANGELOG](CHANGELOG.md) for more details.
 
 
 ## License
