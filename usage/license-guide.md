@@ -1,4 +1,11 @@
-Podcastfy is licensed under Apache 2.0. The Apache License 2.0 is a permissive free software license that allows you to use this sotfware for both non-commercial or commercial purposes. 
+## Attribution
+
+1. If you use `Podcastfy` in your software, we kindly ask you to add attribution. "Powered by Podcastfy.ai" would suffice. Please reach out, we would love to learn more how you are using `Podcastfy` and how we can better enable your use case.
+2. Feel free to add your product to the the "[Built with Podcastfy](https://github.com/souzatharsis/podcastfy?tab=readme-ov-file#built-with-podcastfy-)" list by submitting a PR to our README.
+
+## License
+
+Additionally, `Podcastfy` is licensed under Apache 2.0. The Apache License 2.0 is a permissive free software license that allows you to use this sotfware for both non-commercial or commercial purposes. 
 Please review the [License](../LICENSE) in order to know your obligations. 
 here is a set of steps I will list without any warranty or liability:
 
