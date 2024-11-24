@@ -108,7 +108,7 @@ python -m podcastfy.client --url <url1> --url <url2>
 Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
 - Customize podcast [conversation](usage/conversation_custom.md) (e.g. format, style, voices)
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
-- Set [System Settings](usage/config_custom.md) (e.g. output directory settings)
+- Set other [Configuration Settings](usage/config.md)
 
 ## Features ✨
 
