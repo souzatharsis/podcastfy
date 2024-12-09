@@ -32,7 +32,7 @@ Now you can use the local LLM to generate a podcast transcript (or audio) by set
 ## Python API
 
 ```python
-from podcastfy import generate_podcast
+from podcastfy.client import generate_podcast
 
 # Generate a tech debate podcast about artificial intelligence
 generate_podcast(
