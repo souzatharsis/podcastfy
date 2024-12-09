@@ -13,7 +13,6 @@ https://github.com/user-attachments/assets/5d42c106-aabe-44c1-8498-e9c53545ba40
 [Paper](https://github.com/souzatharsis/podcastfy/blob/main/paper/paper.pdf) |
 [Python Package](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/podcastfy.ipynb) |
 [CLI](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/usage/cli.md) |
-[REST API](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/usage/api.md) |
 [Web App](https://openpod.fly.dev/) |
 [Feedback](https://github.com/souzatharsis/podcastfy/issues)
 
@@ -31,6 +30,16 @@ https://github.com/user-attachments/assets/5d42c106-aabe-44c1-8498-e9c53545ba40
 Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content includes websites, PDFs, images, YouTube videos, as well as user provided topics.
 
 Unlike closed-source UI-based tools focused primarily on research synthesis (e.g. NotebookLM ❤️), Podcastfy focuses on open source, programmatic and bespoke generation of engaging, conversational content from a multitude of multi-modal sources, enabling customization and scale.
+
+## Testimonials 💬
+
+> "Love that you casually built an open source version of the most popular product Google built in the last decade"
+
+> "Loving this initiative and the best I have seen so far especially for a 'non-techie' user."
+
+> "Your library was very straightforward to work with. You did Amazing work brother 🙏"
+
+> "I think it's awesome that you were inspired/recognize how hard it is to beat NotebookLM's quality, but you did an *incredible* job with this! It sounds incredible, and it's open-source! Thank you for being amazing!"
 
 [![Star History Chart](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)
 
@@ -99,8 +108,6 @@ python -m podcastfy.client --url <url1> --url <url2>
 
 - [Python Package Reference Manual](https://podcastfy.readthedocs.io/en/latest/podcastfy.html)
 
-- [REST API Reference Manual](usage/api.md)
-
 - [CLI](usage/cli.md)
 
 ## Customization 🔧
@@ -120,16 +127,6 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 - Integrate with advanced text-to-speech models (OpenAI, Google, ElevenLabs, and Microsoft Edge).
 - Provide multi-language support for global content creation.
 - Integrate seamlessly with CLI and Python packages for automated workflows.
-
-## Testimonials 💬
-
-> "Loving this initiative and the best I have seen so far especially for a 'non-techie' user."
-
-> "Love that you casually built an open source version of the most popular product Google built in the last decade"
-
-> "Your library was very straightforward to work with. You did Amazing work brother 🙏"
-
-> "I think it's awesome that you were inspired/recognize how hard it is to beat NotebookLM's quality, but you did an *incredible* job with this! It sounds incredible, and it's open-source! Thank you for being amazing!"
 
 ## Built with Podcastfy 🚀
 
