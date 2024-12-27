@@ -58,6 +58,24 @@ Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_c
 - `model`: "tts-1-hd"
   - The OpenAI TTS model to use.
 
+### Gemini Multi-Speaker TTS
+- `default_voices`:
+  - `question`: "R"
+    - Default voice for questions using Gemini Multi-Speaker TTS.
+  - `answer`: "S"
+    - Default voice for answers using Gemini Multi-Speaker TTS.
+  - `model`: "en-US-Studio-MultiSpeaker"
+    - Model to use for Gemini Multi-Speaker TTS.
+  - `language`: "en-US"
+    - Language of the voices.
+
+### Gemini TTS
+- `default_voices`:
+  - `question`: "en-US-Journey-D"
+    - Default voice for questions using Gemini TTS.
+  - `answer`: "en-US-Journey-O"
+    - Default voice for answers using Gemini TTS.
+
 ### Edge TTS
 
 - `default_voices`:
@@ -189,7 +207,8 @@ creativity: 0.7
 - The `output_language` defines both the language of the transcript and the language of the audio. Here's some relevant information:
   - Bottom-line: non-English transcripts are good enough but non-English audio is work-in-progress.
   - Transcripts are generated using Google's Gemini 1.5 Pro by default, which supports 100+ languages. Other user-defined models may or may not support non-English languages.
-  - Audio is generated using `openai` (default), `elevenlabs`, `gemini`,or `edge` TTS models. 
-    - The `gemini`(Google) TTS model is English only.
+  - Audio is generated using `openai` (default), `elevenlabs`, `gemini`, `geminimulti` or `edge` TTS models. 
+    - The `gemini`(Google) TTS model supports multiple languages and can be controlled by the `output_language` parameter and respective voice choices. Eg. `output_language="Tamil"`, `question="ta-IN-Standard-A"`, `answer="ta-IN-Standard-B"`. Refer to [Google Cloud Text-to-Speech documentation](https://cloud.google.com/text-to-speech/docs/voices) for more details.
+    - The `geminimulti`(Google) TTS model supports only English voices. Also, not every Google Cloud project might have access to multi-speaker voices (Eg. `en-US-Studio-MultiSpeaker`). In case if you get - `"Multi-speaker voices are only available to allowlisted projects."`, you can fallback to `gemini` TTS model.
     - The `openai` TTS model supports multiple languages automatically, however non-English voices still present sub-par quality in my experience.
     - The `elevenlabs` TTS model has English voices by default, in order to use a non-English voice you would need to download a custom voice for the target language in your `elevenlabs` account settings and then set the `text_to_speech.elevenlabs.default_voices` parameters to the voice you want to use in the [config.yaml file](https://github.com/pedroslopez/podcastfy/blob/main/podcastfy/config.yaml) (this config file is only available in the source code of the project, not in the pip package, hence if you are using the pip package you will not be able to change the ElevenLabs voice). For more information on ElevenLabs voices, visit [ElevenLabs Voice Library](https://elevenlabs.io/voice-library)
