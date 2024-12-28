@@ -34,7 +34,7 @@ class GeminiTTS(TTSProvider):
         
         Args:
             text (str): Text to convert to speech
-            voice (str): Voice ID/name to use
+            voice (str): Voice ID/name to use (format: "{language-code}-{name}-{gender}")
             model (str): Optional model override
             
         Returns:
@@ -52,11 +52,12 @@ class GeminiTTS(TTSProvider):
                 text=text
             )
             
-            # Set voice parameters
+            # Parse language code from voice ID (e.g., "en-IN" from "en-IN-Journey-D")
+            language_code = "-".join(voice.split("-")[:2])
+
             voice_params = texttospeech_v1beta1.VoiceSelectionParams(
-                language_code="en-US",
+                language_code=language_code,
                 name=voice,
-                ssml_gender=texttospeech_v1beta1.SsmlVoiceGender.FEMALE
             )
             
             # Set audio config
