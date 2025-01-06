@@ -137,6 +137,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 - [OpenPod](https://openpod.fly.dev/)
 - [Podcast-llm](https://github.com/evandempsey/podcast-llm)
 - [Podcastfy-HuggingFace App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
+- [Echeta](https://echeta.ng)
 
 
 ## Updates 🚀🚀
