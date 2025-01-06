@@ -19,17 +19,17 @@ from podcastfy.utils.logger import setup_logger
 from typing import List, Optional, Dict, Any
 import copy
 
-import logging
+# import logging
 
 # Configure logging to show all levels and write to both file and console
-""" logging.basicConfig(
-    level=logging.DEBUG,  # Show all levels of logs
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('podcastfy.log'),  # Save to file
-        logging.StreamHandler()  # Print to console
-    ]
-) """
+# """ logging.basicConfig(
+#     level=logging.DEBUG,  # Show all levels of logs
+#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#     handlers=[
+#         logging.FileHandler('podcastfy.log'),  # Save to file
+#         logging.StreamHandler()  # Print to console
+#     ]
+# ) """
 
 
 logger = setup_logger(__name__)
