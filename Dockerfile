@@ -39,4 +39,4 @@ RUN echo "Verifying installations:" && \
     echo "Installed packages:" && pip list
 
 # Command to run when container starts
-CMD ["uvicorn", "podcastfy.api.fast_app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "podcastfy.api.fast_app:app", "--host", "0.0.0.0", "--port", "8000"]
