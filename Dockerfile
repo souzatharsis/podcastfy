@@ -19,8 +19,13 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Upgrade pip
 RUN python3 -m pip install --upgrade pip
 
-# Install podcastfy from PyPI
-RUN pip install --no-cache-dir podcastfy
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application files
+COPY . /app
+WORKDIR /app
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
@@ -34,4 +39,4 @@ RUN echo "Verifying installations:" && \
     echo "Installed packages:" && pip list
 
 # Command to run when container starts
-CMD ["python3"]
+CMD ["uvicorn", "podcastfy.api.fast_app", "--host", "0.0.0.0", "--port", "8000"]
