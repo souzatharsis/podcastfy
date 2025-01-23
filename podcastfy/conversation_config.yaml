@@ -1,17 +1,17 @@
-conversation_style: 
+conversation_style:
   - "engaging"
   - "fast-paced"
   - "enthusiastic"
 roles_person1: "main summarizer"
 roles_person2: "questioner/clarifier"
-dialogue_structure: 
+dialogue_structure:
   - "Introduction"
   - "Main Content Summary"
   - "Conclusion"
 podcast_name: "PODCASTIFY"
 podcast_tagline: "Your Personal Generative AI Podcast"
 output_language: "English"
-engagement_techniques: 
+engagement_techniques:
   - "rhetorical questions"
   - "anecdotes"
   - "analogies"
