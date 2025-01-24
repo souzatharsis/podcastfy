@@ -29,7 +29,7 @@ text_to_speech:
   elevenlabs:
     default_voices:
       question: "brazil outra voz sem ser implicita"
-      answer: "brazil Implicita"
+      answer: "nate"
     model: "eleven_multilingual_v2"
   openai:
     default_voices:
