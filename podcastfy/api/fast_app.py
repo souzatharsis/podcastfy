@@ -87,7 +87,7 @@ async def generate_podcast_endpoint(data: dict):
             }
         }
 
-        print(user_confir)
+        print(user_config)
 
         # Merge configurations
         conversation_config = merge_configs(base_config, user_config)
