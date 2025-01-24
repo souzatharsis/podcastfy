@@ -80,7 +80,7 @@ async def generate_podcast_endpoint(data: dict):
             'text_to_speech': {
                 'default_tts_model': tts_model,
                 'model': tts_base_config.get('model'),
-                'voices': {
+                'default_voices': {
                     'question': voices.get('question', default_voices.get('question')),
                     'answer': voices.get('answer', default_voices.get('answer'))
                 }
