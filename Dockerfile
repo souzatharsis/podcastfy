@@ -11,7 +11,8 @@ RUN apt-get update && \
     python3-pip \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
-
+    
+WORKDIR /app
 # Create and activate virtual environment
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -25,7 +26,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY . /app
-WORKDIR /app
+
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
