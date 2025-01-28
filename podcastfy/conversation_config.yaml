@@ -28,8 +28,8 @@ text_to_speech:
     audio: "./data/audio"
   elevenlabs:
     default_voices:
-      question: "brazil outra voz sem ser implicita"
-      answer: "nate"
+      question: "nate"
+      answer: "nick reece"
     model: "eleven_multilingual_v2"
   openai:
     default_voices:
