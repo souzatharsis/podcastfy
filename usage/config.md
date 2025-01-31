@@ -64,21 +64,21 @@ Google's Multispeaker TTS model requires a Google Cloud API key, you can use the
 
 <br>
 
-> ⚠️**NOTE :**<br>
-> By default, **Google Multi-Speaker voices** are only available to **allowlisted projects**. If you wish to use these voices, follow the steps below: <br>
->
-> - **Request Access:** You'll need to **contact Google Cloud Support** to get Multi-Speaker voices enabled for your project.
-> - **Common Error:** If Multi-Speaker voices are not enabled, you will encounter the following runtime error:
->   ```bash
->   RuntimeError: Failed to generate audio: 403 Multi-speaker voices are only available to allowlisted    projects
->   ```
-> - **How to Proceed:**
->   - Navigate to the **Support** section in your **GCP Console**. <br>
->   - Open a new case under **"Cases"** and provide the necessary project details. <br>
->   - Google Cloud Support should be able to assist you in enabling this feature. <br>
->     <br>
->     ![google-multispeaker-support](../data/images/google-multispeaker-support.png)
->     Post having Multi-speaker voices enabled proceed with below steps ✌🏼
+⚠️**NOTE :**<br>
+By default, **Google Multi-Speaker voices** are only available to **allowlisted projects**. If you wish to use these voices, follow the steps below: <br>
+
+- **Request Access:** You'll need to **contact Google Cloud Support** to get Multi-Speaker voices enabled for your project.
+- **Common Error:** If Multi-Speaker voices are not enabled, you will encounter the following runtime error:
+  ```bash
+  RuntimeError: Failed to generate audio: 403 Multi-speaker voices are only available to allowlisted    projects
+  ```
+- **How to Proceed:**
+  - Navigate to the **Support** section in your **GCP Console**. <br>
+  - Open a new case under **"Cases"** and provide the necessary project details. <br>
+  - Google Cloud Support should be able to assist you in enabling this feature. <br>
+    <br>
+    ![google-multispeaker-support](../data/images/google-multispeaker-support.png)
+    <br>
 
 Phew!!! That was a lot of steps but you only need to do it once and you might be impressed with the quality of the audio. See [Google TTS](https://cloud.google.com/text-to-speech) for more details. Thank you @mobarski and @evandempsey for the help!
 
