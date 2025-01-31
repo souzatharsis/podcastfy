@@ -67,6 +67,7 @@ Google's Multispeaker TTS model requires a Google Cloud API key, you can use the
 ⚠️**NOTE :**<br>
 By default, **Google Multi-Speaker voices** are only available to **allowlisted projects**. If you wish to use these voices, follow the steps below: <br>
 
+- **Prerequisites:** A **paid Google Cloud support subscription** is required to proceed.
 - **Request Access:** You'll need to **contact Google Cloud Support** to get Multi-Speaker voices enabled for your project.
 - **Common Error:** If Multi-Speaker voices are not enabled, you will encounter the following runtime error:
   ```bash
