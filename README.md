@@ -1,7 +1,7 @@
 <div align="center">
 <a name="readme-top"></a>
 
-**I am writing an [open source book "Taming LLMs"](https://www.souzatharsis.com/tamingLLMs/) - would love your feedback!**
+**I am writing an [open source book "Taming LLMs"](https://github.com/souzatharsis/tamingLLMs) - would love your feedback!**
 
 # Podcastfy.ai 🎙️🤖
 An Open Source API alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
