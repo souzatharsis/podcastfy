@@ -3,7 +3,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 import tempfile
 import os
-from podcastfy.content_generator import ContentGenerator
+from podcastfy.content_generator import ContentGenerator, LLMBackendType
 from podcastfy.utils.config import Config
 from podcastfy.utils.config_conversation import ConversationConfig
 from podcastfy.content_parser.pdf_extractor import PDFExtractor
@@ -15,6 +15,11 @@ MOCK_IMAGE_PATHS = [
     "https://raw.githubusercontent.com/souzatharsis/podcastfy/refs/heads/main/data/images/connection.jpg",
 ]
 
+# BACKEND_TYPE = LLMBackendType.OLLAMA
+# MODEL_NAME = "llama3.2:3b-instruct-fp16"  # "gemini-1.5-pro-latest"
+# API_KEY_LABEL = "OLLAMA_API_KEY"
+
+BACKEND_TYPE = LLMBackendType.GOOGLE
 MODEL_NAME = "gemini-1.5-pro-latest"
 API_KEY_LABEL = "GEMINI_API_KEY"
 
@@ -44,7 +49,12 @@ class TestGenAIPodcast(unittest.TestCase):
         """
         Test the generate_qa_content method of ContentGenerator.
         """
-        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
+        print(
+            f"Creating backend with model_name={MODEL_NAME} and api_key_label={API_KEY_LABEL}"
+        )
+        content_generator = ContentGenerator(
+            BACKEND_TYPE, model_name=MODEL_NAME, api_key_label=API_KEY_LABEL
+        )
         input_text = "United States of America"
         result = content_generator.generate_qa_content(input_text)
         self.assertIsNotNone(result)
@@ -56,7 +66,12 @@ class TestGenAIPodcast(unittest.TestCase):
         Test the generation of content using a custom conversation configuration file.
         """
         conversation_config = sample_conversation_config()
-        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL, conversation_config=conversation_config)
+        content_generator = ContentGenerator(
+            BACKEND_TYPE,
+            model_name=MODEL_NAME,
+            api_key_label=API_KEY_LABEL,
+            conversation_config=conversation_config,
+        )
         input_text = "United States of America"
 
         result = content_generator.generate_qa_content(input_text)
@@ -73,7 +88,9 @@ class TestGenAIPodcast(unittest.TestCase):
         """Test generating Q&A content from two input images."""
         image_paths = MOCK_IMAGE_PATHS
 
-        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
+        content_generator = ContentGenerator(
+            BACKEND_TYPE, model_name=MODEL_NAME, api_key_label=API_KEY_LABEL
+        )
 
         with tempfile.NamedTemporaryFile(
             mode="w+", suffix=".txt", delete=False
@@ -100,7 +117,9 @@ class TestGenAIPodcast(unittest.TestCase):
     def test_generate_qa_content_from_pdf(self):
         """Test generating Q&A content from a PDF file."""
         pdf_file = "tests/data/pdf/file.pdf"
-        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
+        content_generator = ContentGenerator(
+            BACKEND_TYPE, model_name=MODEL_NAME, api_key_label=API_KEY_LABEL
+        )
         pdf_extractor = PDFExtractor()
 
         # Extract content from the PDF file
@@ -116,7 +135,9 @@ class TestGenAIPodcast(unittest.TestCase):
     def test_generate_qa_content_from_raw_text(self):
         """Test generating Q&A content from raw input text."""
         raw_text = "The wonderful world of LLMs."
-        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
+        content_generator = ContentGenerator(
+            BACKEND_TYPE, model_name=MODEL_NAME, api_key_label=API_KEY_LABEL
+        )
 
         result = content_generator.generate_qa_content(input_texts=raw_text)
 
@@ -128,7 +149,9 @@ class TestGenAIPodcast(unittest.TestCase):
     def test_generate_qa_content_from_topic(self):
         """Test generating Q&A content from a specific topic."""
         topic = "Latest news about OpenAI"
-        content_generator = ContentGenerator(model_name=MODEL_NAME, api_key_label=API_KEY_LABEL)
+        content_generator = ContentGenerator(
+            BACKEND_TYPE, model_name=MODEL_NAME, api_key_label=API_KEY_LABEL
+        )
         extractor = ContentExtractor()
         topic = "Latest news about OpenAI"
 

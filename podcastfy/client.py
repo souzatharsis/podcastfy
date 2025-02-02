@@ -11,7 +11,7 @@ import uuid
 import typer
 import yaml
 from podcastfy.content_parser.content_extractor import ContentExtractor
-from podcastfy.content_generator import ContentGenerator
+from podcastfy.content_generator import ContentGenerator, LLMBackendType
 from podcastfy.text_to_speech import TextToSpeech
 from podcastfy.utils.config import Config, load_config
 from podcastfy.utils.config_conversation import load_conversation_config
@@ -47,12 +47,12 @@ def process_content(
     config: Optional[Dict[str, Any]] = None,
     conversation_config: Optional[Dict[str, Any]] = None,
     image_paths: Optional[List[str]] = None,
-    is_local: bool = False,
+    llm_type: LLMBackendType = LLMBackendType.LITELLM,
     text: Optional[str] = None,
     model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
     topic: Optional[str] = None,
-    longform: bool = False
+    longform: bool = False,
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
@@ -82,14 +82,14 @@ def process_content(
                 content_extractor = ContentExtractor()
 
             content_generator = ContentGenerator(
-                is_local=is_local,
+                llm_type,
                 model_name=model_name,
                 api_key_label=api_key_label,
-                conversation_config=conv_config.to_dict()
+                conversation_config=conv_config.to_dict(),
             )
 
             combined_content = ""
-            
+
             if urls:
                 logger.info(f"Processing {len(urls)} links")
                 contents = [content_extractor.extract_content(link) for link in urls]
@@ -97,7 +97,9 @@ def process_content(
 
             if text:
                 if longform and len(text.strip()) < 100:
-                    logger.info("Text too short for direct long-form generation. Extracting context...")
+                    logger.info(
+                        "Text too short for direct long-form generation. Extracting context..."
+                    )
                     expanded_content = content_extractor.generate_topic_content(text)
                     combined_content += f"\n\n{expanded_content}"
                 else:
@@ -117,13 +119,15 @@ def process_content(
                 combined_content,
                 image_file_paths=image_paths or [],
                 output_filepath=transcript_filepath,
-                longform=longform
+                longform=longform,
             )
 
         if generate_audio:
             api_key = None
             if tts_model != "edge":
-                api_key = getattr(config, f"{tts_model.upper().replace('MULTI', '')}_API_KEY")
+                api_key = getattr(
+                    config, f"{tts_model.upper().replace('MULTI', '')}_API_KEY"
+                )
 
             text_to_speech = TextToSpeech(
                 model=tts_model,
@@ -183,6 +187,12 @@ def main(
     text: str = typer.Option(
         None, "--text", "-txt", help="Raw text input to be processed"
     ),
+    llm_type: str = typer.Option(
+        None,
+        "--llm-type",
+        "-lt",
+        help="LLM type for content generation (litellm(default), ollama, google) ",
+    ),
     llm_model_name: str = typer.Option(
         None, "--llm-model-name", "-m", help="LLM model name for transcript generation"
     ),
@@ -193,10 +203,10 @@ def main(
         None, "--topic", "-tp", help="Topic to generate podcast about"
     ),
     longform: bool = typer.Option(
-        False, 
-        "--longform", 
-        "-lf", 
-        help="Generate long-form content (only available for text input without images)"
+        False,
+        "--longform",
+        "-lf",
+        help="Generate long-form content (only available for text input without images)",
     ),
 ):
     """
@@ -226,12 +236,12 @@ def main(
                 generate_audio=not transcript_only,
                 conversation_config=conversation_config,
                 config=config,
-                is_local=is_local,
+                llm_type=llm_type,
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
         else:
             urls_list = urls or []
@@ -250,12 +260,12 @@ def main(
                 config=config,
                 conversation_config=conversation_config,
                 image_paths=image_paths,
-                is_local=is_local,
+                llm_type=llm_type,
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
 
         if transcript_only:
@@ -283,7 +293,7 @@ def generate_podcast(
     config: Optional[Dict[str, Any]] = None,
     conversation_config: Optional[Dict[str, Any]] = None,
     image_paths: Optional[List[str]] = None,
-    is_local: bool = False,
+    llm_type: LLMBackendType = LLMBackendType.LITELLM,
     text: Optional[str] = None,
     llm_model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
@@ -302,7 +312,7 @@ def generate_podcast(
         config (Optional[Dict[str, Any]]): User-provided configuration dictionary.
         conversation_config (Optional[Dict[str, Any]]): User-provided conversation configuration dictionary.
         image_paths (Optional[List[str]]): List of image file paths to process.
-        is_local (bool): Whether to use a local LLM. Defaults to False.
+        llm_type (LLMBackendType): LLM backend type for content generation.
         text (Optional[str]): Raw text input to be processed.
         llm_model_name (Optional[str]): LLM model name for content generation.
         api_key_label (Optional[str]): Environment variable name for LLM API key.
@@ -355,7 +365,7 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
         else:
             urls_list = urls or []
@@ -381,7 +391,7 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
 
     except Exception as e:
