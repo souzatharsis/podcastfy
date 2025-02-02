@@ -28,8 +28,8 @@ text_to_speech:
     audio: "./data/audio"
   elevenlabs:
     default_voices:
-      question: "Chris"
-      answer: "Jessica"
+      question: "nate"
+      answer: "Nick Reece"
     model: "eleven_multilingual_v2"
   openai:
     default_voices:
@@ -51,4 +51,4 @@ text_to_speech:
       model: "en-US-Studio-MultiSpeaker"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
-  ending_message: "Bye Bye!"
+  ending_message: "See You Next Time!"
