@@ -11,8 +11,7 @@ RUN apt-get update && \
     python3-pip \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
-    
-WORKDIR /app
+
 # Create and activate virtual environment
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -20,13 +19,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Upgrade pip
 RUN python3 -m pip install --upgrade pip
 
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application files
-COPY . /app
-
+# Install podcastfy from PyPI
+RUN pip install --no-cache-dir podcastfy
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
@@ -40,4 +34,4 @@ RUN echo "Verifying installations:" && \
     echo "Installed packages:" && pip list
 
 # Command to run when container starts
-CMD ["uvicorn", "podcastfy.api.fast_app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python3"]

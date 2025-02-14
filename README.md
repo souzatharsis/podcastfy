@@ -101,6 +101,15 @@ audio_file = generate_podcast(urls=["<url1>", "<url2>"])
 ```
 python -m podcastfy.client --url <url1> --url <url2>
 ```
+
+### Fastapi (Beta for urls)
+```
+Containerize podcastify and launch the api
+Dockerfile_api
+
+Make requests to the api look at the notebook for a clear example
+fetch_audio(request_data, ENDPOINT, BASE_URL)
+```
   
 ## Usage 💻
 
