@@ -28,8 +28,8 @@ text_to_speech:
     audio: "./data/audio"
   elevenlabs:
     default_voices:
-      question: "nate"
-      answer: "Nick Reece"
+      question: "Chris"
+      answer: "Jessica"
     model: "eleven_multilingual_v2"
   openai:
     default_voices:
