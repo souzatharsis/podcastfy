@@ -1,7 +1,7 @@
 <div align="center">
 <a name="readme-top"></a>
 
-**I am writing an [open source book "Taming LLMs"](https://github.com/souzatharsis/tamingLLMs) - would love your feedback!**
+<a href="https://trendshift.io/repositories/12965" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12965" alt="Podcastfy.ai | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 # Podcastfy.ai 🎙️🤖
 An Open Source API alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
