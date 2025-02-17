@@ -42,8 +42,6 @@ edge-tts = "^6.1.12"
 types-pyyaml = "^6.0.12.20240917"
 nest-asyncio = "^1.6.0"
 ffmpeg = "^1.4"
-pytest = "^8.3.3"
-pytest-xdist = "^3.6.1"
 google-cloud-texttospeech = "^2.21.0"
 litellm = "^1.52.0"
 langchain-community = "^0.3.5"
@@ -51,6 +49,7 @@ langchain-community = "^0.3.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
+pytest-xdist = "^3.6.1"
 black = "^24.8.0"
 sphinx = ">=8.0.2"
 nbsphinx = "0.9.5"
@@ -64,6 +63,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 build_docs = "build_docs:main"
-
-
-
