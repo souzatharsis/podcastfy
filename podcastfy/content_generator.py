@@ -9,6 +9,7 @@ provides methods to generate and save the generated content.
 import os
 from typing import Optional, Dict, Any, List
 import re
+import unicodedata
 
 
 from langchain_community.chat_models import ChatLiteLLM
@@ -833,6 +834,10 @@ class ContentGenerator:
         composed_prompt_template = ChatPromptTemplate.from_messages(combined_messages)
 
         return composed_prompt_template, image_path_keys
+    
+    def __sanitize_unicode_text(self, text: str) -> str:
+        text = unicodedata.normalize('NFKC', text)
+        return text
 
     def generate_qa_content(
         self,
@@ -894,12 +899,15 @@ class ContentGenerator:
                 self.response,
                 self.content_generator_config
             )
-                
+            
+            # Sanitize unicode response
+            self.response = self.__sanitize_unicode_text(self.response)
+            
             logger.info(f"Content generated successfully")
 
             # Save output if requested
             if output_filepath:
-                with open(output_filepath, "w") as file:
+                with open(output_filepath, "w", encoding="utf-8") as file:
                     file.write(self.response)
                 logger.info(f"Response content saved to {output_filepath}")
                 print(f"Transcript saved to {output_filepath}")

@@ -170,7 +170,7 @@ def test_generate_podcast_from_transcript_file(sample_conversation_config):
         .get("transcripts"),
         "test_transcript.txt",
     )
-    with open(transcript_file, "w") as f:
+    with open(transcript_file, "w", encoding="utf-8") as f:
         f.write(
             "<Person1>Joe Biden and the US Politics</Person1><Person2>Joe Biden is the current president of the United States of America</Person2>"
         )
@@ -339,7 +339,7 @@ def test_generate_transcript_with_user_instructions(
     ).get("output_directories", {}).get("transcripts")
 
     # Read the generated transcript
-    with open(result, "r") as f:
+    with open(result, "r", encoding="utf-8") as f:
         content = f.read()
 
     assert (
@@ -394,7 +394,7 @@ def test_generate_transcript_only_with_custom_llm(
     ).get("output_directories", {}).get("transcripts")
 
     # Read and verify the content
-    with open(result, "r") as f:
+    with open(result, "r", encoding="utf-8") as f:
         content = f.read()
 
     # Verify the content follows the Person1/Person2 format
@@ -427,7 +427,7 @@ def test_generate_longform_transcript(sample_config, default_conversation_config
     assert result.endswith(".txt")
     
     # Read and verify the content
-    with open(result, "r") as f:
+    with open(result, "r", encoding="utf-8") as f:
         content = f.read()
     
     # Verify the content follows the Person1/Person2 format
