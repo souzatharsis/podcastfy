@@ -158,7 +158,7 @@ class ConversationConfig(NestedConfig):
 		"""Load the default configuration from conversation_config.yaml."""
 		config_path = get_conversation_config_path()
 		if config_path:
-			with open(config_path, 'r') as file:
+			with open(config_path, 'r', encoding='utf-8') as file:
 				return yaml.safe_load(file)
 		else:
 			raise FileNotFoundError("conversation_config.yaml not found")

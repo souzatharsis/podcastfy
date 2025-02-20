@@ -29,14 +29,13 @@ class TestContentParser(unittest.TestCase):
         extracted_transcript = transcriber.extract_transcript(test_url)
 
         # Load expected transcript from youtube.txt file
-        with open("./tests/data/mock/youtube.txt", "r") as f:
+        with open("./tests/data/mock/youtube.txt", "r", encoding="utf-8") as f:
             expected_transcript = f.read()
 
         # Assert that the first 100 characters of the extracted transcript match the expected transcript
         self.assertEqual(
             extracted_transcript[:100].strip(), expected_transcript[:100].strip()
         )
-
     def test_website_extractor(self):
         """
         Test the WebsiteExtractor class to ensure it correctly extracts content from a website.
@@ -48,13 +47,13 @@ class TestContentParser(unittest.TestCase):
         extractor = WebsiteExtractor()
 
         # Test URL
-        test_url = "http://www.souzatharsis.com"
+        test_url = "http://www.example.com"
 
         # Extract content
         extracted_content = extractor.extract_content(test_url)
         print(extracted_content.strip())
         # Load expected content from website.md file
-        with open("./tests/data/mock/website.md", "r") as f:
+        with open("./tests/data/mock/website.md", "r", encoding="utf-8") as f:
             expected_content = f.read()
         print(expected_content.strip())
         # Assert that the extracted content matches the expected content
@@ -74,7 +73,7 @@ class TestContentParser(unittest.TestCase):
         extracted_content = extractor.extract_content(pdf_path)
 
         # Load expected content from file.txt
-        with open("./tests/data/mock/file.txt", "r") as f:
+        with open("./tests/data/mock/file.txt", "r", encoding="utf-8") as f:
             expected_content = f.read()
 
         # Assert that the first 500 characters of the extracted content match the expected content

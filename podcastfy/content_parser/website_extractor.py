@@ -49,7 +49,7 @@ class WebsiteExtractor:
 			headers = {'User-Agent': self.user_agent}
 			response = requests.get(normalized_url, headers=headers, timeout=self.timeout)
 			response.raise_for_status()  # Raise an exception for bad status codes
-
+			response.encoding = "utf-8"
 			# Parse the page content with BeautifulSoup
 			soup = BeautifulSoup(response.text, 'html.parser')
 

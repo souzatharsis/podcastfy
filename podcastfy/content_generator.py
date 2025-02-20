@@ -899,7 +899,7 @@ class ContentGenerator:
 
             # Save output if requested
             if output_filepath:
-                with open(output_filepath, "w") as file:
+                with open(output_filepath, "w", encoding="utf-8") as file:
                     file.write(self.response)
                 logger.info(f"Response content saved to {output_filepath}")
                 print(f"Transcript saved to {output_filepath}")

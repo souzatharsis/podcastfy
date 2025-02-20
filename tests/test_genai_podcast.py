@@ -89,7 +89,7 @@ class TestGenAIPodcast(unittest.TestCase):
         self.assertIsInstance(result, str)
 
         # Check if the output file was created and contains the same content
-        with open(temp_file.name, "r") as f:
+        with open(temp_file.name, "r", encoding="utf-8") as f:
             file_content = f.read()
 
         self.assertEqual(result, file_content)
