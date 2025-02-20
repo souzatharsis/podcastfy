@@ -36,7 +36,7 @@ dialogue_structure:
   - Quiz
   - Conclusion
 podcast_name: Teachfy
-podcast_tagline: Learning Through Conversation
+podcast_tagline: Learning Through Conversation - Witaj świecie! こんにちは世界 
 output_language: English
 engagement_techniques: 
   - examples
@@ -57,7 +57,7 @@ def mock_files(tmp_path):
     transcript_file.write_text(MOCK_TRANSCRIPT)
 
     config_file = tmp_path / "custom_config.yaml"
-    config_file.write_text(MOCK_CONVERSATION_CONFIG)
+    config_file.write_text(MOCK_CONVERSATION_CONFIG, encoding="utf-8")
 
     return {
         "url_file": str(url_file),
