@@ -15,6 +15,7 @@ from pathlib import Path
 from ..client import generate_podcast
 import uvicorn
 
+
 def load_base_config() -> Dict[Any, Any]:
     config_path = Path(__file__).parent / "podcastfy" / "conversation_config.yaml"
     try:
@@ -87,12 +88,12 @@ async def generate_podcast_endpoint(data: dict):
             }
         }
 
-        print(user_config)
+        # print(user_config)
 
         # Merge configurations
         conversation_config = merge_configs(base_config, user_config)
 
-        print(conversation_config)
+        # print(conversation_config)
         
 
         # Generate podcast
@@ -126,6 +127,10 @@ async def serve_audio(filename: str):
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(file_path)
+
+@app.get("/health")
+async def healthcheck():
+    return {"status": "healthy"}
 
 if __name__ == "__main__":
     host = os.getenv("HOST", "127.0.0.1")
