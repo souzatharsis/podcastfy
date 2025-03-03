@@ -223,6 +223,7 @@ def test_generate_from_local_pdf(sample_config):
     assert audio_file.endswith(".mp3")
     assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
 
+
 @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
 def test_generate_from_local_pdf_multispeaker(sample_config):
     """Test generating a podcast from a local PDF file."""
@@ -235,6 +236,7 @@ def test_generate_from_local_pdf_multispeaker(sample_config):
     assert audio_file.endswith(".mp3")
     assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
 
+
 @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
 def test_generate_from_local_pdf_multispeaker_longform(sample_config):
     """Test generating a podcast from a local PDF file."""
@@ -246,6 +248,7 @@ def test_generate_from_local_pdf_multispeaker_longform(sample_config):
     assert os.path.exists(audio_file)
     assert audio_file.endswith(".mp3")
     assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
+
 
 def test_generate_podcast_no_urls_or_transcript():
     """Test that an error is raised when no URLs or transcript file is provided."""
@@ -413,33 +416,34 @@ def test_generate_transcript_only_with_custom_llm(
 def test_generate_longform_transcript(sample_config, default_conversation_config):
     """Test generating a longform podcast transcript from a PDF file."""
     pdf_file = "tests/data/pdf/file.pdf"
-    
+
     # Generate transcript with longform=True
     result = generate_podcast(
-        urls=[pdf_file],
-        config=sample_config,
-        transcript_only=True,
-        longform=True
+        urls=[pdf_file], config=sample_config, transcript_only=True, longform=True
     )
 
     assert result is not None
     assert os.path.exists(result)
     assert result.endswith(".txt")
-    
+
     # Read and verify the content
     with open(result, "r") as f:
         content = f.read()
-    
+
     # Verify the content follows the Person1/Person2 format
     assert "<Person1>" in content
     assert "<Person2>" in content
-    
+
     # Verify it's a long-form transcript (>1000 characters)
-    assert len(content) > 1000, f"Content length ({len(content)}) is less than minimum expected for longform (1000)"
-    
+    assert (
+        len(content) > 1000
+    ), f"Content length ({len(content)}) is less than minimum expected for longform (1000)"
+
     # Verify multiple discussion rounds exist (characteristic of longform)
     person1_segments = content.count("<Person1>")
-    assert person1_segments > 3, f"Expected more than 3 discussion rounds, got {person1_segments}"
+    assert (
+        person1_segments > 3
+    ), f"Expected more than 3 discussion rounds, got {person1_segments}"
 
 
 if __name__ == "__main__":
