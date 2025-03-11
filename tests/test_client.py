@@ -49,6 +49,18 @@ text_to_speech:
 
 @pytest.fixture
 def mock_files(tmp_path):
+    """Creates mock files for testing purposes.
+
+    This fixture generates three mock files in a temporary directory: 
+    'urls.txt', 'transcript.txt', and 'custom_config.yaml'. Each file is 
+    populated with predefined content for use in tests.
+
+    Args:
+        tmp_path (pathlib.Path): A temporary directory path provided by pytest.
+
+    Returns:
+        dict: A dictionary containing paths to the created mock files, with keys 
+        'url_file', 'transcript_file', and 'config_file'."""
     # Create mock files
     url_file = tmp_path / "urls.txt"
     url_file.write_text(MOCK_FILE_CONTENT)
