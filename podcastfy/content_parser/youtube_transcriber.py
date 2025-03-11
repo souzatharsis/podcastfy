@@ -55,7 +55,7 @@ def main(seed: int = 42) -> None:
 		
 		# Save transcript to file
 		output_file = 'tests/data/transcripts/youtube_transcript2.txt'
-		with open(output_file, 'w') as file:
+		with open(output_file, 'w', encoding="utf-8") as file:
 			file.write(transcript)
 		
 		print(f"Transcript saved to {output_file}")

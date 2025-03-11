@@ -73,7 +73,7 @@ def process_content(
 
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
-            with open(transcript_file, "r") as file:
+            with open(transcript_file, "r", encoding="utf-8") as file:
                 qa_content = file.read()
         else:
             # Initialize content_extractor if needed
@@ -209,7 +209,7 @@ def main(
         conversation_config = None
         # Load conversation config if provided
         if conversation_config_path:
-            with open(conversation_config_path, "r") as f:
+            with open(conversation_config_path, "r", encoding='utf-8') as f:
                 conversation_config: Dict[str, Any] | None = yaml.safe_load(f)
 
         # Use default TTS model from conversation config if not specified
@@ -360,7 +360,7 @@ def generate_podcast(
         else:
             urls_list = urls or []
             if url_file:
-                with open(url_file, "r") as file:
+                with open(url_file, "r", encoding="utf-8") as file:
                     urls_list.extend([line.strip() for line in file if line.strip()])
 
             if not urls_list and not image_paths and not text and not topic:
