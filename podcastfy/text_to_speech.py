@@ -12,7 +12,9 @@ import os
 import re
 import tempfile
 from typing import List, Tuple, Optional, Dict, Any
-from pydub import AudioSegment
+import librosa
+import soundfile as sf
+import numpy as np
 
 from .tts.factory import TTSProviderFactory
 from .utils.config import load_config
@@ -115,27 +117,23 @@ class TextToSpeech:
                         raise ValueError("No audio data chunks provided")
 
                     logger.info(f"Starting audio processing with {len(audio_data_list)} chunks")
-                    combined = AudioSegment.empty()
+                    combined_audio = np.array([])
+                    sr = None
                     
                     for i, chunk in enumerate(audio_data_list):
-                        # Save chunk to temporary file
-                        #temp_file = "./tmp.mp3"
-                        #with open(temp_file, "wb") as f:
-                        #    f.write(chunk)
+                        # Load audio from bytes
+                        audio, sample_rate = librosa.load(io.BytesIO(chunk), sr=None)
+                        if sr is None:
+                            sr = sample_rate
+                        elif sr != sample_rate:
+                            audio = librosa.resample(audio, orig_sr=sample_rate, target_sr=sr)
+                        logger.info(f"################### Loaded chunk {i}, duration: {len(audio)/sr} seconds")
                         
-                        segment = AudioSegment.from_file(io.BytesIO(chunk))
-                        logger.info(f"################### Loaded chunk {i}, duration: {len(segment)}ms")
-                        
-                        combined += segment
+                        combined_audio = np.concatenate((combined_audio, audio))
                     
                     # Export with high quality settings
                     os.makedirs(os.path.dirname(output_file), exist_ok=True)
-                    combined.export(
-                        output_file, 
-                        format=self.audio_format,
-                        codec="libmp3lame",
-                        bitrate="320k"
-                    )
+                    sf.write(output_file, combined_audio, sr, format='mp3')
                     
                 except Exception as e:
                     logger.error(f"Error during audio processing: {str(e)}")
@@ -203,17 +201,18 @@ class TextToSpeech:
             audio_files.sort(key=get_sort_key)
 
             # Create empty audio segment
-            combined = AudioSegment.empty()
+            combined_audio = np.array([])
 
             # Add each audio file to the combined segment
             for file_path in audio_files:
-                combined += AudioSegment.from_file(file_path, format=self.audio_format)
+                audio, sr = librosa.load(file_path, sr=None)
+                combined_audio = np.concatenate((combined_audio, audio))
 
             # Ensure output directory exists
             os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
             # Export the combined audio
-            combined.export(output_file, format=self.audio_format)
+            sf.write(output_file, combined_audio, sr, format='mp3')
             logger.info(f"Merged audio saved to {output_file}")
 
         except Exception as e:
