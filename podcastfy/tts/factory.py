@@ -4,6 +4,7 @@ from typing import Dict, Type, Optional
 from .base import TTSProvider
 from .providers.elevenlabs import ElevenLabsTTS
 from .providers.openai import OpenAITTS
+from .providers.azureopenai import Azure_OpenAITTS
 from .providers.edge import EdgeTTS
 from .providers.gemini import GeminiTTS
 from .providers.geminimulti import GeminiMultiTTS
@@ -15,7 +16,8 @@ class TTSProviderFactory:
         'openai': OpenAITTS,
         'edge': EdgeTTS,
         'gemini': GeminiTTS,
-        'geminimulti': GeminiMultiTTS
+        'geminimulti': GeminiMultiTTS,
+        'azure_openai': Azure_OpenAITTS,
     }
     
     @classmethod
