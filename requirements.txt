@@ -74,6 +74,7 @@ langchain-google-genai==2.0.4 ; python_version >= "3.11" and python_version < "4
 langchain-google-vertexai==2.0.7 ; python_version >= "3.11" and python_version < "4.0"
 langchain-text-splitters==0.3.2 ; python_version >= "3.11" and python_version < "4.0"
 langchain==0.3.7 ; python_version >= "3.11" and python_version < "4.0"
+langchain-ollama==0.2.2 ; python_version >= "3.11" and python_version < "4.0"
 langsmith==0.1.141 ; python_version >= "3.11" and python_version < "4.0"
 levenshtein==0.26.1 ; python_version >= "3.11" and python_version < "4.0"
 litellm==1.52.2 ; python_version >= "3.11" and python_version < "4.0"

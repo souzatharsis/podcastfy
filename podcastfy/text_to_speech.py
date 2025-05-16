@@ -43,7 +43,9 @@ class TextToSpeech:
 
         # Get API key from config if not provided
         if not api_key:
-            api_key = getattr(self.config, f"{model.upper().replace('MULTI', '')}_API_KEY", None)
+            api_key = getattr(
+                self.config, f"{model.upper().replace('MULTI', '')}_API_KEY", None
+            )
 
         # Initialize provider using factory
         self.provider = TTSProviderFactory.create(
@@ -114,29 +116,33 @@ class TextToSpeech:
                     if not audio_data_list:
                         raise ValueError("No audio data chunks provided")
 
-                    logger.info(f"Starting audio processing with {len(audio_data_list)} chunks")
+                    logger.info(
+                        f"Starting audio processing with {len(audio_data_list)} chunks"
+                    )
                     combined = AudioSegment.empty()
-                    
+
                     for i, chunk in enumerate(audio_data_list):
                         # Save chunk to temporary file
-                        #temp_file = "./tmp.mp3"
-                        #with open(temp_file, "wb") as f:
+                        # temp_file = "./tmp.mp3"
+                        # with open(temp_file, "wb") as f:
                         #    f.write(chunk)
-                        
+
                         segment = AudioSegment.from_file(io.BytesIO(chunk))
-                        logger.info(f"################### Loaded chunk {i}, duration: {len(segment)}ms")
-                        
+                        logger.info(
+                            f"################### Loaded chunk {i}, duration: {len(segment)}ms"
+                        )
+
                         combined += segment
-                    
+
                     # Export with high quality settings
                     os.makedirs(os.path.dirname(output_file), exist_ok=True)
                     combined.export(
-                        output_file, 
+                        output_file,
                         format=self.audio_format,
                         codec="libmp3lame",
-                        bitrate="320k"
+                        bitrate="320k",
                     )
-                    
+
                 except Exception as e:
                     logger.error(f"Error during audio processing: {str(e)}")
                     raise
@@ -223,7 +229,11 @@ class TextToSpeech:
     def _setup_directories(self) -> None:
         """Setup required directories for audio processing."""
         self.output_directories = self.tts_config.get("output_directories", {})
-        temp_dir = self.tts_config.get("temp_audio_dir", "data/audio/tmp/").rstrip("/").split("/")
+        temp_dir = (
+            self.tts_config.get("temp_audio_dir", "data/audio/tmp/")
+            .rstrip("/")
+            .split("/")
+        )
         self.temp_audio_dir = os.path.join(*temp_dir)
         base_dir = os.path.abspath(os.path.dirname(__file__))
         self.temp_audio_dir = os.path.join(base_dir, self.temp_audio_dir)
