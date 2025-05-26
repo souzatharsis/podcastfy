@@ -15,9 +15,11 @@ from pathlib import Path
 from ..client import generate_podcast
 import uvicorn
 import logging
+import sys
+import signal
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging to stdout
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 def load_base_config() -> Dict[Any, Any]:
@@ -45,7 +47,16 @@ def merge_configs(base_config: Dict[Any, Any], user_config: Dict[Any, Any]) -> D
                 
     return merged
 
+def handle_sigterm(signum, frame):
+    logger.info("Received SIGTERM, shutting down gracefully.")
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, handle_sigterm)
+
+print("=== fast_app.py is being loaded ===")
+
 app = FastAPI()
+print("=== FastAPI app object created ===")
 
 TEMP_DIR = os.path.join(os.path.dirname(__file__), "temp_audio")
 os.makedirs(TEMP_DIR, exist_ok=True)
@@ -134,7 +145,7 @@ async def serve_audio(filename: str):
 
 @app.get("/health")
 async def healthcheck():
-    """Health check endpoint that verifies critical components"""
+    logger.info("/health endpoint called")
     try:
         # Check if temp directory exists and is writable
         if not os.path.exists(TEMP_DIR):
@@ -169,8 +180,8 @@ if __name__ == "__main__":
     logger.info(f"Current working directory: {os.getcwd()}")
     logger.info(f"Environment variables loaded: {bool(os.getenv('OPENAI_API_KEY'))}")
     
-    host = os.getenv("HOST", "::")  # Default to IPv6
-    port = int(os.getenv("PORT", 8000))
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", 8080))
     
     logger.info(f"Starting server on {host}:{port}")
     uvicorn.run(app, host=host, port=port)
