@@ -45,4 +45,4 @@ RUN echo "Verifying installations:" && \
 
 # Command to run when container starts
 # CMD ["uvicorn", "podcastfy.api.fast_app:app", "--host", "::", "--port", "8080"]
-CMD uvicorn podcastfy.api.fast_app:app --host :: --port 8080
+CMD uvicorn podcastfy.api.fast_app:app --host 0.0.0.0 --port 8080
