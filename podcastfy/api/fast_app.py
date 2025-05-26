@@ -14,7 +14,11 @@ from typing import Dict, Any
 from pathlib import Path
 from ..client import generate_podcast
 import uvicorn
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def load_base_config() -> Dict[Any, Any]:
     config_path = Path(__file__).parent / "podcastfy" / "conversation_config.yaml"
@@ -130,9 +134,43 @@ async def serve_audio(filename: str):
 
 @app.get("/health")
 async def healthcheck():
-    return {"status": "healthy"}
+    """Health check endpoint that verifies critical components"""
+    try:
+        # Check if temp directory exists and is writable
+        if not os.path.exists(TEMP_DIR):
+            os.makedirs(TEMP_DIR, exist_ok=True)
+        
+        # Try to write a test file
+        test_file = os.path.join(TEMP_DIR, "health_check.txt")
+        with open(test_file, "w") as f:
+            f.write("health check")
+        os.remove(test_file)
+        
+        return {
+            "status": "healthy",
+            "temp_dir": TEMP_DIR,
+            "temp_dir_writable": True,
+            "environment": {
+                "python_version": os.sys.version,
+                "working_directory": os.getcwd(),
+                "environment_variables": {
+                    "OPENAI_API_KEY": bool(os.getenv("OPENAI_API_KEY")),
+                    "GEMINI_API_KEY": bool(os.getenv("GEMINI_API_KEY")),
+                    "ELEVENLABS_API_KEY": bool(os.getenv("ELEVENLABS_API_KEY"))
+                }
+            }
+        }
+    except Exception as e:
+        logger.error(f"Health check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    host = os.getenv("HOST", "127.0.0.1")
-    port = int(os.getenv("PORT", 8080))
+    logger.info("Starting FastAPI application...")
+    logger.info(f"Current working directory: {os.getcwd()}")
+    logger.info(f"Environment variables loaded: {bool(os.getenv('OPENAI_API_KEY'))}")
+    
+    host = os.getenv("HOST", "::")  # Default to IPv6
+    port = int(os.getenv("PORT", 8000))
+    
+    logger.info(f"Starting server on {host}:{port}")
     uvicorn.run(app, host=host, port=port)

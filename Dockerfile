@@ -31,6 +31,10 @@ COPY . /app
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
 # Verify installations
 RUN echo "Verifying installations:" && \
     echo "Ubuntu version:" && cat /etc/os-release && \
