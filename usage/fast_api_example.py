@@ -16,14 +16,15 @@ from typing import Dict, Any
 def get_default_config() -> Dict[str, Any]:
 	"""
 	Returns default configuration for podcast generation.
+	
+	Note: API keys (OPENAI_API_KEY, GEMINI_API_KEY, ELEVENLABS_API_KEY) should be set as environment variables.
+	They should not be passed in the request body.
 
 	Returns:
 		Dict[str, Any]: Default configuration dictionary
 	"""
 	return {
 		"generate_podcast": True,
-		"google_key": "YOUR_GEMINI_API_KEY",
-		"openai_key": "YOUR_OPENAI_API_KEY",
 		"urls": ["https://www.phenomenalworld.org/interviews/swap-structure/"],
 		"name": "Central Clearing Risks",
 		"tagline": "Exploring the complexities of financial systemic risk",

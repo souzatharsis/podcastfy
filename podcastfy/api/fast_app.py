@@ -65,11 +65,6 @@ os.makedirs(TEMP_DIR, exist_ok=True)
 async def generate_podcast_endpoint(data: dict):
     """"""
     try:
-        # Set environment variables
-        os.environ['OPENAI_API_KEY'] = data.get('openai_key')
-        os.environ['GEMINI_API_KEY'] = data.get('google_key')
-        os.environ['ELEVENLABS_API_KEY'] = data.get('elevenlabs_key')
-
         # Load base configuration
         base_config = load_base_config()
         
