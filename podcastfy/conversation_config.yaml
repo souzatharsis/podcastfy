@@ -8,8 +8,8 @@ dialogue_structure:
   - "Introduction"
   - "Main Content Summary"
   - "Conclusion"
-podcast_name: "PODCASTIFY"
-podcast_tagline: "Your Personal Generative AI Podcast"
+podcast_name: "Podpod"
+podcast_tagline: ""
 output_language: "English"
 engagement_techniques: 
   - "rhetorical questions"
