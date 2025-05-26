@@ -33,7 +33,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD curl -f http://localhost:8080/health || exit 1
 
 # Verify installations
 RUN echo "Verifying installations:" && \
@@ -44,4 +44,5 @@ RUN echo "Verifying installations:" && \
     echo "Installed packages:" && pip list
 
 # Command to run when container starts
-CMD ["uvicorn", "podcastfy.api.fast_app:app", "--host", "::", "--port", "8080"]
+# CMD ["uvicorn", "podcastfy.api.fast_app:app", "--host", "::", "--port", "8080"]
+CMD uvicorn podcastfy.api.fast_app:app --host :: --port 8080
