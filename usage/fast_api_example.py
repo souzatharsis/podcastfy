@@ -33,7 +33,7 @@ def get_default_config() -> Dict[str, Any]:
 		"roles_person1": "main summarizer",
 		"roles_person2": "questioner",
 		"dialogue_structure": ["Introduction", "Content", "Conclusion"],
-		"tts_model": "openai",
+		"tts_model": "gemini",
 		"is_long_form": False,
 		"engagement_techniques": ["questions", "examples", "analogies"],
 		"user_instructions": "Dont use the world Dwelve",

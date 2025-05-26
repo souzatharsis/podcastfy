@@ -8,8 +8,8 @@ The Podcastfy API allows you to programmatically generate AI podcasts from vario
 
 The following environment variables must be set before using the API:
 
+- `GEMINI_API_KEY`: Your Google Gemini API key (required for transcript generation and default TTS)
 - `OPENAI_API_KEY`: Your OpenAI API key (required for OpenAI TTS)
-- `GEMINI_API_KEY`: Your Google Gemini API key (required for transcript generation)
 - `ELEVENLABS_API_KEY`: Your ElevenLabs API key (required for ElevenLabs TTS)
 
 These keys should be set in your environment or in a `.env` file. They should not be passed in the request body.
@@ -46,9 +46,6 @@ curl -X POST https://thatupiso-podcastfy-ai-demo.hf.space/gradio_api/call/proces
       "https://yourwebsite.com",
       [],  # pdf_files
       [],  # image_files
-      "gemini_key",
-      "openai_key",
-      "elevenlabs_key",
       2000,  # word_count
       "engaging,fast-paced",  # conversation_style
       "main summarizer",  # roles_person1
@@ -56,7 +53,7 @@ curl -X POST https://thatupiso-podcastfy-ai-demo.hf.space/gradio_api/call/proces
       "Introduction,Content,Conclusion",  # dialogue_structure
       "PODCASTFY",  # podcast_name
       "YOUR PODCAST",  # podcast_tagline
-      "openai",  # tts_model
+      "gemini",  # tts_model
       0.7,  # creativity_level
       ""  # user_instructions
     ]
@@ -64,15 +61,7 @@ curl -X POST https://thatupiso-podcastfy-ai-demo.hf.space/gradio_api/call/proces
 
 # Step 2: GET request to fetch results
 curl -N https://thatupiso-podcastfy-ai-demo.hf.space/gradio_api/call/process_inputs/$EVENT_ID
-
-
-# Example output result
-event: complete
-data: [{"path": "/tmp/gradio/bcb143f492b1c9a6dbde512557541e62f090bca083356be0f82c2e12b59af100/podcast_81106b4ca62542f1b209889832a421df.mp3", "url": "https://thatupiso-podcastfy-ai-demo.hf.space/gradio_a/gradio_api/file=/tmp/gradio/bcb143f492b1c9a6dbde512557541e62f090bca083356be0f82c2e12b59af100/podcast_81106b4ca62542f1b209889832a421df.mp3", "size": null, "orig_name": "podcast_81106b4ca62542f1b209889832a421df.mp3", "mime_type": null, "is_stream": false, "meta": {"_type": "gradio.FileData"}}]
-
 ```
-
-You can download the file by extending the URL prefix "https://thatupiso-podcastfy-ai-demo.hf.space/gradio_a/gradio_api/file=" with the path to the file in variable `path`. (Note: The variable "url" above has a bug introduced by Gradio, so please ignore it.)
 
 ### Parameter Details
 
@@ -82,19 +71,16 @@ You can download the file by extending the URL prefix "https://thatupiso-podcast
 | 1     | urls_input         | string | URLs to process (include http:// or https://)                      |
 | 2     | pdf_files          | array  | List of PDF files to process                                       |
 | 3     | image_files        | array  | List of image files to process                                     |
-| 4     | gemini_key         | string | Google Gemini API key                                              |
-| 5     | openai_key         | string | OpenAI API key                                                     |
-| 6     | elevenlabs_key     | string | ElevenLabs API key                                                 |
-| 7     | word_count         | number | Target word count for podcast                                      |
-| 8     | conversation_style | string | Conversation style descriptors (e.g. "engaging,fast-paced")        |
-| 9     | roles_person1      | string | Role of first speaker                                              |
-| 10    | roles_person2      | string | Role of second speaker                                             |
-| 11    | dialogue_structure | string | Structure of dialogue (e.g. "Introduction,Content,Conclusion")     |
-| 12    | podcast_name       | string | Name of the podcast                                                |
-| 13    | podcast_tagline    | string | Podcast tagline                                                    |
-| 14    | tts_model          | string | Text-to-speech model ("gemini", "openai", "elevenlabs", or "edge") |
-| 15    | creativity_level   | number | Level of creativity (0-1)                                          |
-| 16    | user_instructions  | string | Custom instructions for generation                                 |
+| 4     | word_count         | number | Target word count for podcast                                      |
+| 5     | conversation_style | string | Conversation style descriptors (e.g. "engaging,fast-paced")        |
+| 6     | roles_person1      | string | Role of first speaker                                              |
+| 7     | roles_person2      | string | Role of second speaker                                             |
+| 8     | dialogue_structure | string | Structure of dialogue (e.g. "Introduction,Content,Conclusion")     |
+| 9     | podcast_name       | string | Name of the podcast                                                |
+| 10    | podcast_tagline    | string | Podcast tagline                                                    |
+| 11    | tts_model          | string | Text-to-speech model ("gemini", "openai", "elevenlabs", or "edge") |
+| 12    | creativity_level   | number | Level of creativity (0-1)                                          |
+| 13    | user_instructions  | string | Custom instructions for generation                                 |
 
 ## Using Python
 
@@ -134,7 +120,7 @@ Generates a podcast from the provided input.
 | roles_person1         | string  | No       | "main summarizer"                                           | Role of first person                    |
 | roles_person2         | string  | No       | "questioner/clarifier"                                      | Role of second person                   |
 | dialogue_structure    | array   | No       | ["Introduction", "Main Content Summary", "Conclusion"]      | Structure of dialogue                   |
-| tts_model             | string  | No       | "openai"                                                    | Text-to-speech model to use             |
+| tts_model             | string  | No       | "gemini"                                                    | Text-to-speech model to use             |
 | is_long_form          | boolean | No       | false                                                       | Whether to generate a long-form podcast |
 | engagement_techniques | array   | No       | ["rhetorical questions", "anecdotes", "analogies", "humor"] | Techniques to engage listeners          |
 | user_instructions     | string  | No       | ""                                                          | Additional instructions for generation  |
@@ -151,7 +137,7 @@ result = client.predict(
     word_count=1500,
     conversation_style="casual,informative",
     podcast_name="Tech Talk",
-    tts_model="openai",
+    tts_model="gemini",
     creativity_level=0.8
 )
 
