@@ -4,13 +4,10 @@
 <a href="https://trendshift.io/repositories/12965" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12965" alt="Podcastfy.ai | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 # Podcastfy.ai 🎙️🤖
+
 An Open Source API alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI
 
-
-
 https://github.com/user-attachments/assets/5d42c106-aabe-44c1-8498-e9c53545ba40
-
-
 
 [Paper](https://github.com/souzatharsis/podcastfy/blob/main/paper/paper.pdf) |
 [Python Package](https://github.com/souzatharsis/podcastfy/blob/59563ee105a0d1dbb46744e0ff084471670dd725/podcastfy.ipynb) |
@@ -27,6 +24,7 @@ https://github.com/user-attachments/assets/5d42c106-aabe-44c1-8498-e9c53545ba40
 [![Documentation Status](https://readthedocs.org/projects/podcastfy/badge/?version=latest)](https://podcastfy.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![GitHub Repo stars](https://img.shields.io/github/stars/souzatharsis/podcastfy)
+
 </div>
 
 Podcastfy is an open-source Python package that transforms multi-modal content (text, images) into engaging, multi-lingual audio conversations using GenAI. Input content includes websites, PDFs, images, YouTube videos, as well as user provided topics.
@@ -41,68 +39,86 @@ Unlike closed-source UI-based tools focused primarily on research synthesis (e.g
 
 > "Your library was very straightforward to work with. You did Amazing work brother 🙏"
 
-> "I think it's awesome that you were inspired/recognize how hard it is to beat NotebookLM's quality, but you did an *incredible* job with this! It sounds incredible, and it's open-source! Thank you for being amazing!"
+> "I think it's awesome that you were inspired/recognize how hard it is to beat NotebookLM's quality, but you did an _incredible_ job with this! It sounds incredible, and it's open-source! Thank you for being amazing!"
 
 [![Star History Chart](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)](https://api.star-history.com/svg?repos=souzatharsis/podcastfy&type=Date&theme=dark)
 
 ## Audio Examples 🔊
+
 This sample collection was generated using this [Python Notebook](usage/examples.ipynb).
 
 ### Images
-Sample 1: Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu
-***
-<img src="data/images/Senecio.jpeg" alt="Senecio, 1922 (Paul Klee)" width="20%" height="auto"> <img src="data/images/connection.jpg" alt="Connection of Civilizations (2017) by Gheorghe Virtosu " width="21.5%" height="auto">
-<video src="https://github.com/user-attachments/assets/a4134a0d-138c-4ab4-bc70-0f53b3507e6b"></video>  
-***
-Sample 2: The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)
-***
- <img src="data/images/japan_1.jpg" alt="The Great Wave off Kanagawa, 1831 (Hokusai)" width="20%" height="auto"> <img src="data/images/japan2.jpg" alt="Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)" width="21.5%" height="auto"> 
-<video src="https://github.com/user-attachments/assets/f6aaaeeb-39d2-4dde-afaf-e2cd212e9fed"></video>  
-***
-Sample 3: Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci)
-***
-<img src="data/images/taylor.png" alt="Taylor Swift" width="28%" height="auto"> <img src="data/images/monalisa.jpeg" alt="Mona Lisa" width="10.5%" height="auto">
-<video src="https://github.com/user-attachments/assets/3b6f7075-159b-4540-946f-3f3907dffbca"></video> 
 
+Sample 1: Senecio, 1922 (Paul Klee) and Connection of Civilizations (2017) by Gheorghe Virtosu
+
+---
+
+<img src="data/images/Senecio.jpeg" alt="Senecio, 1922 (Paul Klee)" width="20%" height="auto"> <img src="data/images/connection.jpg" alt="Connection of Civilizations (2017) by Gheorghe Virtosu " width="21.5%" height="auto">
+<video src="https://github.com/user-attachments/assets/a4134a0d-138c-4ab4-bc70-0f53b3507e6b"></video>
+
+---
+
+Sample 2: The Great Wave off Kanagawa, 1831 (Hokusai) and Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)
+
+---
+
+<img src="data/images/japan_1.jpg" alt="The Great Wave off Kanagawa, 1831 (Hokusai)" width="20%" height="auto"> <img src="data/images/japan2.jpg" alt="Takiyasha the Witch and the Skeleton Spectre, c. 1844 (Kuniyoshi)" width="21.5%" height="auto">
+<video src="https://github.com/user-attachments/assets/f6aaaeeb-39d2-4dde-afaf-e2cd212e9fed"></video>
+
+---
+
+Sample 3: Pop culture icon Taylor Swift and Mona Lisa, 1503 (Leonardo da Vinci)
+
+---
+
+<img src="data/images/taylor.png" alt="Taylor Swift" width="28%" height="auto"> <img src="data/images/monalisa.jpeg" alt="Mona Lisa" width="10.5%" height="auto">
+<video src="https://github.com/user-attachments/assets/3b6f7075-159b-4540-946f-3f3907dffbca"></video>
 
 ### Text
-| Audio | Description  | Source |
-|-------|--|--------|
-| <video src="https://github.com/user-attachments/assets/ef41a207-a204-4b60-a11e-06d66a0fbf06"></video>  | Personal Website | [Website](https://www.souzatharsis.com) |
-| [Audio](https://soundcloud.com/high-lander123/amodei?in=high-lander123/sets/podcastfy-sample-audio-longform&si=b8dfaf4e3ddc4651835e277500384156) (`longform=True`) | Lex Fridman Podcast: 5h interview with Dario Amodei Anthropic's CEO |  [Youtube](https://www.youtube.com/watch?v=ugvHCXCOmm4) |
-| [Audio](https://soundcloud.com/high-lander123/benjamin?in=high-lander123/sets/podcastfy-sample-audio-longform&si=dca7e2eec1c94252be18b8794499959a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing) (`longform=True`)| Benjamin Franklin's Autobiography | [Book](https://www.gutenberg.org/cache/epub/148/pg148.txt) |
+
+| Audio                                                                                                                                                                                                                                 | Description                                                         | Source                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------- |
+| <video src="https://github.com/user-attachments/assets/ef41a207-a204-4b60-a11e-06d66a0fbf06"></video>                                                                                                                                 | Personal Website                                                    | [Website](https://www.souzatharsis.com)                    |
+| [Audio](https://soundcloud.com/high-lander123/amodei?in=high-lander123/sets/podcastfy-sample-audio-longform&si=b8dfaf4e3ddc4651835e277500384156) (`longform=True`)                                                                    | Lex Fridman Podcast: 5h interview with Dario Amodei Anthropic's CEO | [Youtube](https://www.youtube.com/watch?v=ugvHCXCOmm4)     |
+| [Audio](https://soundcloud.com/high-lander123/benjamin?in=high-lander123/sets/podcastfy-sample-audio-longform&si=dca7e2eec1c94252be18b8794499959a&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing) (`longform=True`) | Benjamin Franklin's Autobiography                                   | [Book](https://www.gutenberg.org/cache/epub/148/pg148.txt) |
 
 ### Multi-Lingual Text
-| Language | Content Type | Description | Audio | Source |
-|----------|--------------|-------------|-------|--------|
-| French | Website | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro) | [Website](https://agroclim.inrae.fr/) |
-| Portuguese-BR | News Article | Election polls in São Paulo | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
+| Language      | Content Type | Description                      | Audio                                                           | Source                                                                                                                               |
+| ------------- | ------------ | -------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| French        | Website      | Agroclimate research information | [Audio](https://audio.com/thatupiso/audio/podcast-fr-agro)      | [Website](https://agroclim.inrae.fr/)                                                                                                |
+| Portuguese-BR | News Article | Election polls in São Paulo      | [Audio](https://audio.com/thatupiso/audio/podcast-thatupiso-br) | [Website](https://noticias.uol.com.br/eleicoes/2024/10/03/nova-pesquisa-datafolha-quem-subiu-e-quem-caiu-na-disputa-de-sp-03-10.htm) |
 
 ## Quickstart 💻
 
 ### Prerequisites
+
 - Python 3.11 or higher
 - `$ pip install ffmpeg` (for audio processing)
 
 ### Setup
+
 1. Install from PyPI
-  `$ pip install podcastfy`
+   `$ pip install podcastfy`
 
 2. Set up your [API keys](usage/config.md)
 
 ### Python
+
 ```python
 from podcastfy.client import generate_podcast
 
 audio_file = generate_podcast(urls=["<url1>", "<url2>"])
 ```
+
 ### CLI
+
 ```
 python -m podcastfy.client --url <url1> --url <url2>
 ```
 
 ### Fastapi (Beta for urls)
+
 ```
 Containerize podcastify and launch the api
 Dockerfile_api
@@ -110,7 +126,16 @@ Dockerfile_api
 Make requests to the api look at the notebook for a clear example
 fetch_audio(request_data, ENDPOINT, BASE_URL)
 ```
-  
+
+## Run the api locally
+
+```bash
+python3.11 -m venv myenv
+source myenv/bin/activate
+pip3 install -r ./requirements.txt
+python3 -m uvicorn podcastfy.api.fast_app:app --host 0.0.0.0 --port 8080
+```
+
 ## Usage 💻
 
 - [Python Package Quickstart](podcastfy.ipynb)
@@ -124,6 +149,7 @@ fetch_audio(request_data, ENDPOINT, BASE_URL)
 ## Customization 🔧
 
 Podcastfy offers a range of customization options to tailor your AI-generated podcasts:
+
 - Customize podcast [conversation](usage/conversation_custom.md) (e.g. format, style, voices)
 - Choose to run [Local LLMs](usage/local_llm.md) (156+ HuggingFace models)
 - Set other [Configuration Settings](usage/config.md)
@@ -147,17 +173,16 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 - [Podcast-llm](https://github.com/evandempsey/podcast-llm)
 - [Podcastfy-HuggingFace App](https://huggingface.co/spaces/thatupiso/Podcastfy.ai_demo)
 
-
 ## Updates 🚀🚀
 
 ### v0.4.0+ release
+
 - Released new Multi-Speaker TTS model (is it the one NotebookLM uses?!?)
 - Generate short or longform podcasts
 - Generate podcasts from input topic using grounded real-time web search
 - Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
 
 See [CHANGELOG](CHANGELOG.md) for more details.
-
 
 ## License
 
@@ -176,7 +201,7 @@ We welcome contributions! See [Guidelines](GUIDELINES.md) for more details.
 - **Researchers** can convert research papers, visual data, and technical content into conversational audio. This makes it easier for a wider audience, including those with disabilities, to consume and understand complex scientific information. Researchers can also create audio summaries of their work to enhance accessibility.
 
 - **Accessibility Advocates** can use `Podcastfy` to promote digital accessibility by providing a tool that converts multimodal content into auditory formats. This helps individuals with visual impairments, dyslexia, or other disabilities that make it challenging to consume written or visual content.
-  
+
 ## Contributors
 
 <a href="https://github.com/souzatharsis/podcastfy/graphs/contributors">
