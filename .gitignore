@@ -19,6 +19,7 @@ __pycache__/
 # Virtual environment
 venv/
 env/
+myenv/
 .env
 
 # IDE-specific files
@@ -33,6 +34,8 @@ Thumbs.db
 
 # Project-specific ignores
 attachments/
+data/
+**/temp_audio/
 
 # Logs
 *.log
