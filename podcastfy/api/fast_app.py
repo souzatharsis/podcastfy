@@ -6,9 +6,8 @@ with configuration management and temporary file handling.
 """
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, Response
 import os
-import shutil
 import yaml
 from typing import Dict, Any
 from pathlib import Path
@@ -17,6 +16,7 @@ import uvicorn
 import logging
 import sys
 import signal
+import base64
 
 # Configure logging to stdout
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -101,13 +101,8 @@ async def generate_podcast_endpoint(data: dict):
             }
         }
 
-        # print(user_config)
-
         # Merge configurations
         conversation_config = merge_configs(base_config, user_config)
-
-        # print(conversation_config)
-        
 
         # Generate podcast
         result = generate_podcast(
@@ -116,17 +111,34 @@ async def generate_podcast_endpoint(data: dict):
             tts_model=tts_model,
             longform=bool(data.get('is_long_form', False)),
         )
-        # Handle the result
+
+        # Handle the result and return raw audio data
         if isinstance(result, str) and os.path.isfile(result):
-            filename = f"podcast_{os.urandom(8).hex()}.mp3"
-            output_path = os.path.join(TEMP_DIR, filename)
-            shutil.copy2(result, output_path)
-            return {"audioUrl": f"/audio/{filename}"}
+            with open(result, 'rb') as audio_file:
+                audio_data = audio_file.read()
+                # Clean up the temporary file
+                os.remove(result)
+                return Response(
+                    content=audio_data,
+                    media_type="audio/mpeg",
+                    headers={
+                        "Content-Type": "audio/mpeg",
+                        "Content-Length": str(len(audio_data))
+                    }
+                )
         elif hasattr(result, 'audio_path'):
-            filename = f"podcast_{os.urandom(8).hex()}.mp3"
-            output_path = os.path.join(TEMP_DIR, filename)
-            shutil.copy2(result.audio_path, output_path)
-            return {"audioUrl": f"/audio/{filename}"}
+            with open(result.audio_path, 'rb') as audio_file:
+                audio_data = audio_file.read()
+                # Clean up the temporary file
+                os.remove(result.audio_path)
+                return Response(
+                    content=audio_data,
+                    media_type="audio/mpeg",
+                    headers={
+                        "Content-Type": "audio/mpeg",
+                        "Content-Length": str(len(audio_data))
+                    }
+                )
         else:
             raise HTTPException(status_code=500, detail="Invalid result format")
 

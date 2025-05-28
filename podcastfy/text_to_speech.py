@@ -41,6 +41,8 @@ class TextToSpeech:
         self.conversation_config = load_conversation_config(conversation_config)
         self.tts_config = self.conversation_config.get("text_to_speech", {})
 
+        print(f"################### model: {model}")
+
         # Get API key from config if not provided
         if not api_key:
             api_key = getattr(self.config, f"{model.upper().replace('MULTI', '')}_API_KEY", None)
