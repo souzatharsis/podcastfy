@@ -5,8 +5,8 @@ This module provides REST endpoints for podcast generation and audio serving,
 with configuration management and temporary file handling.
 """
 
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, Response
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import Response, JSONResponse
 import os
 import yaml
 from typing import Dict, Any
@@ -16,7 +16,6 @@ import uvicorn
 import logging
 import sys
 import signal
-import base64
 
 # Configure logging to stdout
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -60,6 +59,21 @@ print("=== FastAPI app object created ===")
 
 TEMP_DIR = os.path.join(os.path.dirname(__file__), "temp_audio")
 os.makedirs(TEMP_DIR, exist_ok=True)
+
+@app.middleware("http")
+async def verify_token(request: Request, call_next):
+    # Skip token verification for health check endpoint
+    if request.url.path == "/health":
+        return await call_next(request)
+        
+    token = request.headers.get("X-Podpod-Access-Token")
+    if not token or token != os.getenv("PODPOD_API_ACCESS_TOKEN"):
+        return JSONResponse(
+            status_code=401,
+            content={"message": "Invalid or missing access token"}
+        )
+    return await call_next(request)
+
 
 @app.post("/generate")
 async def generate_podcast_endpoint(data: dict):
@@ -144,14 +158,6 @@ async def generate_podcast_endpoint(data: dict):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/audio/{filename}")
-async def serve_audio(filename: str):
-    """ Get File Audio From ther Server"""
-    file_path = os.path.join(TEMP_DIR, filename)
-    if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail="File not found")
-    return FileResponse(file_path)
 
 @app.get("/health")
 async def healthcheck():

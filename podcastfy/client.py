@@ -116,7 +116,7 @@ def process_content(
             qa_content = content_generator.generate_qa_content(
                 combined_content,
                 image_file_paths=image_paths or [],
-                output_filepath=transcript_filepath,
+                # output_filepath=transcript_filepath,
                 longform=longform
             )
 
