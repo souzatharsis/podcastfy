@@ -52,6 +52,12 @@ STANDARD_PROMPT_CONTENT = [
             '- At the end of the podcast, naturally weave in a few key takeaways in a conversational tone.\n'
             '- Then remind listeners to keep using Podpod and hope they enjoyed it.\n'
             '- DO NOT LEAVE THIS OUT: End on a positive, relevant, funny line about life.\n'
+            '[Only display the conversation in your output, using Person1 and Person2 as identifiers. '
+            'DO NOT INCLUDE scratchpad block IN OUTPUT. '
+            'Include advanced TTS-specific markup as needed. '
+            'Example:\n'
+            '<Person1> "Welcome to {podcast_name}! Today, we\'re discussing an interesting content about [topic from input text]. Let\'s dive in!"</Person1>\n'
+            '<Person2> "I\'m excited to discuss this!  What\'s the main point of the content we\'re covering today?"</Person2>]\n'
 
         )
     },
@@ -134,7 +140,7 @@ REWRITER_PROMPT_CONTENT = [
             '- In the dialog especially when \'handing over\' to the other host don\'t mention their name.\n'
             '- Don\'t say "Diving In," "deep dive" or anything similar,\n'
             '- Do not start each line of dialog with just one or two words. Rewrite and join to the next sentence. This is very important.\n'
-
+            '- ALWAYS Intro the podcast as "Prompted by Podpod" but nothing further about the podcast or what it is about. If it is included add this at the start.\n'
             '\n'
             'FORMAT: \n'
             '- Output format should be the same as input format, i.e. a conversation where each speaker\'s turn is enclosed in tags, <Person1> and <Person2>.\n'
