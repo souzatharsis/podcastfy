@@ -45,7 +45,11 @@ class TextToSpeech:
 
         # Get API key from config if not provided
         if not api_key:
-            api_key = getattr(self.config, f"{model.upper().replace('MULTI', '')}_API_KEY", None)
+            # Special handling for gemininew to use the same API key as other Gemini providers
+            if model == "gemininew":
+                api_key = getattr(self.config, "GEMINI_API_KEY", None)
+            else:
+                api_key = getattr(self.config, f"{model.upper().replace('MULTI', '')}_API_KEY", None)
 
         # Initialize provider using factory
         self.provider = TTSProviderFactory.create(
@@ -97,19 +101,34 @@ class TextToSpeech:
         try:
 
             if (
-                "multi" in self.provider.model.lower()
+                "multi" in self.provider.model.lower() or 
+                self.provider.__class__.__name__ == "GeminiNewTTS"
             ):  # refactor: We should have instead MultiSpeakerTTS and SingleSpeakerTTS classes
                 provider_config = self._get_provider_config()
                 voice = provider_config.get("default_voices", {}).get("question")
                 voice2 = provider_config.get("default_voices", {}).get("answer")
                 model = provider_config.get("model")
-                audio_data_list = self.provider.generate_audio(
-                    cleaned_text,
-                    voice="S",
-                    model="en-US-Studio-MultiSpeaker",
-                    voice2="R",
-                    ending_message=self.ending_message,
-                )
+                
+                # Use provider-specific parameters
+                if self.provider.__class__.__name__ == "GeminiNewTTS":
+                    audio_data = self.provider.generate_audio(
+                        cleaned_text,
+                        voice=voice or "Kore",
+                        model=model or self.provider.model,
+                        voice2=voice2 or "Puck",
+                        ending_message=self.ending_message,
+                    )
+                    # GeminiNewTTS returns bytes, but we need a list for compatibility
+                    audio_data_list = [audio_data]
+                else:
+                    # Legacy Google Cloud TTS multi-speaker parameters
+                    audio_data_list = self.provider.generate_audio(
+                        cleaned_text,
+                        voice="S",
+                        model="en-US-Studio-MultiSpeaker",
+                        voice2="R",
+                        ending_message=self.ending_message,
+                    )
 
                 try:
                     # First verify we have data

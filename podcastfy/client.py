@@ -123,7 +123,11 @@ def process_content(
         if generate_audio:
             api_key = None
             if tts_model != "edge":
-                api_key = getattr(config, f"{tts_model.upper().replace('MULTI', '')}_API_KEY")
+                # Special handling for gemininew to use the same API key as other Gemini providers
+                if tts_model == "gemininew":
+                    api_key = getattr(config, "GEMINI_API_KEY")
+                else:
+                    api_key = getattr(config, f"{tts_model.upper().replace('MULTI', '')}_API_KEY")
 
             text_to_speech = TextToSpeech(
                 model=tts_model,

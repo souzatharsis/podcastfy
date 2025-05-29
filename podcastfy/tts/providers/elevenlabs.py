@@ -1,4 +1,9 @@
-"""ElevenLabs TTS provider implementation."""
+"""
+THIS IS NOT USED ANYMORE.
+To re-enable it, you need to install the elevenlabs package.
+
+ElevenLabs TTS provider implementation.
+"""
 
 from elevenlabs import client as elevenlabs_client
 from ..base import TTSProvider
