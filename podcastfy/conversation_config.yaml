@@ -1,7 +1,7 @@
 conversation_style: 
-  - "engaging"
-  - "fast-paced"
-  - "enthusiastic"
+  # - "engaging"
+  # - "fast-paced"
+  # - "enthusiastic"
 roles_person1: "main summarizer"
 roles_person2: "questioner/clarifier"
 dialogue_structure: 
@@ -12,10 +12,10 @@ podcast_name: "Prompted by Podpod"
 podcast_tagline: ""
 output_language: "English"
 engagement_techniques: 
-  - "rhetorical questions"
-  - "anecdotes"
-  - "analogies"
-  - "humor"
+  # - "rhetorical questions"
+  # - "anecdotes"
+  # - "analogies"
+  # - "humor"
 creativity: 1
 user_instructions: ""
 max_num_chunks: 8 # maximum number of rounds of discussions in longform
@@ -51,9 +51,9 @@ text_to_speech:
       model: "en-US-Studio-MultiSpeaker"
   gemininew:
     default_voices:
-      question: "Kore"
-      answer: "Puck"
+      question: "Achird"
+      answer: "Laomedeia"
     model: "gemini-2.5-flash-preview-tts"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
-  ending_message: "See You Next Time!"
+  ending_message: ""
