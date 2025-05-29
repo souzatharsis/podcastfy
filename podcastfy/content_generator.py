@@ -16,7 +16,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.llms.llamafile import Llamafile
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain import hub
+from .prompts import get_standard_prompt, get_longform_prompt, get_cleaner_prompt, get_rewriter_prompt
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
 import logging
@@ -559,14 +559,14 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
             llm = self.llm
             logger.debug("LLM model initialized successfully")
 
-            # Get prompt templates from hub
-            logger.debug("Pulling prompt templates from hub")
+            # Get prompt templates from local prompts module
+            logger.debug("Loading prompt templates from local prompts module")
             try:
-                clean_transcript_prompt = hub.pull(f"{self.content_generator_config['cleaner_prompt_template']}:{self.content_generator_config['cleaner_prompt_commit']}")
-                rewrite_prompt = hub.pull(f"{self.content_generator_config['rewriter_prompt_template']}:{self.content_generator_config['rewriter_prompt_commit']}")
-                logger.debug("Successfully pulled prompt templates")
+                clean_transcript_prompt = get_cleaner_prompt()
+                rewrite_prompt = get_rewriter_prompt()
+                logger.debug("Successfully loaded prompt templates")
             except Exception as e:
-                logger.error(f"Error pulling prompt templates: {str(e)}")
+                logger.error(f"Error loading prompt templates: {str(e)}")
                 return transcript
             
             logger.debug("Creating cleaning and rewriting chains")
@@ -775,19 +775,11 @@ class ContentGenerator:
         """
         content_generator_config = self.config.get("content_generator", {})
         
-        # Get base template and commit values
-        base_template = content_generator_config.get("prompt_template")
-        base_commit = content_generator_config.get("prompt_commit")
-        
-        # Modify template and commit for longform if configured
+        # Get the appropriate local prompt based on longform parameter
         if longform:
-            template = content_generator_config.get("longform_prompt_template")
-            commit = content_generator_config.get("longform_prompt_commit")
+            prompt_template = get_longform_prompt()
         else:
-            template = base_template
-            commit = base_commit
-
-        prompt_template = hub.pull(f"{template}:{commit}")
+            prompt_template = get_standard_prompt()
 
         image_path_keys = []
         messages = []
