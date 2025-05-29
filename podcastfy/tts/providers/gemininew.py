@@ -685,7 +685,7 @@ class GeminiNewTTS(TTSProvider):
         
         return result
 
-    def generate_audio(self, text: str, voice: str = "Kore", model: str = None, 
+    def generate_audio( self, text: str, voice: str = "Kore", model: str = None, 
                        voice2: str = "Puck", ending_message: str = "") -> bytes:
         """
         Generate audio using Google Gemini TTS API with multi-speaker support.
@@ -701,6 +701,11 @@ class GeminiNewTTS(TTSProvider):
         Returns:
             bytes: Audio data in MP3 format (single chunk for compatibility with existing system)
         """
+        # NEW HACK FOR SPEAKING STYLE
+        prepend_text = "Say in a spooky Whisper: "
+        text = prepend_text + text
+        # NEW
+
         logger.info(f"🎵 === STARTING AUDIO GENERATION ===")
         logger.info(f"📊 Input parameters:")
         logger.info(f"   - Text length: {len(text)} characters")
