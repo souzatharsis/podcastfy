@@ -701,10 +701,7 @@ class GeminiNewTTS(TTSProvider):
         Returns:
             bytes: Audio data in MP3 format (single chunk for compatibility with existing system)
         """
-        # NEW HACK FOR SPEAKING STYLE
-        prepend_text = "Say in a spooky Whisper: "
-        text = prepend_text + text
-        # NEW
+    
 
         logger.info(f"🎵 === STARTING AUDIO GENERATION ===")
         logger.info(f"📊 Input parameters:")
