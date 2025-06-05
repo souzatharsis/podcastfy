@@ -428,6 +428,7 @@ class StandardContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
         """Compose prompt parameters for standard content generation."""
         prompt_params = {
             "input_text": input_texts,
+            "instruction": config_conversation.get("user_instructions", "content"),
             "conversation_style": ", ".join(
                 config_conversation.get("conversation_style", [])
             ),
