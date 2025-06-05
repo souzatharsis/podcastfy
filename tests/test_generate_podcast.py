@@ -78,22 +78,6 @@ def setup_test_directories(sample_conversation_config):
 
 
 @pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
-def test_generate_podcast_from_urls_11labs(default_conversation_config):
-    """Test generating a podcast from a list of URLs."""
-    urls = [TEST_URL]
-
-    audio_file = generate_podcast(urls=urls, tts_model="elevenlabs")
-    print(f"Audio file generated using ElevenLabs model: {audio_file}")
-    assert audio_file is not None
-    assert os.path.exists(audio_file)
-    assert audio_file.endswith(".mp3")
-    assert os.path.getsize(audio_file) > 1024  # Check if larger than 1KB
-    assert os.path.dirname(audio_file) == default_conversation_config.get(
-        "text_to_speech", {}
-    ).get("output_directories", {}).get("audio")
-
-
-@pytest.mark.skip(reason="Testing edge only on Github Action as it's free")
 def test_generate_podcast_from_urls_openai(default_conversation_config):
     """Test generating a podcast from a list of URLs."""
     urls = [

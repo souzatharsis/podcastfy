@@ -182,8 +182,7 @@ async def healthcheck():
                 "working_directory": os.getcwd(),
                 "environment_variables": {
                     "OPENAI_API_KEY": bool(os.getenv("OPENAI_API_KEY")),
-                    "GEMINI_API_KEY": bool(os.getenv("GEMINI_API_KEY")),
-                    "ELEVENLABS_API_KEY": bool(os.getenv("ELEVENLABS_API_KEY"))
+                    "GEMINI_API_KEY": bool(os.getenv("GEMINI_API_KEY"))
                 }
             }
         }

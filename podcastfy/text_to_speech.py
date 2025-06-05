@@ -33,7 +33,7 @@ class TextToSpeech:
 
         Args:
                         model (str): The model to use for text-to-speech conversion.
-                                                Options are 'elevenlabs', 'gemini', 'openai', 'edge' or 'geminimulti'. Defaults to 'openai'.
+                                                Options are 'gemini', 'openai', 'edge' or 'geminimulti'. Defaults to 'openai'.
                         api_key (Optional[str]): API key for the selected text-to-speech service.
                         conversation_config (Optional[Dict]): Configuration for conversation settings.
         """
@@ -351,14 +351,6 @@ def main(seed: int = 42) -> None:
             "tests/data/transcript_336aa9f955cd4019bc1287379a5a2820.txt", "r"
         ) as file:
             input_text = file.read()
-
-        # Test ElevenLabs
-        tts_elevenlabs = TextToSpeech(model="elevenlabs")
-        elevenlabs_output_file = "tests/data/response_elevenlabs.mp3"
-        tts_elevenlabs.convert_to_speech(input_text, elevenlabs_output_file)
-        logger.info(
-            f"ElevenLabs TTS completed. Output saved to {elevenlabs_output_file}"
-        )
 
         # Test OpenAI
         tts_openai = TextToSpeech(model="openai")

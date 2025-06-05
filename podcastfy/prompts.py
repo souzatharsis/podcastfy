@@ -125,7 +125,7 @@ LONGFORM_PROMPT_CONTENT = [
             'Each speaker turn should not last too long. '
             'Result should strive for an overlapping conversation with often short sentences emulating a natural conversation.]\n'
             '[SpeechSynthesisOptimization: Craft sentences optimized for TTS, including advanced markup, while discussing the content. '
-            'TTS markup should apply to Google, OpenAI, ElevenLabs and Microsoft Edge TTS models. '
+            'TTS markup should apply to Google, OpenAI and Microsoft Edge TTS models. '
             'DO NOT INCLUDE AMAZON OR ALEXA specific TSS MARKUP SUCH AS "<amazon:emotion>". '
             'Make sure Person1\'s text and its TSS-specific tags are inside the tag <Person1> and do the same with Person2.]\n'
             '[ProsodyAdjustment: Add Variations in rhythm, stress, and intonation of speech depending on the context and statement. '

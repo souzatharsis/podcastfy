@@ -26,11 +26,6 @@ text_to_speech:
   output_directories:
     transcripts: "./data/transcripts"
     audio: "./data/audio"
-  elevenlabs:
-    default_voices:
-      question: "Chris"
-      answer: "Jessica"
-    model: "eleven_multilingual_v2"
   openai:
     default_voices:
       question: "echo"

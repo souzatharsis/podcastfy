@@ -2,7 +2,7 @@
 
 from typing import Dict, Type, Optional
 from .base import TTSProvider
-from .providers.elevenlabs import ElevenLabsTTS
+# from .providers.elevenlabs import ElevenLabsTTS  # Removed elevenlabs support
 from .providers.openai import OpenAITTS
 from .providers.edge import EdgeTTS
 from .providers.gemini import GeminiTTS
@@ -13,7 +13,7 @@ class TTSProviderFactory:
     """Factory class for creating TTS providers."""
     
     _providers: Dict[str, Type[TTSProvider]] = {
-        'elevenlabs': ElevenLabsTTS,
+        # 'elevenlabs': ElevenLabsTTS,  # Removed elevenlabs support
         'openai': OpenAITTS,
         'edge': EdgeTTS,
         'gemini': GeminiTTS,
