@@ -151,7 +151,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 ## Updates 🚀🚀
 
 ### v0.4.0+ release
-- Released new Multi-Speaker TTS model (is it the one NotebookLM uses?!?)
+- Leverage natural conversational multi-Speaker TTS model
 - Generate short or longform podcasts
 - Generate podcasts from input topic using grounded real-time web search
 - Integrate with 100+ LLM models (OpenAI, Anthropic, Google etc) for transcript generation
