@@ -36,7 +36,7 @@ dialogue_structure:
   - Quiz
   - Conclusion
 podcast_name: Teachfy
-podcast_tagline: Learning Through Conversation
+podcast_tagline: Learning Through Conversation - Witaj świecie! こんにちは世界 
 output_language: English
 engagement_techniques: 
   - examples
@@ -57,7 +57,7 @@ def mock_files(tmp_path):
     transcript_file.write_text(MOCK_TRANSCRIPT)
 
     config_file = tmp_path / "custom_config.yaml"
-    config_file.write_text(MOCK_CONVERSATION_CONFIG)
+    config_file.write_text(MOCK_CONVERSATION_CONFIG, encoding="utf-8")
 
     return {
         "url_file": str(url_file),
@@ -139,7 +139,7 @@ def test_generate_transcript_only(sample_config):
         transcript_path
     ), f"Transcript file does not exist at path: {transcript_path}"
 
-    with open(transcript_path, "r") as f:
+    with open(transcript_path, "r", encoding="utf-8") as f:
         content = f.read()
         assert content != ""
         assert isinstance(content, str)
@@ -209,7 +209,7 @@ def test_generate_podcast_with_custom_config(mock_files, sample_config):
     # Check for elements from the custom config in the transcript
     transcript_path = audio_path.replace(".mp3", ".txt")
     assert os.path.exists(transcript_path)
-    with open(transcript_path, "r") as f:
+    with open(transcript_path, "r", encoding="utf-8") as f:
         content = f.read()
         assert "Teachfy" in content
         assert "Learning Through Conversation" in content
@@ -239,7 +239,7 @@ def test_generate_transcript_with_local_llm(sample_config):
     assert "Transcript generated successfully" in result.stdout
     transcript_path = result.stdout.split(": ")[-1].strip()
     assert os.path.exists(transcript_path)
-    with open(transcript_path, "r") as f:
+    with open(transcript_path, "r", encoding="utf-8") as f:
         content = f.read()
         assert content != ""
         assert isinstance(content, str)
@@ -325,7 +325,7 @@ def test_generate_transcript_only_with_custom_llm():
     assert transcript_path.endswith(".txt")
 
     # Verify transcript content
-    with open(transcript_path, "r") as f:
+    with open(transcript_path, "r", encoding="utf-8") as f:
         content = f.read()
         assert content != ""
         assert isinstance(content, str)

@@ -59,7 +59,7 @@ class Config:
 		
 		config_path = get_config_path(config_file)
 		if config_path:
-			with open(config_path, 'r') as file:
+			with open(config_path, 'r', encoding='utf-8') as file:
 				self.config: Dict[str, Any] = yaml.safe_load(file)
 		else:
 			print("Could not locate config.yaml")
