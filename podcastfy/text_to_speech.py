@@ -225,8 +225,6 @@ class TextToSpeech:
         self.output_directories = self.tts_config.get("output_directories", {})
         temp_dir = self.tts_config.get("temp_audio_dir", "data/audio/tmp/").rstrip("/").split("/")
         self.temp_audio_dir = os.path.join(*temp_dir)
-        base_dir = os.path.abspath(os.path.dirname(__file__))
-        self.temp_audio_dir = os.path.join(base_dir, self.temp_audio_dir)
 
         os.makedirs(self.temp_audio_dir, exist_ok=True)
 
