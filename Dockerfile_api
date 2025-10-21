@@ -24,6 +24,9 @@ RUN python3 -m pip install --upgrade pip
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install Playwright browsers and OS dependencies (Chromium only to keep image smaller)
+RUN python -m playwright install --with-deps chromium
+
 # Copy application files
 COPY . /app
 

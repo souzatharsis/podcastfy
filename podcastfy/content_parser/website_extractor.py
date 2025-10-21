@@ -2,7 +2,7 @@
 Website Extractor Module
 
 This module is responsible for extracting clean text content from websites using
-BeautifulSoup for local HTML parsing instead of the Jina AI API.
+Playwright to retrieve rendered HTML and BeautifulSoup for local parsing.
 """
 
 import requests
@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from podcastfy.utils.config import load_config
 from typing import List
+from playwright.sync_api import sync_playwright
 
 logger = logging.getLogger(__name__)
 
@@ -45,13 +46,11 @@ class WebsiteExtractor:
 			# Normalize the URL
 			normalized_url = self.normalize_url(url)
 
-			# Request the webpage
-			headers = {'User-Agent': self.user_agent}
-			response = requests.get(normalized_url, headers=headers, timeout=self.timeout)
-			response.raise_for_status()  # Raise an exception for bad status codes
+			# Fetch the page HTML using Playwright (handles bot detection and JS rendering)
+			html_content = self.fetch_with_playwright(normalized_url)
 
 			# Parse the page content with BeautifulSoup
-			soup = BeautifulSoup(response.text, 'html.parser')
+			soup = BeautifulSoup(html_content, 'html.parser')
 
 			# Remove unwanted elements
 			self.remove_unwanted_elements(soup)
@@ -67,6 +66,35 @@ class WebsiteExtractor:
 		except Exception as e:
 			logger.error(f"An unexpected error occurred while extracting content from {url}: {str(e)}")
 			raise Exception(f"An unexpected error occurred while extracting content from {url}: {str(e)}")
+
+	def fetch_with_playwright(self, url: str) -> str:
+		"""
+		Use Playwright to navigate to the URL and return the rendered HTML.
+
+		Args:
+			url (str): The URL to fetch.
+
+		Returns:
+			str: The page HTML after network is idle.
+		"""
+		with sync_playwright() as p:
+			browser = p.chromium.launch(headless=True)
+			context = browser.new_context(
+				user_agent=self.user_agent,
+				ignore_https_errors=True,
+			)
+			page = context.new_page()
+			# Extra headers to mimic a real browser
+			page.set_extra_http_headers({
+				"Accept-Language": "en-US,en;q=0.9",
+			})
+			page.goto(url, wait_until="networkidle", timeout=self.timeout * 1000)
+			# Optionally wait for DOM to be ready
+			page.wait_for_timeout(500)
+			html_content = page.content()
+			context.close()
+			browser.close()
+			return html_content
 
 	def normalize_url(self, url: str) -> str:
 		"""
