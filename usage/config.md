@@ -19,7 +19,7 @@ The API Keys required depend on the model you are using for transcript generatio
 
 - Transcript generation (LLMs):
 
-  - By default, Podcastfy uses Google's `gemini-1.5-pro-latest` model. Hence, you need to set `GEMINI_API_KEY`.
+  - By default, Podcastfy uses Google's `gemini-2.5-flash` model. Hence, you need to set `GEMINI_API_KEY`.
   - See how to configure other LLMs [here](how-to.md#custom-llm-support).
 
 - Audio generation (TTS):

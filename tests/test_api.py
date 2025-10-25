@@ -1,10 +1,9 @@
 import os
 import pytest
 from podcastfy.api.fast_app import app
-from httpx import WSGITransport
 from fastapi.testclient import TestClient
 
-client = TestClient(app, transport=WSGITransport(app=app))
+client = TestClient(app)
 
 @pytest.fixture
 def sample_config():

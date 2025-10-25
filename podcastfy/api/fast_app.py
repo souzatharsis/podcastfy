@@ -47,7 +47,7 @@ TEMP_DIR = os.path.join(os.path.dirname(__file__), "temp_audio")
 os.makedirs(TEMP_DIR, exist_ok=True)
 
 @app.post("/generate")
-async def generate_podcast_endpoint(data: dict):
+def generate_podcast_endpoint(data: dict):
     """"""
     try:
         # Set environment variables
@@ -121,7 +121,7 @@ async def generate_podcast_endpoint(data: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/audio/{filename}")
-async def serve_audio(filename: str):
+def serve_audio(filename: str):
     """ Get File Audio From ther Server"""
     file_path = os.path.join(TEMP_DIR, filename)
     if not os.path.exists(file_path):
@@ -129,7 +129,7 @@ async def serve_audio(filename: str):
     return FileResponse(file_path)
 
 @app.get("/health")
-async def healthcheck():
+def healthcheck():
     return {"status": "healthy"}
 
 if __name__ == "__main__":

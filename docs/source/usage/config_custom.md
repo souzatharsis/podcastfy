@@ -54,7 +54,7 @@ See [conversation_custom.md](conversation_custom.md) for more details.
 
 ## Content Generator
 
-- `gemini_model`: "gemini-1.5-pro-latest"
+- `gemini_model`: "gemini-2.5-flash"
   - The Gemini AI model used for content generation.
 - `system_prompt_file`: "prompt.txt"
   - File containing the system prompt for content generation.

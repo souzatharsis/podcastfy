@@ -706,7 +706,7 @@ class ContentGenerator:
     def __init__(
         self, 
         is_local: bool=False, 
-        model_name: str="gemini-1.5-pro-latest", 
+        model_name: str="gemini-2.5-flash", 
         api_key_label: str="GEMINI_API_KEY",
         conversation_config: Optional[Dict[str, Any]] = None
     ):

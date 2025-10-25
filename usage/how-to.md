@@ -19,7 +19,7 @@ Podcastfy offers a range of LLM models for generating transcripts including Open
 
 ### Cloud-based LLMs
 
-By default, Podcastfy uses Google's `gemini-1.5-pro-latest` model. To select a particular cloud-based LLM model, users can pass the `llm_model_name` and `api_key_label` parameters to the `generate_podcast` function. See [full list of supported models](https://docs.litellm.ai/docs/providers) for more details.
+By default, Podcastfy uses Google's `gemini-2.5-flash` model. To select a particular cloud-based LLM model, users can pass the `llm_model_name` and `api_key_label` parameters to the `generate_podcast` function. See [full list of supported models](https://docs.litellm.ai/docs/providers) for more details.
 
 For example, to use OpenAI's `gpt-4-turbo` model, users can pass `llm_model_name="gpt-4-turbo"` and `api_key_label="OPENAI_API_KEY"`.
 

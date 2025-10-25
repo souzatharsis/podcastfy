@@ -15,7 +15,7 @@ MOCK_IMAGE_PATHS = [
     "https://raw.githubusercontent.com/souzatharsis/podcastfy/refs/heads/main/data/images/connection.jpg",
 ]
 
-MODEL_NAME = "gemini-1.5-pro-latest"
+MODEL_NAME = "gemini-2.5-flash"
 API_KEY_LABEL = "GEMINI_API_KEY"
 
 
