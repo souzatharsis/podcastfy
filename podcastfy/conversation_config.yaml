@@ -42,13 +42,14 @@ text_to_speech:
       answer: "en-US-EricNeural"
   gemini:
     default_voices:
-      question: "en-US-Journey-D"
-      answer: "en-US-Journey-O"
+      question: "en-US-Kore-Neural"
+      answer: "en-US-Zephyr-Neural"
+    model: "gemini-2.5-flash-preview-tts"
   geminimulti:
     default_voices:
-      question: "R"
-      answer: "S"
-      model: "en-US-Studio-MultiSpeaker"
+      question: "en-US-Kore-Neural"
+      answer: "en-US-Zephyr-Neural"
+      model: "gemini-2.5-flash-preview-tts"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
   ending_message: "See You Next Time!"
