@@ -77,25 +77,40 @@ class WebsiteExtractor:
 		Returns:
 			str: The page HTML after network is idle.
 		"""
-		with sync_playwright() as p:
-			browser = p.chromium.launch(headless=True)
-			context = browser.new_context(
-				user_agent=self.user_agent,
-				ignore_https_errors=True,
-			)
-			page = context.new_page()
-			# Extra headers to mimic a real browser
-			page.set_extra_http_headers({
-				"Accept-Language": "en-US,en;q=0.9",
-			})
-			page.goto(url, wait_until="networkidle", timeout=self.timeout * 1000)
-			# Optionally wait for DOM to be ready
-			page.wait_for_timeout(500)
-			html_content = page.content()
-			context.close()
-			browser.close()
-			return html_content
-
+		try:
+			with sync_playwright() as p:
+				browser = p.chromium.launch(headless=True)
+				context = browser.new_context(
+					user_agent=self.user_agent,
+					ignore_https_errors=True,
+				)
+				page = context.new_page()
+				# Extra headers to mimic a real browser
+				page.set_extra_http_headers({
+					"Accept-Language": "en-US,en;q=0.9",
+				})
+				page.goto(url, wait_until="networkidle", timeout=self.timeout * 1000)
+				# Optionally wait for DOM to be ready
+				page.wait_for_timeout(500)
+				html_content = page.content()
+				context.close()
+				browser.close()
+				return html_content
+		except Exception as e:
+			if "asyncio loop" in str(e).lower() or "async" in str(e).lower():
+				return self.fetch_with_requests(url)
+			raise Exception(f"An unexpected error occurred while extracting content from {url}: {str(e)}")
+	def fetch_with_requests(self, url: str) -> str:
+		"""
+		Fallback method using requests when Playwright fails in async contexts.
+		"""
+		logger.warning(f"Playwright failed in async context, using requests: {url}")
+		headers = {
+			'User-Agent': self.user_agent,
+			'Accept-Language': 'en-US,en;q=0.9',
+		}
+		response = requests.get(url, headers=headers, timeout=self.timeout)
+		return response.text
 	def normalize_url(self, url: str) -> str:
 		"""
 		Normalize the given URL by adding scheme if missing and ensuring it's a valid URL.
