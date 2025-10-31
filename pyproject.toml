@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.4.1"
+version = "0.4.2"
 description = "An Open Source alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Apache-2.0"
