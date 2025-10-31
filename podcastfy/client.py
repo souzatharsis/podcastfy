@@ -52,12 +52,19 @@ def process_content(
     model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
     topic: Optional[str] = None,
-    longform: bool = False
+    longform: bool = False,
+    logger_debug: bool = False,
+    keep_files: bool = False,
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
     """
     try:
+        if logger_debug:
+            logging.basicConfig(
+                    level=logging.DEBUG,
+                    format='%(asctime)s - %(levelname)s - %(message)s'
+                    )
         if config is None:
             config = load_config()
 
@@ -129,6 +136,7 @@ def process_content(
                 model=tts_model,
                 api_key=api_key,
                 conversation_config=conv_config.to_dict(),
+                keep=keep_files,
             )
 
             random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
@@ -143,6 +151,8 @@ def process_content(
             return transcript_filepath
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         logger.error(f"An error occurred in the process_content function: {str(e)}")
         raise
 
@@ -198,6 +208,18 @@ def main(
         "-lf", 
         help="Generate long-form content (only available for text input without images)"
     ),
+    debug: bool = typer.Option(
+        False,
+        "--debug",
+        "-d",
+        help="Generate debug output"
+    ),
+    keep: bool = typer.Option(
+        False,
+        "--keep-files",
+        "-k",
+        help="Keep temporary audio files for further introspection"
+    ),
 ):
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, image files, or raw text.
@@ -231,7 +253,9 @@ def main(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
+                logger_debug=debug,
+                keep_files=keep,
             )
         else:
             urls_list = urls or []
@@ -255,7 +279,9 @@ def main(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
+                logger_debug=debug,
+                keep_files=keep,
             )
 
         if transcript_only:
