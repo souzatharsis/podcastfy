@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "podcastfy"
-version = "0.4.2"
+version = "0.4.3"
 description = "An Open Source alternative to NotebookLM's podcast feature: Transforming Multimodal Content into Captivating Multilingual Audio Conversations with GenAI"
 authors = ["Tharsis T. P. Souza"]
 license = "Apache-2.0"
@@ -33,7 +33,7 @@ numpy = ">=1,<2"
 langchain = "^0.3.3"
 langchain-google-vertexai = "^2.0.4"
 langchain-google-genai = "^2.0.1"
-httpx = "^0.27.2"
+httpx = "^0.28.1"
 pandoc = "^2.4"
 sphinx-rtd-theme = "^3.0.1"
 sphinx-autodoc-typehints = "^2.5.0"
