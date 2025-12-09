@@ -14,6 +14,8 @@ from .youtube_transcriber import YouTubeTranscriber
 from .website_extractor import WebsiteExtractor
 from .pdf_extractor import PDFExtractor
 from podcastfy.utils.config import load_config
+from google import genai
+from google.genai import types
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +79,7 @@ class ContentExtractor:
 	
 	def generate_topic_content(self, topic: str) -> str:
 		"""
-		Generate content based on a given topic using a generative model.
+		Generate content based on a given topic using Gemini's Google Search grounding.
 
 		Args:
 			topic (str): The topic to generate content for.
@@ -86,13 +88,33 @@ class ContentExtractor:
 			str: Generated content based on the topic.
 		"""
 		try:
-			import google.generativeai as genai
-
-			model = genai.GenerativeModel('models/gemini-2.5-flash')
-			topic_prompt = f'Be detailed. Search for {topic}'
-			response = model.generate_content(contents=topic_prompt, tools='google_search_retrieval')
+			client = genai.Client()
 			
-			return response.candidates[0].content.parts[0].text
+			grounding_tool = types.Tool(
+				google_search=types.GoogleSearch()
+			)
+			
+			config = types.GenerateContentConfig(
+				tools=[grounding_tool]
+			)
+			
+			prompt = f"""Search the web for comprehensive, up-to-date information about {topic}. 
+						Provide a detailed, well-structured overview covering:
+						- Key concepts and definitions
+						- Recent developments and trends
+						- Important facts and statistics
+						- Different perspectives or viewpoints
+						
+						Be thorough, accurate, and cite sources when relevant."""
+			
+			logger.info(f"Generating content with Google Search grounding for topic: {topic}")
+			response = client.models.generate_content(
+				model="gemini-2.5-flash",
+				contents=prompt,
+				config=config
+			)
+			
+			return response.text
 		except Exception as e:
 			logger.error(f"Error generating content for topic '{topic}': {str(e)}")
 			raise
