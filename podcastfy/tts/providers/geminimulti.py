@@ -6,7 +6,9 @@ from ..base import TTSProvider
 import re
 import logging
 from io import BytesIO
-from pydub import AudioSegment
+import librosa
+import soundfile as sf
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -149,7 +151,8 @@ class GeminiMultiTTS(TTSProvider):
         
         try:
             # Initialize combined audio with first chunk
-            combined = None
+            combined = np.array([])
+            sr = None
             valid_chunks = []
             
             for i, chunk in enumerate(audio_chunks):
@@ -159,62 +162,32 @@ class GeminiMultiTTS(TTSProvider):
                         logger.warning(f"Skipping empty chunk {i}")
                         continue
                     
-                    # Save chunk to temporary file for ffmpeg to process
-                    temp_file = f"temp_chunk_{i}.mp3"
-                    with open(temp_file, "wb") as f:
-                        f.write(chunk)
-                    
-                    # Create audio segment from temp file
-                    try:
-                        segment = AudioSegment.from_file(temp_file, format="mp3")
-                        if len(segment) > 0:
-                            valid_chunks.append(segment)
-                            logger.debug(f"Successfully processed chunk {i}")
-                        else:
-                            logger.warning(f"Zero-length segment in chunk {i}")
-                    except Exception as e:
-                        logger.error(f"Error processing chunk {i}: {str(e)}")
-                    
-                    # Clean up temp file
-                    import os
-                    try:
-                        os.remove(temp_file)
-                    except Exception as e:
-                        logger.warning(f"Failed to remove temp file {temp_file}: {str(e)}")
-                    
+                    # Load audio from bytes
+                    audio, sample_rate = librosa.load(BytesIO(chunk), sr=None)
+                    if sr is None:
+                        sr = sample_rate
+                    elif sr != sample_rate:
+                        audio = librosa.resample(audio, orig_sr=sample_rate, target_sr=sr)
+                    valid_chunks.append(audio)
+                    logger.debug(f"Successfully processed chunk {i}")
                 except Exception as e:
-                    logger.error(f"Error handling chunk {i}: {str(e)}")
+                    logger.error(f"Error processing chunk {i}: {str(e)}")
                     continue
             
             if not valid_chunks:
                 raise RuntimeError("No valid audio chunks to merge")
             
             # Merge valid chunks
-            combined = valid_chunks[0]
-            for segment in valid_chunks[1:]:
-                combined = combined + segment
+            for segment in valid_chunks:
+                combined = np.concatenate((combined, segment))
             
             # Export with specific parameters
             output = BytesIO()
-            combined.export(
-                output,
-                format="mp3",
-                codec="libmp3lame",
-                bitrate="320k"
-            )
-            
-            result = output.getvalue()
-            if len(result) == 0:
-                raise RuntimeError("Export produced empty output")
-            
-            return result
-            
+            sf.write(output, combined, sr, format='mp3')
+            return output.getvalue()
         except Exception as e:
-            logger.error(f"Audio merge failed: {str(e)}", exc_info=True)
-            # If merging fails, return the first valid chunk as fallback
-            if audio_chunks:
-                return audio_chunks[0]
-            raise RuntimeError(f"Failed to merge audio chunks and no valid fallback found: {str(e)}")
+            logger.error(f"Error merging audio: {str(e)}")
+            raise
 
     def generate_audio(self, text: str, voice: str = "R", model: str = "en-US-Studio-MultiSpeaker", 
                        voice2: str = "S", ending_message: str = ""):

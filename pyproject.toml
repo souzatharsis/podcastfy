@@ -24,7 +24,8 @@ elevenlabs = "^1.9.0"
 PyMuPDF = "^1.24.11"
 pyyaml = "^6.0.2"
 youtube-transcript-api = "^0.6.2"
-pydub = "^0.25.1"
+librosa = "^0.10.1"
+soundfile = "^0.12.1"
 fuzzywuzzy = "^0.18.0"
 python-levenshtein = "^0.26.0"
 pandas = "^2.2.3"
@@ -65,6 +66,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 build_docs = "build_docs:main"
-
-
-
