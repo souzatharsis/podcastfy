@@ -23,6 +23,8 @@ import logging
 from langchain.prompts import HumanMessagePromptTemplate
 from abc import ABC, abstractmethod
 
+from langchain_core.language_models.base import BaseLanguageModel
+
 logger = logging.getLogger(__name__)
 
 
@@ -34,6 +36,7 @@ class LLMBackend:
         max_output_tokens: int,
         model_name: str,
         api_key_label: str = "GEMINI_API_KEY",
+        llm_model: Optional[BaseLanguageModel] = None
     ):
         """
         Initialize the LLMBackend.
@@ -56,7 +59,9 @@ class LLMBackend:
             "frequency_penalty": 0.75,  # Avoid repetition
         }
 
-        if is_local:
+        if llm_model:
+            self.llm = llm_model
+        elif is_local:
             self.llm = Llamafile() # replace with ollama
         elif (
             "gemini" in self.model_name.lower()
@@ -708,7 +713,8 @@ class ContentGenerator:
         is_local: bool=False, 
         model_name: str="gemini-2.5-flash", 
         api_key_label: str="GEMINI_API_KEY",
-        conversation_config: Optional[Dict[str, Any]] = None
+        conversation_config: Optional[Dict[str, Any]] = None,
+        llm_model: Optional[BaseLanguageModel] = None,
     ):
         """
         Initialize the ContentGenerator.
@@ -749,6 +755,7 @@ class ContentGenerator:
             ),
             model_name=model_name,
             api_key_label=api_key_label,
+            llm_model=llm_model
         )
 
         self.llm = llm_backend.llm
