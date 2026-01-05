@@ -123,7 +123,7 @@ def generate_podcast_endpoint(data: dict):
 @app.get("/audio/{filename}")
 def serve_audio(filename: str):
     """ Get File Audio From ther Server"""
-    file_path = os.path.join(TEMP_DIR, filename)
+    file_path = os.path.join(TEMP_DIR, os.path.basename(filename))
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(file_path)
