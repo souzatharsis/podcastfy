@@ -33,6 +33,23 @@ audio_file = generate_podcast(
 
 Remember to have the correct API key label and value in your environment variables (`.env` file).
 
+#### Using Forge (100+ LLM Models via Single API)
+
+[Forge](https://forge.tensorblock.co/) is an OpenAI-compatible LLM router that provides access to 100+ models from providers like OpenAI, Anthropic, Google, and more through a single API. To use Forge, set `api_key_label="FORGE_API_KEY"` and pass the model name in the `Provider/model-name` format:
+
+```python
+audio_file = generate_podcast(
+    urls=["https://en.wikipedia.org/wiki/Artificial_intelligence"],
+    llm_model_name="OpenAI/gpt-4o-mini",
+    api_key_label="FORGE_API_KEY"
+)
+```
+
+Add your Forge API key to your `.env` file:
+```
+FORGE_API_KEY=your_forge_api_key_here
+```
+
 ### Running Local LLMs
 
 See [local_llm.md](local_llm.md) for more details.

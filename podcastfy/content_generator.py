@@ -68,6 +68,16 @@ class LLMBackend:
                 max_output_tokens=max_output_tokens,
                 **common_params,
             )
+        elif api_key_label == "FORGE_API_KEY":
+            api_base = os.environ.get(
+                "FORGE_API_BASE", "https://api.forge.tensorblock.co/v1"
+            )
+            self.llm = ChatLiteLLM(
+                model=f"openai/{self.model_name}",
+                temperature=temperature,
+                api_key=os.environ[api_key_label],
+                api_base=api_base,
+            )
         else:  # user should set api_key_label from input
             self.llm = ChatLiteLLM(
                 model=self.model_name,
