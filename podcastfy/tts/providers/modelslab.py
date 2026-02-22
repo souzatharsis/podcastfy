@@ -12,19 +12,19 @@ from ..base import TTSProvider
 # Voice name → ModelsLab voice_id mapping
 # Full list: https://docs.modelslab.com/text-to-audio/realtime/tts
 _VOICE_MAP = {
-    "Bella":   1,
-    "Antoni":  2,
-    "Elli":    3,
-    "Josh":    4,
-    "Arnold":  5,
-    "Adam":    6,
-    "Sam":     7,
-    "Rachel":  8,
-    "Domi":    9,
-    "Gigi":    10,
+    "Bella": 1,
+    "Antoni": 2,
+    "Elli": 3,
+    "Josh": 4,
+    "Arnold": 5,
+    "Adam": 6,
+    "Sam": 7,
+    "Rachel": 8,
+    "Domi": 9,
+    "Gigi": 10,
 }
 
-_API_URL   = "https://modelslab.com/api/v6/voice/text_to_speech"
+_API_URL = "https://modelslab.com/api/v6/voice/text_to_speech"
 _FETCH_URL = "https://modelslab.com/api/v6/voice/fetch/{}"
 
 
@@ -73,18 +73,18 @@ class ModelsLabTTS(TTSProvider):
         """Generate audio using the ModelsLab TTS API.
 
         Args:
-            text:   Text to synthesise (max 2 500 characters).
-            voice:  Voice name — one of Bella, Antoni, Elli, Josh, Arnold,
-                    Adam, Sam, Rachel, Domi, Gigi.
-            model:  Ignored (retained for interface compatibility).
+            text: Text to synthesise (max 2500 characters).
+            voice: Voice name — one of Bella, Antoni, Elli, Josh, Arnold,
+                Adam, Sam, Rachel, Domi, Gigi.
+            model: Ignored (retained for interface compatibility).
             voice2: Optional second voice name (unused; present for
-                    interface compatibility with multi-speaker providers).
+                interface compatibility with multi-speaker providers).
 
         Returns:
             Raw MP3 audio bytes.
 
         Raises:
-            ValueError:   If *voice* is not a recognised ModelsLab voice.
+            ValueError: If *voice* is not a recognised ModelsLab voice.
             RuntimeError: If audio generation or download fails.
         """
         self.validate_parameters(text, voice, model)
@@ -96,15 +96,15 @@ class ModelsLabTTS(TTSProvider):
                 f"Choose from: {', '.join(_VOICE_MAP)}"
             )
 
-        # Enforce the 2 500-character limit
+        # Enforce the 2500-character limit
         if len(text) > 2500:
             text = text[:2500]
 
         payload = {
-            "key":          self.api_key,
-            "prompt":       text,
-            "language":     "English",
-            "voice_id":     voice_id,
+            "key": self.api_key,
+            "prompt": text,
+            "language": "English",
+            "voice_id": voice_id,
             "audio_format": "mp3",
         }
 
@@ -144,13 +144,15 @@ class ModelsLabTTS(TTSProvider):
         raise RuntimeError(f"ModelsLab TTS API error: {data}")
 
     def _extract_url(self, data: dict) -> str:
+        """Extract the audio URL from a successful API response."""
         output = data.get("output") or data.get("output_url")
         if not output:
             raise RuntimeError(f"ModelsLab returned success but no audio URL: {data}")
         return output[0] if isinstance(output, list) else output
 
     def _poll_for_url(self, request_id: str, max_attempts: int = 60) -> str:
-        fetch_url     = _FETCH_URL.format(request_id)
+        """Poll the fetch endpoint until audio is ready or timeout."""
+        fetch_url = _FETCH_URL.format(request_id)
         fetch_payload = {"key": self.api_key}
 
         for _ in range(max_attempts):
