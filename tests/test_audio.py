@@ -35,6 +35,18 @@ class TestAudio(unittest.TestCase):
         # Clean up
         os.remove(output_file)
 
+    @pytest.mark.skip(reason="Requires MODELSLAB_API_KEY")
+    def test_text_to_speech_modelslab(self):
+        tts = TextToSpeech(model="modelslab")
+        output_file = os.path.join(self.output_dir, "test_modelslab.mp3")
+        tts.convert_to_speech(self.test_text, output_file)
+
+        self.assertTrue(os.path.exists(output_file))
+        self.assertGreater(os.path.getsize(output_file), 1024)
+
+        # Clean up
+        os.remove(output_file)
+
     def test_text_to_speech_edge(self):
         tts = TextToSpeech(model="edge")
         output_file = os.path.join(self.output_dir, "test_edge.mp3")
