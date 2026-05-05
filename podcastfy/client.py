@@ -52,7 +52,7 @@ def process_content(
     model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
     topic: Optional[str] = None,
-    longform: bool = False
+    longform: bool = False,
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
@@ -71,6 +71,8 @@ def process_content(
         tts_config = conv_config.get("text_to_speech", {})
         output_directories = tts_config.get("output_directories", {})
 
+        content_uuid = None  # Initialize UUID variable to make it possible to reuse the same UUID for the podcast audio and transcript
+
         if transcript_file:
             logger.info(f"Using transcript file: {transcript_file}")
             with open(transcript_file, "r") as file:
@@ -85,11 +87,11 @@ def process_content(
                 is_local=is_local,
                 model_name=model_name,
                 api_key_label=api_key_label,
-                conversation_config=conv_config.to_dict()
+                conversation_config=conv_config.to_dict(),
             )
 
             combined_content = ""
-            
+
             if urls:
                 logger.info(f"Processing {len(urls)} links")
                 contents = [content_extractor.extract_content(link) for link in urls]
@@ -97,7 +99,9 @@ def process_content(
 
             if text:
                 if longform and len(text.strip()) < 100:
-                    logger.info("Text too short for direct long-form generation. Extracting context...")
+                    logger.info(
+                        "Text too short for direct long-form generation. Extracting context..."
+                    )
                     expanded_content = content_extractor.generate_topic_content(text)
                     combined_content += f"\n\n{expanded_content}"
                 else:
@@ -107,8 +111,9 @@ def process_content(
                 topic_content = content_extractor.generate_topic_content(topic)
                 combined_content += f"\n\n{topic_content}"
 
-            # Generate Q&A content using output directory from conversation config
-            random_filename = f"transcript_{uuid.uuid4().hex}.txt"
+            # Generate UUID once and store it
+            content_uuid = uuid.uuid4().hex
+            random_filename = f"transcript_{content_uuid}.txt"
             transcript_filepath = os.path.join(
                 output_directories.get("transcripts", "data/transcripts"),
                 random_filename,
@@ -117,13 +122,15 @@ def process_content(
                 combined_content,
                 image_file_paths=image_paths or [],
                 output_filepath=transcript_filepath,
-                longform=longform
+                longform=longform,
             )
 
         if generate_audio:
             api_key = None
             if tts_model != "edge":
-                api_key = getattr(config, f"{tts_model.upper().replace('MULTI', '')}_API_KEY")
+                api_key = getattr(
+                    config, f"{tts_model.upper().replace('MULTI', '')}_API_KEY"
+                )
 
             text_to_speech = TextToSpeech(
                 model=tts_model,
@@ -131,7 +138,9 @@ def process_content(
                 conversation_config=conv_config.to_dict(),
             )
 
-            random_filename = f"podcast_{uuid.uuid4().hex}.mp3"
+            # Reuse the same UUID if available, otherwise generate new
+            audio_uuid = content_uuid if content_uuid else uuid.uuid4().hex
+            random_filename = f"podcast_{audio_uuid}.mp3"
             audio_file = os.path.join(
                 output_directories.get("audio", "data/audio"), random_filename
             )
@@ -193,10 +202,10 @@ def main(
         None, "--topic", "-tp", help="Topic to generate podcast about"
     ),
     longform: bool = typer.Option(
-        False, 
-        "--longform", 
-        "-lf", 
-        help="Generate long-form content (only available for text input without images)"
+        False,
+        "--longform",
+        "-lf",
+        help="Generate long-form content (only available for text input without images)",
     ),
 ):
     """
@@ -231,7 +240,7 @@ def main(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
         else:
             urls_list = urls or []
@@ -255,7 +264,7 @@ def main(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
 
         if transcript_only:
@@ -355,7 +364,7 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
         else:
             urls_list = urls or []
@@ -381,7 +390,7 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
             )
 
     except Exception as e:
