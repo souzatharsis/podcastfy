@@ -11,6 +11,7 @@ import logging
 import os
 import re
 import tempfile
+import shutil
 from typing import List, Tuple, Optional, Dict, Any
 from pydub import AudioSegment
 
@@ -27,6 +28,7 @@ class TextToSpeech:
         model: str = None,
         api_key: Optional[str] = None,
         conversation_config: Optional[Dict[str, Any]] = None,
+        keep: bool = False
     ):
         """
         Initialize the TextToSpeech class.
@@ -54,6 +56,7 @@ class TextToSpeech:
         self._setup_directories()
         self.audio_format = self.tts_config.get("audio_format", "mp3")
         self.ending_message = self.tts_config.get("ending_message", "")
+        self.keep = keep
 
     def _get_provider_config(self) -> Dict[str, Any]:
         """Get provider-specific configuration."""
@@ -123,10 +126,21 @@ class TextToSpeech:
                         #with open(temp_file, "wb") as f:
                         #    f.write(chunk)
                         
-                        segment = AudioSegment.from_file(io.BytesIO(chunk))
-                        logger.info(f"################### Loaded chunk {i}, duration: {len(segment)}ms")
+                        try:
+                            segment = AudioSegment.from_file(io.BytesIO(chunk))
+                            if len(segment) < 100 or segment.frame_count() == 0:
+                                logger.error(f"[skip] Chunk {i} is too short or empty")
+                                continue
+                            # Ensure sample_width is valid
+                            if not isinstance(segment.sample_width, int) or segment.sample_width <= 0:
+                                logger.error(f"[skip] Chunk {i} has invalid sample width")
+                                continue
+                            logger.info(f"################### Loaded chunk {i}, duration: {len(segment)}ms")
                         
-                        combined += segment
+                            combined += segment
+                        except Exception as e:
+                            logger.exception(f"[fail] Failed to load/process chunk {i}: {e}")
+                            continue
                     
                     # Export with high quality settings
                     os.makedirs(os.path.dirname(output_file), exist_ok=True)
@@ -141,12 +155,19 @@ class TextToSpeech:
                     logger.error(f"Error during audio processing: {str(e)}")
                     raise
             else:
-                with tempfile.TemporaryDirectory(dir=self.temp_audio_dir) as temp_dir:
+                temp_dir = tempfile.mkdtemp(dir=self.temp_audio_dir)
+                try:
+                    logger.debug(f"Using temp dir: {temp_dir}")
                     audio_segments = self._generate_audio_segments(
                         cleaned_text, temp_dir
                     )
                     self._merge_audio_files(audio_segments, output_file)
                     logger.info(f"Audio saved to {output_file}")
+                finally:
+                    if self.keep:
+                        logger.debug(f"Preserved temp audio in: {temp_dir}")
+                    else:
+                        shutil.rmtree(temp_dir)
 
         except Exception as e:
             logger.error(f"Error converting text to speech: {str(e)}")
@@ -202,15 +223,47 @@ class TextToSpeech:
             # Sort files by index and type (question/answer)
             audio_files.sort(key=get_sort_key)
 
-            # Create empty audio segment
-            combined = AudioSegment.empty()
+            # Create empty audio segment - with a proper valide frame wrate and
+            # sample width otherwise we can't combine this later.
+            combined = AudioSegment.silent(duration=0, frame_rate=24000).set_sample_width(2).set_channels(1)
+
+            if not audio_files:
+                logger.warning("No audio files were created. Possible TTS issue.")
 
             # Add each audio file to the combined segment
             for file_path in audio_files:
-                combined += AudioSegment.from_file(file_path, format=self.audio_format)
+                try:
+                    logger.debug(f"Loading audio file: {file_path}")
+                    audio = AudioSegment.from_file(file_path, format=self.audio_format)
+                    logger.debug(f"Sample width: {audio.sample_width}, Frame rate: {audio.frame_rate}, Channels: {audio.channels}")
+                    if len(audio) < 100:  # less than 100 ms
+                        logger.error(f"Skipping too short audio file: {file_path}")
+                        continue
+                    if audio.frame_count() == 0 or len(audio.raw_data) == 0:
+                        logger.error(f"Skipping empty audio file or with no frame count: {file_path}")
+                        continue
+                    if audio._data is None or len(audio._data) == 0:
+                        logger.error(f"Skipping file with no raw audio: {file_path}")
+                        continue
+                    # This prevents pydub from passing a float into audioop,
+                    # which strictly requires an int.
+                    if not isinstance(audio.sample_width, int):
+                        logger.warning(f"Converting sample_width from float to int for: {file_path}")
+                        audio = audio.set_sample_width(int(audio.sample_width))
+                    if audio.sample_width <= 0:
+                        logger.error(f"Skipping file with invalid sample width: {file_path}")
+                        continue
+                    combined += audio
+                except Exception as e:
+                    logger.error(f"Failed to load or process file: {file_path}: with exception: {e}")
+                    continue
 
             # Ensure output directory exists
             os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+            if combined.duration_seconds == 0:
+                logger.error("No valid audio segments found to merge. Skipping export.")
+                return
 
             # Export the combined audio
             combined.export(output_file, format=self.audio_format)
