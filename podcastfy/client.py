@@ -160,7 +160,7 @@ def main(
         None,
         "--tts-model",
         "-tts",
-        help="TTS model to use (openai, elevenlabs, edge, or gemini)",
+        help="TTS model to use (openai, elevenlabs, edge, gemini, or typecast)",
     ),
     transcript_only: bool = typer.Option(
         False, "--transcript-only", help="Generate only a transcript without audio"
