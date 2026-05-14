@@ -19,12 +19,13 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.config import load_config
-import logging
+from podcastfy.utils.logger import setup_logger
+# import logging
 from langchain.prompts import HumanMessagePromptTemplate
 from abc import ABC, abstractmethod
 
-logger = logging.getLogger(__name__)
-
+# logger = logging.getLogger(__name__)
+logger = setup_logger(__name__)
 
 class LLMBackend:
     def __init__(
@@ -872,7 +873,7 @@ class ContentGenerator:
             self.prompt_template, image_path_keys = self.__compose_prompt(num_images, longform)
             self.parser = StrOutputParser()
             self.chain = self.prompt_template | self.llm | self.parser
-
+            logger.debug(f"Prompt template: \n{self.prompt_template}")
 
             # Prepare parameters using strategy
             prompt_params = strategy.compose_prompt_params(
@@ -881,6 +882,7 @@ class ContentGenerator:
                 image_path_keys,
                 input_texts
             )
+            logger.debug(f"Prompt params: \n{prompt_params}")
 
             # Generate content using selected strategy
             self.response = strategy.generate(
@@ -888,13 +890,15 @@ class ContentGenerator:
                 input_texts,
                 prompt_params
             )
+            logger.debug(f"Raw response: \n{self.response}")
 
             # Clean response using the same strategy
             self.response = strategy.clean(
                 self.response,
                 self.content_generator_config
             )
-                
+
+            logger.debug(f"Clean response: \n{self.response}")
             logger.info(f"Content generated successfully")
 
             # Save output if requested
