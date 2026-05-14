@@ -16,6 +16,7 @@ from podcastfy.text_to_speech import TextToSpeech
 from podcastfy.utils.config import Config, load_config
 from podcastfy.utils.config_conversation import load_conversation_config
 from podcastfy.utils.logger import setup_logger
+from langchain_core.language_models.base import BaseLanguageModel
 from typing import List, Optional, Dict, Any
 import copy
 
@@ -51,6 +52,7 @@ def process_content(
     text: Optional[str] = None,
     model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
+    llm_model: Optional[BaseLanguageModel] = None,
     topic: Optional[str] = None,
     longform: bool = False
 ):
@@ -85,7 +87,8 @@ def process_content(
                 is_local=is_local,
                 model_name=model_name,
                 api_key_label=api_key_label,
-                conversation_config=conv_config.to_dict()
+                conversation_config=conv_config.to_dict(),
+                llm_model=llm_model
             )
 
             combined_content = ""
@@ -287,8 +290,9 @@ def generate_podcast(
     text: Optional[str] = None,
     llm_model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
+    llm_model: Optional[BaseLanguageModel] = None,
     topic: Optional[str] = None,
-    longform: bool = False,
+    longform: bool = False
 ) -> Optional[str]:
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -354,6 +358,7 @@ def generate_podcast(
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
+                llm_model=llm_model,
                 topic=topic,
                 longform=longform
             )
@@ -380,6 +385,7 @@ def generate_podcast(
                 text=text,
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
+                llm_model=llm_model,
                 topic=topic,
                 longform=longform
             )
