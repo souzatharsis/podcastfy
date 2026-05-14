@@ -18,10 +18,7 @@ class OpenAITTS(TTSProvider):
             api_key: OpenAI API key. If None, expects OPENAI_API_KEY env variable
             model: Model name to use. Defaults to "tts-1-hd"
         """
-        if api_key:
-            openai.api_key = api_key
-        elif not openai.api_key:
-            raise ValueError("OpenAI API key must be provided or set in environment")
+        self.client = openai.OpenAI(api_key=api_key) if api_key else openai.OpenAI()
         self.model = model
             
     def get_supported_tags(self) -> List[str]:
@@ -33,7 +30,7 @@ class OpenAITTS(TTSProvider):
         self.validate_parameters(text, voice, model)
         
         try:
-            response = openai.audio.speech.create(
+            response = self.client.audio.speech.create(
                 model=model,
                 voice=voice,
                 input=text
