@@ -99,6 +99,9 @@ def generate_podcast_endpoint(data: dict):
         # Generate podcast
         result = generate_podcast(
             urls=data.get('urls', []),
+            text=data.get('text', None),
+            topic=data.get('topic', None),
+            llm_model_name=data.get('llm_model_name', base_config.get('llm_model_name', 'gpt-4o')),
             conversation_config=conversation_config,
             tts_model=tts_model,
             longform=bool(data.get('is_long_form', False)),
