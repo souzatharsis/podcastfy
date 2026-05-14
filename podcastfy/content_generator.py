@@ -699,6 +699,7 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
             "engagement_techniques": ", ".join(
                 config_conversation.get("engagement_techniques", [])
             ),
+            "user_instructions": config_conversation.get("user_instructions")
         }
 
 
