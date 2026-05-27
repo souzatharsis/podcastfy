@@ -96,7 +96,7 @@ class LongFormContentGenerator:
         4. Incorporate relevant anecdotes and case studies
         5. Balance detailed explanations with engaging dialogue
         6. Maintain consistent voice throughout the extended discussion
-        7. Generate a long conversation - output max_output_tokens tokens
+        7. Generate a long conversation - output {max_output_tokens} tokens
     """
     
     def __init__(self, chain, llm, config_conversation: Dict[str, Any], ):
@@ -234,7 +234,13 @@ class LongFormContentGenerator:
             str: Generated long-form conversation
         """
         # Add long-form instructions once at the beginning
-        prompt_params["user_instructions"] = prompt_params.get("user_instructions", "") + self.LONGFORM_INSTRUCTIONS
+        max_output_tokens = prompt_params.get("max_output_tokens", 8192)
+        prompt_params["user_instructions"] = (
+            prompt_params.get("user_instructions", "")
+            + self.LONGFORM_INSTRUCTIONS.format(
+                max_output_tokens=max_output_tokens
+            )
+        )
         
         # Get chunk size
         chunk_size = self.__calculate_chunk_size(input_content)
@@ -428,6 +434,9 @@ class StandardContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
         """Compose prompt parameters for standard content generation."""
         prompt_params = {
             "input_text": input_texts,
+            "max_output_tokens": self.content_generator_config.get(
+                "max_output_tokens", 8192
+            ),
             "conversation_style": ", ".join(
                 config_conversation.get("conversation_style", [])
             ),
@@ -685,6 +694,9 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
                             input_texts: str = "") -> Dict[str, Any]:
         """Compose prompt parameters for long-form content generation."""
         return {
+            "max_output_tokens": self.content_generator_config.get(
+                "max_output_tokens", 8192
+            ),
             "conversation_style": ", ".join(
                 config_conversation.get("conversation_style", [])
             ),
@@ -795,7 +807,10 @@ class ContentGenerator:
         # Only add text content if input_text is not empty
         text_content = {
             "type": "text",
-            "text": "Please analyze this input and generate a conversation. {input_text}",
+            "text": (
+                "Please analyze this input and generate a conversation of up to "
+                "{max_output_tokens} output tokens. {input_text}"
+            ),
         }
         messages.append(text_content)
 

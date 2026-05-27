@@ -3,7 +3,12 @@ import pytest
 from unittest.mock import patch, MagicMock
 import tempfile
 import os
-from podcastfy.content_generator import ContentGenerator
+from langchain_core.prompts import ChatPromptTemplate
+from podcastfy.content_generator import (
+    ContentGenerator,
+    LongFormContentStrategy,
+    StandardContentStrategy,
+)
 from podcastfy.utils.config import Config
 from podcastfy.utils.config_conversation import ConversationConfig
 from podcastfy.content_parser.pdf_extractor import PDFExtractor
@@ -29,6 +34,48 @@ def sample_conversation_config():
         "podcast_tagline": "Learning Through Conversation",
     }
     return conversation_config
+
+
+def test_prompt_params_include_configured_max_output_tokens():
+    content_generator_config = {"max_output_tokens": 2048}
+    conversation_config = sample_conversation_config()
+
+    for strategy_class in (StandardContentStrategy, LongFormContentStrategy):
+        strategy = strategy_class(
+            llm=MagicMock(),
+            content_generator_config=content_generator_config,
+            config_conversation=conversation_config,
+        )
+
+        prompt_params = strategy.compose_prompt_params(
+            conversation_config,
+            input_texts="Input text",
+        )
+
+        assert prompt_params["max_output_tokens"] == 2048
+
+
+def test_composed_prompt_requests_configured_output_token_count():
+    generator = ContentGenerator.__new__(ContentGenerator)
+    generator.config = {
+        "content_generator": {
+            "prompt_template": "test/template",
+            "prompt_commit": "abc123",
+        }
+    }
+    generator.config_conversation = {"user_instructions": ""}
+
+    with patch("podcastfy.content_generator.hub.pull") as mock_pull:
+        mock_pull.return_value = ChatPromptTemplate.from_messages(
+            ["Base system prompt"]
+        )
+
+        prompt_template, _ = generator._ContentGenerator__compose_prompt(
+            num_images=0,
+            longform=False,
+        )
+
+    assert "max_output_tokens" in prompt_template.input_variables
 
 
 class TestGenAIPodcast(unittest.TestCase):
