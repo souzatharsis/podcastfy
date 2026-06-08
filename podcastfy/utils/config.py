@@ -56,7 +56,8 @@ class Config:
 		self.GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 		self.OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 		self.ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
-		
+		self.SIXTYDB_API_KEY: str = os.getenv("SIXTYDB_API_KEY", "")
+
 		config_path = get_config_path(config_file)
 		if config_path:
 			with open(config_path, 'r') as file:
@@ -88,7 +89,7 @@ class Config:
 		for key, value in kwargs.items():
 			if key in self.config:
 				self.config[key] = value
-			elif key in ['JINA_API_KEY', 'GEMINI_API_KEY', 'OPENAI_API_KEY', 'ELEVENLABS_API_KEY']:
+			elif key in ['JINA_API_KEY', 'GEMINI_API_KEY', 'OPENAI_API_KEY', 'ELEVENLABS_API_KEY', 'SIXTYDB_API_KEY']:
 				setattr(self, key, value)
 			else:
 				raise ValueError(f"Unknown configuration key: {key}")
@@ -131,10 +132,11 @@ def main() -> None:
 	print(f"GEMINI_API_KEY: {'Set' if config.GEMINI_API_KEY else 'Not set'}")
 	print(f"OPENAI_API_KEY: {'Set' if config.OPENAI_API_KEY else 'Not set'}")
 	print(f"ELEVENLABS_API_KEY: {'Set' if config.ELEVENLABS_API_KEY else 'Not set'}")
+	print(f"SIXTYDB_API_KEY: {'Set' if config.SIXTYDB_API_KEY else 'Not set'}")
 
 	# Print a warning for any missing configuration
 	missing_config = []
-	for key in ['JINA_API_KEY', 'GEMINI_API_KEY', 'OPENAI_API_KEY', 'ELEVENLABS_API_KEY']:
+	for key in ['JINA_API_KEY', 'GEMINI_API_KEY', 'OPENAI_API_KEY', 'ELEVENLABS_API_KEY', 'SIXTYDB_API_KEY']:
 		if not getattr(config, key):
 			missing_config.append(key)
 

@@ -49,6 +49,13 @@ text_to_speech:
       question: "R"
       answer: "S"
       model: "en-US-Studio-MultiSpeaker"
+  sixtydb:
+    default_voices:
+      # Documented default voices from https://docs.60db.ai/api-reference/voices/get-voices
+      # Replace with voice_ids from your 60db account for English / other languages.
+      question: "fbb75ed2-975a-40c7-9e06-38e30524a9a1"  # Zara
+      answer: "84982e79-c596-4883-b6fa-9af334767aef"   # Simmi
+    model: "60db-quality-v01"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
   ending_message: "See You Next Time!"
