@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>TTS WebSocket Test</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 14px/1.45 system-ui, sans-serif; max-width: 880px; margin: 24px auto; padding: 0 16px; }
+  h1 { margin: 0 0 12px; font-size: 20px; }
+  fieldset { border: 1px solid #8884; border-radius: 6px; margin: 0 0 12px; padding: 10px 14px; }
+  legend { padding: 0 6px; font-weight: 600; }
+  label { display: block; margin: 6px 0 2px; font-weight: 500; }
+  input, textarea, select { width: 100%; box-sizing: border-box; padding: 6px 8px; font: inherit;
+    background: #0001; border: 1px solid #8884; border-radius: 4px; color: inherit; }
+  textarea { min-height: 96px; resize: vertical; }
+  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
+  button { padding: 8px 14px; font: inherit; border-radius: 4px; border: 1px solid #8884;
+    background: #4a90e2; color: #fff; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.secondary { background: #6663; color: inherit; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  #log { font: 12px/1.4 ui-monospace, monospace; background: #0002; border: 1px solid #8884;
+    border-radius: 4px; padding: 8px; height: 240px; overflow: auto; white-space: pre-wrap; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px;
+    background: #6664; margin-left: 6px; }
+  .ok { background: #2a8a3e; color: #fff; }
+  .err { background: #c0392b; color: #fff; }
+  .warn { background: #c08a2b; color: #fff; }
+  .muted { color: #8889; }
+</style>
+</head>
+<body>
+  <h1>TTS WebSocket Test <span id="state" class="pill">idle</span></h1>
+
+  <fieldset>
+    <legend>API Credentials</legend>
+    <div class="row3">
+      <div>
+        <label for="apiKey">API Key</label>
+        <input id="apiKey" placeholder="sk_live_…" />
+      </div>
+      <div>
+        <label for="apiBase">API Base URL</label>
+        <input id="apiBase" value="https://api.60db.ai" />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button id="btnLoad">Load Models</button>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Connection</legend>
+    <div class="row">
+      <div>
+        <label for="modelId">Model</label>
+        <select id="modelId" disabled>
+          <option value="">(load models first)</option>
+        </select>
+      </div>
+      <div>
+        <label for="voiceId">Voice</label>
+        <select id="voiceId" disabled>
+          <option value="">(choose a model first)</option>
+        </select>
+      </div>
+      <div>
+        <label for="wsUrl">WebSocket URL</label>
+        <input id="wsUrl" value="wss://api.60db.ai/ws/tts" />
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="encoding">Audio encoding</label>
+        <select id="encoding">
+          <option value="LINEAR16" selected>LINEAR16 (PCM16)</option>
+          <option value="MULAW">MULAW</option>
+        </select>
+      </div>
+      <div>
+        <label for="sampleRate">Sample rate (Hz)</label>
+        <select id="sampleRate">
+          <option value="16000" selected>16000</option>
+          <option value="24000">24000</option>
+          <option value="48000">48000</option>
+          <option value="8000">8000</option>
+        </select>
+      </div>
+      <div>
+        <label for="binaryAudio">Audio frame mode</label>
+        <select id="binaryAudio">
+          <option value="false" selected>JSON + base64 (compat)</option>
+          <option value="true">Raw binary frames</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="speakingRate">Speaking rate</label>
+        <input id="speakingRate" type="number" step="0.05" min="0.5" max="1.5" value="1.0" />
+      </div>
+      <div>
+        <label for="targetLanguage">Target language (optional)</label>
+        <input id="targetLanguage" placeholder="e.g. hi, en, es" />
+      </div>
+      <div></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Text</legend>
+    <textarea id="text" placeholder="Type text to synthesize…">Hello! This is a streaming TTS test over WebSocket.</textarea>
+    <div class="actions">
+      <button id="btnRun">Connect</button>
+      <button id="btnSend" class="secondary" disabled>Synthesize</button>
+      <button id="btnClose" class="secondary" disabled>Close</button>
+      <button id="btnDownload" class="secondary" disabled>Download WAV</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Log</legend>
+    <div id="log"></div>
+  </fieldset>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const logEl = $('log');
+  const stateEl = $('state');
+
+  let ws = null;
+  let contextId = null;
+  let audioCtx = null;
+  let playHead = 0;       // next absolute time to schedule
+  let sampleRate = 16000;
+  let encoding = 'LINEAR16';
+  let chunkCount = 0;
+  let recorded = [];      // Int16Array chunks (LINEAR16) or Uint8Array (MULAW) for download
+
+  function log(msg, cls) {
+    const t = new Date().toLocaleTimeString();
+    const line = document.createElement('div');
+    if (cls) line.className = cls;
+    line.textContent = `[${t}] ${msg}`;
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  function setState(s, cls) {
+    stateEl.textContent = s;
+    stateEl.className = 'pill ' + (cls || '');
+  }
+  function setRunning(running) {
+    $('btnRun').disabled = running;
+    $('btnSend').disabled = !running;
+    $('btnClose').disabled = !running;
+  }
+
+  function ensureAudio(sr) {
+    if (!audioCtx || audioCtx.state === 'closed') {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: sr });
+      playHead = audioCtx.currentTime + 0.05; // small priming buffer
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  // µ-law → PCM16
+  function mulawDecode(u8) {
+    const out = new Int16Array(u8.length);
+    for (let i = 0; i < u8.length; i++) {
+      let u = ~u8[i] & 0xFF;
+      const sign = u & 0x80;
+      const exp = (u >> 4) & 0x07;
+      const mant = u & 0x0F;
+      let sample = ((mant << 3) + 0x84) << exp;
+      sample -= 0x84;
+      out[i] = sign ? -sample : sample;
+    }
+    return out;
+  }
+
+  function schedulePCM16(int16) {
+    if (!int16.length) return;
+    const f32 = new Float32Array(int16.length);
+    for (let i = 0; i < int16.length; i++) f32[i] = int16[i] / 32768;
+    const buf = audioCtx.createBuffer(1, f32.length, sampleRate);
+    buf.getChannelData(0).set(f32);
+    const src = audioCtx.createBufferSource();
+    src.buffer = buf;
+    src.connect(audioCtx.destination);
+    const now = audioCtx.currentTime;
+    if (playHead < now) playHead = now + 0.02;
+    src.start(playHead);
+    playHead += buf.duration;
+  }
+
+  function handleAudioBytes(bytes) {
+    chunkCount++;
+    if (encoding === 'MULAW') {
+      const u8 = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+      recorded.push(u8);
+      const int16 = mulawDecode(u8);
+      schedulePCM16(int16);
+    } else {
+      // LINEAR16: little-endian PCM16
+      const u8 = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+      const aligned = u8.byteLength % 2 ? u8.slice(0, u8.byteLength - 1) : u8;
+      const int16 = new Int16Array(aligned.buffer, aligned.byteOffset, aligned.byteLength >> 1);
+      recorded.push(new Int16Array(int16));     // copy
+      schedulePCM16(int16);
+    }
+    if (chunkCount === 1) log(`first audio chunk received (${bytes.byteLength || bytes.length} bytes)`, 'ok');
+  }
+
+  function b64ToBytes(b64) {
+    const bin = atob(b64);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function buildWavBlob() {
+    if (!recorded.length) return null;
+    // Concat to one Int16Array (LINEAR16) — for MULAW, decode all to PCM16 first
+    let int16;
+    if (encoding === 'MULAW') {
+      let total = 0;
+      for (const c of recorded) total += c.length;
+      const u8 = new Uint8Array(total);
+      let off = 0;
+      for (const c of recorded) { u8.set(c, off); off += c.length; }
+      int16 = mulawDecode(u8);
+    } else {
+      let total = 0;
+      for (const c of recorded) total += c.length;
+      int16 = new Int16Array(total);
+      let off = 0;
+      for (const c of recorded) { int16.set(c, off); off += c.length; }
+    }
+    const dataBytes = int16.length * 2;
+    const buf = new ArrayBuffer(44 + dataBytes);
+    const dv = new DataView(buf);
+    const writeStr = (o, s) => { for (let i = 0; i < s.length; i++) dv.setUint8(o + i, s.charCodeAt(i)); };
+    writeStr(0, 'RIFF');
+    dv.setUint32(4, 36 + dataBytes, true);
+    writeStr(8, 'WAVE');
+    writeStr(12, 'fmt ');
+    dv.setUint32(16, 16, true);
+    dv.setUint16(20, 1, true);          // PCM
+    dv.setUint16(22, 1, true);          // mono
+    dv.setUint32(24, sampleRate, true);
+    dv.setUint32(28, sampleRate * 2, true);
+    dv.setUint16(32, 2, true);
+    dv.setUint16(34, 16, true);
+    writeStr(36, 'data');
+    dv.setUint32(40, dataBytes, true);
+    new Int16Array(buf, 44).set(int16);
+    return new Blob([buf], { type: 'audio/wav' });
+  }
+
+  function reset() {
+    contextId = null;
+    chunkCount = 0;
+    recorded = [];
+    playHead = 0;
+    $('btnDownload').disabled = true;
+  }
+
+  let allVoices = [];
+
+  async function loadModels() {
+    const apiKey = $('apiKey').value.trim();
+    const apiBase = $('apiBase').value.trim().replace(/\/$/, '');
+    if (!apiKey) { log('API Key required', 'err'); return; }
+    if (!apiBase) { log('API Base URL required', 'err'); return; }
+
+    $('btnLoad').disabled = true;
+    log(`fetching ${apiBase}/tts/models`);
+    try {
+      const res = await fetch(`${apiBase}/tts/models`, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      });
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const json = await res.json();
+      const models = json.data || [];
+      const sel = $('modelId');
+      sel.innerHTML = '<option value="">— select a model —</option>' +
+        models.map(m => `<option value="${m.id}" data-name="${m.model_name}">${m.model_name} (${m.id})</option>`).join('');
+      sel.disabled = false;
+      log(`loaded ${models.length} model(s)`, 'ok');
+
+      log(`fetching ${apiBase}/default-voices`);
+      const vres = await fetch(`${apiBase}/default-voices`, {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      });
+      if (!vres.ok) throw new Error(`${vres.status} ${vres.statusText}`);
+      const vjson = await vres.json();
+      allVoices = vjson.data || [];
+      log(`loaded ${allVoices.length} voice(s) total`, 'ok');
+    } catch (e) {
+      log(`load failed: ${e.message}`, 'err');
+    } finally {
+      $('btnLoad').disabled = false;
+    }
+  }
+
+  function onModelChange() {
+    const sel = $('modelId');
+    const opt = sel.options[sel.selectedIndex];
+    const modelName = opt ? opt.dataset.name : '';
+    const voiceSel = $('voiceId');
+    if (!modelName) {
+      voiceSel.innerHTML = '<option value="">(choose a model first)</option>';
+      voiceSel.disabled = true;
+      return;
+    }
+    const filtered = allVoices.filter(v => v.model === modelName);
+    voiceSel.innerHTML = filtered.length
+      ? '<option value="">— select a voice —</option>' +
+        filtered.map(v => `<option value="${v.voice_id}">${v.name} (${v.voice_id})</option>`).join('')
+      : '<option value="">(no voices for this model)</option>';
+    voiceSel.disabled = filtered.length === 0;
+    log(`${filtered.length} voice(s) match "${modelName}"`);
+  }
+
+  async function run() {
+    reset();
+    const apiKey = $('apiKey').value.trim();
+    let url = $('wsUrl').value.trim();
+    const voiceId = $('voiceId').value.trim();
+    const text = $('text').value;
+    if (!apiKey) { log('API Key required', 'err'); return; }
+    if (!url) { log('WebSocket URL required', 'err'); return; }
+    if (!voiceId) { log('Voice required — load models, pick model, pick voice', 'err'); return; }
+    if (!text.trim()) { log('Text required', 'err'); return; }
+
+    // Append apiKey to the WS URL
+    url += (url.includes('?') ? '&' : '?') + 'apiKey=' + encodeURIComponent(apiKey);
+
+    encoding = $('encoding').value;
+    sampleRate = parseInt($('sampleRate').value, 10);
+    const binaryAudio = $('binaryAudio').value === 'true';
+
+    ensureAudio(sampleRate);
+    setState('connecting', 'warn');
+    log(`connecting → ${url.replace(/apiKey=[^&]+/, 'apiKey=***')}`);
+
+    try { ws = new WebSocket(url); }
+    catch (e) { log(`WebSocket construction failed: ${e}`, 'err'); setState('error', 'err'); return; }
+    ws.binaryType = 'arraybuffer';
+
+    const sendCreateContext = () => {
+      const cc = {
+        create_context: {
+          voice_id: voiceId,
+          audio_config: { audio_encoding: encoding, sample_rate_hertz: sampleRate },
+          speaking_rate: parseFloat($('speakingRate').value) || 1.0,
+          binary_audio: binaryAudio,
+        },
+      };
+      const tl = $('targetLanguage').value.trim();
+      if (tl) cc.create_context.target_language = tl;
+      log('sending create_context');
+      ws.send(JSON.stringify(cc));
+    };
+
+    ws.onopen = () => {
+      setState('open', 'ok');
+      setRunning(true);
+      log('open — waiting for connection_established');
+    };
+
+    ws.onmessage = ev => {
+      if (typeof ev.data === 'string') {
+        let msg;
+        try { msg = JSON.parse(ev.data); }
+        catch { log(`non-JSON text frame: ${ev.data.slice(0, 200)}`, 'warn'); return; }
+        if (msg.connection_established) {
+          log(`connection_established (user=${msg.connection_established.user_id}, credits=${msg.connection_established.credit_balance})`, 'ok');
+          sendCreateContext();
+        } else if (msg.context_created) {
+          contextId = msg.context_created.context_id;
+          log(`context_created id=${contextId} — ready to synthesize`, 'ok');
+        } else if (msg.audio_chunk) {
+          handleAudioBytes(b64ToBytes(msg.audio_chunk.audioContent));
+        } else if (msg.flush_completed) {
+          log(`flush_completed (${chunkCount} chunks total)`, 'ok');
+          $('btnDownload').disabled = !recorded.length;
+        } else if (msg.context_closed) {
+          log('context_closed', 'ok');
+        } else if (msg.error) {
+          log(`server error: ${JSON.stringify(msg.error)}`, 'err');
+          setState('error', 'err');
+        } else {
+          log(`message: ${ev.data.slice(0, 200)}`);
+        }
+      } else {
+        // Binary audio frame (binary_audio=true mode)
+        handleAudioBytes(new Uint8Array(ev.data));
+      }
+    };
+
+    ws.onerror = e => { log(`socket error: ${e.message || '(no detail)'}`, 'err'); setState('error', 'err'); };
+    ws.onclose = e => {
+      log(`closed code=${e.code} reason="${e.reason || ''}"`);
+      setState('closed');
+      setRunning(false);
+      $('btnDownload').disabled = !recorded.length;
+    };
+  }
+
+  $('btnLoad').onclick = loadModels;
+  $('modelId').onchange = onModelChange;
+  $('btnRun').onclick = run;
+  $('btnSend').onclick = () => {
+    if (!ws || ws.readyState !== 1) return;
+    if (!contextId) { log('no context yet — wait for context_created', 'warn'); return; }
+    const text = $('text').value;
+    ws.send(JSON.stringify({ send_text: { context_id: contextId, text } }));
+    ws.send(JSON.stringify({ flush_context: { context_id: contextId } }));
+    log(`sent ${text.length} chars + flush`);
+  };
+  $('btnClose').onclick = () => {
+    if (!ws || ws.readyState !== 1) return;
+    ws.send(JSON.stringify({ close_context: { context_id: contextId } }));
+    log('close_context sent');
+  };
+  $('btnDownload').onclick = () => {
+    const blob = buildWavBlob();
+    if (!blob) { log('nothing recorded', 'warn'); return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `tts_${Date.now()}.wav`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  };
+})();
+</script>
+</body>
+</html>
