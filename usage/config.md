@@ -24,7 +24,8 @@ The API Keys required depend on the model you are using for transcript generatio
 
 - Audio generation (TTS):
   - By default, Podcastfy uses OpenAI TTS. Hence, you need to set `OPENAI_API_KEY`.
-  - Additional supported models are ElevenLabs ('elevenlabs'), Microsoft Edge ('edge') and Google TTS ('gemini'). All but Edge require an API key.
+  - Additional supported models are ElevenLabs ('elevenlabs'), Microsoft Edge ('edge'), Google TTS ('gemini') and Eden AI ('edenai'). All but Edge require an API key.
+  - Eden AI ('edenai') is a gateway that routes to many TTS engines (OpenAI, Google, Amazon, Microsoft and more) behind a single key. Set `EDENAI_API_KEY` and pick the engine with the `edenai.model` conversation config value. Get a key at https://www.edenai.co.
 
 > [!Note]
 > Never share your `.env` file or commit it to version control. It contains sensitive information that should be kept private. The `config.yaml` file can be shared and version-controlled as it doesn't contain sensitive data.

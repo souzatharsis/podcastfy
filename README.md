@@ -139,7 +139,7 @@ Podcastfy offers a range of customization options to tailor your AI-generated po
 - Customize transcript and audio generation (e.g., style, language, structure).
 - Generate transcripts using 100+ LLM models (OpenAI, Anthropic, Google etc).
 - Leverage local LLMs for transcript generation for increased privacy and control.
-- Integrate with advanced text-to-speech models (OpenAI, Google, ElevenLabs, and Microsoft Edge).
+- Integrate with advanced text-to-speech models (OpenAI, Google, ElevenLabs, Microsoft Edge, and Eden AI).
 - Provide multi-language support for global content creation.
 - Integrate seamlessly with CLI and Python packages for automated workflows.
 

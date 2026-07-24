@@ -84,6 +84,16 @@ Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_c
   - `answer`: "en-US-EricNeural"
     - Default voice for answers using Edge TTS.
 
+### Eden AI TTS
+
+- `default_voices`:
+  - `question`: "FEMALE"
+    - Default voice for questions. "MALE" or "FEMALE" works across every engine. You can also set a specific engine voice id (for example "alloy" for the openai engine, or "en-US-Standard-A" for google).
+  - `answer`: "MALE"
+    - Default voice for answers.
+- `model`: "openai"
+  - The Eden AI engine to route to. Any engine Eden AI supports works here (for example "openai", "google", "amazon", "microsoft"), so the list stays open.
+
 ### General TTS Settings
 
 - `default_tts_model`: "openai"
@@ -207,7 +217,8 @@ creativity: 0.7
 - The `output_language` defines both the language of the transcript and the language of the audio. Here's some relevant information:
   - Bottom-line: non-English transcripts are good enough but non-English audio is work-in-progress.
   - Transcripts are generated using Google's Gemini 1.5 Pro by default, which supports 100+ languages. Other user-defined models may or may not support non-English languages.
-  - Audio is generated using `openai` (default), `elevenlabs`, `gemini`, `geminimulti` or `edge` TTS models. 
+  - Audio is generated using `openai` (default), `elevenlabs`, `gemini`, `geminimulti`, `edge` or `edenai` TTS models. 
+    - The `edenai` TTS model is a gateway that routes to many engines (OpenAI, Google, Amazon, Microsoft and more) with a single `EDENAI_API_KEY`. Set the engine with `text_to_speech.edenai.model` and use `question`/`answer` voices of "MALE" or "FEMALE" (or an engine specific voice id).
     - The `gemini`(Google) TTS model supports multiple languages and can be controlled by the `output_language` parameter and respective voice choices. Eg. `output_language="Tamil"`, `question="ta-IN-Standard-A"`, `answer="ta-IN-Standard-B"`. Refer to [Google Cloud Text-to-Speech documentation](https://cloud.google.com/text-to-speech/docs/voices) for more details.
     - The `geminimulti`(Google) TTS model supports only English voices. Also, not every Google Cloud project might have access to multi-speaker voices (Eg. `en-US-Studio-MultiSpeaker`). In case if you get - `"Multi-speaker voices are only available to allowlisted projects."`, you can fallback to `gemini` TTS model.
     - The `openai` TTS model supports multiple languages automatically, however non-English voices still present sub-par quality in my experience.

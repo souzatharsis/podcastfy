@@ -65,6 +65,16 @@ Podcastfy uses the default TTS configuration stored in [podcastfy/conversation_c
   - `answer`: "en-US-EricNeural"
     - Default voice for answers using Edge TTS.
 
+### Eden AI TTS
+
+- `default_voices`:
+  - `question`: "FEMALE"
+    - Default voice for questions. "MALE" or "FEMALE" works across every engine, or set a specific engine voice id.
+  - `answer`: "MALE"
+    - Default voice for answers.
+- `model`: "openai"
+  - The Eden AI engine to route to (for example "openai", "google", "amazon", "microsoft"). The list stays open as Eden AI adds engines.
+
 ### General TTS Settings
 
 - `default_tts_model`: "openai"
@@ -188,7 +198,8 @@ creativity: 0.7
 - The `output_language` defines both the language of the transcript and the language of the audio. Here's some relevant information:
   - Bottom-line: non-English transcripts are good enough but non-English audio is work-in-progress.
   - Transcripts are generated using Google's Gemini 1.5 Pro, which supports 100+ languages by default.
-  - Audio is generated using `openai` (default), `elevenlabs`, `gemini`,or `edge` TTS models. 
+  - Audio is generated using `openai` (default), `elevenlabs`, `gemini`, `edge` or `edenai` TTS models.
+    - The `edenai` TTS model is a gateway that routes to many engines (OpenAI, Google, Amazon, Microsoft and more) with a single `EDENAI_API_KEY`. Set the engine with `text_to_speech.edenai.model`. 
     - The `gemini`(Google) TTS model is English only.
     - The `openai` TTS model supports multiple languages automatically, however non-English voices still present sub-par quality in my experience.
     - The `elevenlabs` TTS model has English voices by default, in order to use a non-English voice you would need to download a custom voice for the target language in your `elevenlabs` account settings and then set the `text_to_speech.elevenlabs.default_voices` parameters to the voice you want to use in the [config.yaml file](https://github.com/pedroslopez/podcastfy/blob/main/podcastfy/config.yaml) (this config file is only available in the source code of the project, not in the pip package, hence if you are using the pip package you will not be able to change the ElevenLabs voice). For more information on ElevenLabs voices, visit [ElevenLabs Voice Library](https://elevenlabs.io/voice-library)

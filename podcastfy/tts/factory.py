@@ -7,15 +7,17 @@ from .providers.openai import OpenAITTS
 from .providers.edge import EdgeTTS
 from .providers.gemini import GeminiTTS
 from .providers.geminimulti import GeminiMultiTTS
+from .providers.edenai import EdenAITTS
 class TTSProviderFactory:
     """Factory class for creating TTS providers."""
-    
+
     _providers: Dict[str, Type[TTSProvider]] = {
         'elevenlabs': ElevenLabsTTS,
         'openai': OpenAITTS,
         'edge': EdgeTTS,
         'gemini': GeminiTTS,
-        'geminimulti': GeminiMultiTTS
+        'geminimulti': GeminiMultiTTS,
+        'edenai': EdenAITTS
     }
     
     @classmethod
