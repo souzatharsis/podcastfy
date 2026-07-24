@@ -15,6 +15,7 @@ The project uses a combination of a `.env` file for managing API keys and sensit
 API Key Requirements:
 - `GEMINI_API_KEY`: Required for transcript generation if not using a [local llm](local_llm.md). (get your [free API key](aistudio.google.com/app/apikey))
 - `OPENAI_API_KEY` or `ELEVENLABS_API_KEY`: Required for audio generation if not using Microsoft Edge TTS `tts_model=edge`.
+- `EDENAI_API_KEY`: Required for audio generation with Eden AI `tts_model=edenai`. Eden AI is a gateway that routes to many TTS engines (OpenAI, Google, Amazon, Microsoft and more) behind a single key. Get a key at https://www.edenai.co.
 
 Ensure you have the necessary API keys based on your intended usage of Podcastfy.
 

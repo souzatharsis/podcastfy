@@ -49,6 +49,11 @@ text_to_speech:
       question: "R"
       answer: "S"
       model: "en-US-Studio-MultiSpeaker"
+  edenai:
+    default_voices:
+      question: "FEMALE"
+      answer: "MALE"
+    model: "openai"
   audio_format: "mp3"
   temp_audio_dir: "data/audio/tmp/"
   ending_message: "See You Next Time!"
