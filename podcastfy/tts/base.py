@@ -120,5 +120,10 @@ class TTSProvider(ABC):
                                 f'<{tag}>\\1</{tag}>', 
                                 cleaned_text, 
                                 flags=re.DOTALL)
+            cleaned_text = re.sub(
+                rf"</{re.escape(tag)}>\s*<{re.escape(tag)}>",
+                " ",
+                cleaned_text,
+            )
 
         return cleaned_text.strip()
