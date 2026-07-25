@@ -44,7 +44,8 @@ class GeminiTTS(TTSProvider):
             ValueError: If parameters are invalid
             RuntimeError: If audio generation fails
         """
-        self.validate_parameters(text, voice, model or self.model)
+        effective_model = model or self.model
+        self.validate_parameters(text, voice, effective_model)
         
         try:
             # Create synthesis input
@@ -58,6 +59,7 @@ class GeminiTTS(TTSProvider):
             voice_params = texttospeech_v1beta1.VoiceSelectionParams(
                 language_code=language_code,
                 name=voice,
+                model_name=effective_model,
             )
             
             # Set audio config
