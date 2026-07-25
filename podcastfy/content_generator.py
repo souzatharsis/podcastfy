@@ -333,7 +333,13 @@ class ContentCleanerMixin:
                     cleaned_text,
                     flags=re.DOTALL,
                 )
-            
+
+            # Keep each speaker turn on its own line for readable, parseable transcripts.
+            cleaned_text = re.sub(
+                r"(</Person[12]>)\s*(?=<Person[12]>)",
+                r"\1\n",
+                cleaned_text,
+            )
 
 
             return cleaned_text.strip()
